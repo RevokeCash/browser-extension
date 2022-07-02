@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import Browser from 'webextension-polyfill';
 
 const Popup = () => {
   const [count, setCount] = useState(0);
   const [currentURL, setCurrentURL] = useState<string>();
 
   useEffect(() => {
-    chrome.action.setBadgeText({ text: count.toString() });
+    Browser.action.setBadgeText({ text: count.toString() });
   }, [count]);
 
   useEffect(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    Browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
       setCurrentURL(tabs[0].url);
     });
   }, []);
 
   const changeBackground = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    Browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
       const tab = tabs[0];
       if (tab.id) {
-        chrome.tabs.sendMessage(
+        Browser.tabs.sendMessage(
           tab.id,
           {
             color: "#555555",
-          },
+          }
+        ).then(
           (msg) => {
             console.log("result message:", msg);
           }

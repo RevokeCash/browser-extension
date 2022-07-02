@@ -9,6 +9,7 @@ module.exports = {
       options: path.join(srcDir, 'options.tsx'),
       background: path.join(srcDir, 'background.ts'),
       content_script: path.join(srcDir, 'content_script.tsx'),
+      replace_window_ethereum: path.join(srcDir, 'replace_window_ethereum.tsx'),
     },
     output: {
         path: path.join(__dirname, "../dist/js"),
@@ -33,11 +34,19 @@ module.exports = {
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
+        fallback: {
+            buffer: require.resolve('buffer/'),
+            worker_threads: false,
+            stream: require.resolve("stream-browserify"),
+        }
     },
     plugins: [
         new CopyPlugin({
             patterns: [{ from: ".", to: "../", context: "public" }],
             options: {},
+        }),
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
         }),
     ],
 };
