@@ -1,6 +1,5 @@
 import { WindowPostMessageStream } from '@metamask/post-message-stream';
 import { Identifier } from './constants';
-import { providers } from 'ethers';
 import { sendAndAwaitResponseFromStream } from './utils';
 
 console.log('world', (window as any).ethereum);
@@ -15,12 +14,14 @@ let overrideInterval: NodeJS.Timer;
 const overrideWindowEthereum = () => {
   if (!(window as any).ethereum) return;
 
+  clearInterval(overrideInterval);
+
   const requestHandler = {
     apply: async (target: any, thisArg: any, argumentsList: any[]) => {
       const [request] = argumentsList;
 
       if (request?.method === 'eth_sendTransaction') {
-        const { isOk } = await sendAndAwaitResponseFromStream(stream, request);
+        const isOk = await sendAndAwaitResponseFromStream(stream, request);
 
         if (!isOk) {
           throw new Error('test');
@@ -34,9 +35,7 @@ const overrideWindowEthereum = () => {
   const requestProxy = new Proxy((window as any).ethereum.request, requestHandler);
 
   (window as any).ethereum.request = requestProxy;
-
-  clearInterval(overrideInterval);
 }
 
-overrideWindowEthereum();
 overrideInterval = setInterval(overrideWindowEthereum, 100);
+overrideWindowEthereum();

@@ -7,6 +7,7 @@ module.exports = {
     entry: {
       popup: path.join(srcDir, 'popup.tsx'),
       options: path.join(srcDir, 'options.tsx'),
+      confirm: path.join(srcDir, 'confirm.tsx'),
       background: path.join(srcDir, 'background.ts'),
       content_script: path.join(srcDir, 'content_script.tsx'),
       replace_window_ethereum: path.join(srcDir, 'replace_window_ethereum.tsx'),

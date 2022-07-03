@@ -34,3 +34,9 @@ stream.on('data', (data) => {
       stream.write({ id: data.id, data: response });
     })
 })
+
+// window.addEventListener('message', (message) => {
+//   if (message?.data?.target?.includes('metamask')) {
+//     console.warn(message?.data?.data?.name, message?.data?.target, message?.data?.data?.data)
+//   }
+// })
