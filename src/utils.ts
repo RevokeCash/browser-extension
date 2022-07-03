@@ -1,5 +1,8 @@
+import { BigNumber } from 'ethers';
+import { Interface } from 'ethers/lib/utils';
 import { Duplex } from 'readable-stream';
 import Browser from 'webextension-polyfill';
+import { Signature, SignatureIdentifier } from './constants';
 
 // TODO: Timeout
 export const sendAndAwaitResponseFromStream = (stream: Duplex, data: any): Promise<any> => {
@@ -35,3 +38,21 @@ export const sendAndAwaitResponseFromPort = (stream: Browser.Runtime.Port, data:
   })
 }
 
+// TODO: provide useful information about the allowances
+export const decodeApproval = (data: string, to: string) => {
+  if (data.startsWith(SignatureIdentifier.approve)) {
+    const decoded = new Interface([`function ${Signature.approve}`]).decodeFunctionData(Signature.approve, data);
+    const [spender, approval] = Array.from(decoded);
+    if (BigNumber.from(approval).isZero()) return undefined;
+    return `You are about to give an allowance to ${spender}`;
+  }
+
+  if (data.startsWith(SignatureIdentifier.setApprovalForAll)) {
+    const decoded = new Interface([`function ${Signature.setApprovalForAll}`]).decodeFunctionData(Signature.setApprovalForAll, data);
+    const [spender, approved] = Array.from(decoded);
+    if (!approved) return undefined;
+    return `You are about to give an allowance to ${spender}`;
+  }
+
+  return undefined;
+}

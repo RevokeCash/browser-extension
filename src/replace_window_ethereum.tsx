@@ -1,6 +1,7 @@
 import { WindowPostMessageStream } from '@metamask/post-message-stream';
 import { Identifier } from './constants';
 import { sendAndAwaitResponseFromStream } from './utils';
+import { ethErrors } from 'eth-rpc-errors'
 
 console.log('world', (window as any).ethereum);
 
@@ -24,7 +25,7 @@ const overrideWindowEthereum = () => {
         const isOk = await sendAndAwaitResponseFromStream(stream, request);
 
         if (!isOk) {
-          throw new Error('test');
+          throw ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied transaction signature.');
         }
       }
 

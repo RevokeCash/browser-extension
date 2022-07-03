@@ -5,6 +5,7 @@ import Browser from 'webextension-polyfill';
 const Confirm = () => {
   const params = new URLSearchParams(window.location.search);
   const id = Number(params.get('id'));
+  const message = params.get('message');
 
   const respond = async (data: boolean) => {
     await Browser.runtime.sendMessage(undefined, { id, data })
@@ -17,6 +18,7 @@ const Confirm = () => {
   return (
     <>
       <div>Current ID: {id}</div>
+      <div>{message}</div>
       <button onClick={confirm}>Confirm</button>
       <button onClick={reject}>Reject</button>
     </>
