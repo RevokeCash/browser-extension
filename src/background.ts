@@ -30,7 +30,7 @@ const init = async (remotePort: Browser.Runtime.Port) => {
           id: data.id,
           asset: allowance.asset,
           spender: allowance.spender,
-          chaindId: chainId,
+          chainId,
           name: tokenData.name ?? '',
           symbol: tokenData.symbol ?? '',
           spenderName: spenderName ?? '',
@@ -40,7 +40,7 @@ const init = async (remotePort: Browser.Runtime.Port) => {
           url: `confirm.html?${queryString}`,
           type: 'popup',
           width: 400,
-          height: 200,
+          height: 300,
           left: 0,
           top: 0,
         })
