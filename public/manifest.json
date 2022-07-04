@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
 
-  "name": "Revoke.cash Extension",
-  "description": "The Revoke.cash extension warns you when you are about to approve any allowances",
+  "name": "Revoke.cash Pro",
+  "description": "The Revoke.cash Pro extension warns you when you are about to approve any allowances",
   "version": "1.0",
 
   "options_ui": {

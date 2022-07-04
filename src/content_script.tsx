@@ -21,11 +21,12 @@ const stream = new WindowPostMessageStream({
   target: Identifier.INPAGE,
 });
 
-// Connect to background script
-const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
 
 stream.on('data', (data) => {
   console.log('CS Received:', data);
+
+  // Connect to background script
+  const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
 
   // Forward received messages to background.js
   sendAndAwaitResponseFromPort(extensionPort, data.data)

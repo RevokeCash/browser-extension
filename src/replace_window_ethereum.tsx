@@ -33,7 +33,7 @@ const overrideWindowEthereum = () => {
         const isOk = await sendAndAwaitResponseFromStream(stream, { transaction, chainId });
 
         if (!isOk) {
-          throw ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied transaction signature.');
+          throw ethErrors.provider.userRejectedRequest('Revoke.cash Pro Confirmation: User denied transaction signature.');
         }
       }
 

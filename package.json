@@ -1,7 +1,7 @@
 {
   "name": "revoke.cash-extension",
   "version": "1.0.0",
-  "description": "The Revoke.cash extension warns you when you are about to approve any allowances",
+  "description": "The Revoke.cash Pro extension warns you when you are about to approve any allowances",
   "main": "index.js",
   "scripts": {
     "watch": "webpack --config webpack/webpack.dev.js --watch",
