@@ -1,4 +1,4 @@
-import { Contract, providers } from 'ethers';
+import { BigNumber, Contract, providers } from 'ethers';
 import { ChainId, chains } from 'eth-chains';
 import { getAddress, Interface } from 'ethers/lib/utils';
 import { Duplex } from 'readable-stream';
@@ -39,19 +39,18 @@ export const sendAndAwaitResponseFromPort = (stream: Browser.Runtime.Port, data:
   })
 }
 
-// TODO: Update after testing
 export const decodeApproval = (data: string, asset: string) => {
   if (data.startsWith(SignatureIdentifier.approve)) {
     const decoded = new Interface([`function ${Signature.approve}`]).decodeFunctionData(Signature.approve, data);
     const [spender, approval] = Array.from(decoded);
-    // if (BigNumber.from(approval).isZero()) return undefined;
+    if (BigNumber.from(approval).isZero()) return undefined;
     return { asset, spender };
   }
 
   if (data.startsWith(SignatureIdentifier.setApprovalForAll)) {
     const decoded = new Interface([`function ${Signature.setApprovalForAll}`]).decodeFunctionData(Signature.setApprovalForAll, data);
     const [spender, approved] = Array.from(decoded);
-    // if (!approved) return undefined;
+    if (!approved) return undefined;
     return { asset, spender };
   }
 
