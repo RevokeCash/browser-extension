@@ -1,70 +1,15 @@
-# Chrome Extension TypeScript Starter
+# Revoke.cash Browser Extension
 
-![build](https://github.com/chibat/chrome-extension-typescript-starter/workflows/build/badge.svg)
+In many cases, phishing websites try to make you sign an allowance while they pretend to be an NFT mint or other legitimate use cases. When these phishing scams happen, it is recommended to use Revoke.cash to mitigate the damage, but it is even better to prevent the scam in the first place.
 
-Chrome Extension, TypeScript and Visual Studio Code
+This is where the Revoke.cash Browser Extension comes in. The extension pops up whenever you are about to sign an allowance and will inform you of the allowance details. This can help you prevent signing malicious allowances.
 
-## Prerequisites
+The Revoke.cash browser extension works with every EVM-based network such as Ethereum, Avalanche or Polygon, including chains that are not supported on the Revoke.cash website.
 
-* [node + npm](https://nodejs.org/) (Current Version)
+## Running locally
 
-## Option
+To continuously build the application using webpack you can run `yarn watch`. This will make sure that the `dist/` directory is always up to date. From there you can import this directory into your browser (e.g. through `chrome://extensions`).
 
-* [Visual Studio Code](https://code.visualstudio.com/)
+## Credits
 
-## Includes the following
-
-* TypeScript
-* Webpack
-* React
-* Jest
-* Example Code
-    * Chrome Storage
-    * Options Version 2
-    * content script
-    * count up badge number
-    * background
-
-## Project Structure
-
-* src/typescript: TypeScript source files
-* src/assets: static files
-* dist: Chrome Extension directory
-* dist/js: Generated JavaScript files
-
-## Setup
-
-```
-npm install
-```
-
-## Import as Visual Studio Code project
-
-...
-
-## Build
-
-```
-npm run build
-```
-
-## Build in watch mode
-
-### terminal
-
-```
-npm run watch
-```
-
-### Visual Studio Code
-
-Run watch mode.
-
-type `Ctrl + Shift + B`
-
-## Load extension to chrome
-
-Load `dist` directory
-
-## Test
-`npx jest` or `npm run test`
+The browser extension was created by Rosco Kalis after discussing the idea with Merwane Drai and Dries Steenberghe while working on Chaingrep.
