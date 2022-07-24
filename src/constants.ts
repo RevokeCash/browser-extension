@@ -16,3 +16,8 @@ export const Signature = {
   approve: 'approve(address,uint256)',
   setApprovalForAll: '	setApprovalForAll(address,bool)',
 }
+
+export const RequestType = {
+  REGULAR: 'regular',
+  DOUBLE_CHECK: 'double-check',
+}

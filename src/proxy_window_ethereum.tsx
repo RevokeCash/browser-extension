@@ -18,6 +18,9 @@ const overrideWindowEthereum = () => {
 
   clearInterval(overrideInterval);
 
+  // TODO: Proxy send and sendAsync
+  // https://docs.metamask.io/guide/ethereum-provider.html#legacy-methods
+
   const requestHandler = {
     apply: async (target: any, thisArg: any, argumentsList: any[]) => {
       const [request] = argumentsList;
