@@ -27,25 +27,22 @@ const Confirm = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-      <img className="logo" src="/revoke.svg" alt="revoke.cash logo" width="150" />
-      <div>You are about to set an allowance!</div>
-      {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ fontWeight: 'bold' }}>Chain ID</div>
-        <div>{chainId}</div>
-      </div> */}
+      <img className="logo" src="/revoke.svg" alt="revoke.cash logo" width="300" />
+      <div>You are about to approve an allowance!</div>
+      <div>Please make sure this is your intention.</div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ fontWeight: 'bold' }}>Asset</div>
+        <div style={{ fontWeight: 'bold', fontSize: 18 }}>Asset</div>
         <div>
           <a href={`${explorerUrl}/address/${asset}`} target="_blank">{assetString}</a>
         </div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ fontWeight: 'bold' }}>Spender</div>
+        <div style={{ fontWeight: 'bold', fontSize: 18 }}>Spender</div>
         <div>
         <a href={`${explorerUrl}/address/${spender}`} target="_blank">{spenderName || spender}</a>
         </div>
       </div>
-      <div style={{ display: 'flex', gap: 2 }}>
+      <div style={{ display: 'flex', gap: 2, paddingTop: 10 }}>
         <button onClick={confirm}>Continue</button>
         <button onClick={reject}>Reject</button>
       </div>

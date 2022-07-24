@@ -2,6 +2,8 @@ import { providers } from 'ethers';
 import Browser from 'webextension-polyfill';
 import { addressToAppName, decodeApproval, getRpcUrl, getTokenData } from './utils';
 
+// Note that these messages will be cleared due to the background service shutting down
+// after 5 minutes of inactivity.
 const messages: { [index: string]: Browser.Runtime.Port } = {};
 
 const init = async (remotePort: Browser.Runtime.Port) => {
@@ -24,7 +26,8 @@ const init = async (remotePort: Browser.Runtime.Port) => {
     Promise.all([
       getTokenData(allowance.asset, new providers.JsonRpcProvider(rpcUrl)),
       addressToAppName(allowance.spender, chainId),
-    ]).then(([tokenData, spenderName]) => {
+      Browser.windows.getCurrent(),
+    ]).then(([tokenData, spenderName, window]) => {
         console.log('spendername', spenderName);
         const queryString = new URLSearchParams({
           id: data.id,
@@ -36,16 +39,20 @@ const init = async (remotePort: Browser.Runtime.Port) => {
           spenderName: spenderName ?? '',
         }).toString();
 
+        const width = 400;
+        const height = 300;
+        const left = Math.round(((window.width ?? width) - width) * 0.5);
+        const top = Math.round(((window.height ?? height) - height) * 0.2);
+
         Browser.windows.create({
           url: `confirm.html?${queryString}`,
           type: 'popup',
-          width: 400,
-          height: 300,
-          left: 0,
-          top: 0,
+          width,
+          height,
+          left,
+          top,
         })
       })
-
   });
 };
 
