@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Browser from 'webextension-polyfill';
-import { getExplorerUrl } from './utils';
-import './styles.css';
-import Button from './components/Button';
-import Link from './components/Link';
+import { getExplorerUrl } from '../utils';
+import '../styles.css';
+import Button from '../components/Button';
+import Link from '../components/Link';
 
 const Confirm = () => {
   const params = new URLSearchParams(window.location.search);
@@ -32,7 +32,7 @@ const Confirm = () => {
   return (
     <div className="flex flex-col gap-1 justify-center items-center w-full h-screen p-2">
       <div className="w-[300px]">
-        <img src="/revoke.svg" alt="revoke.cash logo" width="300" />
+        <img src="/images/revoke.svg" alt="revoke.cash logo" width="300" />
       </div>
       {bypassed ? (
         <div className="w-[300px] text-center">

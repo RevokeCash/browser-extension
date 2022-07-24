@@ -5,11 +5,13 @@ const srcDir = path.join(__dirname, "..", "src");
 
 module.exports = {
     entry: {
-      popup: path.join(srcDir, 'popup.tsx'),
-      confirm: path.join(srcDir, 'confirm.tsx'),
-      background: path.join(srcDir, 'background.ts'),
-      content_script: path.join(srcDir, 'content_script.tsx'),
-      proxy_window_ethereum: path.join(srcDir, 'proxy_window_ethereum.tsx'),
+        background: path.join(srcDir, 'background.ts'),
+        'pages/popup': path.join(srcDir, 'pages', 'popup.tsx'),
+        'pages/confirm': path.join(srcDir, 'pages', 'confirm.tsx'),
+        'content-scripts/bypass-check': path.join(srcDir, 'content-scripts', 'bypass-check.tsx'),
+        'content-scripts/inject-scripts': path.join(srcDir, 'content-scripts', 'inject-scripts.tsx'),
+        'content-scripts/window-ethereum-messages': path.join(srcDir, 'content-scripts', 'window-ethereum-messages.tsx'),
+        'injected/proxy-window-ethereum': path.join(srcDir, 'injected', 'proxy-window-ethereum.tsx'),
     },
     output: {
         path: path.join(__dirname, "../dist/js"),

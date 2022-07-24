@@ -19,5 +19,5 @@ export const Signature = {
 
 export const RequestType = {
   REGULAR: 'regular',
-  DOUBLE_CHECK: 'double-check',
+  BYPASS_CHECK: 'bypass-check',
 }

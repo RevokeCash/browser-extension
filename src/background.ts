@@ -17,8 +17,8 @@ const init = async (remotePort: Browser.Runtime.Port) => {
       return processRegularRequest(message, remotePort);
     }
 
-    if (message.data.type === RequestType.DOUBLE_CHECK) {
-      return processDoubleCheckRequest(message);
+    if (message.data.type === RequestType.BYPASS_CHECK) {
+      return processBypassCheckRequest(message);
     }
   });
 };
@@ -53,7 +53,7 @@ const processRegularRequest = (message: any, remotePort: Browser.Runtime.Port) =
   messagePorts[message.id] = remotePort;
 }
 
-const processDoubleCheckRequest = (message: any) => {
+const processBypassCheckRequest = (message: any) => {
   const popupCreated = createPopup(message);
   if (!popupCreated) return;
 }
@@ -82,7 +82,7 @@ const createPopup = (message: any) => {
       name: tokenData.name ?? '',
       symbol: tokenData.symbol ?? '',
       spenderName: spenderName ?? '',
-      bypassed: message.data.type === RequestType.DOUBLE_CHECK ? 'true' : 'false',
+      bypassed: message.data.type === RequestType.BYPASS_CHECK ? 'true' : 'false',
     }).toString();
 
     const width = 440;

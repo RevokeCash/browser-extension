@@ -1,6 +1,6 @@
 import { WindowPostMessageStream } from '@metamask/post-message-stream';
-import { Identifier } from './constants';
-import { sendAndAwaitResponseFromStream } from './utils';
+import { Identifier } from '../constants';
+import { sendAndAwaitResponseFromStream } from '../utils';
 import { ethErrors } from 'eth-rpc-errors'
 import { providers } from 'ethers';
 
