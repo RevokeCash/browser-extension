@@ -1,10 +1,10 @@
-import { BigNumber, Contract, providers } from 'ethers';
 import { ChainId, chains } from 'eth-chains';
+import { BigNumber, Contract, providers } from 'ethers';
 import { getAddress, Interface } from 'ethers/lib/utils';
+import objectHash from 'object-hash';
 import { Duplex } from 'readable-stream';
 import Browser from 'webextension-polyfill';
 import { Signature, SignatureIdentifier } from './constants';
-import objectHash from 'object-hash';
 
 // TODO: Timeout
 export const sendAndAwaitResponseFromStream = (stream: Duplex, data: any): Promise<any> => {
@@ -17,11 +17,11 @@ export const sendAndAwaitResponseFromStream = (stream: Duplex, data: any): Promi
         stream.off('data', callback);
         resolve(response.data);
       }
-    }
+    };
 
-    stream.on('data', callback)
-  })
-}
+    stream.on('data', callback);
+  });
+};
 
 // TODO: Timeout
 export const sendAndAwaitResponseFromPort = (stream: Browser.Runtime.Port, data: any): Promise<any> => {
@@ -34,57 +34,59 @@ export const sendAndAwaitResponseFromPort = (stream: Browser.Runtime.Port, data:
         stream.onMessage.removeListener(callback);
         resolve(response.data);
       }
-    }
+    };
 
     stream.onMessage.addListener(callback);
-  })
-}
+  });
+};
 
 export const decodeApproval = (data: string, asset: string) => {
   if (data.startsWith(SignatureIdentifier.approve)) {
-    const decoded = new Interface([`function ${Signature.approve}`]).decodeFunctionData(Signature.approve, data);
+    const iface = new Interface([`function ${Signature.approve}`]);
+    const decoded = iface.decodeFunctionData(Signature.approve, data);
     const [spender, approval] = Array.from(decoded);
     if (BigNumber.from(approval).isZero()) return undefined;
     return { asset, spender };
   }
 
   if (data.startsWith(SignatureIdentifier.setApprovalForAll)) {
-    const decoded = new Interface([`function ${Signature.setApprovalForAll}`]).decodeFunctionData(Signature.setApprovalForAll, data);
+    const iface = new Interface([`function ${Signature.setApprovalForAll}`])
+    const decoded = iface.decodeFunctionData(Signature.setApprovalForAll, data);
     const [spender, approved] = Array.from(decoded);
     if (!approved) return undefined;
     return { asset, spender };
   }
 
   return undefined;
-}
+};
 
 const SYMBOL_NAME_ABI = [
   {
-      "constant": true,
-      "inputs": [],
-      "name": "name",
-      "outputs": [{ "name": "", "type": "string" }],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
+    constant: true,
+    inputs: [],
+    name: 'name',
+    outputs: [{ name: '', type: 'string' }],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-      "constant": true,
-      "inputs": [],
-      "name": "symbol",
-      "outputs": [{ "name": "", "type": "string" }],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-  }
-]
+    constant: true,
+    inputs: [],
+    name: 'symbol',
+    outputs: [{ name: '', type: 'string' }],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+];
 
 export const getTokenData = async (address: string, provider: providers.Provider) => {
   return {
     name: await getTokenName(address, provider),
     symbol: await getTokenSymbol(address, provider),
-  }
-}
+  };
+};
 
 const getTokenSymbol = async (address: string, provider: providers.Provider) => {
   try {
@@ -92,7 +94,7 @@ const getTokenSymbol = async (address: string, provider: providers.Provider) => 
   } catch {
     return undefined;
   }
-}
+};
 
 const getTokenName = async (address: string, provider: providers.Provider) => {
   try {
@@ -100,7 +102,7 @@ const getTokenName = async (address: string, provider: providers.Provider) => {
   } catch {
     return undefined;
   }
-}
+};
 
 // ALL THE BELOW ARE COPIED FROM REVOKE.CASH AND SHOULD BE EXTRACTED AT SOME POINT
 
@@ -145,7 +147,7 @@ export async function addressToAppName(address: string, chainId?: number): Promi
 
 async function getNameFromDappList(address: string, chainId: number): Promise<string | undefined> {
   try {
-    console.log(`${DAPP_LIST_BASE_URL}/${chainId}/${getAddress(address)}.json`)
+    console.log(`${DAPP_LIST_BASE_URL}/${chainId}/${getAddress(address)}.json`);
     const res = await fetch(`${DAPP_LIST_BASE_URL}/${chainId}/${getAddress(address)}.json`);
     const data = await res.json();
     console.log(data);

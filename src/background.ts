@@ -9,7 +9,7 @@ const messagePorts: { [index: string]: Browser.Runtime.Port } = {};
 const approvedMessages: string[] = [];
 
 const init = async (remotePort: Browser.Runtime.Port) => {
-  console.log('connected')
+  console.log('connected');
   remotePort.onMessage.addListener((message) => {
     console.log('background received', message);
 
@@ -39,7 +39,7 @@ Browser.runtime.onMessage.addListener((data) => {
     delete messagePorts[data.id];
     return;
   }
-})
+});
 
 const processRegularRequest = (message: any, remotePort: Browser.Runtime.Port) => {
   const popupCreated = createPopup(message);
@@ -51,12 +51,12 @@ const processRegularRequest = (message: any, remotePort: Browser.Runtime.Port) =
 
   // Store the remote port so the response can be sent back there
   messagePorts[message.id] = remotePort;
-}
+};
 
 const processBypassCheckRequest = (message: any) => {
   const popupCreated = createPopup(message);
   if (!popupCreated) return;
-}
+};
 
 const createPopup = (message: any) => {
   console.log(approvedMessages);
@@ -97,9 +97,9 @@ const createPopup = (message: any) => {
       height,
       left,
       top,
-    })
-  })
+    });
+  });
 
   // Return true after creating the popup
   return true;
-}
+};

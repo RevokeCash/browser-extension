@@ -7,7 +7,7 @@
     "dev": "webpack --config webpack/webpack.dev.js --watch",
     "build": "webpack --config webpack/webpack.prod.js",
     "clean": "rimraf dist",
-    "style": "prettier --write \"src/**/*.{ts,tsx}\""
+    "postinstall": "husky install"
   },
   "dependencies": {
     "@metamask/post-message-stream": "^5.0.0",
@@ -33,10 +33,13 @@
     "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^6.7.1",
     "glob": "^7.1.6",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "postcss": "^8.4.14",
     "postcss-loader": "^7.0.1",
     "postcss-preset-env": "^7.7.2",
-    "prettier": "^2.2.1",
+    "prettier": "^2.7.1",
+    "prettier-plugin-organize-imports": "^3.0.0",
     "process": "^0.11.10",
     "rimraf": "^3.0.2 ",
     "style-loader": "^3.3.1",
@@ -47,5 +50,12 @@
     "webpack-cli": "^4.0.0",
     "webpack-merge": "^5.0.0",
     "webpack-merge-and-include-globally": "^2.3.4"
+  },
+  "lint-staged": {
+    "*": "prettier -u --write"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 120
   }
 }

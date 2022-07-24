@@ -1,11 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 import Browser from 'webextension-polyfill';
 import LogoLink from '../components/LogoLink';
 import '../styles.css';
 
 const Popup = () => {
-
   return (
     <div className="flex flex-col gap-3 items-center p-4">
       <div className="w-[150px]">
@@ -15,9 +14,7 @@ const Popup = () => {
         <LogoLink src="/images/vendor/github.png" alt="Source Code" href="https://github.com/RevokeCash/revoke.cash" />
         <LogoLink src="/images/vendor/twitter.png" alt="Official Twitter" href="https://twitter.com/RevokeCash" />
       </div>
-      <div>
-        Version {Browser.runtime.getManifest().version}
-      </div>
+      <div>Version {Browser.runtime.getManifest().version}</div>
     </div>
   );
 };
@@ -26,5 +23,5 @@ ReactDOM.render(
   <React.StrictMode>
     <Popup />
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root')
 );

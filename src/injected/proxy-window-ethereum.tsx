@@ -1,8 +1,8 @@
 import { WindowPostMessageStream } from '@metamask/post-message-stream';
+import { ethErrors } from 'eth-rpc-errors';
+import { providers } from 'ethers';
 import { Identifier } from '../constants';
 import { sendAndAwaitResponseFromStream } from '../utils';
-import { ethErrors } from 'eth-rpc-errors'
-import { providers } from 'ethers';
 
 console.log('world', (window as any).ethereum);
 
@@ -41,13 +41,13 @@ const overrideWindowEthereum = () => {
       }
 
       return Reflect.apply(target, thisArg, argumentsList);
-    }
-  }
+    },
+  };
 
   const requestProxy = new Proxy((window as any).ethereum.request, requestHandler);
 
   (window as any).ethereum.request = requestProxy;
-}
+};
 
 overrideInterval = setInterval(overrideWindowEthereum, 100);
 overrideWindowEthereum();

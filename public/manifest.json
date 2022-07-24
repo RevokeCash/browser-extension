@@ -39,10 +39,7 @@
   "web_accessible_resources": [
     {
       "matches": ["<all_urls>"],
-      "resources": [
-        "js/injected/proxy-window-ethereum.js",
-        "js/vendor.js"
-      ]
+      "resources": ["js/injected/proxy-window-ethereum.js", "js/vendor.js"]
     }
   ],
 
@@ -50,11 +47,7 @@
     "service_worker": "js/background.js"
   },
 
-  "permissions": [
-    "storage"
-  ],
+  "permissions": ["storage"],
 
-  "host_permissions": [
-    "<all_urls>"
-  ]
+  "host_permissions": ["<all_urls>"]
 }

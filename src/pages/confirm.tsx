@@ -1,10 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 import Browser from 'webextension-polyfill';
-import { getExplorerUrl } from '../utils';
-import '../styles.css';
 import Button from '../components/Button';
 import Link from '../components/Link';
+import '../styles.css';
+import { getExplorerUrl } from '../utils';
 
 const Confirm = () => {
   const params = new URLSearchParams(window.location.search);
@@ -20,7 +20,7 @@ const Confirm = () => {
   console.log(params.toString());
 
   const respond = async (data: boolean) => {
-    await Browser.runtime.sendMessage(undefined, { id, data })
+    await Browser.runtime.sendMessage(undefined, { id, data });
     window.close();
   };
 
@@ -36,10 +36,13 @@ const Confirm = () => {
       </div>
       {bypassed ? (
         <div className="w-[300px] text-center">
-          <span className="font-bold">WARNING</span>: This website bypassed the Revoke.cash confirmation process and is trying to request an allowance. Proceed with caution.
+          <span className="font-bold">WARNING</span>: This website bypassed the Revoke.cash confirmation process and is
+          trying to request an allowance. Proceed with caution.
         </div>
       ) : (
-        <div className="w-[300px] text-center">You are about to approve an allowance! Please make sure this is your intention.</div>
+        <div className="w-[300px] text-center">
+          You are about to approve an allowance! Please make sure this is your intention.
+        </div>
       )}
       <div className="flex flex-col items-center">
         <div className="font-bold text-lg leading-tight">Asset</div>
@@ -50,7 +53,7 @@ const Confirm = () => {
       <div className="flex flex-col items-center">
         <div className="font-bold text-lg leading-tight">Spender</div>
         <div>
-        <Link href={`${explorerUrl}/address/${spender}`}>{spenderName || spender}</Link>
+          <Link href={`${explorerUrl}/address/${spender}`}>{spenderName || spender}</Link>
         </div>
       </div>
       {bypassed ? (
@@ -71,5 +74,5 @@ ReactDOM.render(
   <React.StrictMode>
     <Confirm />
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root')
 );

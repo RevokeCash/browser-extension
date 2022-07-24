@@ -9,13 +9,7 @@ interface Props {
 
 const LogoLink = ({ src, alt, href, size }: Props) => (
   <a href={href} target="_blank">
-    <img
-      src={src}
-      alt={alt}
-      height={size ?? 24}
-      width={size ?? 24}
-      className="rounded-full"
-    />
+    <img src={src} alt={alt} height={size ?? 24} width={size ?? 24} className="rounded-full" />
   </a>
 );
 
