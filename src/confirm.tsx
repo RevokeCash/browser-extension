@@ -2,6 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Browser from 'webextension-polyfill';
 import { getExplorerUrl } from './utils';
+import './styles.css';
+import Button from './components/Button';
+import Link from './components/Link';
 
 const Confirm = () => {
   const params = new URLSearchParams(window.location.search);
@@ -26,25 +29,27 @@ const Confirm = () => {
   const assetString = name && symbol ? `${name} (${symbol})` : name || symbol || asset;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-      <img className="logo" src="/revoke.svg" alt="revoke.cash logo" width="300" />
+    <div className="flex flex-col gap-1 items-center p-2">
+      <div className="w-[300px]">
+        <img src="/revoke.svg" alt="revoke.cash logo" width="300" />
+      </div>
       <div>You are about to approve an allowance!</div>
       <div>Please make sure this is your intention.</div>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ fontWeight: 'bold', fontSize: 18 }}>Asset</div>
+      <div className="flex flex-col items-center">
+        <div className="font-bold text-lg leading-tight">Asset</div>
         <div>
-          <a href={`${explorerUrl}/address/${asset}`} target="_blank">{assetString}</a>
+          <Link href={`${explorerUrl}/address/${asset}`}>{assetString}</Link>
         </div>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ fontWeight: 'bold', fontSize: 18 }}>Spender</div>
+      <div className="flex flex-col items-center">
+        <div className="font-bold text-lg leading-tight">Spender</div>
         <div>
-        <a href={`${explorerUrl}/address/${spender}`} target="_blank">{spenderName || spender}</a>
+        <Link href={`${explorerUrl}/address/${spender}`}>{spenderName || spender}</Link>
         </div>
       </div>
-      <div style={{ display: 'flex', gap: 2, paddingTop: 10 }}>
-        <button onClick={confirm}>Continue</button>
-        <button onClick={reject}>Reject</button>
+      <div className="flex gap-1 pt-2">
+        <Button onClick={confirm}>Continue</Button>
+        <Button onClick={reject}>Reject</Button>
       </div>
     </div>
   );

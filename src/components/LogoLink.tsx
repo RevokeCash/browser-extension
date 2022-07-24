@@ -14,7 +14,7 @@ const LogoLink = ({ src, alt, href, size }: Props) => (
       alt={alt}
       height={size ?? 24}
       width={size ?? 24}
-      style={{ borderRadius: '50%' }}
+      className="rounded-full"
     />
   </a>
 );

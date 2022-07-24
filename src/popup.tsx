@@ -2,13 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Browser from 'webextension-polyfill';
 import LogoLink from './components/LogoLink';
+import './styles.css';
 
 const Popup = () => {
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-      <img className="logo" src="/revoke.svg" alt="revoke.cash logo" width="150" />
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '5px' }}>
+    <div className="flex flex-col gap-3 items-center p-4">
+      <div className="w-[150px]">
+        <img className="w-[150px] shrink-0" src="/revoke.svg" alt="revoke.cash logo" width="150" />
+      </div>
+      <div className="flex flex-wrap justify-center items-center gap-2">
         <LogoLink src="/logos/github.png" alt="Source Code" href="https://github.com/RevokeCash/revoke.cash" />
         <LogoLink src="/logos/twitter.png" alt="Official Twitter" href="https://twitter.com/RevokeCash" />
       </div>
