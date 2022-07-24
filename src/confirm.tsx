@@ -33,8 +33,7 @@ const Confirm = () => {
       <div className="w-[300px]">
         <img src="/revoke.svg" alt="revoke.cash logo" width="300" />
       </div>
-      <div>You are about to approve an allowance!</div>
-      <div>Please make sure this is your intention.</div>
+      <div className="w-[300px] text-center">You are about to approve an allowance! Please make sure this is your intention.</div>
       <div className="flex flex-col items-center">
         <div className="font-bold text-lg leading-tight">Asset</div>
         <div>

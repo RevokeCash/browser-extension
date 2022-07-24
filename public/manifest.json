@@ -27,7 +27,7 @@
   "web_accessible_resources": [
     {
       "matches": ["<all_urls>"],
-      "resources": ["js/replace_window_ethereum.js", "js/vendor.js"]
+      "resources": ["js/proxy_window_ethereum.js", "js/vendor.js"]
     }
   ],
 

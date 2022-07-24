@@ -8,7 +8,7 @@ The Revoke.cash browser extension works with every EVM-based network such as Eth
 
 ## Running locally
 
-To continuously build the application using webpack you can run `yarn watch`. This will make sure that the `dist/` directory is always up to date. From there you can import this directory into your browser (e.g. through `chrome://extensions`).
+To continuously build the application using webpack you can run `yarn dev`. This will make sure that the `dist/` directory is always up to date. From there you can import this directory into your browser (e.g. through `chrome://extensions`).
 
 ## Credits
 

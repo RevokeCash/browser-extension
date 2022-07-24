@@ -9,7 +9,7 @@ module.exports = {
       confirm: path.join(srcDir, 'confirm.tsx'),
       background: path.join(srcDir, 'background.ts'),
       content_script: path.join(srcDir, 'content_script.tsx'),
-      replace_window_ethereum: path.join(srcDir, 'replace_window_ethereum.tsx'),
+      proxy_window_ethereum: path.join(srcDir, 'proxy_window_ethereum.tsx'),
     },
     output: {
         path: path.join(__dirname, "../dist/js"),

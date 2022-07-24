@@ -13,7 +13,7 @@ const addScript = (url: string) => {
 }
 
 addScript('js/vendor.js');
-addScript('js/replace_window_ethereum.js');
+addScript('js/proxy_window_ethereum.js');
 
 // Connect to page
 const stream = new WindowPostMessageStream({
