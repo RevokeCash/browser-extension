@@ -87,8 +87,8 @@ const createPopup = (message: any) => {
 
     const width = 440;
     const height = 330;
-    const left = Math.round(((window.width ?? width) - width) * 0.5);
-    const top = Math.round(((window.height ?? height) - height) * 0.2);
+    const left = window.left! + Math.round((window.width! - width) * 0.5);
+    const top = window.top! + Math.round((window.height! - height) * 0.2);
 
     Browser.windows.create({
       url: `confirm.html?${queryString}`,
