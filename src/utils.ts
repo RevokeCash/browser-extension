@@ -112,7 +112,7 @@ export function getRpcUrl(chainId: number, infuraKey: string = ''): string | und
     [ChainId.ArbitrumOne]: 'https://arb1.arbitrum.io/rpc',
     [ChainId.Moonbeam]: 'https://moonbeam.public.blastapi.io',
     [ChainId.PalmMainnet]: 'https://palm-mainnet.infura.io/v3/3a961d6501e54add9a41aa53f15de99b',
-    [ChainId.EthereumTestnetGörli]: `https://goerli.infura.io/v3/${infuraKey}`,
+    [5]: `https://goerli.infura.io/v3/${infuraKey}`,
     [ChainId.EthereumTestnetKovan]: `https://kovan.infura.io/v3/${infuraKey}`,
   };
 
