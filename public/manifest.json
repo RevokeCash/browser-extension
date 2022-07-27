@@ -2,8 +2,8 @@
   "manifest_version": 3,
 
   "name": "Revoke.cash",
-  "description": "The Revoke.cash extension warns you when you are about to approve allowances for your tokens or NFTs",
-  "version": "0.0.1",
+  "description": "The Revoke.cash browser extension helps you stay safe from crypto allowance scams.",
+  "version": "0.1.0",
 
   "icons": {
     "16": "images/icon-16.png",
