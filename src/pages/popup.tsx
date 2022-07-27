@@ -11,7 +11,7 @@ const Popup = () => {
         <img className="w-[150px]" src="/images/revoke.svg" alt="revoke.cash logo" width="150" />
       </div>
       <div className="flex flex-wrap justify-center items-center gap-2">
-        <LogoLink src="/images/vendor/github.png" alt="Source Code" href="https://github.com/RevokeCash/revoke.cash" />
+        <LogoLink src="/images/vendor/github.png" alt="Source Code" href="https://github.com/RevokeCash/browser-extension" />
         <LogoLink src="/images/vendor/twitter.png" alt="Official Twitter" href="https://twitter.com/RevokeCash" />
       </div>
       <div>Version {Browser.runtime.getManifest().version}</div>

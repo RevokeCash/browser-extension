@@ -1,12 +1,12 @@
 {
   "name": "revoke-cash-browser-extension",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "The Revoke.cash extension warns you when you are about to approve any allowances",
   "main": "index.js",
   "scripts": {
     "dev": "webpack --config webpack/webpack.dev.js --watch",
-    "build": "webpack --config webpack/webpack.prod.js",
-    "clean": "rimraf dist",
+    "build": "webpack --config webpack/webpack.prod.js && zip -r dist.zip dist/",
+    "clean": "rimraf dist && rimraf dist.zip",
     "postinstall": "husky install"
   },
   "dependencies": {
