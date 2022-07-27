@@ -17,7 +17,6 @@ const Confirm = () => {
   const spenderName = params.get('spenderName');
   const explorerUrl = getExplorerUrl(chainId);
   const bypassed = params.get('bypassed') === 'true';
-  console.log(params.toString());
 
   const respond = async (data: boolean) => {
     await Browser.runtime.sendMessage(undefined, { id, data });

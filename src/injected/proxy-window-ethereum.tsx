@@ -4,8 +4,6 @@ import { providers } from 'ethers';
 import { Identifier } from '../constants';
 import { sendAndAwaitResponseFromStream } from '../utils';
 
-console.log('world', (window as any).ethereum);
-
 const stream = new WindowPostMessageStream({
   name: Identifier.INPAGE,
   target: Identifier.CONTENT_SCRIPT,
@@ -26,7 +24,6 @@ const overrideWindowEthereum = () => {
       const [request] = argumentsList;
 
       if (request?.method === 'eth_sendTransaction') {
-        console.log(request);
         const [transaction] = request?.params ?? [];
         if (!transaction) return Reflect.apply(target, thisArg, argumentsList);
 

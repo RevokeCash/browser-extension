@@ -10,14 +10,11 @@ const stream = new WindowPostMessageStream({
 });
 
 stream.on('data', (data) => {
-  console.log('CS Received:', data);
-
   // Connect to background script
   const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
 
   // Forward received messages to background.js
   sendAndAwaitResponseFromPort(extensionPort, { ...data.data, type: RequestType.REGULAR }).then((response) => {
-    console.log(response);
     stream.write({ id: data.id, data: response });
   });
 });

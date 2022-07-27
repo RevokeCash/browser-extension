@@ -10,7 +10,7 @@ import { Signature, SignatureIdentifier } from './constants';
 export const sendAndAwaitResponseFromStream = (stream: Duplex, data: any): Promise<any> => {
   return new Promise((resolve) => {
     const id = objectHash(data.transaction ?? data);
-    stream.write({ id, data }, console.log);
+    stream.write({ id, data });
 
     const callback = (response: any) => {
       if (response.id === id) {
@@ -141,19 +141,15 @@ export const ETHEREUM_LISTS_CONTRACTS = 'https://raw.githubusercontent.com/ether
 export async function addressToAppName(address: string, chainId?: number): Promise<string | undefined> {
   if (!chainId) return undefined;
   const name = (await getNameFromDappList(address, chainId)) ?? (await getNameFromEthereumList(address, chainId));
-  console.log(name);
   return name;
 }
 
 async function getNameFromDappList(address: string, chainId: number): Promise<string | undefined> {
   try {
-    console.log(`${DAPP_LIST_BASE_URL}/${chainId}/${getAddress(address)}.json`);
     const res = await fetch(`${DAPP_LIST_BASE_URL}/${chainId}/${getAddress(address)}.json`);
     const data = await res.json();
-    console.log(data);
     return data.appName;
   } catch (e) {
-    console.log(e);
     return undefined;
   }
 }

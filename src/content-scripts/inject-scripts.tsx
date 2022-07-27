@@ -1,7 +1,6 @@
 import Browser from 'webextension-polyfill';
 
 const addScript = (url: string) => {
-  console.log('adding', url);
   const container = document.head || document.documentElement;
   const scriptTag = document.createElement('script');
   scriptTag.setAttribute('async', 'false');

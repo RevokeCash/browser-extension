@@ -8,8 +8,6 @@ window.addEventListener('message', (message) => {
   const { target } = message?.data ?? {};
   const { name, data } = message?.data?.data ?? {};
 
-  console.log(target, name, data);
-
   // TODO: Support bypass checks for other popular wallets
 
   if (name !== Identifier.METAMASK_PROVIDER) return;

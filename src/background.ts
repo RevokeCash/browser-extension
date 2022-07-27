@@ -9,10 +9,7 @@ const messagePorts: { [index: string]: Browser.Runtime.Port } = {};
 const approvedMessages: string[] = [];
 
 const init = async (remotePort: Browser.Runtime.Port) => {
-  console.log('connected');
   remotePort.onMessage.addListener((message) => {
-    console.log('background received', message);
-
     if (message.data.type === RequestType.REGULAR) {
       return processRegularRequest(message, remotePort);
     }
@@ -26,9 +23,7 @@ const init = async (remotePort: Browser.Runtime.Port) => {
 Browser.runtime.onConnect.addListener(init);
 
 Browser.runtime.onMessage.addListener((data) => {
-  console.log('confirm received', data);
   const responsePort = messagePorts[data.id];
-  console.log(responsePort?.name);
 
   if (data.data) {
     approvedMessages.push(data.id);
@@ -59,7 +54,6 @@ const processBypassCheckRequest = (message: any) => {
 };
 
 const createPopup = (message: any) => {
-  console.log(approvedMessages);
   const { transaction, chainId } = message.data;
   const allowance = decodeApproval(transaction.data ?? '', transaction.to ?? '');
 
@@ -73,7 +67,6 @@ const createPopup = (message: any) => {
     addressToAppName(allowance.spender, chainId),
     Browser.windows.getCurrent(),
   ]).then(([tokenData, spenderName, window]) => {
-    console.log('spendername', spenderName);
     const queryString = new URLSearchParams({
       id: message.id,
       asset: allowance.asset,
