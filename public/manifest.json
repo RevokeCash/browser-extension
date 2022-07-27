@@ -3,7 +3,7 @@
 
   "name": "Revoke.cash",
   "description": "The Revoke.cash browser extension helps you stay safe from crypto allowance scams.",
-  "version": "0.1.0",
+  "version": "0.1.1",
 
   "icons": {
     "16": "images/icon-16.png",

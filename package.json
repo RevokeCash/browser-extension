@@ -1,6 +1,6 @@
 {
   "name": "revoke-cash-browser-extension",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The Revoke.cash extension warns you when you are about to approve any allowances",
   "main": "index.js",
   "scripts": {
