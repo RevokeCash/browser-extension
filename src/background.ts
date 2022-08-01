@@ -66,7 +66,7 @@ const createPopup = (message: any) => {
     getTokenData(allowance.asset, new providers.JsonRpcProvider(rpcUrl)),
     addressToAppName(allowance.spender, chainId),
     Browser.windows.getCurrent(),
-  ]).then(([tokenData, spenderName, window]) => {
+  ]).then(async ([tokenData, spenderName, window]) => {
     const queryString = new URLSearchParams({
       id: message.id,
       asset: allowance.asset,
@@ -78,12 +78,12 @@ const createPopup = (message: any) => {
       bypassed: message.data.type === RequestType.BYPASS_CHECK ? 'true' : 'false',
     }).toString();
 
-    const width = 440;
-    const height = 330;
+    const width = 480;
+    const height = 360;
     const left = window.left! + Math.round((window.width! - width) * 0.5);
     const top = window.top! + Math.round((window.height! - height) * 0.2);
 
-    Browser.windows.create({
+    const popupWindow = await Browser.windows.create({
       url: `confirm.html?${queryString}`,
       type: 'popup',
       width,
@@ -91,6 +91,10 @@ const createPopup = (message: any) => {
       left,
       top,
     });
+
+    // Specifying window position does not work on Firefox, so we have to reposition after creation (6 y/o bug -_-).
+    // Has no effect on Chrome, because the window position is already correct.
+    await Browser.windows.update(popupWindow.id!, { width, height, left, top });
   });
 
   // Return true after creating the popup

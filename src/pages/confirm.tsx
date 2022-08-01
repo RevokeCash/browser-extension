@@ -30,16 +30,16 @@ const Confirm = () => {
 
   return (
     <div className="flex flex-col gap-1 justify-center items-center w-full h-screen p-2">
-      <div className="w-[300px]">
-        <img src="/images/revoke.svg" alt="revoke.cash logo" width="300" />
+      <div className="w-[360px]">
+        <img src="/images/revoke.svg" alt="revoke.cash logo" width="360" />
       </div>
       {bypassed ? (
-        <div className="w-[300px] text-center">
+        <div className="w-[360px] text-center">
           <span className="font-bold">WARNING</span>: This website bypassed the Revoke.cash confirmation process and is
           trying to request an allowance. Proceed with caution.
         </div>
       ) : (
-        <div className="w-[300px] text-center">
+        <div className="w-[360px] text-center">
           You are about to approve an allowance! Please make sure this is your intention.
         </div>
       )}

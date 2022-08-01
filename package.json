@@ -1,12 +1,18 @@
 {
   "name": "revoke-cash-browser-extension",
   "version": "0.1.1",
-  "description": "The Revoke.cash extension warns you when you are about to approve any allowances",
+  "description": "The Revoke.cash browser extension helps you stay safe from crypto allowance scams.",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --config webpack/webpack.dev.js --watch",
-    "build": "webpack --config webpack/webpack.prod.js && zip -r dist.zip dist/",
-    "clean": "rimraf dist && rimraf dist.zip",
+    "dev:chrome": "cross-env TARGET_BROWSER=chrome webpack --config webpack/webpack.dev.js --watch",
+    "dev:firefox": "cross-env TARGET_BROWSER=firefox webpack --config webpack/webpack.dev.js --watch",
+    "build:chrome": "cross-env TARGET_BROWSER=chrome webpack --config webpack/webpack.prod.js",
+    "build:firefox": "cross-env TARGET_BROWSER=firefox webpack --config webpack/webpack.prod.js",
+    "zip:chrome": "zip -r dist/chrome.zip dist/chrome",
+    "zip:firefox": "zip -r dist/firefox.zip dist/firefox",
+    "build": "run-p build:*",
+    "zip": "run-p zip:*",
+    "clean": "rimraf dist",
     "postinstall": "husky install"
   },
   "dependencies": {
@@ -31,10 +37,12 @@
     "autoprefixer": "^10.4.7",
     "buffer": "^6.0.3",
     "copy-webpack-plugin": "^9.0.1",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "glob": "^7.1.6",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
+    "npm-run-all": "^4.1.5",
     "postcss": "^8.4.14",
     "postcss-loader": "^7.0.1",
     "postcss-preset-env": "^7.7.2",
@@ -49,7 +57,9 @@
     "webpack": "^5.61.0",
     "webpack-cli": "^4.0.0",
     "webpack-merge": "^5.0.0",
-    "webpack-merge-and-include-globally": "^2.3.4"
+    "webpack-merge-and-include-globally": "^2.3.4",
+    "wext-manifest-loader": "^2.4.1",
+    "wext-manifest-webpack-plugin": "^1.2.1"
   },
   "lint-staged": {
     "*": "prettier -u --write"
