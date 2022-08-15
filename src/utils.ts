@@ -26,7 +26,7 @@ export const sendAndAwaitResponseFromStream = (stream: Duplex, data: any): Promi
 // TODO: Timeout
 export const sendAndAwaitResponseFromPort = (stream: Browser.Runtime.Port, data: any): Promise<any> => {
   return new Promise((resolve) => {
-    const id = objectHash(data.transaction ?? data);
+    const id = objectHash(data.transaction ?? data.typedData ?? data);
     stream.postMessage({ id, data });
 
     const callback = (response: any) => {

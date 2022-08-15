@@ -24,7 +24,7 @@ window.addEventListener('message', (message) => {
       // Forward received messages to background.js
       extensionPort.postMessage({ id, data: { transaction, chainId, type } });
     } else if (data.method === 'eth_signTypedData_v3' || data.method === 'eth_signTypedData_v4') {
-      // if (LISTING_ALLOWLIST.includes(location.hostname)) return;
+      if (LISTING_ALLOWLIST.includes(location.hostname)) return;
 
       // Connect to background script
       const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });

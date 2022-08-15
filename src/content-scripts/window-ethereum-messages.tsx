@@ -11,10 +11,10 @@ const stream = new WindowPostMessageStream({
 
 stream.on('data', (data) => {
   // Listings are expected to happen on the webistes in the allowlist
-  // if (LISTING_ALLOWLIST.includes(location.hostname) && data?.data?.type === RequestType.SIGNATURE) {
-  //   stream.write({ id: data.id, data: true });
-  //   return;
-  // };
+  if (LISTING_ALLOWLIST.includes(location.hostname) && data?.data?.type === RequestType.SIGNATURE) {
+    stream.write({ id: data.id, data: true });
+    return;
+  };
 
   // Connect to background script
   const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });

@@ -44,8 +44,8 @@ Browser.runtime.onMessage.addListener((data) => {
   }
 });
 
-const processTransactionRequest = (message: any, remotePort: Browser.Runtime.Port) => {
-  const popupCreated = createAllowancePopup(message);
+const processTransactionRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
+  const popupCreated = await createAllowancePopup(message);
 
   if (!popupCreated) {
     remotePort.postMessage({ id: message.id, data: true });
@@ -61,8 +61,8 @@ const processTransactionBypassCheckRequest = (message: any) => {
 };
 
 
-const processSignatureRequest = (message: any, remotePort: Browser.Runtime.Port) => {
-  const popupCreated = createOpenSeaListingPopup(message);
+const processSignatureRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
+  const popupCreated = await createOpenSeaListingPopup(message);
 
   if (!popupCreated) {
     remotePort.postMessage({ id: message.id, data: true });
@@ -77,7 +77,10 @@ const processSignatureBypassCheckRequest = (message: any) => {
   createOpenSeaListingPopup(message);
 }
 
-const createAllowancePopup = (message: any) => {
+const createAllowancePopup = async (message: any) => {
+  const { ['settings:warnOnApproval']: warnOnApproval } = await Browser.storage.local.get({ 'settings:warnOnApproval': true });
+  if (!warnOnApproval) return false;
+
   const { transaction, chainId } = message.data;
   const allowance = decodeApproval(transaction.data ?? '', transaction.to ?? '');
 
@@ -86,8 +89,10 @@ const createAllowancePopup = (message: any) => {
   if (approvedMessages.includes(message.id)) return false;
 
   const rpcUrl = getRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
+  const provider = new providers.JsonRpcProvider(rpcUrl);
+
   Promise.all([
-    getTokenData(allowance.asset, new providers.JsonRpcProvider(rpcUrl)),
+    getTokenData(allowance.asset, provider),
     addressToAppName(allowance.spender, chainId),
     Browser.windows.getCurrent(),
   ]).then(async ([tokenData, spenderName, window]) => {
@@ -122,7 +127,10 @@ const createAllowancePopup = (message: any) => {
 };
 
 
-const createOpenSeaListingPopup = (message: any) => {
+const createOpenSeaListingPopup = async (message: any) => {
+  const { ['settings:warnOnListing']: warnOnListing } = await Browser.storage.local.get({ 'settings:warnOnListing': true });
+  if (!warnOnListing) return false;
+
   const { typedData, chainId } = message.data;
   const openSeaListing = decodeOpenSeaListing(typedData);
 
