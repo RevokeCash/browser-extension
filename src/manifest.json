@@ -5,7 +5,7 @@
   "name": "Revoke.cash",
   "description": "The Revoke.cash browser extension helps you stay safe from crypto allowance scams.",
 
-  "browser_specific_settings": {
+  "__firefox__browser_specific_settings": {
     "gecko": {
       "id": "webextension@revoke.cash"
     }
