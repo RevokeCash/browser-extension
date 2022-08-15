@@ -1,10 +1,10 @@
 import { WindowPostMessageStream } from '@metamask/post-message-stream';
 import { ethErrors } from 'eth-rpc-errors';
 import { providers } from 'ethers';
-import { Identifier } from '../constants';
+import { Identifier, RequestType } from '../constants';
 import { sendAndAwaitResponseFromStream } from '../utils';
 
-declare let window: {
+declare let window: Window & {
   ethereum?: any;
 }
 
@@ -52,7 +52,7 @@ const overrideWindowEthereum = () => {
         const [transaction] = request?.params ?? [];
         if (!transaction) return Reflect.apply(target, thisArg, argumentsList);
 
-        const provider = new providers.Web3Provider((window as any).ethereum);
+        const provider = new providers.Web3Provider(window.ethereum);
 
         provider.getNetwork()
           .then(({ chainId }) => sendAndAwaitResponseFromStream(stream, { transaction, chainId }))
@@ -61,6 +61,29 @@ const overrideWindowEthereum = () => {
               return Reflect.apply(target, thisArg, argumentsList);
             } else {
               const error = ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied transaction signature.')
+              const response = {
+                id: request?.id,
+                jsonrpc: '2.0',
+                error,
+              }
+              callback(error, response)
+            }
+          })
+      } else if (request?.method === 'eth_signTypedData_v3' || request?.method === 'eth_signTypedData_v4') {
+        const [address, typedDataStr] = request?.params ?? [];
+        if (!address || !typedDataStr) return Reflect.apply(target, thisArg, argumentsList);
+
+        const typedData = JSON.parse(typedDataStr);
+        const type = RequestType.SIGNATURE;
+
+        const provider = new providers.Web3Provider(window.ethereum);
+        provider.getNetwork()
+          .then(({ chainId }) => sendAndAwaitResponseFromStream(stream, { type, typedData, chainId }))
+          .then((isOk) => {
+            if (isOk) {
+              return Reflect.apply(target, thisArg, argumentsList);
+            } else {
+              const error = ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied message signature.')
               const response = {
                 id: request?.id,
                 jsonrpc: '2.0',
@@ -83,7 +106,7 @@ const overrideWindowEthereum = () => {
         const [transaction] = request?.params ?? [];
         if (!transaction) return Reflect.apply(target, thisArg, argumentsList);
 
-        const provider = new providers.Web3Provider((window as any).ethereum);
+        const provider = new providers.Web3Provider(window.ethereum);
         const { chainId } = await provider.getNetwork();
 
         const isOk = await sendAndAwaitResponseFromStream(stream, { transaction, chainId });
@@ -93,17 +116,34 @@ const overrideWindowEthereum = () => {
         }
       }
 
+      if (request.method === 'eth_signTypedData_v3' || request.method === 'eth_signTypedData_v4') {
+        const [address, typedDataStr] = request?.params ?? [];
+        if (!address || !typedDataStr) return Reflect.apply(target, thisArg, argumentsList);
+
+        const typedData = JSON.parse(typedDataStr);
+
+        const provider = new providers.Web3Provider(window.ethereum);
+        const { chainId } = await provider.getNetwork();
+
+        const type = RequestType.SIGNATURE;
+        const isOk = await sendAndAwaitResponseFromStream(stream, { type, typedData, chainId });
+
+        if (!isOk) {
+          throw ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied message signature.');
+        }
+      }
+
       return Reflect.apply(target, thisArg, argumentsList);
     },
   };
 
-  const requestProxy = new Proxy((window as any).ethereum.request, requestHandler);
-  const sendProxy = new Proxy((window as any).ethereum.send, sendHandler);
-  const sendAsyncProxy = new Proxy((window as any).ethereum.sendAsync, sendAsyncHandler);
+  const requestProxy = new Proxy(window.ethereum.request, requestHandler);
+  const sendProxy = new Proxy(window.ethereum.send, sendHandler);
+  const sendAsyncProxy = new Proxy(window.ethereum.sendAsync, sendAsyncHandler);
 
-  (window as any).ethereum.request = requestProxy;
-  (window as any).ethereum.send = sendProxy;
-  (window as any).ethereum.sendAsync = sendAsyncProxy;
+  window.ethereum.request = requestProxy;
+  window.ethereum.send = sendProxy;
+  window.ethereum.sendAsync = sendAsyncProxy;
 };
 
 overrideInterval = setInterval(overrideWindowEthereum, 100);

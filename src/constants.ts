@@ -14,10 +14,32 @@ export const SignatureIdentifier = {
 
 export const Signature = {
   approve: 'approve(address,uint256)',
-  setApprovalForAll: '	setApprovalForAll(address,bool)',
+  setApprovalForAll: 'setApprovalForAll(address,bool)',
 };
 
+export const Address = {
+  ZERO: '0x0000000000000000000000000000000000000000',
+}
+
 export const RequestType = {
-  REGULAR: 'regular',
-  BYPASS_CHECK: 'bypass-check',
+  TRANSACTION: 'transaction',
+  SIGNATURE: 'signature',
+  TRANSACTION_BYPASS_CHECK: 'transaction-bypass-check',
+  SIGNATURE_BYPASS_CHECK: 'signature-bypass-check',
 };
+
+export const OpenSeaItemType = {
+  ETHER: '0',
+  ERC20: '1',
+  ERC721: '2',
+  ERC1155: '3',
+  ERC721_CRITERIA: '4',
+  ERC1155_CRITERIA: '5',
+}
+
+export const LISTING_ALLOWLIST = [
+  'opensea.io',
+  'www.genie.xyz',
+  'www.gem.xyz',
+  // 'looksrare.org',
+]

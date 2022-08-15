@@ -6,7 +6,7 @@ import Link from '../components/Link';
 import '../styles.css';
 import { getExplorerUrl } from '../utils';
 
-const Confirm = () => {
+const ConfirmAllowance = () => {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   const asset = params.get('asset');
@@ -71,7 +71,7 @@ const Confirm = () => {
 
 ReactDOM.render(
   <React.StrictMode>
-    <Confirm />
+    <ConfirmAllowance />
   </React.StrictMode>,
   document.getElementById('root')
 );

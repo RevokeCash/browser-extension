@@ -1,15 +1,15 @@
 import { ChainId, chains } from 'eth-chains';
 import { BigNumber, Contract, providers } from 'ethers';
-import { getAddress, Interface } from 'ethers/lib/utils';
+import { formatUnits, getAddress, Interface } from 'ethers/lib/utils';
 import objectHash from 'object-hash';
 import { Duplex } from 'readable-stream';
 import Browser from 'webextension-polyfill';
-import { Signature, SignatureIdentifier } from './constants';
+import { OpenSeaItemType, Signature, SignatureIdentifier } from './constants';
 
 // TODO: Timeout
 export const sendAndAwaitResponseFromStream = (stream: Duplex, data: any): Promise<any> => {
   return new Promise((resolve) => {
-    const id = objectHash(data.transaction ?? data);
+    const id = objectHash(data.transaction ?? data.typedData ?? data);
     stream.write({ id, data });
 
     const callback = (response: any) => {
@@ -60,7 +60,16 @@ export const decodeApproval = (data: string, asset: string) => {
   return undefined;
 };
 
-const SYMBOL_NAME_ABI = [
+export const decodeOpenSeaListing = (data: any) => {
+  const { offer, offerer } = data?.message ?? {};
+  if (!offer || !offerer) return undefined;
+
+  const consideration = (data?.message?.consideration ?? []).filter((item: any) => item.recipient === offerer);
+
+  return { offerer, offer, consideration };
+}
+
+const BASIC_ERC20 = [
   {
     constant: true,
     inputs: [],
@@ -79,18 +88,56 @@ const SYMBOL_NAME_ABI = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    constant: true,
+    inputs: [],
+    name: 'decimals',
+    outputs: [{ name: '', type: 'uint256' }],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
 ];
+
+export const getOpenSeaItemTokenData = async (item: any, provider: providers.Provider) => {
+  const tokenData = await getTokenData(item.token, provider);
+
+  if (item.itemType === OpenSeaItemType.ETHER) {
+    return { display: `${formatUnits(item.startAmount, 'ether')} ETH` };
+  } else if (item.itemType === OpenSeaItemType.ERC20) {
+    return { display: `${formatUnits(item.startAmount, tokenData.decimals)} ${tokenData.symbol}`, asset: item.token };
+  } else if (item.itemType === OpenSeaItemType.ERC721) {
+    return { display: `${tokenData.name} (${tokenData.symbol}) #${item.identifierOrCriteria}`, asset: item.token };
+  } else if (item.itemType === OpenSeaItemType.ERC1155) {
+    return { display: `${item.startAmount}x ${tokenData.name} (${tokenData.symbol}) #${item.identifierOrCriteria}`, asset: item.token };
+  } else if (item.itemType === OpenSeaItemType.ERC721_CRITERIA) {
+    return { display: `multiple ${tokenData.name} (${tokenData.symbol})`, asset: item.token };
+  } else if (item.itemType === OpenSeaItemType.ERC1155_CRITERIA) {
+    return { display: `multiple ${tokenData.name} (${tokenData.symbol})`, asset: item.token };
+  }
+
+  return { display: 'Unknown token' };
+}
 
 export const getTokenData = async (address: string, provider: providers.Provider) => {
   return {
     name: await getTokenName(address, provider),
     symbol: await getTokenSymbol(address, provider),
+    decimals: await getTokenDecimals(address, provider),
   };
 };
 
 const getTokenSymbol = async (address: string, provider: providers.Provider) => {
   try {
-    return new Contract(address, SYMBOL_NAME_ABI, provider).functions.symbol();
+    return await new Contract(address, BASIC_ERC20, provider).functions.symbol();
+  } catch {
+    return undefined;
+  }
+};
+
+const getTokenDecimals = async (address: string, provider: providers.Provider) => {
+  try {
+    return await new Contract(address, BASIC_ERC20, provider).functions.decimals();
   } catch {
     return undefined;
   }
@@ -98,7 +145,7 @@ const getTokenSymbol = async (address: string, provider: providers.Provider) => 
 
 const getTokenName = async (address: string, provider: providers.Provider) => {
   try {
-    return new Contract(address, SYMBOL_NAME_ABI, provider).functions.name();
+    return await new Contract(address, BASIC_ERC20, provider).functions.name();
   } catch {
     return undefined;
   }

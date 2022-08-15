@@ -1,7 +1,7 @@
 import { providers } from 'ethers';
 import Browser from 'webextension-polyfill';
 import { RequestType } from './constants';
-import { addressToAppName, decodeApproval, getRpcUrl, getTokenData } from './utils';
+import { addressToAppName, decodeApproval, decodeOpenSeaListing, getOpenSeaItemTokenData, getRpcUrl, getTokenData } from './utils';
 
 // Note that these messages will be periodically cleared due to the background service shutting down
 // after 5 minutes of inactivity (see Manifest v3 docs).
@@ -10,12 +10,20 @@ const approvedMessages: string[] = [];
 
 const init = async (remotePort: Browser.Runtime.Port) => {
   remotePort.onMessage.addListener((message) => {
-    if (message.data.type === RequestType.REGULAR) {
-      return processRegularRequest(message, remotePort);
+    if (message.data.type === RequestType.TRANSACTION) {
+      return processTransactionRequest(message, remotePort);
     }
 
-    if (message.data.type === RequestType.BYPASS_CHECK) {
-      return processBypassCheckRequest(message);
+    if (message.data.type === RequestType.TRANSACTION_BYPASS_CHECK) {
+      return processTransactionBypassCheckRequest(message);
+    }
+
+    if (message.data.type === RequestType.SIGNATURE) {
+      return processSignatureRequest(message, remotePort);
+    }
+
+    if (message.data.type === RequestType.SIGNATURE_BYPASS_CHECK) {
+      return processSignatureBypassCheckRequest(message);
     }
   });
 };
@@ -36,8 +44,8 @@ Browser.runtime.onMessage.addListener((data) => {
   }
 });
 
-const processRegularRequest = (message: any, remotePort: Browser.Runtime.Port) => {
-  const popupCreated = createPopup(message);
+const processTransactionRequest = (message: any, remotePort: Browser.Runtime.Port) => {
+  const popupCreated = createAllowancePopup(message);
 
   if (!popupCreated) {
     remotePort.postMessage({ id: message.id, data: true });
@@ -48,12 +56,28 @@ const processRegularRequest = (message: any, remotePort: Browser.Runtime.Port) =
   messagePorts[message.id] = remotePort;
 };
 
-const processBypassCheckRequest = (message: any) => {
-  const popupCreated = createPopup(message);
-  if (!popupCreated) return;
+const processTransactionBypassCheckRequest = (message: any) => {
+  createAllowancePopup(message);
 };
 
-const createPopup = (message: any) => {
+
+const processSignatureRequest = (message: any, remotePort: Browser.Runtime.Port) => {
+  const popupCreated = createOpenSeaListingPopup(message);
+
+  if (!popupCreated) {
+    remotePort.postMessage({ id: message.id, data: true });
+    return;
+  }
+
+  // Store the remote port so the response can be sent back there
+  messagePorts[message.id] = remotePort;
+}
+
+const processSignatureBypassCheckRequest = (message: any) => {
+  createOpenSeaListingPopup(message);
+}
+
+const createAllowancePopup = (message: any) => {
   const { transaction, chainId } = message.data;
   const allowance = decodeApproval(transaction.data ?? '', transaction.to ?? '');
 
@@ -67,6 +91,8 @@ const createPopup = (message: any) => {
     addressToAppName(allowance.spender, chainId),
     Browser.windows.getCurrent(),
   ]).then(async ([tokenData, spenderName, window]) => {
+    const bypassed = message.data.type === RequestType.TRANSACTION_BYPASS_CHECK;
+
     const queryString = new URLSearchParams({
       id: message.id,
       asset: allowance.asset,
@@ -75,28 +101,79 @@ const createPopup = (message: any) => {
       name: tokenData.name ?? '',
       symbol: tokenData.symbol ?? '',
       spenderName: spenderName ?? '',
-      bypassed: message.data.type === RequestType.BYPASS_CHECK ? 'true' : 'false',
+      bypassed: bypassed ? 'true' : 'false',
     }).toString();
 
-    const width = 480;
-    const height = 360;
-    const left = window.left! + Math.round((window.width! - width) * 0.5);
-    const top = window.top! + Math.round((window.height! - height) * 0.2);
+    const positions = getPopupPositions(window, 2, bypassed);
 
     const popupWindow = await Browser.windows.create({
-      url: `confirm.html?${queryString}`,
+      url: `confirm-allowance.html?${queryString}`,
       type: 'popup',
-      width,
-      height,
-      left,
-      top,
+      ...positions,
     });
 
     // Specifying window position does not work on Firefox, so we have to reposition after creation (6 y/o bug -_-).
     // Has no effect on Chrome, because the window position is already correct.
-    await Browser.windows.update(popupWindow.id!, { width, height, left, top });
+    await Browser.windows.update(popupWindow.id!, positions);
   });
 
   // Return true after creating the popup
   return true;
 };
+
+
+const createOpenSeaListingPopup = (message: any) => {
+  const { typedData, chainId } = message.data;
+  const openSeaListing = decodeOpenSeaListing(typedData);
+
+  // Return false if we don't create a popup
+  if (!openSeaListing) return false;
+  if (approvedMessages.includes(message.id)) return false;
+
+  const rpcUrl = getRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
+  const provider = new providers.JsonRpcProvider(rpcUrl);
+  const offerAssetPromises = openSeaListing.offer.map((item: any) => getOpenSeaItemTokenData(item, provider));
+  const considerationAssetPromises = openSeaListing.consideration.map((item: any) => getOpenSeaItemTokenData(item, provider));
+
+  Promise.all([
+    Promise.all(offerAssetPromises),
+    Promise.all(considerationAssetPromises),
+    Browser.windows.getCurrent(),
+  ]).then(async ([offerAssets, considerationAssets, window]) => {
+    const bypassed = message.data.type === RequestType.SIGNATURE_BYPASS_CHECK;
+
+    const queryString = new URLSearchParams({
+      id: message.id,
+      offerAssets: JSON.stringify(offerAssets),
+      considerationAssets: JSON.stringify(considerationAssets),
+      platform: 'OpenSea',
+      chainId,
+      bypassed: bypassed ? 'true' : 'false',
+    }).toString();
+
+    const positions = getPopupPositions(window, offerAssets.length + considerationAssets.length, bypassed);
+
+    const popupWindow = await Browser.windows.create({
+      url: `confirm-listing.html?${queryString}`,
+      type: 'popup',
+      ...positions,
+    });
+
+    // Specifying window position does not work on Firefox, so we have to reposition after creation (6 y/o bug -_-).
+    // Has no effect on Chrome, because the window position is already correct.
+    await Browser.windows.update(popupWindow.id!, positions);
+  });
+
+  // Return true after creating the popup
+  return true;
+}
+
+const getPopupPositions = (window: Browser.Windows.Window, contentLines: number, bypassed: boolean) => {
+  const width = 480;
+  const height = 320 + contentLines * 20 + (bypassed ? 20 : 0);
+
+  const left = window.left! + Math.round((window.width! - width) * 0.5);
+  const top = window.top! + Math.round((window.height! - height) * 0.2);
+
+  return { width, height, left, top };
+}
