@@ -61,7 +61,7 @@ const ConfirmAllowance = () => {
         </div>
       ) : (
         <div className="flex gap-1 pt-2">
-          <Button onClick={reject}>Reject</Button>
+          <Button onClick={reject} secondary>Reject</Button>
           <Button onClick={confirm}>Continue</Button>
         </div>
       )}
