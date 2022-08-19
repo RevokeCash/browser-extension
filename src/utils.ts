@@ -60,6 +60,19 @@ export const decodeApproval = (data: string, asset: string) => {
   return undefined;
 };
 
+export const decodePermit = (typedData: any) => {
+  if (typedData?.primaryType === 'Permit') {
+    const asset = typedData?.domain?.verifyingContract;
+    const { spender, value, allowed } = typedData?.message;
+
+    if (!asset || value === '0' || allowed === false) return undefined;
+
+    return { asset, spender };
+  }
+
+  return undefined;
+};
+
 export const decodeOpenSeaListing = (data: any) => {
   const { offer, offerer } = data?.message ?? {};
   if (!offer || !offerer) return undefined;

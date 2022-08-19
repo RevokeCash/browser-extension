@@ -1,7 +1,7 @@
 import { providers } from 'ethers';
 import Browser from 'webextension-polyfill';
 import { RequestType } from './constants';
-import { addressToAppName, decodeApproval, decodeOpenSeaListing, getOpenSeaItemTokenData, getRpcUrl, getTokenData } from './utils';
+import { addressToAppName, decodeApproval, decodeOpenSeaListing, decodePermit, getOpenSeaItemTokenData, getRpcUrl, getTokenData } from './utils';
 
 // Note that these messages will be periodically cleared due to the background service shutting down
 // after 5 minutes of inactivity (see Manifest v3 docs).
@@ -62,7 +62,11 @@ const processTransactionBypassCheckRequest = (message: any) => {
 
 
 const processSignatureRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
-  const popupCreated = await createOpenSeaListingPopup(message);
+  const { primaryType } = message?.data?.typedData;
+
+  const popupCreated = primaryType === 'Permit'
+    ? await createAllowancePopup(message)
+    : await createOpenSeaListingPopup(message);
 
   if (!popupCreated) {
     remotePort.postMessage({ id: message.id, data: true });
@@ -73,16 +77,24 @@ const processSignatureRequest = async (message: any, remotePort: Browser.Runtime
   messagePorts[message.id] = remotePort;
 }
 
-const processSignatureBypassCheckRequest = (message: any) => {
-  createOpenSeaListingPopup(message);
+const processSignatureBypassCheckRequest = async (message: any) => {
+  const { primaryType } = message?.data?.typedData;
+
+  if (primaryType === 'Permit') {
+    await createAllowancePopup(message)
+  } else {
+    await createOpenSeaListingPopup(message);
+  }
 }
 
 const createAllowancePopup = async (message: any) => {
   const { ['settings:warnOnApproval']: warnOnApproval } = await Browser.storage.local.get({ 'settings:warnOnApproval': true });
   if (!warnOnApproval) return false;
 
-  const { transaction, chainId } = message.data;
-  const allowance = decodeApproval(transaction.data ?? '', transaction.to ?? '');
+  const { transaction, typedData, chainId } = message.data;
+  const allowance = transaction
+    ? decodeApproval(transaction.data ?? '', transaction.to ?? '')
+    : decodePermit(typedData);
 
   // Return false if we don't create a popup
   if (!allowance) return false;
@@ -96,7 +108,7 @@ const createAllowancePopup = async (message: any) => {
     addressToAppName(allowance.spender, chainId),
     Browser.windows.getCurrent(),
   ]).then(async ([tokenData, spenderName, window]) => {
-    const bypassed = message.data.type === RequestType.TRANSACTION_BYPASS_CHECK;
+    const bypassed = [RequestType.TRANSACTION_BYPASS_CHECK, RequestType.SIGNATURE_BYPASS_CHECK].includes(message.data.type);
 
     const queryString = new URLSearchParams({
       id: message.id,
