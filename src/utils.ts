@@ -113,19 +113,22 @@ const BASIC_ERC20 = [
 ];
 
 export const getOpenSeaItemTokenData = async (item: any, provider: providers.Provider) => {
+  // Some scammers use an incorrect interface using numbers so we convert it to string
+  const itemType = String(item.itemType);
+
   const tokenData = await getTokenData(item.token, provider);
 
-  if (item.itemType === OpenSeaItemType.ETHER) {
+  if (itemType === OpenSeaItemType.ETHER) {
     return { display: `${formatUnits(item.startAmount, 'ether')} ETH` };
-  } else if (item.itemType === OpenSeaItemType.ERC20) {
+  } else if (itemType === OpenSeaItemType.ERC20) {
     return { display: `${formatUnits(item.startAmount, tokenData.decimals)} ${tokenData.symbol}`, asset: item.token };
-  } else if (item.itemType === OpenSeaItemType.ERC721) {
+  } else if (itemType === OpenSeaItemType.ERC721) {
     return { display: `${tokenData.name} (${tokenData.symbol}) #${item.identifierOrCriteria}`, asset: item.token };
-  } else if (item.itemType === OpenSeaItemType.ERC1155) {
+  } else if (itemType === OpenSeaItemType.ERC1155) {
     return { display: `${item.startAmount}x ${tokenData.name} (${tokenData.symbol}) #${item.identifierOrCriteria}`, asset: item.token };
-  } else if (item.itemType === OpenSeaItemType.ERC721_CRITERIA) {
+  } else if (itemType === OpenSeaItemType.ERC721_CRITERIA) {
     return { display: `multiple ${tokenData.name} (${tokenData.symbol})`, asset: item.token };
-  } else if (item.itemType === OpenSeaItemType.ERC1155_CRITERIA) {
+  } else if (itemType === OpenSeaItemType.ERC1155_CRITERIA) {
     return { display: `multiple ${tokenData.name} (${tokenData.symbol})`, asset: item.token };
   }
 

@@ -153,7 +153,10 @@ const createOpenSeaListingPopup = async (message: any) => {
   const rpcUrl = getRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
   const provider = new providers.JsonRpcProvider(rpcUrl);
   const offerAssetPromises = openSeaListing.offer.map((item: any) => getOpenSeaItemTokenData(item, provider));
-  const considerationAssetPromises = openSeaListing.consideration.map((item: any) => getOpenSeaItemTokenData(item, provider));
+  // Display that they're getting 0 ETH if no consideration is included
+  const considerationAssetPromises = openSeaListing.consideration.length > 0
+    ? openSeaListing.consideration.map((item: any) => getOpenSeaItemTokenData(item, provider))
+    : [{ display: '0.0 ETH' }]
 
   Promise.all([
     Promise.all(offerAssetPromises),
