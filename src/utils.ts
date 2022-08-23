@@ -49,6 +49,14 @@ export const decodeApproval = (data: string, asset: string) => {
     return { asset, spender };
   }
 
+  if (data.startsWith(SignatureIdentifier.increaseAllowance)) {
+    const iface = new Interface([`function ${Signature.increaseAllowance}`]);
+    const decoded = iface.decodeFunctionData(Signature.increaseAllowance, data);
+    const [spender, approval] = Array.from(decoded);
+    if (BigNumber.from(approval).isZero()) return undefined;
+    return { asset, spender };
+  }
+
   if (data.startsWith(SignatureIdentifier.setApprovalForAll)) {
     const iface = new Interface([`function ${Signature.setApprovalForAll}`])
     const decoded = iface.decodeFunctionData(Signature.setApprovalForAll, data);
