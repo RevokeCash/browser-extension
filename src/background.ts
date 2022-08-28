@@ -1,7 +1,7 @@
 import { providers } from 'ethers';
 import Browser from 'webextension-polyfill';
 import { RequestType } from './constants';
-import { addressToAppName, decodeApproval, decodeOpenSeaListing, decodePermit, getOpenSeaItemTokenData, getRpcUrl, getTokenData } from './utils';
+import { addressToAppName, decodeApproval, decodeNftListing, decodePermit, getOpenSeaItemTokenData, getRpcUrl, getTokenData } from './utils';
 
 // Note that these messages will be periodically cleared due to the background service shutting down
 // after 5 minutes of inactivity (see Manifest v3 docs).
@@ -60,13 +60,12 @@ const processTransactionBypassCheckRequest = (message: any) => {
   createAllowancePopup(message);
 };
 
-
 const processSignatureRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
   const { primaryType } = message?.data?.typedData;
 
   const popupCreated = primaryType === 'Permit'
     ? await createAllowancePopup(message)
-    : await createOpenSeaListingPopup(message);
+    : await createNftListingPopup(message);
 
   if (!popupCreated) {
     remotePort.postMessage({ id: message.id, data: true });
@@ -83,7 +82,7 @@ const processSignatureBypassCheckRequest = async (message: any) => {
   if (primaryType === 'Permit') {
     await createAllowancePopup(message)
   } else {
-    await createOpenSeaListingPopup(message);
+    await createNftListingPopup(message);
   }
 }
 
@@ -138,24 +137,23 @@ const createAllowancePopup = async (message: any) => {
   return true;
 };
 
-
-const createOpenSeaListingPopup = async (message: any) => {
+const createNftListingPopup = async (message: any) => {
   const { ['settings:warnOnListing']: warnOnListing } = await Browser.storage.local.get({ 'settings:warnOnListing': true });
   if (!warnOnListing) return false;
 
   const { typedData, chainId } = message.data;
-  const openSeaListing = decodeOpenSeaListing(typedData);
+  const { platform, listing } = decodeNftListing(typedData);
 
   // Return false if we don't create a popup
-  if (!openSeaListing) return false;
+  if (!listing) return false;
   if (approvedMessages.includes(message.id)) return false;
 
   const rpcUrl = getRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
   const provider = new providers.JsonRpcProvider(rpcUrl);
-  const offerAssetPromises = openSeaListing.offer.map((item: any) => getOpenSeaItemTokenData(item, provider));
+  const offerAssetPromises = listing.offer.map((item: any) => getOpenSeaItemTokenData(item, provider));
   // Display that they're getting 0 ETH if no consideration is included
-  const considerationAssetPromises = openSeaListing.consideration.length > 0
-    ? openSeaListing.consideration.map((item: any) => getOpenSeaItemTokenData(item, provider))
+  const considerationAssetPromises = listing.consideration.length > 0
+    ? listing.consideration.map((item: any) => getOpenSeaItemTokenData(item, provider))
     : [{ display: '0.0 ETH' }]
 
   Promise.all([
@@ -169,7 +167,7 @@ const createOpenSeaListingPopup = async (message: any) => {
       id: message.id,
       offerAssets: JSON.stringify(offerAssets),
       considerationAssets: JSON.stringify(considerationAssets),
-      platform: 'OpenSea',
+      platform,
       chainId,
       bypassed: bypassed ? 'true' : 'false',
     }).toString();

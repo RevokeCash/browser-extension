@@ -43,5 +43,5 @@ export const LISTING_ALLOWLIST = [
   'opensea.io',
   'www.genie.xyz',
   'www.gem.xyz',
-  // 'looksrare.org',
+  'looksrare.org',
 ]

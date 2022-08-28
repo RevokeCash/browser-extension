@@ -5,6 +5,7 @@ import objectHash from 'object-hash';
 import { Duplex } from 'readable-stream';
 import Browser from 'webextension-polyfill';
 import { OpenSeaItemType, Signature, SignatureIdentifier } from './constants';
+import { NftListing } from './types';
 
 // TODO: Timeout
 export const sendAndAwaitResponseFromStream = (stream: Duplex, data: any): Promise<any> => {
@@ -69,23 +70,63 @@ export const decodeApproval = (data: string, asset: string) => {
 };
 
 export const decodePermit = (typedData: any) => {
-  if (typedData?.primaryType === 'Permit') {
-    const asset = typedData?.domain?.verifyingContract;
-    const { spender, value, allowed } = typedData?.message;
+  if (typedData?.primaryType !== 'Permit') return undefined;
 
-    if (!asset || value === '0' || allowed === false) return undefined;
+  const asset = typedData?.domain?.verifyingContract;
+  const { spender, value, allowed } = typedData?.message;
 
-    return { asset, spender };
-  }
+  if (!asset || value === '0' || allowed === false) return undefined;
 
-  return undefined;
+  return { asset, spender };
 };
 
-export const decodeOpenSeaListing = (data: any) => {
+export const decodeNftListing = (data: any) => {
+  const listing = decodeOpenSeaListing(data) || decodeLooksRareListing(data);
+
+  const platform = data?.primaryType === 'MakerOrder'
+    ? 'LooksRare'
+    : 'OpenSea';
+
+  return { platform, listing };
+}
+
+export const decodeOpenSeaListing = (data: any): NftListing | undefined => {
   const { offer, offerer } = data?.message ?? {};
   if (!offer || !offerer) return undefined;
 
   const consideration = (data?.message?.consideration ?? []).filter((item: any) => item.recipient === offerer);
+
+  return { offerer, offer, consideration };
+}
+
+export const decodeLooksRareListing = (data: any): NftListing | undefined => {
+  if (data?.primaryType !== 'MakerOrder') return undefined;
+
+  const { signer, collection, tokenId, amount, price, currency, minPercentageToAsk } = data?.message ?? {};
+
+  if (!signer || !collection || !tokenId || !amount || !price || !currency || !minPercentageToAsk ) return undefined;
+
+  const receiveAmount = (BigInt(price) * BigInt(minPercentageToAsk) / BigInt(10_000)).toString();
+
+  // Normalise LooksRare listing format to match OpenSea's
+  const offerer = signer;
+
+  const offer = [{
+    itemType: OpenSeaItemType.ERC1155, // Assume ERC1155 since that also works for ERC721
+    token: collection,
+    identifierOrCriteria: tokenId,
+    startAmount: amount,
+    endAmount: amount,
+  }];
+
+  const consideration = [{
+    itemType: OpenSeaItemType.ERC20,
+    token: currency,
+    identifierOrCriteria: '0',
+    startAmount: receiveAmount,
+    endAmount: receiveAmount,
+    recipient: offerer,
+  }];
 
   return { offerer, offer, consideration };
 }
@@ -153,7 +194,8 @@ export const getTokenData = async (address: string, provider: providers.Provider
 
 const getTokenSymbol = async (address: string, provider: providers.Provider) => {
   try {
-    return await new Contract(address, BASIC_ERC20, provider).functions.symbol();
+    const [symbol] = await new Contract(address, BASIC_ERC20, provider).functions.symbol();
+    return symbol;
   } catch {
     return undefined;
   }
@@ -161,7 +203,8 @@ const getTokenSymbol = async (address: string, provider: providers.Provider) => 
 
 const getTokenDecimals = async (address: string, provider: providers.Provider) => {
   try {
-    return await new Contract(address, BASIC_ERC20, provider).functions.decimals();
+    const [decimals] = await new Contract(address, BASIC_ERC20, provider).functions.decimals();
+    return decimals;
   } catch {
     return undefined;
   }
@@ -169,7 +212,8 @@ const getTokenDecimals = async (address: string, provider: providers.Provider) =
 
 const getTokenName = async (address: string, provider: providers.Provider) => {
   try {
-    return await new Contract(address, BASIC_ERC20, provider).functions.name();
+    const [name] = await new Contract(address, BASIC_ERC20, provider).functions.name();
+    return name;
   } catch {
     return undefined;
   }

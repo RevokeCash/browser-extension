@@ -4,7 +4,7 @@ In many cases, phishing websites try to make you sign a token allowance while th
 
 This is where the Revoke.cash Browser Extension comes in. The extension pops up whenever you are about to sign an allowance and will inform you of the allowance details. This can help you prevent signing malicious allowances.
 
-The extension also informs you when you are about to list an item for sale on OpenSea (outside of expected websites such as OpenSea, Genie and Gem), as this is also a common scam. These warnings can be configured in the extension settings.
+The extension also informs you when you are about to list an item for sale on OpenSea / LooksRare (outside of expected websites such as OpenSea, LooksRare, Genie and Gem), as this is also a common scam. These warnings can be configured in the extension settings.
 
 The Revoke.cash browser extension works with every EVM-based network such as Ethereum, Avalanche or Polygon.
 

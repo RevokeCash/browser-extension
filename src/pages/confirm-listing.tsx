@@ -35,7 +35,7 @@ const ConfirmListing = () => {
           trying to list an item for sale on {platform}. Proceed with caution.
         </div>
       ) : (
-        <div className="w-[360px] text-center">
+        <div className="w-[380px] text-center">
           You are about to list an item for sale on {platform}! Please make sure this is your intention.
         </div>
       )}
