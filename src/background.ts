@@ -193,7 +193,7 @@ const createOpenSeaListingPopup = async (message: any) => {
 
 const getPopupPositions = (window: Browser.Windows.Window, contentLines: number, bypassed: boolean) => {
   const width = 480;
-  const height = 320 + contentLines * 20 + (bypassed ? 20 : 0);
+  const height = 320 + contentLines * 24 + (bypassed ? 24 : 0);
 
   const left = window.left! + Math.round((window.width! - width) * 0.5);
   const top = window.top! + Math.round((window.height! - height) * 0.2);
