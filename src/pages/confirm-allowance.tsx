@@ -4,7 +4,7 @@ import Browser from 'webextension-polyfill';
 import Button from '../components/Button';
 import Link from '../components/Link';
 import '../styles.css';
-import { getExplorerUrl } from '../utils';
+import { getExplorerUrl } from '../lib/utils';
 
 const ConfirmAllowance = () => {
   const params = new URLSearchParams(window.location.search);

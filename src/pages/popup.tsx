@@ -8,7 +8,7 @@ import '../styles.css';
 
 const Popup = () => {
   return (
-    <div className="flex flex-col gap-3 items-center p-4 h-[240px] w-[280px]">
+    <div className="flex flex-col gap-3 items-center p-4 w-[280px]">
       <div className="w-[200px]">
         <img className="w-[200px]" src="/images/revoke.svg" alt="revoke.cash logo" width="200" />
       </div>

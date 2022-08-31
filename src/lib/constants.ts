@@ -26,8 +26,10 @@ export const Address = {
 export const RequestType = {
   TRANSACTION: 'transaction',
   TYPED_SIGNATURE: 'typed-signature',
+  UNTYPED_SIGNATURE: 'untyped-signature',
   TRANSACTION_BYPASS_CHECK: 'transaction-bypass-check',
   TYPED_SIGNATURE_BYPASS_CHECK: 'typed-signature-bypass-check',
+  UNTYPED_SIGNATURE_BYPASS_CHECK: 'untyped-signature-bypass-check',
 };
 
 export const OpenSeaItemType = {
@@ -44,4 +46,5 @@ export const LISTING_ALLOWLIST = [
   'www.genie.xyz',
   'www.gem.xyz',
   'looksrare.org',
+  'x2y2.io',
 ]

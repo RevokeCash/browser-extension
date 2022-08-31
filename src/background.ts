@@ -1,7 +1,8 @@
 import { providers } from 'ethers';
 import Browser from 'webextension-polyfill';
-import { RequestType } from './constants';
-import { addressToAppName, decodeApproval, decodeNftListing, decodePermit, getOpenSeaItemTokenData, getRpcUrl, getTokenData } from './utils';
+import { RequestType } from './lib/constants';
+import { getLocalStorage } from './lib/background-utils';
+import { addressToAppName, decodeApproval, decodeNftListing, decodePermit, getOpenSeaItemTokenData, getRpcUrl, getTokenData } from './lib/utils';
 
 // Note that these messages will be periodically cleared due to the background service shutting down
 // after 5 minutes of inactivity (see Manifest v3 docs).
@@ -12,18 +13,16 @@ const init = async (remotePort: Browser.Runtime.Port) => {
   remotePort.onMessage.addListener((message) => {
     if (message.data.type === RequestType.TRANSACTION) {
       return processTransactionRequest(message, remotePort);
-    }
-
-    if (message.data.type === RequestType.TRANSACTION_BYPASS_CHECK) {
+    } else if (message.data.type === RequestType.TRANSACTION_BYPASS_CHECK) {
       return processTransactionBypassCheckRequest(message);
-    }
-
-    if (message.data.type === RequestType.TYPED_SIGNATURE) {
+    } else if (message.data.type === RequestType.TYPED_SIGNATURE) {
       return processTypedSignatureRequest(message, remotePort);
-    }
-
-    if (message.data.type === RequestType.TYPED_SIGNATURE_BYPASS_CHECK) {
+    } else if (message.data.type === RequestType.TYPED_SIGNATURE_BYPASS_CHECK) {
       return processTypedSignatureBypassCheckRequest(message);
+    } else if (message.data.type === RequestType.UNTYPED_SIGNATURE) {
+      return processUntypedSignatureRequest(message, remotePort);
+    } else if (message.data.type === RequestType.UNTYPED_SIGNATURE_BYPASS_CHECK) {
+      return processUntypedSignatureBypassCheckRequest(message);
     }
   });
 };
@@ -86,8 +85,24 @@ const processTypedSignatureBypassCheckRequest = async (message: any) => {
   }
 }
 
+const processUntypedSignatureRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
+  const popupCreated = await createHashSignaturePopup(message);
+
+  if (!popupCreated) {
+    remotePort.postMessage({ id: message.id, data: true });
+    return;
+  }
+
+  // Store the remote port so the response can be sent back there
+  messagePorts[message.id] = remotePort;
+}
+
+const processUntypedSignatureBypassCheckRequest = async (message: any) => {
+  createHashSignaturePopup(message);
+}
+
 const createAllowancePopup = async (message: any) => {
-  const { ['settings:warnOnApproval']: warnOnApproval } = await Browser.storage.local.get({ 'settings:warnOnApproval': true });
+  const warnOnApproval = await getLocalStorage('settings:warnOnApproval', true);
   if (!warnOnApproval) return false;
 
   const { transaction, typedData, chainId } = message.data;
@@ -138,7 +153,7 @@ const createAllowancePopup = async (message: any) => {
 };
 
 const createNftListingPopup = async (message: any) => {
-  const { ['settings:warnOnListing']: warnOnListing } = await Browser.storage.local.get({ 'settings:warnOnListing': true });
+  const warnOnListing = await getLocalStorage('settings:warnOnListing', true);
   if (!warnOnListing) return false;
 
   const { typedData, chainId } = message.data;
@@ -176,6 +191,44 @@ const createNftListingPopup = async (message: any) => {
 
     const popupWindow = await Browser.windows.create({
       url: `confirm-listing.html?${queryString}`,
+      type: 'popup',
+      ...positions,
+    });
+
+    // Specifying window position does not work on Firefox, so we have to reposition after creation (6 y/o bug -_-).
+    // Has no effect on Chrome, because the window position is already correct.
+    await Browser.windows.update(popupWindow.id!, positions);
+  });
+
+  // Return true after creating the popup
+  return true;
+}
+
+const createHashSignaturePopup = async (message: any) => {
+  const warnOnHashSignatures = await getLocalStorage('settings:warnOnHashSignatures', true);
+  if (!warnOnHashSignatures) return false;
+
+  const { message: signMessage } = message.data;
+
+  // If we're not signing a hash, we don't need to popup
+  if (String(signMessage).replace(/0x/, '').length !== 64) return false;
+  if (approvedMessages.includes(message.id)) return false;
+
+  Promise.all([
+    Browser.windows.getCurrent(),
+    new Promise((resolve) => setTimeout(resolve, 100)), // Add a slight delay to prevent weird window positioning
+  ]).then(async ([window]) => {
+    const bypassed = message.data.type === RequestType.UNTYPED_SIGNATURE_BYPASS_CHECK;
+
+    const queryString = new URLSearchParams({
+      id: message.id,
+      bypassed: bypassed ? 'true' : 'false',
+    }).toString();
+
+    const positions = getPopupPositions(window, 0, bypassed);
+
+    const popupWindow = await Browser.windows.create({
+      url: `confirm-hash-signature.html?${queryString}`,
       type: 'popup',
       ...positions,
     });

@@ -6,6 +6,7 @@ const Settings = () => {
     <div className="flex flex-col justify-center items-center w-full gap-1">
       <BooleanSetting storageKey="settings:warnOnApproval" label="Warn on approvals" defaultValue={true} />
       <BooleanSetting storageKey="settings:warnOnListing" label="Warn on NFT listings" defaultValue={true} />
+      <BooleanSetting storageKey="settings:warnOnHashSignatures" label="Warn on hash signatures" defaultValue={true} />
     </div>
   );
 }

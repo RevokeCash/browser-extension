@@ -12,6 +12,7 @@ module.exports = {
     background: path.join(srcDir, 'background.ts'),
     'pages/popup': path.join(srcDir, 'pages', 'popup.tsx'),
     'pages/confirm-allowance': path.join(srcDir, 'pages', 'confirm-allowance.tsx'),
+    'pages/confirm-hash-signature': path.join(srcDir, 'pages', 'confirm-hash-signature.tsx'),
     'pages/confirm-listing': path.join(srcDir, 'pages', 'confirm-listing.tsx'),
     'content-scripts/bypass-check': path.join(srcDir, 'content-scripts', 'bypass-check.tsx'),
     'content-scripts/inject-scripts': path.join(srcDir, 'content-scripts', 'inject-scripts.tsx'),

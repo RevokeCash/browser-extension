@@ -10,7 +10,7 @@ import { NftListing } from './types';
 // TODO: Timeout
 export const sendAndAwaitResponseFromStream = (stream: Duplex, data: any): Promise<any> => {
   return new Promise((resolve) => {
-    const id = objectHash(data.transaction ?? data.typedData ?? data);
+    const id = objectHash(data.transaction ?? data.typedData ?? data.message ?? data);
     stream.write({ id, data });
 
     const callback = (response: any) => {
@@ -27,7 +27,7 @@ export const sendAndAwaitResponseFromStream = (stream: Duplex, data: any): Promi
 // TODO: Timeout
 export const sendAndAwaitResponseFromPort = (stream: Browser.Runtime.Port, data: any): Promise<any> => {
   return new Promise((resolve) => {
-    const id = objectHash(data.transaction ?? data.typedData ?? data);
+    const id = objectHash(data.transaction ?? data.typedData ?? data.message ?? data);
     stream.postMessage({ id, data });
 
     const callback = (response: any) => {
