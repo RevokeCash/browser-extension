@@ -74,7 +74,7 @@ const overrideWindowEthereum = () => {
         if (!address || !typedDataStr) return Reflect.apply(target, thisArg, argumentsList);
 
         const typedData = JSON.parse(typedDataStr);
-        const type = RequestType.SIGNATURE;
+        const type = RequestType.TYPED_SIGNATURE;
 
         const provider = new providers.Web3Provider(window.ethereum);
         provider.getNetwork()
@@ -125,7 +125,7 @@ const overrideWindowEthereum = () => {
         const provider = new providers.Web3Provider(window.ethereum);
         const { chainId } = await provider.getNetwork();
 
-        const type = RequestType.SIGNATURE;
+        const type = RequestType.TYPED_SIGNATURE;
         const isOk = await sendAndAwaitResponseFromStream(stream, { type, typedData, chainId });
 
         if (!isOk) {

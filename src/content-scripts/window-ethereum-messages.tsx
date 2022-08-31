@@ -11,7 +11,7 @@ const stream = new WindowPostMessageStream({
 
 stream.on('data', (data) => {
   // Listings are expected to happen on the webistes in the allowlist
-  if (LISTING_ALLOWLIST.includes(location.hostname) && data?.data?.type === RequestType.SIGNATURE) {
+  if (LISTING_ALLOWLIST.includes(location.hostname) && data?.data?.type === RequestType.TYPED_SIGNATURE) {
     stream.write({ id: data.id, data: true });
     return;
   };

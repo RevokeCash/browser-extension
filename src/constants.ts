@@ -25,9 +25,9 @@ export const Address = {
 
 export const RequestType = {
   TRANSACTION: 'transaction',
-  SIGNATURE: 'signature',
+  TYPED_SIGNATURE: 'typed-signature',
   TRANSACTION_BYPASS_CHECK: 'transaction-bypass-check',
-  SIGNATURE_BYPASS_CHECK: 'signature-bypass-check',
+  TYPED_SIGNATURE_BYPASS_CHECK: 'typed-signature-bypass-check',
 };
 
 export const OpenSeaItemType = {

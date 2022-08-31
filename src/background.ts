@@ -18,12 +18,12 @@ const init = async (remotePort: Browser.Runtime.Port) => {
       return processTransactionBypassCheckRequest(message);
     }
 
-    if (message.data.type === RequestType.SIGNATURE) {
-      return processSignatureRequest(message, remotePort);
+    if (message.data.type === RequestType.TYPED_SIGNATURE) {
+      return processTypedSignatureRequest(message, remotePort);
     }
 
-    if (message.data.type === RequestType.SIGNATURE_BYPASS_CHECK) {
-      return processSignatureBypassCheckRequest(message);
+    if (message.data.type === RequestType.TYPED_SIGNATURE_BYPASS_CHECK) {
+      return processTypedSignatureBypassCheckRequest(message);
     }
   });
 };
@@ -60,7 +60,7 @@ const processTransactionBypassCheckRequest = (message: any) => {
   createAllowancePopup(message);
 };
 
-const processSignatureRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
+const processTypedSignatureRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
   const { primaryType } = message?.data?.typedData;
 
   const popupCreated = primaryType === 'Permit'
@@ -76,7 +76,7 @@ const processSignatureRequest = async (message: any, remotePort: Browser.Runtime
   messagePorts[message.id] = remotePort;
 }
 
-const processSignatureBypassCheckRequest = async (message: any) => {
+const processTypedSignatureBypassCheckRequest = async (message: any) => {
   const { primaryType } = message?.data?.typedData;
 
   if (primaryType === 'Permit') {
@@ -107,7 +107,7 @@ const createAllowancePopup = async (message: any) => {
     addressToAppName(allowance.spender, chainId),
     Browser.windows.getCurrent(),
   ]).then(async ([tokenData, spenderName, window]) => {
-    const bypassed = [RequestType.TRANSACTION_BYPASS_CHECK, RequestType.SIGNATURE_BYPASS_CHECK].includes(message.data.type);
+    const bypassed = [RequestType.TRANSACTION_BYPASS_CHECK, RequestType.TYPED_SIGNATURE_BYPASS_CHECK].includes(message.data.type);
 
     const queryString = new URLSearchParams({
       id: message.id,
@@ -161,7 +161,7 @@ const createNftListingPopup = async (message: any) => {
     Promise.all(considerationAssetPromises),
     Browser.windows.getCurrent(),
   ]).then(async ([offerAssets, considerationAssets, window]) => {
-    const bypassed = message.data.type === RequestType.SIGNATURE_BYPASS_CHECK;
+    const bypassed = message.data.type === RequestType.TYPED_SIGNATURE_BYPASS_CHECK;
 
     const queryString = new URLSearchParams({
       id: message.id,

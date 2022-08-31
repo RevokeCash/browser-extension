@@ -31,7 +31,7 @@ window.addEventListener('message', (message) => {
 
       const [_address, typedDataStr] = data.params ?? [];
       const typedData = JSON.parse(typedDataStr);
-      const type = RequestType.SIGNATURE_BYPASS_CHECK;
+      const type = RequestType.TYPED_SIGNATURE_BYPASS_CHECK;
       const id = objectHash(typedData);
 
       // Forward received messages to background.js
