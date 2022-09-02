@@ -4,7 +4,7 @@ import { formatUnits, getAddress, Interface } from 'ethers/lib/utils';
 import objectHash from 'object-hash';
 import { Duplex } from 'readable-stream';
 import Browser from 'webextension-polyfill';
-import { OpenSeaItemType, Signature, SignatureIdentifier } from './constants';
+import { BYPASS_TYPES, OpenSeaItemType, Signature, SignatureIdentifier } from './constants';
 import { NftListing } from './types';
 
 // TODO: Timeout
@@ -40,6 +40,8 @@ export const sendAndAwaitResponseFromPort = (stream: Browser.Runtime.Port, data:
     stream.onMessage.addListener(callback);
   });
 };
+
+export const isBypassMessage = (message: any) => BYPASS_TYPES.includes(message?.data?.type);
 
 export const decodeApproval = (data: string, asset: string) => {
   if (data.startsWith(SignatureIdentifier.approve)) {

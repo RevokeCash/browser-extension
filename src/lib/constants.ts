@@ -32,6 +32,12 @@ export const RequestType = {
   UNTYPED_SIGNATURE_BYPASS_CHECK: 'untyped-signature-bypass-check',
 };
 
+export const BYPASS_TYPES = [
+  RequestType.TRANSACTION_BYPASS_CHECK,
+  RequestType.TYPED_SIGNATURE_BYPASS_CHECK,
+  RequestType.UNTYPED_SIGNATURE_BYPASS_CHECK,
+];
+
 export const OpenSeaItemType = {
   ETHER: '0',
   ERC20: '1',

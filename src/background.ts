@@ -10,6 +10,7 @@ import {
   getOpenSeaItemTokenData,
   getRpcUrl,
   getTokenData,
+  isBypassMessage,
 } from './lib/utils';
 
 // Note that these messages will be periodically cleared due to the background service shutting down
@@ -129,10 +130,7 @@ const createAllowancePopup = async (message: any) => {
     addressToAppName(allowance.spender, chainId),
     Browser.windows.getCurrent(),
   ]).then(async ([tokenData, spenderName, window]) => {
-    const bypassed = [RequestType.TRANSACTION_BYPASS_CHECK, RequestType.TYPED_SIGNATURE_BYPASS_CHECK].includes(
-      message.data.type
-    );
-
+    const bypassed = isBypassMessage(message);
     const queryString = new URLSearchParams({
       id: message.id,
       asset: allowance.asset,
@@ -141,7 +139,8 @@ const createAllowancePopup = async (message: any) => {
       name: tokenData.name ?? '',
       symbol: tokenData.symbol ?? '',
       spenderName: spenderName ?? '',
-      bypassed: bypassed ? 'true' : 'false',
+      bypassed: String(bypassed),
+      hostname,
     }).toString();
 
     const positions = getPopupPositions(window, 2, bypassed);
@@ -186,15 +185,15 @@ const createNftListingPopup = async (message: any) => {
     Promise.all(considerationAssetPromises),
     Browser.windows.getCurrent(),
   ]).then(async ([offerAssets, considerationAssets, window]) => {
-    const bypassed = message.data.type === RequestType.TYPED_SIGNATURE_BYPASS_CHECK;
-
+    const bypassed = isBypassMessage(message);
     const queryString = new URLSearchParams({
       id: message.id,
       offerAssets: JSON.stringify(offerAssets),
       considerationAssets: JSON.stringify(considerationAssets),
       platform,
       chainId,
-      bypassed: bypassed ? 'true' : 'false',
+      bypassed: String(bypassed),
+      hostname,
     }).toString();
 
     const positions = getPopupPositions(window, offerAssets.length + considerationAssets.length, bypassed);
@@ -229,11 +228,11 @@ const createHashSignaturePopup = async (message: any) => {
     Browser.windows.getCurrent(),
     new Promise((resolve) => setTimeout(resolve, 100)), // Add a slight delay to prevent weird window positioning
   ]).then(async ([window]) => {
-    const bypassed = message.data.type === RequestType.UNTYPED_SIGNATURE_BYPASS_CHECK;
-
+    const bypassed = isBypassMessage(message);
     const queryString = new URLSearchParams({
       id: message.id,
-      bypassed: bypassed ? 'true' : 'false',
+      bypassed: String(bypassed),
+      hostname,
     }).toString();
 
     const positions = getPopupPositions(window, 0, bypassed);

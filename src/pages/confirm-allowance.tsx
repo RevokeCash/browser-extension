@@ -17,6 +17,7 @@ const ConfirmAllowance = () => {
   const spenderName = params.get('spenderName');
   const explorerUrl = getExplorerUrl(chainId);
   const bypassed = params.get('bypassed') === 'true';
+  const hostname = params.get('hostname');
 
   const respond = async (data: boolean) => {
     await Browser.runtime.sendMessage(undefined, { id, data });
@@ -34,13 +35,14 @@ const ConfirmAllowance = () => {
         <img src="/images/revoke.svg" alt="revoke.cash logo" width="360" />
       </div>
       {bypassed ? (
-        <div className="w-[360px] text-center">
+        <div className="w-[380px] text-center">
           <span className="font-bold">WARNING</span>: This website bypassed the Revoke.cash confirmation process and is
-          trying to request an allowance. Proceed with caution.
+          trying to request an allowance on <span className="font-bold">{hostname}</span>. Proceed with caution.
         </div>
       ) : (
-        <div className="w-[360px] text-center">
-          You are about to approve an allowance! Please make sure this is your intention.
+        <div className="w-[380px] text-center">
+          You are about to approve an allowance on <span className="font-bold">{hostname}</span>! Please make sure this
+          is your intention.
         </div>
       )}
       <div className="flex flex-col items-center">
