@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import Browser from 'webextension-polyfill';
 import Button from '../components/Button';
 import Link from '../components/Link';
-import '../styles.css';
 import { getExplorerUrl } from '../lib/utils';
+import '../styles.css';
 
 const ConfirmListing = () => {
   const params = new URLSearchParams(window.location.search);
@@ -73,7 +73,9 @@ const ConfirmListing = () => {
         </div>
       ) : (
         <div className="flex gap-1 pt-2">
-          <Button onClick={reject} secondary>Reject</Button>
+          <Button onClick={reject} secondary>
+            Reject
+          </Button>
           <Button onClick={confirm}>Continue</Button>
         </div>
       )}

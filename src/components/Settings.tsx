@@ -9,6 +9,6 @@ const Settings = () => {
       <BooleanSetting storageKey="settings:warnOnHashSignatures" label="Warn on hash signatures" defaultValue={true} />
     </div>
   );
-}
+};
 
 export default Settings;

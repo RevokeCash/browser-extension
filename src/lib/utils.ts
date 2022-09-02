@@ -59,7 +59,7 @@ export const decodeApproval = (data: string, asset: string) => {
   }
 
   if (data.startsWith(SignatureIdentifier.setApprovalForAll)) {
-    const iface = new Interface([`function ${Signature.setApprovalForAll}`])
+    const iface = new Interface([`function ${Signature.setApprovalForAll}`]);
     const decoded = iface.decodeFunctionData(Signature.setApprovalForAll, data);
     const [spender, approved] = Array.from(decoded);
     if (!approved) return undefined;
@@ -83,12 +83,10 @@ export const decodePermit = (typedData: any) => {
 export const decodeNftListing = (data: any) => {
   const listing = decodeOpenSeaListing(data) || decodeLooksRareListing(data);
 
-  const platform = data?.primaryType === 'MakerOrder'
-    ? 'LooksRare'
-    : 'OpenSea';
+  const platform = data?.primaryType === 'MakerOrder' ? 'LooksRare' : 'OpenSea';
 
   return { platform, listing };
-}
+};
 
 export const decodeOpenSeaListing = (data: any): NftListing | undefined => {
   const { offer, offerer } = data?.message ?? {};
@@ -97,39 +95,43 @@ export const decodeOpenSeaListing = (data: any): NftListing | undefined => {
   const consideration = (data?.message?.consideration ?? []).filter((item: any) => item.recipient === offerer);
 
   return { offerer, offer, consideration };
-}
+};
 
 export const decodeLooksRareListing = (data: any): NftListing | undefined => {
   if (data?.primaryType !== 'MakerOrder') return undefined;
 
   const { signer, collection, tokenId, amount, price, currency, minPercentageToAsk } = data?.message ?? {};
 
-  if (!signer || !collection || !tokenId || !amount || !price || !currency || !minPercentageToAsk ) return undefined;
+  if (!signer || !collection || !tokenId || !amount || !price || !currency || !minPercentageToAsk) return undefined;
 
-  const receiveAmount = (BigInt(price) * BigInt(minPercentageToAsk) / BigInt(10_000)).toString();
+  const receiveAmount = ((BigInt(price) * BigInt(minPercentageToAsk)) / BigInt(10_000)).toString();
 
   // Normalise LooksRare listing format to match OpenSea's
   const offerer = signer;
 
-  const offer = [{
-    itemType: OpenSeaItemType.ERC1155, // Assume ERC1155 since that also works for ERC721
-    token: collection,
-    identifierOrCriteria: tokenId,
-    startAmount: amount,
-    endAmount: amount,
-  }];
+  const offer = [
+    {
+      itemType: OpenSeaItemType.ERC1155, // Assume ERC1155 since that also works for ERC721
+      token: collection,
+      identifierOrCriteria: tokenId,
+      startAmount: amount,
+      endAmount: amount,
+    },
+  ];
 
-  const consideration = [{
-    itemType: OpenSeaItemType.ERC20,
-    token: currency,
-    identifierOrCriteria: '0',
-    startAmount: receiveAmount,
-    endAmount: receiveAmount,
-    recipient: offerer,
-  }];
+  const consideration = [
+    {
+      itemType: OpenSeaItemType.ERC20,
+      token: currency,
+      identifierOrCriteria: '0',
+      startAmount: receiveAmount,
+      endAmount: receiveAmount,
+      recipient: offerer,
+    },
+  ];
 
   return { offerer, offer, consideration };
-}
+};
 
 const BASIC_ERC20 = [
   {
@@ -174,7 +176,10 @@ export const getOpenSeaItemTokenData = async (item: any, provider: providers.Pro
   } else if (itemType === OpenSeaItemType.ERC721) {
     return { display: `${tokenData.name} (${tokenData.symbol}) #${item.identifierOrCriteria}`, asset: item.token };
   } else if (itemType === OpenSeaItemType.ERC1155) {
-    return { display: `${item.startAmount}x ${tokenData.name} (${tokenData.symbol}) #${item.identifierOrCriteria}`, asset: item.token };
+    return {
+      display: `${item.startAmount}x ${tokenData.name} (${tokenData.symbol}) #${item.identifierOrCriteria}`,
+      asset: item.token,
+    };
   } else if (itemType === OpenSeaItemType.ERC721_CRITERIA) {
     return { display: `multiple ${tokenData.name} (${tokenData.symbol})`, asset: item.token };
   } else if (itemType === OpenSeaItemType.ERC1155_CRITERIA) {
@@ -182,7 +187,7 @@ export const getOpenSeaItemTokenData = async (item: any, provider: providers.Pro
   }
 
   return { display: 'Unknown token' };
-}
+};
 
 export const getTokenData = async (address: string, provider: providers.Provider) => {
   return {

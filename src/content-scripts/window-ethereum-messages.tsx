@@ -16,7 +16,7 @@ stream.on('data', (data) => {
       stream.write({ id: data.id, data: true });
       return;
     }
-  };
+  }
 
   // Connect to background script
   const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });

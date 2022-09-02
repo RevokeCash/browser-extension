@@ -1,8 +1,16 @@
 import { providers } from 'ethers';
 import Browser from 'webextension-polyfill';
-import { RequestType } from './lib/constants';
 import { getLocalStorage } from './lib/background-utils';
-import { addressToAppName, decodeApproval, decodeNftListing, decodePermit, getOpenSeaItemTokenData, getRpcUrl, getTokenData } from './lib/utils';
+import { RequestType } from './lib/constants';
+import {
+  addressToAppName,
+  decodeApproval,
+  decodeNftListing,
+  decodePermit,
+  getOpenSeaItemTokenData,
+  getRpcUrl,
+  getTokenData,
+} from './lib/utils';
 
 // Note that these messages will be periodically cleared due to the background service shutting down
 // after 5 minutes of inactivity (see Manifest v3 docs).
@@ -62,9 +70,8 @@ const processTransactionBypassCheckRequest = (message: any) => {
 const processTypedSignatureRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
   const { primaryType } = message?.data?.typedData;
 
-  const popupCreated = primaryType === 'Permit'
-    ? await createAllowancePopup(message)
-    : await createNftListingPopup(message);
+  const popupCreated =
+    primaryType === 'Permit' ? await createAllowancePopup(message) : await createNftListingPopup(message);
 
   if (!popupCreated) {
     remotePort.postMessage({ id: message.id, data: true });
@@ -73,17 +80,17 @@ const processTypedSignatureRequest = async (message: any, remotePort: Browser.Ru
 
   // Store the remote port so the response can be sent back there
   messagePorts[message.id] = remotePort;
-}
+};
 
 const processTypedSignatureBypassCheckRequest = async (message: any) => {
   const { primaryType } = message?.data?.typedData;
 
   if (primaryType === 'Permit') {
-    await createAllowancePopup(message)
+    await createAllowancePopup(message);
   } else {
     await createNftListingPopup(message);
   }
-}
+};
 
 const processUntypedSignatureRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
   const popupCreated = await createHashSignaturePopup(message);
@@ -95,11 +102,11 @@ const processUntypedSignatureRequest = async (message: any, remotePort: Browser.
 
   // Store the remote port so the response can be sent back there
   messagePorts[message.id] = remotePort;
-}
+};
 
 const processUntypedSignatureBypassCheckRequest = async (message: any) => {
   createHashSignaturePopup(message);
-}
+};
 
 const createAllowancePopup = async (message: any) => {
   const warnOnApproval = await getLocalStorage('settings:warnOnApproval', true);
@@ -122,7 +129,9 @@ const createAllowancePopup = async (message: any) => {
     addressToAppName(allowance.spender, chainId),
     Browser.windows.getCurrent(),
   ]).then(async ([tokenData, spenderName, window]) => {
-    const bypassed = [RequestType.TRANSACTION_BYPASS_CHECK, RequestType.TYPED_SIGNATURE_BYPASS_CHECK].includes(message.data.type);
+    const bypassed = [RequestType.TRANSACTION_BYPASS_CHECK, RequestType.TYPED_SIGNATURE_BYPASS_CHECK].includes(
+      message.data.type
+    );
 
     const queryString = new URLSearchParams({
       id: message.id,
@@ -167,9 +176,10 @@ const createNftListingPopup = async (message: any) => {
   const provider = new providers.JsonRpcProvider(rpcUrl);
   const offerAssetPromises = listing.offer.map((item: any) => getOpenSeaItemTokenData(item, provider));
   // Display that they're getting 0 ETH if no consideration is included
-  const considerationAssetPromises = listing.consideration.length > 0
-    ? listing.consideration.map((item: any) => getOpenSeaItemTokenData(item, provider))
-    : [{ display: '0.0 ETH' }]
+  const considerationAssetPromises =
+    listing.consideration.length > 0
+      ? listing.consideration.map((item: any) => getOpenSeaItemTokenData(item, provider))
+      : [{ display: '0.0 ETH' }];
 
   Promise.all([
     Promise.all(offerAssetPromises),
@@ -202,7 +212,7 @@ const createNftListingPopup = async (message: any) => {
 
   // Return true after creating the popup
   return true;
-}
+};
 
 const createHashSignaturePopup = async (message: any) => {
   const warnOnHashSignatures = await getLocalStorage('settings:warnOnHashSignatures', true);
@@ -240,7 +250,7 @@ const createHashSignaturePopup = async (message: any) => {
 
   // Return true after creating the popup
   return true;
-}
+};
 
 const getPopupPositions = (window: Browser.Windows.Window, contentLines: number, bypassed: boolean) => {
   const width = 480;
@@ -250,4 +260,4 @@ const getPopupPositions = (window: Browser.Windows.Window, contentLines: number,
   const top = window.top! + Math.round((window.height! - height) * 0.2);
 
   return { width, height, left, top };
-}
+};

@@ -25,13 +25,13 @@ const ConfirmHashSignature = () => {
       {bypassed ? (
         <div className="w-[380px] text-center">
           <span className="font-bold">WARNING</span>: This website bypassed the Revoke.cash confirmation process and is{' '}
-          asking you to sign a hash on <span className="font-bold">domain.com</span>! This can be used to list NFTs for sale or authorize asset transfers.{' '}
-          Please make sure you trust this website.
+          asking you to sign a hash on <span className="font-bold">domain.com</span>! This can be used to list NFTs for
+          sale or authorize asset transfers. Please make sure you trust this website.
         </div>
       ) : (
         <div className="w-[380px] text-center">
-          You are about to sign a hash on <span className="font-bold">domain.com</span>! This can potentially be used to list NFTs for sale or transfer assets.{' '}
-          Please make sure you trust this website.
+          You are about to sign a hash on <span className="font-bold">domain.com</span>! This can potentially be used to
+          list NFTs for sale or transfer assets. Please make sure you trust this website.
         </div>
       )}
       {bypassed ? (
@@ -40,7 +40,9 @@ const ConfirmHashSignature = () => {
         </div>
       ) : (
         <div className="flex gap-1 pt-2">
-          <Button onClick={reject} secondary>Reject</Button>
+          <Button onClick={reject} secondary>
+            Reject
+          </Button>
           <Button onClick={confirm}>Continue</Button>
         </div>
       )}

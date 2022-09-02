@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
-const WextManifestWebpackPlugin = require("wext-manifest-webpack-plugin");
+const WextManifestWebpackPlugin = require('wext-manifest-webpack-plugin');
 
 const srcDir = path.join(__dirname, '..', 'src');
 const targetBrowser = process.env.TARGET_BROWSER;
@@ -47,15 +47,15 @@ module.exports = {
         use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
       {
-          type: 'javascript/auto', // prevent webpack handling json with its own loaders,
-          test: /manifest\.json$/,
-          use: {
-            loader: 'wext-manifest-loader',
-            options: {
-              usePackageJSONVersion: true,
-            },
+        type: 'javascript/auto', // prevent webpack handling json with its own loaders,
+        test: /manifest\.json$/,
+        use: {
+          loader: 'wext-manifest-loader',
+          options: {
+            usePackageJSONVersion: true,
           },
-          exclude: /node_modules/,
+        },
+        exclude: /node_modules/,
       },
     ],
   },

@@ -21,7 +21,7 @@ export const Signature = {
 
 export const Address = {
   ZERO: '0x0000000000000000000000000000000000000000',
-}
+};
 
 export const RequestType = {
   TRANSACTION: 'transaction',
@@ -39,12 +39,6 @@ export const OpenSeaItemType = {
   ERC1155: '3',
   ERC721_CRITERIA: '4',
   ERC1155_CRITERIA: '5',
-}
+};
 
-export const LISTING_ALLOWLIST = [
-  'opensea.io',
-  'www.genie.xyz',
-  'www.gem.xyz',
-  'looksrare.org',
-  'x2y2.io',
-]
+export const LISTING_ALLOWLIST = ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io'];

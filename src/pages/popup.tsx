@@ -14,7 +14,11 @@ const Popup = () => {
       </div>
       <Settings />
       <div className="flex flex-wrap justify-center items-center gap-2">
-        <LogoLink src="/images/vendor/github.png" alt="Source Code" href="https://github.com/RevokeCash/browser-extension" />
+        <LogoLink
+          src="/images/vendor/github.png"
+          alt="Source Code"
+          href="https://github.com/RevokeCash/browser-extension"
+        />
         <LogoLink src="/images/vendor/twitter.png" alt="Official Twitter" href="https://twitter.com/RevokeCash" />
         <LogoLink src="/images/vendor/discord.png" alt="Official Discord" href="https://discord.gg/revoke-cash" />
       </div>

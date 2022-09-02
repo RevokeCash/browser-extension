@@ -65,13 +65,8 @@
     "__firefox__scripts": ["js/background.js"]
   },
 
-  "permissions": [
-    "storage"
-  ],
-  "__firefox__permissions": [
-    "<all_urls>",
-    "storage"
-  ],
+  "permissions": ["storage"],
+  "__firefox__permissions": ["<all_urls>", "storage"],
 
   "__chrome__host_permissions": ["<all_urls>"]
 }

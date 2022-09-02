@@ -21,8 +21,8 @@ const BooleanSetting = ({ storageKey, label, defaultValue }: Props) => {
         onChange={(checked: boolean) => setValue(checked)}
         onColor="#000"
         offColor="#ddd"
-        onHandleColor='#fff'
-        offHandleColor='#333'
+        onHandleColor="#fff"
+        offHandleColor="#333"
         checkedIcon={false}
         uncheckedIcon={false}
         height={16}
@@ -31,6 +31,6 @@ const BooleanSetting = ({ storageKey, label, defaultValue }: Props) => {
       />
     </div>
   );
-}
+};
 
 export default BooleanSetting;
