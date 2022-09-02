@@ -4,7 +4,7 @@ In many cases, phishing websites try to make you sign a token allowance while th
 
 This is where the Revoke.cash Browser Extension comes in. The extension pops up whenever you are about to sign an allowance and will inform you of the allowance details. This can help prevent signing malicious allowances.
 
-The extension also informs you when you are about to list an item for sale on popular marketplaces such as OpenSea and LooksRare, or when you are about to sign a message hash. These message hashes are used by certain marketplaces like X2Y2 for listing NFTs.
+The extension also informs you when you are about to list an item for sale on popular marketplaces such as OpenSea and LooksRare, or when you are about to sign a hash. These hashes are used by certain marketplaces like X2Y2 for listing NFTs.
 
 A common scam is to try to trick you into signing one of these gasless signatures on a phishing website, allowing the scammers to steal your NFTs. The official websites of OpenSea, LooksRare, X2Y2, Genie and Gem are allowlisted for these actions, so that the Revoke.cash browser extension does not interrupt your normal flow.
 
