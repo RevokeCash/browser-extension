@@ -6,6 +6,7 @@ const addScript = (url: string) => {
   scriptTag.setAttribute('async', 'false');
   scriptTag.setAttribute('src', Browser.runtime.getURL(url));
   container.appendChild(scriptTag);
+  scriptTag.onload = () => scriptTag.remove();
 };
 
 addScript('js/vendor.js');

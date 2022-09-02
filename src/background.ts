@@ -1,7 +1,7 @@
 import { providers } from 'ethers';
 import Browser from 'webextension-polyfill';
 import { getLocalStorage } from './lib/background-utils';
-import { RequestType } from './lib/constants';
+import { AllowList, RequestType } from './lib/constants';
 import {
   addressToAppName,
   decodeApproval,
@@ -112,14 +112,14 @@ const createAllowancePopup = async (message: any) => {
   const warnOnApproval = await getLocalStorage('settings:warnOnApproval', true);
   if (!warnOnApproval) return false;
 
-  const { transaction, typedData, chainId } = message.data;
+  const { transaction, typedData, chainId, hostname } = message.data;
+  if (AllowList.ALLOWANCE.includes(hostname)) return false;
+  if (approvedMessages.includes(message.id)) return false;
+
   const allowance = transaction
     ? decodeApproval(transaction.data ?? '', transaction.to ?? '')
     : decodePermit(typedData);
-
-  // Return false if we don't create a popup
   if (!allowance) return false;
-  if (approvedMessages.includes(message.id)) return false;
 
   const rpcUrl = getRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
   const provider = new providers.JsonRpcProvider(rpcUrl);
@@ -165,12 +165,12 @@ const createNftListingPopup = async (message: any) => {
   const warnOnListing = await getLocalStorage('settings:warnOnListing', true);
   if (!warnOnListing) return false;
 
-  const { typedData, chainId } = message.data;
-  const { platform, listing } = decodeNftListing(typedData);
-
-  // Return false if we don't create a popup
-  if (!listing) return false;
+  const { typedData, chainId, hostname } = message.data;
+  if (AllowList.NFT_LISTING.includes(hostname)) return false;
   if (approvedMessages.includes(message.id)) return false;
+
+  const { platform, listing } = decodeNftListing(typedData);
+  if (!listing) return false;
 
   const rpcUrl = getRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
   const provider = new providers.JsonRpcProvider(rpcUrl);
@@ -218,11 +218,12 @@ const createHashSignaturePopup = async (message: any) => {
   const warnOnHashSignatures = await getLocalStorage('settings:warnOnHashSignatures', true);
   if (!warnOnHashSignatures) return false;
 
-  const { message: signMessage } = message.data;
+  const { message: signMessage, hostname } = message.data;
+  if (AllowList.HASH_SIGNATURE.includes(hostname)) return false;
+  if (approvedMessages.includes(message.id)) return false;
 
   // If we're not signing a hash, we don't need to popup
   if (String(signMessage).replace(/0x/, '').length !== 64) return false;
-  if (approvedMessages.includes(message.id)) return false;
 
   Promise.all([
     Browser.windows.getCurrent(),

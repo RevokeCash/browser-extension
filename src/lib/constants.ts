@@ -41,4 +41,8 @@ export const OpenSeaItemType = {
   ERC1155_CRITERIA: '5',
 };
 
-export const LISTING_ALLOWLIST = ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io'];
+export const AllowList = {
+  ALLOWANCE: [] as string[],
+  NFT_LISTING: ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io'],
+  HASH_SIGNATURE: ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io'],
+};
