@@ -10,8 +10,8 @@
     "build:firefox": "cross-env TARGET_BROWSER=firefox webpack --config webpack/webpack.prod.js",
     "zip:chrome": "web-ext build -s dist/chrome -a dist -n chrome.zip -o",
     "zip:firefox": "web-ext build -s dist/firefox -a dist -n firefox.zip -o",
-    "build": "run-p build:*",
-    "zip": "run-p zip:*",
+    "build": "run-p 'build:*'",
+    "zip": "run-p 'zip:*'",
     "clean": "rimraf dist",
     "postinstall": "husky install"
   },
