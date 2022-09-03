@@ -24,13 +24,13 @@ const ConfirmHashSignature = () => {
         <img src="/images/revoke.svg" alt="revoke.cash logo" width="360" />
       </div>
       {bypassed ? (
-        <div className="w-[380px] text-center">
+        <div className="w-[400px] text-center">
           <span className="font-bold">WARNING</span>: This website bypassed the Revoke.cash confirmation process and is{' '}
           asking you to sign a hash on <span className="font-bold">{hostname}</span>! This can be used to list NFTs for
           sale or authorize asset transfers. Please make sure you trust this website.
         </div>
       ) : (
-        <div className="w-[380px] text-center">
+        <div className="w-[400px] text-center">
           You are about to sign a hash on <span className="font-bold">{hostname}</span>! This can potentially be used to
           list NFTs for sale or transfer assets. Please make sure you trust this website.
         </div>

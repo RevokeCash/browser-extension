@@ -35,12 +35,12 @@ const ConfirmAllowance = () => {
         <img src="/images/revoke.svg" alt="revoke.cash logo" width="360" />
       </div>
       {bypassed ? (
-        <div className="w-[380px] text-center">
+        <div className="w-[400px] text-center">
           <span className="font-bold">WARNING</span>: This website bypassed the Revoke.cash confirmation process and is
           trying to request an allowance on <span className="font-bold">{hostname}</span>. Proceed with caution.
         </div>
       ) : (
-        <div className="w-[380px] text-center">
+        <div className="w-[400px] text-center">
           You are about to approve an allowance on <span className="font-bold">{hostname}</span>! Please make sure this
           is your intention.
         </div>
