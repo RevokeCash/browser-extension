@@ -1,6 +1,10 @@
 import Browser from 'webextension-polyfill';
 
-export const getLocalStorage = async <T>(key: string, defaultValue?: T): Promise<T | undefined> => {
-  const res = await Browser.storage.local.get({ [key]: defaultValue });
-  return res[key];
+export const getStorage = async <T>(area: 'local' | 'sync', key: string, defaultValue?: T): Promise<T | undefined> => {
+  const res = await Browser.storage[area].get(key);
+  return res[key] ?? defaultValue;
+};
+
+export const setStorage = async <T>(area: 'local' | 'sync', key: string, value: T): Promise<void> => {
+  await Browser.storage[area].set({ [key]: value });
 };

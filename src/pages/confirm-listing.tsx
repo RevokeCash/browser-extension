@@ -16,8 +16,8 @@ const ConfirmListing = () => {
   const explorerUrl = getExplorerUrl(chainId);
   const bypassed = params.get('bypassed') === 'true';
 
-  const respond = async (data: boolean) => {
-    await Browser.runtime.sendMessage(undefined, { id, data });
+  const respond = async (response: boolean) => {
+    await Browser.runtime.sendMessage(undefined, { id, response });
     window.close();
   };
 

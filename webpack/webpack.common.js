@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const WextManifestWebpackPlugin = require('wext-manifest-webpack-plugin');
+const DotenvPlugin = require('dotenv-webpack');
 
 const srcDir = path.join(__dirname, '..', 'src');
 const targetBrowser = process.env.TARGET_BROWSER;
@@ -78,5 +79,6 @@ module.exports = {
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),
+    new DotenvPlugin(),
   ],
 };

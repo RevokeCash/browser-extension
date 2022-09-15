@@ -13,3 +13,5 @@ tmp/
 
 # So folks don't assume npm
 package-lock.json
+
+.env

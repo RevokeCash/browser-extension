@@ -5,6 +5,52 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"@amplitude/analytics-browser@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "@amplitude/analytics-browser@npm:1.2.3"
+  dependencies:
+    "@amplitude/analytics-connector": ^1.4.5
+    "@amplitude/analytics-core": ^0.8.1
+    "@amplitude/analytics-types": ^0.8.1
+    "@amplitude/ua-parser-js": ^0.7.31
+    tslib: ^2.3.1
+  checksum: a89a2b8aeada394d03584afcfe0fd36fce993b257165068e1c9c354a525c315d6c867ff26fd44c312c77b7be0034021a3442e1f89556a4b1b8859961a6856001
+  languageName: node
+  linkType: hard
+
+"@amplitude/analytics-connector@npm:^1.4.5":
+  version: 1.4.5
+  resolution: "@amplitude/analytics-connector@npm:1.4.5"
+  dependencies:
+    "@amplitude/ua-parser-js": 0.7.31
+  checksum: 3c030167b008216bffca9411e0af80c327ec6e2c75b151566d38770abd5c7aa978372e05cebdb180b1e8b6e43753296783c62fef0a234afa26105e9c12a1aadc
+  languageName: node
+  linkType: hard
+
+"@amplitude/analytics-core@npm:^0.8.1":
+  version: 0.8.1
+  resolution: "@amplitude/analytics-core@npm:0.8.1"
+  dependencies:
+    "@amplitude/analytics-types": ^0.8.1
+    tslib: ^2.3.1
+  checksum: 544b2cbf9d7b6a27b6fd77613a05b98f10d7875b905f5beff7ee1da249641a29e1a0f3e18f6acbf48f093518269acbd5f64750ae5934c2fd6836a653f0937d7b
+  languageName: node
+  linkType: hard
+
+"@amplitude/analytics-types@npm:^0.8.1":
+  version: 0.8.1
+  resolution: "@amplitude/analytics-types@npm:0.8.1"
+  checksum: 150ac59043e5f9f7b9296de06dc58700f2129ad5e16752b890462cc1312234a6536da6766899183f09fc965c320dd3d0d41bd6a51ceb0ca133626f65398499ac
+  languageName: node
+  linkType: hard
+
+"@amplitude/ua-parser-js@npm:0.7.31, @amplitude/ua-parser-js@npm:^0.7.31":
+  version: 0.7.31
+  resolution: "@amplitude/ua-parser-js@npm:0.7.31"
+  checksum: c72e7c8656dd77a6c2ece9e3817929022aeadf731470e53fecddce03232d87977fd5b09d76c570a2a5bed97f5dd463fe6379aac7a6c4b2d2393f14486d385eec
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.16.0":
   version: 7.18.6
   resolution: "@babel/code-frame@npm:7.18.6"
@@ -2803,6 +2849,33 @@ __metadata:
   dependencies:
     is-obj: ^2.0.0
   checksum: 0f47600a4b93e1dc37261da4e6909652c008832a5d3684b5bf9a9a0d3f4c67ea949a86dceed9b72f5733ed8e8e6383cc5958df3bbd0799ee317fd181f2ece700
+  languageName: node
+  linkType: hard
+
+"dotenv-defaults@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "dotenv-defaults@npm:2.0.2"
+  dependencies:
+    dotenv: ^8.2.0
+  checksum: c005960bd048e2189c4799e729c41f362e415e6e0b54313d3f31e853a84b049bf770b25cb21c112c2805bb13a8376edc9de451fb514abf8546392d327c27f6e5
+  languageName: node
+  linkType: hard
+
+"dotenv-webpack@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "dotenv-webpack@npm:8.0.1"
+  dependencies:
+    dotenv-defaults: ^2.0.2
+  peerDependencies:
+    webpack: ^4 || ^5
+  checksum: ee73eda78df90bcf7446763dfe5e518a2054ed6222783856912d2c6a255fdfc041854e125e036ff2603b06fb44f5234713fad5feecb1e66a54fe78a35a98fb87
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^8.2.0":
+  version: 8.6.0
+  resolution: "dotenv@npm:8.6.0"
+  checksum: 38e902c80b0666ab59e9310a3d24ed237029a7ce34d976796349765ac96b8d769f6df19090f1f471b77a25ca391971efde8a1ea63bb83111bd8bec8e5cc9b2cd
   languageName: node
   linkType: hard
 
@@ -7119,6 +7192,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "revoke-cash-browser-extension@workspace:."
   dependencies:
+    "@amplitude/analytics-browser": ^1.2.3
     "@metamask/post-message-stream": ^5.0.0
     "@types/chrome": ^0.0.191
     "@types/object-hash": ^2.2.1
@@ -7131,6 +7205,7 @@ __metadata:
     copy-webpack-plugin: ^9.0.1
     cross-env: ^7.0.3
     css-loader: ^6.7.1
+    dotenv-webpack: ^8.0.1
     eth-chains: ^0.4.0
     eth-rpc-errors: ^4.0.3
     ethers: ^5.6.9
@@ -8078,7 +8153,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.1.0":
+"tslib@npm:^2.1.0, tslib@npm:^2.3.1":
   version: 2.4.0
   resolution: "tslib@npm:2.4.0"
   checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113

@@ -7,6 +7,16 @@ import Browser from 'webextension-polyfill';
 import { BYPASS_TYPES, OpenSeaItemType, Signature, SignatureIdentifier } from './constants';
 import { NftListing } from './types';
 
+// https://learnersbucket.com/examples/javascript/unique-id-generator-in-javascript/
+export const randomId = () => {
+  let s4 = () =>
+    Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  //return id of format aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+};
+
 // TODO: Timeout
 export const sendAndAwaitResponseFromStream = (stream: Duplex, data: any): Promise<any> => {
   return new Promise((resolve) => {
@@ -43,13 +53,17 @@ export const sendAndAwaitResponseFromPort = (stream: Browser.Runtime.Port, data:
 
 export const isBypassMessage = (message: any) => BYPASS_TYPES.includes(message?.data?.type);
 
-export const decodeApproval = (data: string, asset: string) => {
+export const decodeApproval = (transaction: any) => {
+  if (!transaction || !transaction.data || !transaction.to || !transaction.from) return undefined;
+
+  const { data, from: user, to: asset } = transaction;
+
   if (data.startsWith(SignatureIdentifier.approve)) {
     const iface = new Interface([`function ${Signature.approve}`]);
     const decoded = iface.decodeFunctionData(Signature.approve, data);
     const [spender, approval] = Array.from(decoded);
     if (BigNumber.from(approval).isZero()) return undefined;
-    return { asset, spender };
+    return { user, asset, spender };
   }
 
   if (data.startsWith(SignatureIdentifier.increaseAllowance)) {
@@ -57,7 +71,7 @@ export const decodeApproval = (data: string, asset: string) => {
     const decoded = iface.decodeFunctionData(Signature.increaseAllowance, data);
     const [spender, approval] = Array.from(decoded);
     if (BigNumber.from(approval).isZero()) return undefined;
-    return { asset, spender };
+    return { user, asset, spender };
   }
 
   if (data.startsWith(SignatureIdentifier.setApprovalForAll)) {
@@ -65,21 +79,23 @@ export const decodeApproval = (data: string, asset: string) => {
     const decoded = iface.decodeFunctionData(Signature.setApprovalForAll, data);
     const [spender, approved] = Array.from(decoded);
     if (!approved) return undefined;
-    return { asset, spender };
+    return { user, asset, spender };
   }
 
   return undefined;
 };
 
 export const decodePermit = (typedData: any) => {
-  if (typedData?.primaryType !== 'Permit') return undefined;
+  if (!typedData || !typedData.domain?.verifyingContract || !typedData.message) return undefined;
+  if (typedData.primaryType !== 'Permit') return undefined;
 
-  const asset = typedData?.domain?.verifyingContract;
-  const { spender, value, allowed } = typedData?.message;
+  const asset = typedData.domain.verifyingContract;
+  const { spender, value, allowed, holder, owner } = typedData.message;
+  const user = owner ?? holder;
 
-  if (!asset || value === '0' || allowed === false) return undefined;
+  if (value === '0' || allowed === false) return undefined;
 
-  return { asset, spender };
+  return { user, asset, spender };
 };
 
 export const decodeNftListing = (data: any) => {

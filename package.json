@@ -16,6 +16,7 @@
     "postinstall": "husky install"
   },
   "dependencies": {
+    "@amplitude/analytics-browser": "^1.2.3",
     "@metamask/post-message-stream": "^5.0.0",
     "eth-chains": "^0.4.0",
     "eth-rpc-errors": "^4.0.3",
@@ -40,6 +41,7 @@
     "copy-webpack-plugin": "^9.0.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
+    "dotenv-webpack": "^8.0.1",
     "glob": "^7.1.6",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",

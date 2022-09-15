@@ -9,7 +9,7 @@ interface Props {
 }
 
 const BooleanSetting = ({ storageKey, label, defaultValue }: Props) => {
-  const [value, setValue] = useBrowserStorage(storageKey, defaultValue);
+  const [value, setValue] = useBrowserStorage('local', storageKey, defaultValue);
 
   if (value === undefined) return null;
 

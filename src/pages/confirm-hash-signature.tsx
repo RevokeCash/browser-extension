@@ -10,8 +10,8 @@ const ConfirmHashSignature = () => {
   const bypassed = params.get('bypassed') === 'true';
   const hostname = params.get('hostname');
 
-  const respond = async (data: boolean) => {
-    await Browser.runtime.sendMessage(undefined, { id, data });
+  const respond = async (response: boolean) => {
+    await Browser.runtime.sendMessage(undefined, { id, response });
     window.close();
   };
 

@@ -5,6 +5,7 @@ import Browser from 'webextension-polyfill';
 // https://github.com/onikienko/use-chrome-storage/blob/master/src/useChromeStorage.js
 
 const useBrowserStorage = <T>(
+  area: 'local' | 'sync',
   key: string,
   initialValue?: T
 ): [T | undefined, (value: T) => void, boolean, string | undefined] => {
@@ -14,7 +15,7 @@ const useBrowserStorage = <T>(
 
   useEffect(() => {
     const keyObj = initialValue === undefined ? key : { [key]: initialValue };
-    Browser.storage.local
+    Browser.storage[area]
       .get(keyObj)
       .then((res) => {
         setState(res[key]);
@@ -31,7 +32,7 @@ const useBrowserStorage = <T>(
     (newValue) => {
       const toStore = typeof newValue === 'function' ? newValue(state) : newValue;
 
-      Browser.storage.local
+      Browser.storage[area]
         .set({ [key]: toStore })
         .then(() => {
           setIsPersistent(true);
@@ -49,7 +50,7 @@ const useBrowserStorage = <T>(
 
   useEffect(() => {
     const onChange = (changes: any, areaName: string) => {
-      if (areaName === 'local' && key in changes) {
+      if (areaName === area && key in changes) {
         setState(changes[key].newValue);
         setIsPersistent(true);
         setError(undefined);
