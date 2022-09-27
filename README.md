@@ -29,3 +29,15 @@ To build and package the extension for publication you can run `yarn build && ya
 ## Credits
 
 The Revoke.cash browser extension was created by Rosco Kalis after discussing the idea with Merwane Drai and Dries Steenberghe while working on Chaingrep in 2022.
+
+## Sponsors
+
+To keep Revoke.cash free, we rely on donations and sponsorships for revenue. If you want to support us with a monthly sponsorship, please reach out through [Twitter](https://twitter.com/RevokeCash) and join the list of these awesome companies and individuals that have committed to a monthly sponsorship of Revoke.cash:
+
+<p align="center">
+  <a href="https://earni.fi">
+    <img width="300" src="public/assets/images/vendor/earnifi.png">
+    <br />
+    Earni.fi
+  </a>
+</p>
