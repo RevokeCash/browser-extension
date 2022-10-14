@@ -36,7 +36,7 @@ To keep Revoke.cash free, we rely on donations and sponsorships for revenue. If 
 
 <p align="center">
   <a href="https://earni.fi">
-    <img width="300" src="public/assets/images/vendor/earnifi.png">
+    <img width="300" src="https://github.com/RevokeCash/revoke.cash/blob/master/public/assets/images/vendor/earnifi.png">
     <br />
     Earni.fi
   </a>
