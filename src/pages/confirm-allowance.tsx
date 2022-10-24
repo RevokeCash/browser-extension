@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Trans, useTranslation } from 'react-i18next';
 import Browser from 'webextension-polyfill';
 import Button from '../components/Button';
 import Link from '../components/Link';
+import '../i18n/config';
 import { getExplorerUrl } from '../lib/utils';
 import '../styles.css';
 
 const ConfirmAllowance = () => {
+  const { t } = useTranslation();
+
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   const asset = params.get('asset');
@@ -36,37 +40,46 @@ const ConfirmAllowance = () => {
       </div>
       {bypassed ? (
         <div className="w-[400px] text-center">
-          <span className="font-bold">WARNING</span>: This website bypassed the Revoke.cash confirmation process and is
-          trying to request an allowance on <span className="font-bold">{hostname}</span>. Proceed with caution.
+          <span className="font-bold uppercase">{t('common.warning')}</span>:{' '}
+          <Trans
+            i18nKey="confirm_allowance.bypassed"
+            values={{ hostname }}
+            components={[<span className="font-bold" />]}
+          />{' '}
+          {t('common.proceed_with_caution')}
         </div>
       ) : (
         <div className="w-[400px] text-center">
-          You are about to approve an allowance on <span className="font-bold">{hostname}</span>! Please make sure this
-          is your intention.
+          <Trans
+            i18nKey="confirm_allowance.confirm"
+            values={{ hostname }}
+            components={[<span className="font-bold" />]}
+          />{' '}
+          {t('common.intention')}
         </div>
       )}
       <div className="flex flex-col items-center">
-        <div className="font-bold text-lg leading-tight">Asset</div>
+        <div className="font-bold text-lg leading-tight">{t('confirm_allowance.asset')}</div>
         <div>
           <Link href={`${explorerUrl}/address/${asset}`}>{assetString}</Link>
         </div>
       </div>
       <div className="flex flex-col items-center">
-        <div className="font-bold text-lg leading-tight">Spender</div>
+        <div className="font-bold text-lg leading-tight">{t('confirm_allowance.spender')}</div>
         <div>
           <Link href={`${explorerUrl}/address/${spender}`}>{spenderName || spender}</Link>
         </div>
       </div>
       {bypassed ? (
         <div className="flex gap-1 pt-2">
-          <Button onClick={() => window.close()}>Dismiss</Button>
+          <Button onClick={() => window.close()}>{t('common.dismiss')}</Button>
         </div>
       ) : (
         <div className="flex gap-1 pt-2">
           <Button onClick={reject} secondary>
-            Reject
+            {t('common.reject')}
           </Button>
-          <Button onClick={confirm}>Continue</Button>
+          <Button onClick={confirm}>{t('common.continue')}</Button>
         </div>
       )}
     </div>

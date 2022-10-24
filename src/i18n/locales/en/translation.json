@@ -1,0 +1,36 @@
+{
+  "common": {
+    "reject": "Reject",
+    "continue": "Continue",
+    "dismiss": "Dismiss",
+    "warning": "Warning",
+    "proceed_with_caution": "Proceed with caution.",
+    "intention": "Please make sure this is your intention.",
+    "trust_website": "Please make sure you trust this website."
+  },
+  "popup": {
+    "version": "Version",
+    "settings": {
+      "approvals": "Warn on approvals",
+      "listings": "Warn on NFT listings",
+      "hash_signatures": "Warn on hash signatures"
+    }
+  },
+  "confirm_allowance": {
+    "confirm": "You are about to approve an allowance on <0>{{hostname}}</0>!",
+    "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to request an allowance on <0>{{hostname}}</0>!",
+    "asset": "Asset",
+    "spender": "Spender"
+  },
+  "confirm_hash": {
+    "explanation": "This can be used to list NFTs for sale or authorize asset transfers.",
+    "confirm": "You are about to sign a hash on <0>{{hostname}}</0>!",
+    "bypassed": "This website bypassed the Revoke.cash confirmation process and is asking you to sign a hash on <0>{{hostname}}</0>!"
+  },
+  "confirm_listing": {
+    "confirm": "You are about to list an item for sale on {{platform}}!",
+    "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to list an item for sale on {{platform}}!",
+    "you_sell": "You sell",
+    "you_receive": "You receive (after fees)"
+  }
+}

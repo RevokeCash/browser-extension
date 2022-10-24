@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import Browser from 'webextension-polyfill';
 import Link from '../components/Link';
 import LogoLink from '../components/LogoLink';
 import Settings from '../components/Settings';
+import '../i18n/config';
 import '../styles.css';
 
 const Popup = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col gap-3 items-center p-4 w-[280px]">
       <div className="w-[200px]">
@@ -24,7 +28,9 @@ const Popup = () => {
       </div>
       <div className="flex flex-col items-center">
         <Link href="https://revoke.cash">Revoke.cash</Link>
-        <div>Version {Browser.runtime.getManifest().version}</div>
+        <div>
+          {t('popup.version')} {Browser.runtime.getManifest().version}
+        </div>
       </div>
     </div>
   );

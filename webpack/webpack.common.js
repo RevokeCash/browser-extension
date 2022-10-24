@@ -73,7 +73,10 @@ module.exports = {
   plugins: [
     new WextManifestWebpackPlugin(),
     new CopyPlugin({
-      patterns: [{ from: '.', to: '.', context: 'public' }],
+      patterns: [
+        { from: '.', to: '.', context: 'public' },
+        { from: './*/messages.json', to: '_locales', context: 'src/i18n/locales' },
+      ],
       options: {},
     }),
     new webpack.ProvidePlugin({
