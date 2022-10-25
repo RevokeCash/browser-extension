@@ -53,6 +53,14 @@ const LanguageSelect = () => {
           ...styles,
           cursor: 'pointer',
           padding: '4px 8px',
+          '&:first-child': {
+            borderTopLeftRadius: 4,
+            borderTopRightRadius: 4,
+          },
+          '&:last-child': {
+            borderBottomLeftRadius: 4,
+            borderBottomRightRadius: 4,
+          },
         }),
       }}
       theme={(theme) => ({
