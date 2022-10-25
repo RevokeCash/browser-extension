@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Trans, useTranslation } from 'react-i18next';
 import Browser from 'webextension-polyfill';
 import Button from '../components/Button';
-import '../i18n/config';
+import { Trans, useTranslation } from '../i18n';
 import '../styles.css';
 
 const ConfirmHashSignature = () => {

@@ -1,0 +1,36 @@
+{
+  "common": {
+    "reject": "拒绝",
+    "continue": "继续",
+    "dismiss": "取消",
+    "warning": "警告",
+    "proceed_with_caution": "谨慎行事。",
+    "intention": "请确保这是你的意图。",
+    "trust_website": "请确保你信任该网站。"
+  },
+  "popup": {
+    "version": "版本",
+    "settings": {
+      "approvals": "关于批准的警告",
+      "listings": "关于NFT列出的警告",
+      "hash_signatures": "对哈希签名的警告"
+    }
+  },
+  "confirm_allowance": {
+    "confirm": "你即将批准<0>{{hostname}}</0>上的一项授权!",
+    "bypassed": "这个网站绕过了Revoke.cash的确认过程，试图在<0>{{hostname}}</0>上申请授权!",
+    "asset": "资产",
+    "spender": "支出者"
+  },
+  "confirm_hash": {
+    "explanation": "这可以用来列出待售的NFT或授权资产转移。",
+    "confirm": "你即将在<0>{{hostname}}</0>上签署哈希！",
+    "bypassed": "该网站绕过了 Revoke.cash 确认过程，并要求你在<0>{{hostname}}</0>上签名哈希！"
+  },
+  "confirm_listing": {
+    "confirm": "您即将在{{platform}}上列出待售商品！",
+    "bypassed": "该网站绕过了 Revoke.cash 确认流程，并试图在{{platform}}上列出一个作品！",
+    "you_sell": "你卖出",
+    "you_receive": "你收到（扣除手续费）"
+  }
+}

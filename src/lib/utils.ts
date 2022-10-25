@@ -98,6 +98,8 @@ export const decodePermit = (typedData: any) => {
   return { user, asset, spender };
 };
 
+// TODO: Check contracts and update platforms accordingly
+
 export const decodeNftListing = (data: any) => {
   const listing = decodeOpenSeaListing(data) || decodeLooksRareListing(data);
 
@@ -308,3 +310,23 @@ async function getNameFromEthereumList(address: string, chainId: number): Promis
     return undefined;
   }
 }
+
+export const getLanguageNameNative = (language: string): string | undefined => {
+  const mapping: any = {
+    en: 'English',
+    es: 'Español',
+    zh: '中文',
+  };
+
+  return mapping[language];
+};
+
+export const getLanguageEmoji = (language: string): string | undefined => {
+  const mapping: any = {
+    en: '🇬🇧',
+    es: '🇪🇸',
+    zh: '🇨🇳',
+  };
+
+  return mapping[language];
+};

@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { useTranslation } from 'react-i18next';
 import Browser from 'webextension-polyfill';
+import LanguageSelect from '../components/LanguageSelect';
 import Link from '../components/Link';
 import LogoLink from '../components/LogoLink';
 import Settings from '../components/Settings';
-import '../i18n/config';
+import { useTranslation } from '../i18n';
 import '../styles.css';
 
 const Popup = () => {
@@ -25,6 +25,7 @@ const Popup = () => {
         />
         <LogoLink src="/images/vendor/twitter.png" alt="Official Twitter" href="https://twitter.com/RevokeCash" />
         <LogoLink src="/images/vendor/discord.png" alt="Official Discord" href="https://discord.gg/revoke-cash" />
+        <LanguageSelect />
       </div>
       <div className="flex flex-col items-center">
         <Link href="https://revoke.cash">Revoke.cash</Link>
