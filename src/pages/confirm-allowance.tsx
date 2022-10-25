@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Trans, useTranslation } from 'react-i18next';
 import Browser from 'webextension-polyfill';
 import Button from '../components/Button';
 import Link from '../components/Link';
-import '../i18n/config';
+import { Trans, useTranslation } from '../i18n';
 import { getExplorerUrl } from '../lib/utils';
 import '../styles.css';
 

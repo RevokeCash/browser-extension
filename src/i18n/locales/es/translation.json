@@ -1,0 +1,36 @@
+{
+  "common": {
+    "reject": "Rechazar",
+    "continue": "Continuar",
+    "dismiss": "Descartar",
+    "warning": "Advertencia",
+    "proceed_with_caution": "Proceda con precaución.",
+    "intention": "Por favor asegúrate de que esta es tu intención",
+    "trust_website": "Por favor asegúrate de confiar en este sitio web."
+  },
+  "popup": {
+    "version": "Versión",
+    "settings": {
+      "approvals": "Advertencia sobre las autorizaciones",
+      "listings": "Advertencia sobre las publicaciones de venta de NFTs",
+      "hash_signatures": "Advertencia sobre las firmas de hash"
+    }
+  },
+  "confirm_allowance": {
+    "confirm": "¡Estás a punto de aprobar una autorización en <0>{{hostname}}</0>!",
+    "bypassed": "¡Este sitio web omitió el proceso de confirmación de Revoke.cash y te está pidiendo una autorización en <0>{{hostname}}</0>!",
+    "asset": "Activo",
+    "spender": "Gastador"
+  },
+  "confirm_hash": {
+    "explanation": "Esto puede ser usado para publicar a la venta NFTs o autorizar transferencias de activos.",
+    "confirm": "¡Estás a punto de firmar un hash en <0>{{hostname}}</0>!",
+    "bypassed": "¡Este sitio web omitió el proceso de confirmación de Revoke.cash y te está pidiendo firmar un hash en <0>{{hostname}}</0>!"
+  },
+  "confirm_listing": {
+    "confirm": "¡Estás a punto de poner un artículo a la venta en {{platform}}!",
+    "bypassed": "¡Este sitio web omitió el proceso de confirmación de Revoke.cash y está intentando publicar un artículo a la venta en {{platform}}!",
+    "you_sell": "Vendes",
+    "you_receive": "Recibes (después de comisiones)"
+  }
+}

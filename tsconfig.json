@@ -4,6 +4,7 @@
     "module": "commonjs",
     "target": "es6",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "sourceMap": false,
     "rootDir": "src",
     "outDir": "dist/js",
