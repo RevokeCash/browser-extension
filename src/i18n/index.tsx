@@ -5,7 +5,7 @@ import Browser from 'webextension-polyfill';
 import useBrowserStorage from '../hooks/use-browser-storage';
 import en from './locales/en/translation.json';
 import es from './locales/es/translation.json';
-import zh from './locales/zh/translation.json';
+import zh from './locales/zh_CN/translation.json';
 
 const [lng] = Browser.i18n.getUILanguage().split('-');
 
