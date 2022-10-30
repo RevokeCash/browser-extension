@@ -6,6 +6,7 @@ import { sendAndAwaitResponseFromStream } from '../lib/utils';
 
 declare let window: Window & {
   ethereum?: any;
+  coinbaseWalletExtension?: any;
 };
 
 const stream = new WindowPostMessageStream({
@@ -15,8 +16,8 @@ const stream = new WindowPostMessageStream({
 
 let proxyInterval: NodeJS.Timer;
 
-const proxyEthereumProvider = (ethereumProvider: any) => {
-  // Only add our proxy once
+const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
+  // Only add our proxy once per provider
   if (!ethereumProvider || ethereumProvider.isRevokeCash) return;
 
   const sendHandler = {
@@ -180,13 +181,26 @@ const proxyEthereumProvider = (ethereumProvider: any) => {
   ethereumProvider.request = new Proxy(ethereumProvider.request, requestHandler);
   ethereumProvider.send = new Proxy(ethereumProvider.send, sendHandler);
   ethereumProvider.sendAsync = new Proxy(ethereumProvider.sendAsync, sendAsyncHandler);
+  ethereumProvider.isRevokeCash = true;
+  console.log('Added Revoke.cash to', name);
 };
 
-const proxyWindowEthereum = () => {
+const proxyAllEthereumProviders = () => {
   if (!window.ethereum) return;
   clearInterval(proxyInterval);
-  proxyEthereumProvider(window.ethereum);
+
+  // Proxy the default window.ethereum provider
+  proxyEthereumProvider(window.ethereum, 'window.ethereum');
+
+  // Proxy any other providers listed on the window.ethereum object
+  const altProviders = Object.entries(Object.fromEntries(window.ethereum.providerMap ?? []) ?? {});
+  altProviders.forEach(([name, provider], i) =>
+    proxyEthereumProvider(provider, `${name} (window.ethereum.providers[${i}])`)
+  );
+
+  // Proxy the window.coinbaseWalletExtension provider if it exists
+  proxyEthereumProvider(window.coinbaseWalletExtension, 'window.coinbaseWalletExtension');
 };
 
-proxyInterval = setInterval(proxyWindowEthereum, 100);
-proxyWindowEthereum();
+proxyInterval = setInterval(proxyAllEthereumProviders, 100);
+proxyAllEthereumProviders();
