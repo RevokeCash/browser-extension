@@ -310,23 +310,3 @@ async function getNameFromEthereumList(address: string, chainId: number): Promis
     return undefined;
   }
 }
-
-export const getLanguageNameNative = (language: string): string | undefined => {
-  const mapping: any = {
-    en: 'English',
-    es: 'Español',
-    zh: '中文',
-  };
-
-  return mapping[language];
-};
-
-export const getLanguageEmoji = (language: string): string | undefined => {
-  const mapping: any = {
-    en: '🇬🇧',
-    es: '🇪🇸',
-    zh: '🇨🇳',
-  };
-
-  return mapping[language];
-};

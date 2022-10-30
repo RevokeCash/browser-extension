@@ -13,12 +13,11 @@ const stream = new WindowPostMessageStream({
   target: Identifier.CONTENT_SCRIPT,
 });
 
-let overrideInterval: NodeJS.Timer;
+let proxyInterval: NodeJS.Timer;
 
-const overrideWindowEthereum = () => {
-  if (!window.ethereum) return;
-
-  clearInterval(overrideInterval);
+const proxyEthereumProvider = (ethereumProvider: any) => {
+  // Only add our proxy once
+  if (!ethereumProvider || ethereumProvider.isRevokeCash) return;
 
   const sendHandler = {
     apply: (target: any, thisArg: any, argumentsList: any[]) => {
@@ -29,7 +28,7 @@ const overrideWindowEthereum = () => {
       // ethereum.send(method: string, params?: Array<unknown>): Promise<JsonRpcResponse>;
       // > gets handled like ethereum.request
       if (typeof payloadOrMethod === 'string') {
-        return window.ethereum.request({ method: payloadOrMethod, params: callbackOrParams });
+        return ethereumProvider.request({ method: payloadOrMethod, params: callbackOrParams });
       }
 
       // ethereum.send(payload: JsonRpcRequest): unknown;
@@ -40,7 +39,7 @@ const overrideWindowEthereum = () => {
 
       // ethereum.send(payload: JsonRpcRequest, callback: JsonRpcCallback): void;
       // > gets handled like ethereum.sendAsync
-      return window.ethereum.sendAsync(payloadOrMethod, callbackOrParams);
+      return ethereumProvider.sendAsync(payloadOrMethod, callbackOrParams);
     },
   };
 
@@ -52,7 +51,7 @@ const overrideWindowEthereum = () => {
         const [transaction] = request?.params ?? [];
         if (!transaction) return Reflect.apply(target, thisArg, argumentsList);
 
-        const provider = new providers.Web3Provider(window.ethereum);
+        const provider = new providers.Web3Provider(ethereumProvider);
 
         provider
           .getNetwork()
@@ -79,7 +78,7 @@ const overrideWindowEthereum = () => {
         const typedData = JSON.parse(typedDataStr);
         const type = RequestType.TYPED_SIGNATURE;
 
-        const provider = new providers.Web3Provider(window.ethereum);
+        const provider = new providers.Web3Provider(ethereumProvider);
         provider
           .getNetwork()
           .then(({ chainId }) => sendAndAwaitResponseFromStream(stream, { type, typedData, chainId }))
@@ -135,7 +134,7 @@ const overrideWindowEthereum = () => {
         const [transaction] = request?.params ?? [];
         if (!transaction) return Reflect.apply(target, thisArg, argumentsList);
 
-        const provider = new providers.Web3Provider(window.ethereum);
+        const provider = new providers.Web3Provider(ethereumProvider);
         const { chainId } = await provider.getNetwork();
 
         const isOk = await sendAndAwaitResponseFromStream(stream, { transaction, chainId });
@@ -149,7 +148,7 @@ const overrideWindowEthereum = () => {
 
         const typedData = JSON.parse(typedDataStr);
 
-        const provider = new providers.Web3Provider(window.ethereum);
+        const provider = new providers.Web3Provider(ethereumProvider);
         const { chainId } = await provider.getNetwork();
 
         const type = RequestType.TYPED_SIGNATURE;
@@ -178,14 +177,16 @@ const overrideWindowEthereum = () => {
     },
   };
 
-  const requestProxy = new Proxy(window.ethereum.request, requestHandler);
-  const sendProxy = new Proxy(window.ethereum.send, sendHandler);
-  const sendAsyncProxy = new Proxy(window.ethereum.sendAsync, sendAsyncHandler);
-
-  window.ethereum.request = requestProxy;
-  window.ethereum.send = sendProxy;
-  window.ethereum.sendAsync = sendAsyncProxy;
+  ethereumProvider.request = new Proxy(ethereumProvider.request, requestHandler);
+  ethereumProvider.send = new Proxy(ethereumProvider.send, sendHandler);
+  ethereumProvider.sendAsync = new Proxy(ethereumProvider.sendAsync, sendAsyncHandler);
 };
 
-overrideInterval = setInterval(overrideWindowEthereum, 100);
-overrideWindowEthereum();
+const proxyWindowEthereum = () => {
+  if (!window.ethereum) return;
+  clearInterval(proxyInterval);
+  proxyEthereumProvider(window.ethereum);
+};
+
+proxyInterval = setInterval(proxyWindowEthereum, 100);
+proxyWindowEthereum();
