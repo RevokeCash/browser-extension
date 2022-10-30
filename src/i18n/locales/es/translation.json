@@ -28,8 +28,8 @@
     "bypassed": "¡Este sitio web omitió el proceso de confirmación de Revoke.cash y te está pidiendo firmar un hash en <0>{{hostname}}</0>!"
   },
   "confirm_listing": {
-    "confirm": "¡Estás a punto de poner un artículo a la venta en {{platform}}!",
-    "bypassed": "¡Este sitio web omitió el proceso de confirmación de Revoke.cash y está intentando publicar un artículo a la venta en {{platform}}!",
+    "confirm": "¡Estás a punto de poner un artículo a la venta en <0>{{platform}}</0>!",
+    "bypassed": "¡Este sitio web omitió el proceso de confirmación de Revoke.cash y está intentando publicar un artículo a la venta en <0>{{platform}}</0>!",
     "you_sell": "Vendes",
     "you_receive": "Recibes (después de comisiones)"
   }

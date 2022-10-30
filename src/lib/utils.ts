@@ -4,7 +4,7 @@ import { formatUnits, getAddress, Interface } from 'ethers/lib/utils';
 import objectHash from 'object-hash';
 import { Duplex } from 'readable-stream';
 import Browser from 'webextension-polyfill';
-import { BYPASS_TYPES, OpenSeaItemType, Signature, SignatureIdentifier } from './constants';
+import { BYPASS_TYPES, NFT_MARKETPLACES, OpenSeaItemType, Signature, SignatureIdentifier } from './constants';
 import { NftListing } from './types';
 
 // https://learnersbucket.com/examples/javascript/unique-id-generator-in-javascript/
@@ -103,7 +103,8 @@ export const decodePermit = (typedData: any) => {
 export const decodeNftListing = (data: any) => {
   const listing = decodeOpenSeaListing(data) || decodeLooksRareListing(data);
 
-  const platform = data?.primaryType === 'MakerOrder' ? 'LooksRare' : 'OpenSea';
+  // Derive the platform from the domain's address or name
+  const platform = NFT_MARKETPLACES[data?.domain?.verifyingAddres?.toLowerCase()] ?? data?.domain?.name;
 
   return { platform, listing };
 };

@@ -28,8 +28,8 @@
     "bypassed": "该网站绕过了 Revoke.cash 确认过程，并要求你在<0>{{hostname}}</0>上签名哈希！"
   },
   "confirm_listing": {
-    "confirm": "您即将在{{platform}}上列出待售商品！",
-    "bypassed": "该网站绕过了 Revoke.cash 确认流程，并试图在{{platform}}上列出一个作品！",
+    "confirm": "您即将在<0>{{platform}}</0>上列出待售商品！",
+    "bypassed": "该网站绕过了 Revoke.cash 确认流程，并试图在<0>{{platform}}</0>上列出一个作品！",
     "you_sell": "你卖出",
     "you_receive": "你收到（扣除手续费）"
   }

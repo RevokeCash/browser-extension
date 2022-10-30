@@ -52,3 +52,8 @@ export const AllowList = {
   NFT_LISTING: ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io'],
   HASH_SIGNATURE: ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io', 'unstoppabledomains.com'],
 };
+
+export const NFT_MARKETPLACES: { [address: string]: string } = {
+  '0x00000000006c3852cbef3e08e8df289169ede581': 'OpenSea',
+  '0x59728544b08ab483533076417fbbb2fd0b17ce3a': 'LooksRare',
+};

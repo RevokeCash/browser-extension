@@ -34,11 +34,21 @@ const ConfirmListing = () => {
       {bypassed ? (
         <div className="w-[400px] text-center">
           <span className="font-bold uppercase">{t('common.warning')}</span>:{' '}
-          <Trans i18nKey="confirm_listing.bypassed" values={{ platform }} /> {t('common.proceed_with_caution')}
+          <Trans
+            i18nKey="confirm_listing.bypassed"
+            values={{ platform }}
+            components={[<span className="font-bold" />]}
+          />{' '}
+          {t('common.proceed_with_caution')}
         </div>
       ) : (
         <div className="w-[400px] text-center">
-          <Trans i18nKey="confirm_listing.confirm" values={{ platform }} /> {t('common.intention')}
+          <Trans
+            i18nKey="confirm_listing.confirm"
+            values={{ platform }}
+            components={[<span className="font-bold" />]}
+          />{' '}
+          {t('common.intention')}
         </div>
       )}
       <div className="flex flex-col items-center">
