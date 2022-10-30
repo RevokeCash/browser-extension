@@ -4,7 +4,15 @@ import { formatUnits, getAddress, Interface } from 'ethers/lib/utils';
 import objectHash from 'object-hash';
 import { Duplex } from 'readable-stream';
 import Browser from 'webextension-polyfill';
-import { BYPASS_TYPES, NFT_MARKETPLACES, OpenSeaItemType, Signature, SignatureIdentifier } from './constants';
+import {
+  Address,
+  BYPASS_TYPES,
+  NFT_MARKETPLACES,
+  OpenSeaItemType,
+  Signature,
+  SignatureIdentifier,
+  UNKNOWN_OPENSEA_ITEM,
+} from './constants';
 import { NftListing } from './types';
 
 // https://learnersbucket.com/examples/javascript/unique-id-generator-in-javascript/
@@ -101,10 +109,10 @@ export const decodePermit = (typedData: any) => {
 // TODO: Check contracts and update platforms accordingly
 
 export const decodeNftListing = (data: any) => {
-  const listing = decodeOpenSeaListing(data) || decodeLooksRareListing(data);
+  const listing = decodeOpenSeaListing(data) || decodeLooksRareListing(data) || decodeBlurListing(data);
 
   // Derive the platform from the domain's address or name
-  const platform = NFT_MARKETPLACES[data?.domain?.verifyingAddres?.toLowerCase()] ?? data?.domain?.name;
+  const platform = NFT_MARKETPLACES[data?.domain?.verifyingContract?.toLowerCase()] ?? data?.domain?.name;
 
   return { platform, listing };
 };
@@ -115,7 +123,7 @@ export const decodeOpenSeaListing = (data: any): NftListing | undefined => {
 
   const consideration = (data?.message?.consideration ?? []).filter((item: any) => item.recipient === offerer);
 
-  return { offerer, offer, consideration };
+  return { offer, consideration };
 };
 
 export const decodeLooksRareListing = (data: any): NftListing | undefined => {
@@ -128,7 +136,6 @@ export const decodeLooksRareListing = (data: any): NftListing | undefined => {
   const receiveAmount = ((BigInt(price) * BigInt(minPercentageToAsk)) / BigInt(10_000)).toString();
 
   // Normalise LooksRare listing format to match OpenSea's
-  const offerer = signer;
 
   const offer = [
     {
@@ -147,11 +154,51 @@ export const decodeLooksRareListing = (data: any): NftListing | undefined => {
       identifierOrCriteria: '0',
       startAmount: receiveAmount,
       endAmount: receiveAmount,
-      recipient: offerer,
+      recipient: signer,
     },
   ];
 
-  return { offerer, offer, consideration };
+  return { offer, consideration };
+};
+
+const decodeBlurListing = (data: any): NftListing | undefined => {
+  // Blur bulk listings (Root type) are undecodable -_-
+  if (data?.primaryType === 'Root') {
+    return { offer: [UNKNOWN_OPENSEA_ITEM], consideration: [UNKNOWN_OPENSEA_ITEM] };
+  }
+
+  if (data?.primaryType !== 'Order') return undefined;
+
+  const { trader, collection, tokenId, amount, paymentToken, price, fees } = data?.message ?? {};
+
+  const totalFeeRate = fees.reduce((total: bigint, fee: any) => BigInt(fee.rate) + total, BigInt(0));
+  const minPercentageToAsk = BigInt(10_000) - totalFeeRate;
+  const receiveAmount = ((BigInt(price) * BigInt(minPercentageToAsk)) / BigInt(10_000)).toString();
+
+  // Normalise Blur listing format to match OpenSea's
+
+  const offer = [
+    {
+      itemType: OpenSeaItemType.ERC1155, // Assume ERC1155 since that also works for ERC721
+      token: collection,
+      identifierOrCriteria: tokenId,
+      startAmount: amount,
+      endAmount: amount,
+    },
+  ];
+
+  const consideration = [
+    {
+      itemType: paymentToken === Address.ZERO ? OpenSeaItemType.ETHER : OpenSeaItemType.ERC20,
+      token: paymentToken,
+      identifierOrCriteria: '0',
+      startAmount: receiveAmount,
+      endAmount: receiveAmount,
+      recipient: trader,
+    },
+  ];
+
+  return { offer, consideration };
 };
 
 const BASIC_ERC20 = [
@@ -207,7 +254,7 @@ export const getOpenSeaItemTokenData = async (item: any, provider: providers.Pro
     return { display: `multiple ${tokenData.name} (${tokenData.symbol})`, asset: item.token };
   }
 
-  return { display: 'Unknown token' };
+  return { display: 'Unknown token(s)' };
 };
 
 export const getTokenData = async (address: string, provider: providers.Provider) => {

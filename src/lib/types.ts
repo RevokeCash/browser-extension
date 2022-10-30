@@ -7,7 +7,6 @@ export interface NftListingItem {
 }
 
 export interface NftListing {
-  offerer: string;
   offer: NftListingItem[];
   consideration: NftListingItem[];
 }

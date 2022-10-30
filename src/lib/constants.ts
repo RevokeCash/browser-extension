@@ -45,15 +45,25 @@ export const OpenSeaItemType = {
   ERC1155: '3',
   ERC721_CRITERIA: '4',
   ERC1155_CRITERIA: '5',
+  UNKNOWN: '-1',
+};
+
+export const UNKNOWN_OPENSEA_ITEM = {
+  itemType: OpenSeaItemType.UNKNOWN,
+  token: 'unknown',
+  identifierOrCriteria: 'unknown',
+  startAmount: 'unknown',
+  endAmount: 'unknown',
 };
 
 export const AllowList = {
   ALLOWANCE: [] as string[],
-  NFT_LISTING: ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io'],
+  NFT_LISTING: ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io', 'blur.io'],
   HASH_SIGNATURE: ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io', 'unstoppabledomains.com'],
 };
 
 export const NFT_MARKETPLACES: { [address: string]: string } = {
   '0x00000000006c3852cbef3e08e8df289169ede581': 'OpenSea',
   '0x59728544b08ab483533076417fbbb2fd0b17ce3a': 'LooksRare',
+  '0x000000000000ad05ccc4f10045630fb830b95127': 'Blur',
 };
