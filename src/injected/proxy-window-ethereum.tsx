@@ -5,6 +5,7 @@ import { Identifier, RequestType } from '../lib/constants';
 import { sendAndAwaitResponseFromStream } from '../lib/utils';
 
 declare let window: Window & {
+  [index: string]: any;
   ethereum?: any;
   coinbaseWalletExtension?: any;
 };
@@ -200,6 +201,10 @@ const proxyAllEthereumProviders = () => {
 
   // Proxy the window.coinbaseWalletExtension provider if it exists
   proxyEthereumProvider(window.coinbaseWalletExtension, 'window.coinbaseWalletExtension');
+
+  // Proxy providers used by Liquality (they have different providers per chain -_-)
+  const liqualityProviders = ['eth', 'rsk', 'bsc', 'polygon', 'arbitrum', 'fuse', 'avalanche', 'optimism'];
+  liqualityProviders.forEach((name) => proxyEthereumProvider(window[name], `window.${name}`));
 };
 
 proxyInterval = setInterval(proxyAllEthereumProviders, 100);
