@@ -179,9 +179,11 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
     },
   };
 
-  ethereumProvider.request = new Proxy(ethereumProvider.request, requestHandler);
-  ethereumProvider.send = new Proxy(ethereumProvider.send, sendHandler);
-  ethereumProvider.sendAsync = new Proxy(ethereumProvider.sendAsync, sendAsyncHandler);
+  Object.defineProperty(ethereumProvider, 'request', { value: new Proxy(ethereumProvider.request, requestHandler) });
+  Object.defineProperty(ethereumProvider, 'send', { value: new Proxy(ethereumProvider.send, sendHandler) });
+  Object.defineProperty(ethereumProvider, 'sendAsync', {
+    value: new Proxy(ethereumProvider.sendAsync, sendAsyncHandler),
+  });
   ethereumProvider.isRevokeCash = true;
   console.log('Added Revoke.cash to', name);
 };
