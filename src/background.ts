@@ -85,7 +85,7 @@ const processTransactionBypassCheckRequest = (message: any) => {
 };
 
 const processTypedSignatureRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
-  const { primaryType } = message?.data?.typedData;
+  const { primaryType } = message?.data?.typedData ?? {};
 
   const popupCreated =
     primaryType === 'Permit' ? await createAllowancePopup(message) : await createNftListingPopup(message);
@@ -100,7 +100,7 @@ const processTypedSignatureRequest = async (message: any, remotePort: Browser.Ru
 };
 
 const processTypedSignatureBypassCheckRequest = async (message: any) => {
-  const { primaryType } = message?.data?.typedData;
+  const { primaryType } = message?.data?.typedData ?? {};
 
   if (primaryType === 'Permit') {
     await createAllowancePopup(message);
