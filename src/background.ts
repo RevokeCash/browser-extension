@@ -137,7 +137,7 @@ const createAllowancePopup = async (message: any) => {
   if (!allowance) return false;
 
   const rpcUrl = getRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
-  const provider = new providers.JsonRpcProvider(rpcUrl);
+  const provider = new providers.JsonRpcProvider(rpcUrl, chainId);
 
   Promise.all([
     getTokenData(allowance.asset, provider),
@@ -188,7 +188,7 @@ const createNftListingPopup = async (message: any) => {
   if (!listing) return false;
 
   const rpcUrl = getRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
-  const provider = new providers.JsonRpcProvider(rpcUrl);
+  const provider = new providers.JsonRpcProvider(rpcUrl, chainId);
   const offerAssetPromises = listing.offer.map((item: any) => getOpenSeaItemTokenData(item, provider));
   // Display that they're getting 0 ETH if no consideration is included
   const considerationAssetPromises =
