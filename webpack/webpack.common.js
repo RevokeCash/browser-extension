@@ -18,7 +18,7 @@ module.exports = {
     'content-scripts/bypass-check': path.join(srcDir, 'content-scripts', 'bypass-check.tsx'),
     'content-scripts/inject-scripts': path.join(srcDir, 'content-scripts', 'inject-scripts.tsx'),
     'content-scripts/window-ethereum-messages': path.join(srcDir, 'content-scripts', 'window-ethereum-messages.tsx'),
-    'injected/proxy-window-ethereum': path.join(srcDir, 'injected', 'proxy-window-ethereum.tsx'),
+    'injected/proxy-injected-providers': path.join(srcDir, 'injected', 'proxy-injected-providers.tsx'),
   },
 
   output: {

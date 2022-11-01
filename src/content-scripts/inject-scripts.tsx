@@ -10,4 +10,4 @@ const addScript = (url: string) => {
 };
 
 addScript('js/vendor.js');
-addScript('js/injected/proxy-window-ethereum.js');
+addScript('js/injected/proxy-injected-providers.js');

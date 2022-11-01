@@ -56,10 +56,10 @@
   "web_accessible_resources": [
     {
       "matches": ["<all_urls>"],
-      "resources": ["js/injected/proxy-window-ethereum.js", "js/vendor.js"]
+      "resources": ["js/injected/proxy-injected-providers.js", "js/vendor.js"]
     }
   ],
-  "__firefox__web_accessible_resources": ["js/injected/proxy-window-ethereum.js", "js/vendor.js"],
+  "__firefox__web_accessible_resources": ["js/injected/proxy-injected-providers.js", "js/vendor.js"],
 
   "background": {
     "__chrome__service_worker": "js/background.js",
