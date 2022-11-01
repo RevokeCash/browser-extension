@@ -315,6 +315,7 @@ export function getExplorerUrl(chainId: number): string | undefined {
     [ChainId.SmartBitcoinCash]: 'https://smartscan.cash',
     [ChainId.Moonbeam]: 'https://moonbeam.moonscan.io',
     [ChainId.Moonriver]: 'https://moonriver.moonscan.io',
+    [42170]: 'https://nova.arbiscan.io',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
