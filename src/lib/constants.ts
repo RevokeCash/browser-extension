@@ -66,4 +66,5 @@ export const NFT_MARKETPLACES: { [address: string]: string } = {
   '0x00000000006c3852cbef3e08e8df289169ede581': 'OpenSea',
   '0x59728544b08ab483533076417fbbb2fd0b17ce3a': 'LooksRare',
   '0x000000000000ad05ccc4f10045630fb830b95127': 'Blur',
+  '0x2445a4e934af7c786755931610af099554ba1354': 'UneMeta',
 };
