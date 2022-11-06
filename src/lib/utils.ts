@@ -70,7 +70,7 @@ export const decodeApproval = (transaction: any) => {
     const iface = new Interface([`function ${Signature.approve}`]);
     const decoded = iface.decodeFunctionData(Signature.approve, data);
     const [spender, approval] = Array.from(decoded);
-    if (BigNumber.from(approval).isZero()) return undefined;
+    if (BigNumber.from(approval).isZero() || spender === Address.ZERO) return undefined;
     return { user, asset, spender };
   }
 
