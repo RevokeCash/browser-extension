@@ -171,6 +171,8 @@ const decodeBlurListing = (data: any): NftListing | undefined => {
 
   const { trader, collection, tokenId, amount, paymentToken, price, fees } = data?.message ?? {};
 
+  if (!trader || !collection || !tokenId || !amount || !paymentToken || !price || !fees) return undefined;
+
   const totalFeeRate = fees.reduce((total: bigint, fee: any) => BigInt(fee.rate) + total, BigInt(0));
   const minPercentageToAsk = BigInt(10_000) - totalFeeRate;
   const receiveAmount = ((BigInt(price) * BigInt(minPercentageToAsk)) / BigInt(10_000)).toString();
