@@ -4,7 +4,7 @@ import Browser from 'webextension-polyfill';
 import Button from '../components/Button';
 import Link from '../components/Link';
 import { Trans, useTranslation } from '../i18n';
-import { getExplorerUrl } from '../lib/utils';
+import { getChainExplorerUrl } from '../lib/utils/chains';
 import '../styles.css';
 
 const ConfirmListing = () => {
@@ -15,7 +15,7 @@ const ConfirmListing = () => {
   const considerationAssets = JSON.parse(params.get('considerationAssets')!);
   const platform = params.get('platform');
   const chainId = Number(params.get('chainId'));
-  const explorerUrl = getExplorerUrl(chainId);
+  const explorerUrl = getChainExplorerUrl(chainId);
   const bypassed = params.get('bypassed') === 'true';
 
   const respond = async (response: boolean) => {

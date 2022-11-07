@@ -4,7 +4,7 @@ import Browser from 'webextension-polyfill';
 import Button from '../components/Button';
 import Link from '../components/Link';
 import { Trans, useTranslation } from '../i18n';
-import { getExplorerUrl } from '../lib/utils';
+import { getChainExplorerUrl } from '../lib/utils/chains';
 import '../styles.css';
 
 const ConfirmAllowance = () => {
@@ -18,7 +18,7 @@ const ConfirmAllowance = () => {
   const name = params.get('name');
   const symbol = params.get('symbol');
   const spenderName = params.get('spenderName');
-  const explorerUrl = getExplorerUrl(chainId);
+  const explorerUrl = getChainExplorerUrl(chainId);
   const bypassed = params.get('bypassed') === 'true';
   const hostname = params.get('hostname');
 
