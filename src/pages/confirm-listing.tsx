@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import Browser from 'webextension-polyfill';
 import Button from '../components/Button';
 import Link from '../components/Link';
-import { Trans, useTranslation } from '../i18n';
+import WarningText from '../components/WarningText';
+import { useTranslation } from '../i18n';
+import { WarningType } from '../lib/constants';
 import { getChainExplorerUrl } from '../lib/utils/chains';
 import '../styles.css';
 
@@ -31,26 +33,7 @@ const ConfirmListing = () => {
       <div className="w-[360px]">
         <img src="/images/revoke.svg" alt="revoke.cash logo" width="360" />
       </div>
-      {bypassed ? (
-        <div className="w-[400px] text-center">
-          <span className="font-bold uppercase">{t('common.warning')}</span>:{' '}
-          <Trans
-            i18nKey="confirm_listing.bypassed"
-            values={{ platform }}
-            components={[<span className="font-bold" />]}
-          />{' '}
-          {t('common.proceed_with_caution')}
-        </div>
-      ) : (
-        <div className="w-[400px] text-center">
-          <Trans
-            i18nKey="confirm_listing.confirm"
-            values={{ platform }}
-            components={[<span className="font-bold" />]}
-          />{' '}
-          {t('common.intention')}
-        </div>
-      )}
+      <WarningText warningType={WarningType.LISTING} bypassed={bypassed} platform={platform!} />
       <div className="flex flex-col items-center">
         <div className="font-bold text-lg leading-tight">{t('confirm_listing.you_sell')}</div>
         <div className="flex flex-col items-center">

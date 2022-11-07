@@ -33,6 +33,12 @@ export const RequestType = {
   UNTYPED_SIGNATURE_BYPASS_CHECK: 'untyped-signature-bypass-check',
 };
 
+export enum WarningType {
+  ALLOWANCE = 'allowance',
+  LISTING = 'listing',
+  HASH = 'hash',
+}
+
 export const BYPASS_TYPES = [
   RequestType.TRANSACTION_BYPASS_CHECK,
   RequestType.TYPED_SIGNATURE_BYPASS_CHECK,
