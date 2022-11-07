@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import Browser from 'webextension-polyfill';
 import Button from '../components/Button';
 import Link from '../components/Link';
-import { Trans, useTranslation } from '../i18n';
+import WarningText from '../components/WarningText';
+import { useTranslation } from '../i18n';
+import { WarningType } from '../lib/constants';
 import { getChainExplorerUrl } from '../lib/utils/chains';
 import '../styles.css';
 
@@ -37,26 +39,7 @@ const ConfirmAllowance = () => {
       <div className="w-[360px]">
         <img src="/images/revoke.svg" alt="revoke.cash logo" width="360" />
       </div>
-      {bypassed ? (
-        <div className="w-[400px] text-center">
-          <span className="font-bold uppercase">{t('common.warning')}</span>:{' '}
-          <Trans
-            i18nKey="confirm_allowance.bypassed"
-            values={{ hostname }}
-            components={[<span className="font-bold" />]}
-          />{' '}
-          {t('common.proceed_with_caution')}
-        </div>
-      ) : (
-        <div className="w-[400px] text-center">
-          <Trans
-            i18nKey="confirm_allowance.confirm"
-            values={{ hostname }}
-            components={[<span className="font-bold" />]}
-          />{' '}
-          {t('common.intention')}
-        </div>
-      )}
+      <WarningText warningType={WarningType.ALLOWANCE} bypassed={bypassed} hostname={hostname!} />
       <div className="flex flex-col items-center">
         <div className="font-bold text-lg leading-tight">{t('confirm_allowance.asset')}</div>
         <div>
