@@ -1,7 +1,7 @@
 import { init, track } from '@amplitude/analytics-browser';
 import { providers } from 'ethers';
 import Browser from 'webextension-polyfill';
-import { AllowList, RequestType } from './lib/constants';
+import { AllowList, INFURA_API_KEY, RequestType } from './lib/constants';
 import { getChainRpcUrl } from './lib/utils/chains';
 import { decodeApproval, decodeNftListing, decodePermit } from './lib/utils/decode';
 import { isBypassMessage } from './lib/utils/messages';
@@ -131,7 +131,7 @@ const createAllowancePopup = async (message: any) => {
   const allowance = transaction ? decodeApproval(transaction) : decodePermit(typedData);
   if (!allowance) return false;
 
-  const rpcUrl = getChainRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
+  const rpcUrl = getChainRpcUrl(chainId, INFURA_API_KEY);
   const provider = new providers.JsonRpcProvider(rpcUrl, chainId);
 
   Promise.all([
@@ -182,7 +182,7 @@ const createNftListingPopup = async (message: any) => {
   const { platform, listing } = decodeNftListing(typedData);
   if (!listing) return false;
 
-  const rpcUrl = getChainRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
+  const rpcUrl = getChainRpcUrl(chainId, INFURA_API_KEY);
   const provider = new providers.JsonRpcProvider(rpcUrl, chainId);
   const offerAssetPromises = listing.offer.map((item: any) => getOpenSeaItemTokenData(item, provider));
   // Display that they're getting 0 ETH if no consideration is included

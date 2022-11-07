@@ -1,4 +1,5 @@
 import { ChainId, chains } from 'eth-chains';
+import { providers } from 'ethers';
 
 // ALL THE BELOW ARE COPIED FROM REVOKE.CASH AND SHOULD BE EXTRACTED AT SOME POINT
 
@@ -42,3 +43,10 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
   return overrides[chainId] ?? rpcUrl?.replace('${INFURA_API_KEY}', infuraKey);
 };
+
+export const getChainProvider = (chainId: number, infuraKey: string = ''): providers.Provider => {
+  const rpcUrl = getChainRpcUrl(chainId, infuraKey) ?? getChainRpcUrl(1, infuraKey);
+  return new providers.JsonRpcProvider(rpcUrl, chainId);
+};
+
+export const isSupportedChain = (chainId: number) => !!getChainRpcUrl(chainId);

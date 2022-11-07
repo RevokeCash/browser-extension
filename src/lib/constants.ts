@@ -75,3 +75,5 @@ export const NFT_MARKETPLACES: { [address: string]: string } = {
   '0x000000000000ad05ccc4f10045630fb830b95127': 'Blur',
   '0x2445a4e934af7c786755931610af099554ba1354': 'UneMeta',
 };
+
+export const INFURA_API_KEY = process.env.INFURA_API_KEY;
