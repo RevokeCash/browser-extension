@@ -1,7 +1,7 @@
 import { WindowPostMessageStream } from '@metamask/post-message-stream';
 import Browser from 'webextension-polyfill';
 import { Identifier, RequestType } from '../lib/constants';
-import { sendAndAwaitResponseFromPort } from '../lib/utils';
+import { sendAndAwaitResponseFromPort } from '../lib/utils/messages';
 
 // Connect to page
 const stream = new WindowPostMessageStream({

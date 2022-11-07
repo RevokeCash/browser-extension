@@ -1,19 +1,14 @@
 import { init, track } from '@amplitude/analytics-browser';
 import { providers } from 'ethers';
 import Browser from 'webextension-polyfill';
-import { getStorage, setStorage } from './lib/background-utils';
 import { AllowList, RequestType } from './lib/constants';
-import {
-  addressToAppName,
-  decodeApproval,
-  decodeNftListing,
-  decodePermit,
-  getOpenSeaItemTokenData,
-  getRpcUrl,
-  getTokenData,
-  isBypassMessage,
-  randomId,
-} from './lib/utils';
+import { getChainRpcUrl } from './lib/utils/chains';
+import { decodeApproval, decodeNftListing, decodePermit } from './lib/utils/decode';
+import { isBypassMessage } from './lib/utils/messages';
+import { randomId } from './lib/utils/misc';
+import { getStorage, setStorage } from './lib/utils/storage';
+import { getOpenSeaItemTokenData, getTokenData } from './lib/utils/tokens';
+import { addressToAppName } from './lib/utils/whois';
 
 // This is technically async, but it's safe to assume that this will complete before any tracking occurs
 if (process.env.AMPLITUDE_API_KEY) {
@@ -136,7 +131,7 @@ const createAllowancePopup = async (message: any) => {
   const allowance = transaction ? decodeApproval(transaction) : decodePermit(typedData);
   if (!allowance) return false;
 
-  const rpcUrl = getRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
+  const rpcUrl = getChainRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
   const provider = new providers.JsonRpcProvider(rpcUrl, chainId);
 
   Promise.all([
@@ -187,7 +182,7 @@ const createNftListingPopup = async (message: any) => {
   const { platform, listing } = decodeNftListing(typedData);
   if (!listing) return false;
 
-  const rpcUrl = getRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
+  const rpcUrl = getChainRpcUrl(chainId, '9aa3d95b3bc440fa88ea12eaa4456161');
   const provider = new providers.JsonRpcProvider(rpcUrl, chainId);
   const offerAssetPromises = listing.offer.map((item: any) => getOpenSeaItemTokenData(item, provider));
   // Display that they're getting 0 ETH if no consideration is included

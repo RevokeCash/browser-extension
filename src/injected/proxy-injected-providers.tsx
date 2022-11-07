@@ -2,7 +2,7 @@ import { WindowPostMessageStream } from '@metamask/post-message-stream';
 import { ethErrors } from 'eth-rpc-errors';
 import { providers } from 'ethers';
 import { Identifier, RequestType } from '../lib/constants';
-import { sendAndAwaitResponseFromStream } from '../lib/utils';
+import { sendAndAwaitResponseFromStream } from '../lib/utils/messages';
 
 declare let window: Window & {
   [index: string]: any;
