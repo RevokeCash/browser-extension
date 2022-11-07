@@ -1,14 +1,10 @@
 import { init, track } from '@amplitude/analytics-browser';
-import { providers } from 'ethers';
 import Browser from 'webextension-polyfill';
-import { AllowList, INFURA_API_KEY, RequestType } from './lib/constants';
-import { getChainRpcUrl } from './lib/utils/chains';
+import { AllowList, RequestType, WarningType } from './lib/constants';
 import { decodeApproval, decodeNftListing, decodePermit } from './lib/utils/decode';
 import { isBypassMessage } from './lib/utils/messages';
 import { randomId } from './lib/utils/misc';
 import { getStorage, setStorage } from './lib/utils/storage';
-import { getOpenSeaItemTokenData, getTokenData } from './lib/utils/tokens';
-import { addressToAppName } from './lib/utils/whois';
 
 // This is technically async, but it's safe to assume that this will complete before any tracking occurs
 if (process.env.AMPLITUDE_API_KEY) {
@@ -48,17 +44,17 @@ const setupRemoteConnection = async (remotePort: Browser.Runtime.Port) => {
 Browser.runtime.onConnect.addListener(setupRemoteConnection);
 
 Browser.runtime.onMessage.addListener((data) => {
-  const responsePort = messagePorts[data.id];
+  const responsePort = messagePorts[data.requestId];
 
-  track('Responded to request', { requestId: data.id, response: data.response });
+  track('Responded to request', data);
 
   if (data.response) {
-    approvedMessages.push(data.id);
+    approvedMessages.push(data.requestId);
   }
 
   if (responsePort) {
-    responsePort.postMessage({ id: data.id, data: data.response });
-    delete messagePorts[data.id];
+    responsePort.postMessage(data);
+    delete messagePorts[data.requestId];
     return;
   }
 });
@@ -131,23 +127,17 @@ const createAllowancePopup = async (message: any) => {
   const allowance = transaction ? decodeApproval(transaction) : decodePermit(typedData);
   if (!allowance) return false;
 
-  const rpcUrl = getChainRpcUrl(chainId, INFURA_API_KEY);
-  const provider = new providers.JsonRpcProvider(rpcUrl, chainId);
-
   Promise.all([
-    getTokenData(allowance.asset, provider),
-    addressToAppName(allowance.spender, chainId),
     Browser.windows.getCurrent(),
-  ]).then(async ([tokenData, spenderName, window]) => {
+    new Promise((resolve) => setTimeout(resolve, 100)), // Add a slight delay to prevent weird window positioning
+  ]).then(async ([window]) => {
     const bypassed = isBypassMessage(message);
     const queryString = new URLSearchParams({
-      id: message.id,
+      type: WarningType.ALLOWANCE,
+      requestId: message.id,
       asset: allowance.asset,
       spender: allowance.spender,
       chainId,
-      name: tokenData.name ?? '',
-      symbol: tokenData.symbol ?? '',
-      spenderName: spenderName ?? '',
       bypassed: String(bypassed),
       hostname,
     }).toString();
@@ -157,7 +147,7 @@ const createAllowancePopup = async (message: any) => {
     const positions = getPopupPositions(window, 2, bypassed);
 
     const popupWindow = await Browser.windows.create({
-      url: `confirm-allowance.html?${queryString}`,
+      url: `confirm.html?${queryString}`,
       type: 'popup',
       ...positions,
     });
@@ -182,25 +172,15 @@ const createNftListingPopup = async (message: any) => {
   const { platform, listing } = decodeNftListing(typedData);
   if (!listing) return false;
 
-  const rpcUrl = getChainRpcUrl(chainId, INFURA_API_KEY);
-  const provider = new providers.JsonRpcProvider(rpcUrl, chainId);
-  const offerAssetPromises = listing.offer.map((item: any) => getOpenSeaItemTokenData(item, provider));
-  // Display that they're getting 0 ETH if no consideration is included
-  const considerationAssetPromises =
-    listing.consideration.length > 0
-      ? listing.consideration.map((item: any) => getOpenSeaItemTokenData(item, provider))
-      : [{ display: '0.0 ETH' }];
-
   Promise.all([
-    Promise.all(offerAssetPromises),
-    Promise.all(considerationAssetPromises),
     Browser.windows.getCurrent(),
-  ]).then(async ([offerAssets, considerationAssets, window]) => {
+    new Promise((resolve) => setTimeout(resolve, 100)), // Add a slight delay to prevent weird window positioning
+  ]).then(async ([window]) => {
     const bypassed = isBypassMessage(message);
     const queryString = new URLSearchParams({
-      id: message.id,
-      offerAssets: JSON.stringify(offerAssets),
-      considerationAssets: JSON.stringify(considerationAssets),
+      type: WarningType.LISTING,
+      requestId: message.id,
+      listing: JSON.stringify(listing),
       platform,
       chainId,
       bypassed: String(bypassed),
@@ -209,10 +189,10 @@ const createNftListingPopup = async (message: any) => {
 
     track('NFT listing requested', { requestId: message.id, chainId, hostname, platform, listing });
 
-    const positions = getPopupPositions(window, offerAssets.length + considerationAssets.length, bypassed);
+    const positions = getPopupPositions(window, listing.offer.length + listing.consideration.length, bypassed);
 
     const popupWindow = await Browser.windows.create({
-      url: `confirm-listing.html?${queryString}`,
+      url: `confirm.html?${queryString}`,
       type: 'popup',
       ...positions,
     });
@@ -243,7 +223,8 @@ const createHashSignaturePopup = async (message: any) => {
   ]).then(async ([window]) => {
     const bypassed = isBypassMessage(message);
     const queryString = new URLSearchParams({
-      id: message.id,
+      type: WarningType.HASH,
+      requestId: message.id,
       bypassed: String(bypassed),
       hostname,
     }).toString();
@@ -253,7 +234,7 @@ const createHashSignaturePopup = async (message: any) => {
     const positions = getPopupPositions(window, 0, bypassed);
 
     const popupWindow = await Browser.windows.create({
-      url: `confirm-hash-signature.html?${queryString}`,
+      url: `confirm.html?${queryString}`,
       type: 'popup',
       ...positions,
     });

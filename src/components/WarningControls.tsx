@@ -1,7 +1,6 @@
 import React from 'react';
 import Browser from 'webextension-polyfill';
 import { useTranslation } from '../i18n';
-import '../styles.css';
 import Button from './Button';
 
 interface Props {
@@ -13,7 +12,7 @@ const WarningControls = ({ bypassed, requestId }: Props) => {
   const { t } = useTranslation();
 
   const respond = async (response: boolean) => {
-    await Browser.runtime.sendMessage(undefined, { id: requestId, response });
+    await Browser.runtime.sendMessage(undefined, { requestId, response });
     window.close();
   };
 

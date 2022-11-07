@@ -4,11 +4,12 @@ import {
   Address,
   NFT_MARKETPLACES,
   OpenSeaItemType,
+  PlaceHolderItem,
   Signature,
   SignatureIdentifier,
-  UNKNOWN_OPENSEA_ITEM,
+  WarningType,
 } from '../constants';
-import { NftListing } from '../types';
+import { NftListing, WarningData } from '../types';
 
 export const decodeApproval = (transaction: any) => {
   if (!transaction || !transaction.data || !transaction.to || !transaction.from) return undefined;
@@ -113,7 +114,7 @@ export const decodeLooksRareListing = (data: any): NftListing | undefined => {
 const decodeBlurListing = (data: any): NftListing | undefined => {
   // Blur bulk listings (Root type) are undecodable -_-
   if (data?.primaryType === 'Root') {
-    return { offer: [UNKNOWN_OPENSEA_ITEM], consideration: [UNKNOWN_OPENSEA_ITEM] };
+    return { offer: [PlaceHolderItem.UNKNOWN], consideration: [PlaceHolderItem.UNKNOWN] };
   }
 
   if (data?.primaryType !== 'Order') return undefined;
@@ -150,4 +151,34 @@ const decodeBlurListing = (data: any): NftListing | undefined => {
   ];
 
   return { offer, consideration };
+};
+
+export const decodeWarningData = (params: URLSearchParams): WarningData | undefined => {
+  const type = params.get('type');
+  const requestId = params.get('requestId');
+  const hostname = params.get('hostname');
+  const bypassed = params.get('bypassed') === 'true';
+  const chainId = Number(params.get('chainId'));
+  const platform = params.get('platform');
+  const asset = params.get('asset');
+  const spender = params.get('spender');
+
+  let listing;
+  try {
+    listing = JSON.parse(params.get('listing') || '');
+  } catch {}
+
+  if (!type || !requestId || !hostname) return undefined;
+
+  if (type === WarningType.ALLOWANCE) {
+    if (!chainId || !asset || !spender) return undefined;
+    return { type, requestId, bypassed, hostname, chainId, asset, spender };
+  } else if (type === WarningType.LISTING) {
+    if (!chainId || !listing || !platform) return undefined;
+    return { type, requestId, bypassed, hostname, chainId, listing, platform };
+  } else if (type === WarningType.HASH) {
+    return { type, requestId, bypassed, hostname };
+  }
+
+  return undefined;
 };

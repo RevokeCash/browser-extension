@@ -1,6 +1,7 @@
 import { Contract, providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { OpenSeaItemType } from '../constants';
+import { NftListingItem } from '../types';
 
 const BASIC_ERC20 = [
   {
@@ -32,7 +33,7 @@ const BASIC_ERC20 = [
   },
 ];
 
-export const getOpenSeaItemTokenData = async (item: any, provider: providers.Provider) => {
+export const getNftListingItemTokenData = async (item: NftListingItem, provider: providers.Provider) => {
   // Some scammers use an incorrect interface using numbers so we convert it to string
   const itemType = String(item.itemType);
 

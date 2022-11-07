@@ -1,3 +1,10 @@
+export const Urls = {
+  REVOKE_CASH: 'https://revoke.cash',
+  DISCORD: 'https://discord.gg/revoke-cash',
+  TWITTER: 'https://twitter.com/RevokeCash',
+  GITHUB: 'https://github.com/RevokeCash/browser-extension',
+};
+
 export const Identifier = {
   INPAGE: 'revoke-inpage',
   CONTENT_SCRIPT: 'revoke-contentscript',
@@ -55,12 +62,21 @@ export const OpenSeaItemType = {
   UNKNOWN: '-1',
 };
 
-export const UNKNOWN_OPENSEA_ITEM = {
-  itemType: OpenSeaItemType.UNKNOWN,
-  token: 'unknown',
-  identifierOrCriteria: 'unknown',
-  startAmount: 'unknown',
-  endAmount: 'unknown',
+export const PlaceHolderItem = {
+  UNKNOWN: {
+    itemType: OpenSeaItemType.UNKNOWN,
+    token: 'unknown',
+    identifierOrCriteria: 'unknown',
+    startAmount: 'unknown',
+    endAmount: 'unknown',
+  },
+  ZERO_ETH: {
+    itemType: OpenSeaItemType.ETHER,
+    token: '',
+    identifierOrCriteria: '',
+    startAmount: '0',
+    endAmount: '0',
+  },
 };
 
 export const AllowList = {
