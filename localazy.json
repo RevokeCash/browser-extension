@@ -1,0 +1,28 @@
+{
+  "upload": {
+    "type": "json",
+    "files": [
+      {
+        "pattern": "src/i18n/locales/en/*.json",
+        "lang": "inherited"
+      },
+      {
+        "group": "existing",
+        "pattern": "src/i18n/locales/*/*.json",
+        "lang": "${autodetectLang}"
+      }
+    ]
+  },
+
+  "download": {
+    "files": [
+      {
+        "output": "src/i18n/locales/${langLrsUnderscore}/${file}"
+      }
+    ],
+    "includeSourceLang": true,
+    "langAliases": {
+      "zh-Hans-CN": "zh-CN"
+    }
+  }
+}

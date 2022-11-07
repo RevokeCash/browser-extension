@@ -1,36 +1,37 @@
 {
   "common": {
-    "reject": "Reject",
     "continue": "Continue",
     "dismiss": "Dismiss",
-    "warning": "Warning",
-    "proceed_with_caution": "Proceed with caution.",
+    "error_occurred": "An error occurred while trying to create a Revoke.cash popup. Please reach out about this in our <0>Discord</0>.",
     "intention": "Please make sure this is your intention.",
-    "trust_website": "Please make sure you trust this website."
-  },
-  "popup": {
-    "version": "Version",
-    "settings": {
-      "approvals": "Warn on approvals",
-      "listings": "Warn on NFT listings",
-      "hash_signatures": "Warn on hash signatures"
-    }
+    "proceed_with_caution": "Proceed with caution.",
+    "reject": "Reject",
+    "trust_website": "Please make sure you trust this website.",
+    "warning": "Warning"
   },
   "confirm_allowance": {
-    "confirm": "You are about to approve an allowance on <0>{{hostname}}</0>!",
-    "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to request an allowance on <0>{{hostname}}</0>!",
     "asset": "Asset",
+    "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to request an allowance on <0>{{hostname}}</0>!",
+    "confirm": "You are about to approve an allowance on <0>{{hostname}}</0>!",
     "spender": "Spender"
   },
   "confirm_hash": {
-    "explanation": "This can be used to list NFTs for sale or authorize asset transfers.",
+    "bypassed": "This website bypassed the Revoke.cash confirmation process and is asking you to sign a hash on <0>{{hostname}}</0>!",
     "confirm": "You are about to sign a hash on <0>{{hostname}}</0>!",
-    "bypassed": "This website bypassed the Revoke.cash confirmation process and is asking you to sign a hash on <0>{{hostname}}</0>!"
+    "explanation": "This can be used to list NFTs for sale or authorize asset transfers."
   },
   "confirm_listing": {
-    "confirm": "You are about to list an item for sale on <0>{{platform}}</0>!",
     "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to list an item for sale on <0>{{platform}}</0>!",
-    "you_sell": "You sell",
-    "you_receive": "You receive (after fees)"
+    "confirm": "You are about to list an item for sale on <0>{{platform}}</0>!",
+    "you_receive": "You receive (after fees)",
+    "you_sell": "You sell"
+  },
+  "popup": {
+    "settings": {
+      "approvals": "Warn on approvals",
+      "hash_signatures": "Warn on hash signatures",
+      "listings": "Warn on NFT listings"
+    },
+    "version": "Version"
   }
 }

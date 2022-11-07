@@ -1,8 +1,8 @@
 {
-  "name": {
-    "message": "Revoke.cash - web3 scam protection"
-  },
   "description": {
     "message": "The Revoke.cash browser extension helps protect you from common crypto scams."
+  },
+  "name": {
+    "message": "Revoke.cash - web3 scam protection"
   }
 }
