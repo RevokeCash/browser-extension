@@ -31,26 +31,17 @@ export const Address = {
   ZERO: '0x0000000000000000000000000000000000000000',
 };
 
-export const RequestType = {
-  TRANSACTION: 'transaction',
-  TYPED_SIGNATURE: 'typed-signature',
-  UNTYPED_SIGNATURE: 'untyped-signature',
-  TRANSACTION_BYPASS_CHECK: 'transaction-bypass-check',
-  TYPED_SIGNATURE_BYPASS_CHECK: 'typed-signature-bypass-check',
-  UNTYPED_SIGNATURE_BYPASS_CHECK: 'untyped-signature-bypass-check',
-};
+export enum RequestType {
+  TRANSACTION = 'transaction',
+  TYPED_SIGNATURE = 'typed-signature',
+  UNTYPED_SIGNATURE = 'untyped-signature',
+}
 
 export enum WarningType {
   ALLOWANCE = 'allowance',
   LISTING = 'listing',
   HASH = 'hash',
 }
-
-export const BYPASS_TYPES = [
-  RequestType.TRANSACTION_BYPASS_CHECK,
-  RequestType.TYPED_SIGNATURE_BYPASS_CHECK,
-  RequestType.UNTYPED_SIGNATURE_BYPASS_CHECK,
-];
 
 export const OpenSeaItemType = {
   ETHER: '0',

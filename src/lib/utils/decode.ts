@@ -9,9 +9,9 @@ import {
   SignatureIdentifier,
   WarningType,
 } from '../constants';
-import { NftListing, WarningData } from '../types';
+import { NftListing, Transaction, TypedData, WarningData } from '../types';
 
-export const decodeApproval = (transaction: any) => {
+export const decodeApproval = (transaction: Transaction) => {
   if (!transaction || !transaction.data || !transaction.to || !transaction.from) return undefined;
 
   const { data, from: user, to: asset } = transaction;
@@ -43,7 +43,7 @@ export const decodeApproval = (transaction: any) => {
   return undefined;
 };
 
-export const decodePermit = (typedData: any) => {
+export const decodePermit = (typedData: TypedData) => {
   if (!typedData || !typedData.domain?.verifyingContract || !typedData.message) return undefined;
   if (typedData.primaryType !== 'Permit') return undefined;
 
@@ -58,28 +58,29 @@ export const decodePermit = (typedData: any) => {
 
 // TODO: Check contracts and update platforms accordingly
 
-export const decodeNftListing = (data: any) => {
-  const listing = decodeOpenSeaListing(data) || decodeLooksRareListing(data) || decodeBlurListing(data);
+export const decodeNftListing = (typedData: TypedData) => {
+  const listing = decodeOpenSeaListing(typedData) || decodeLooksRareListing(typedData) || decodeBlurListing(typedData);
 
   // Derive the platform from the domain's address or name
-  const platform = NFT_MARKETPLACES[data?.domain?.verifyingContract?.toLowerCase()] ?? data?.domain?.name;
+  const marketplaceAddress = typedData?.domain?.verifyingContract;
+  const platform = NFT_MARKETPLACES[marketplaceAddress?.toLowerCase() ?? ''] ?? typedData?.domain?.name;
 
   return { platform, listing };
 };
 
-export const decodeOpenSeaListing = (data: any): NftListing | undefined => {
-  const { offer, offerer } = data?.message ?? {};
+export const decodeOpenSeaListing = (typedData: TypedData): NftListing | undefined => {
+  const { offer, offerer } = typedData?.message ?? {};
   if (!offer || !offerer) return undefined;
 
-  const consideration = (data?.message?.consideration ?? []).filter((item: any) => item.recipient === offerer);
+  const consideration = (typedData?.message?.consideration ?? []).filter((item: any) => item.recipient === offerer);
 
   return { offer, consideration };
 };
 
-export const decodeLooksRareListing = (data: any): NftListing | undefined => {
-  if (data?.primaryType !== 'MakerOrder') return undefined;
+export const decodeLooksRareListing = (typedData: TypedData): NftListing | undefined => {
+  if (typedData?.primaryType !== 'MakerOrder') return undefined;
 
-  const { signer, collection, tokenId, amount, price, currency, minPercentageToAsk } = data?.message ?? {};
+  const { signer, collection, tokenId, amount, price, currency, minPercentageToAsk } = typedData?.message ?? {};
 
   if (!signer || !collection || !tokenId || !amount || !price || !currency || !minPercentageToAsk) return undefined;
 
@@ -111,15 +112,15 @@ export const decodeLooksRareListing = (data: any): NftListing | undefined => {
   return { offer, consideration };
 };
 
-const decodeBlurListing = (data: any): NftListing | undefined => {
+const decodeBlurListing = (typedData: TypedData): NftListing | undefined => {
   // Blur bulk listings (Root type) are undecodable -_-
-  if (data?.primaryType === 'Root') {
+  if (typedData?.primaryType === 'Root') {
     return { offer: [PlaceHolderItem.UNKNOWN], consideration: [PlaceHolderItem.UNKNOWN] };
   }
 
-  if (data?.primaryType !== 'Order') return undefined;
+  if (typedData?.primaryType !== 'Order') return undefined;
 
-  const { trader, collection, tokenId, amount, paymentToken, price, fees } = data?.message ?? {};
+  const { trader, collection, tokenId, amount, paymentToken, price, fees } = typedData?.message ?? {};
 
   if (!trader || !collection || !tokenId || !amount || !paymentToken || !price || !fees) return undefined;
 

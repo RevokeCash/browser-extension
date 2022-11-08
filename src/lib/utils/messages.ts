@@ -1,16 +1,17 @@
 import objectHash from 'object-hash';
 import { Duplex } from 'readable-stream';
 import Browser from 'webextension-polyfill';
-import { BYPASS_TYPES } from '../constants';
+import { RequestType } from '../constants';
+import { InPageMessageData, MessageData, MessageResponse } from '../types';
 
 // TODO: Timeout
-export const sendAndAwaitResponseFromStream = (stream: Duplex, data: any): Promise<any> => {
+export const sendToStreamAndAwaitResponse = (stream: Duplex, data: InPageMessageData): Promise<boolean> => {
   return new Promise((resolve) => {
-    const id = objectHash(data.transaction ?? data.typedData ?? data.message ?? data);
-    stream.write({ id, data });
+    const requestId = generateMessageId(data);
+    stream.write({ requestId, data });
 
-    const callback = (response: any) => {
-      if (response.id === id) {
+    const callback = (response: MessageResponse) => {
+      if (response.requestId === requestId) {
         stream.off('data', callback);
         resolve(response.data);
       }
@@ -21,13 +22,13 @@ export const sendAndAwaitResponseFromStream = (stream: Duplex, data: any): Promi
 };
 
 // TODO: Timeout
-export const sendAndAwaitResponseFromPort = (stream: Browser.Runtime.Port, data: any): Promise<any> => {
+export const sendToPortAndAwaitResponse = (stream: Browser.Runtime.Port, data: MessageData): Promise<boolean> => {
   return new Promise((resolve) => {
-    const id = objectHash(data.transaction ?? data.typedData ?? data.message ?? data);
-    stream.postMessage({ id, data });
+    const requestId = generateMessageId(data);
+    stream.postMessage({ requestId, data });
 
-    const callback = (response: any) => {
-      if (response.id === id) {
+    const callback = (response: MessageResponse) => {
+      if (response.requestId === requestId) {
         stream.onMessage.removeListener(callback);
         resolve(response.data);
       }
@@ -37,4 +38,14 @@ export const sendAndAwaitResponseFromPort = (stream: Browser.Runtime.Port, data:
   });
 };
 
-export const isBypassMessage = (message: any) => BYPASS_TYPES.includes(message?.data?.type);
+export const sendToPortAndDisregard = (stream: Browser.Runtime.Port, data: MessageData): void => {
+  const requestId = generateMessageId(data);
+  stream.postMessage({ requestId, data });
+};
+
+const generateMessageId = (data: InPageMessageData | MessageData) => {
+  if (data.type === RequestType.TRANSACTION) return objectHash(data.transaction);
+  if (data.type === RequestType.TYPED_SIGNATURE) return objectHash(data.typedData);
+  if (data.type === RequestType.UNTYPED_SIGNATURE) return objectHash(data.message);
+  return objectHash(data);
+};

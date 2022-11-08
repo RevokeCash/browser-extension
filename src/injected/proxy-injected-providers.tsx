@@ -2,7 +2,7 @@ import { WindowPostMessageStream } from '@metamask/post-message-stream';
 import { ethErrors } from 'eth-rpc-errors';
 import { providers } from 'ethers';
 import { Identifier, RequestType } from '../lib/constants';
-import { sendAndAwaitResponseFromStream } from '../lib/utils/messages';
+import { sendToStreamAndAwaitResponse } from '../lib/utils/messages';
 
 declare let window: Window & {
   [index: string]: any;
@@ -53,11 +53,11 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
         const [transaction] = request?.params ?? [];
         if (!transaction) return Reflect.apply(target, thisArg, argumentsList);
 
+        const type = RequestType.TRANSACTION;
         const provider = new providers.Web3Provider(ethereumProvider);
-
         provider
           .getNetwork()
-          .then(({ chainId }) => sendAndAwaitResponseFromStream(stream, { transaction, chainId }))
+          .then(({ chainId }) => sendToStreamAndAwaitResponse(stream, { type, transaction, chainId }))
           .then((isOk) => {
             if (isOk) {
               return Reflect.apply(target, thisArg, argumentsList);
@@ -78,12 +78,12 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
         if (!address || !typedDataStr) return Reflect.apply(target, thisArg, argumentsList);
 
         const typedData = JSON.parse(typedDataStr);
-        const type = RequestType.TYPED_SIGNATURE;
 
+        const type = RequestType.TYPED_SIGNATURE;
         const provider = new providers.Web3Provider(ethereumProvider);
         provider
           .getNetwork()
-          .then(({ chainId }) => sendAndAwaitResponseFromStream(stream, { type, typedData, chainId }))
+          .then(({ chainId }) => sendToStreamAndAwaitResponse(stream, { type, typedData, chainId }))
           .then((isOk) => {
             if (isOk) {
               return Reflect.apply(target, thisArg, argumentsList);
@@ -105,9 +105,9 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
 
         // if the first parameter is the address, the second is the message, otherwise the first is the message
         const message = String(first).replace(/0x/, '').length === 40 ? second : first;
-        const type = RequestType.UNTYPED_SIGNATURE;
 
-        sendAndAwaitResponseFromStream(stream, { type, message }).then((isOk) => {
+        const type = RequestType.UNTYPED_SIGNATURE;
+        sendToStreamAndAwaitResponse(stream, { type, message }).then((isOk) => {
           if (isOk) {
             return Reflect.apply(target, thisArg, argumentsList);
           } else {
@@ -139,7 +139,8 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
         const provider = new providers.Web3Provider(ethereumProvider);
         const { chainId } = await provider.getNetwork();
 
-        const isOk = await sendAndAwaitResponseFromStream(stream, { transaction, chainId });
+        const type = RequestType.TRANSACTION;
+        const isOk = await sendToStreamAndAwaitResponse(stream, { type, transaction, chainId });
 
         if (!isOk) {
           throw ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied transaction signature.');
@@ -154,7 +155,7 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
         const { chainId } = await provider.getNetwork();
 
         const type = RequestType.TYPED_SIGNATURE;
-        const isOk = await sendAndAwaitResponseFromStream(stream, { type, typedData, chainId });
+        const isOk = await sendToStreamAndAwaitResponse(stream, { type, typedData, chainId });
 
         if (!isOk) {
           throw ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied message signature.');
@@ -167,8 +168,7 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
         const message = String(first).replace(/0x/, '').length === 40 ? second : first;
 
         const type = RequestType.UNTYPED_SIGNATURE;
-
-        const isOk = await sendAndAwaitResponseFromStream(stream, { type, message });
+        const isOk = await sendToStreamAndAwaitResponse(stream, { type, message });
 
         if (!isOk) {
           throw ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied message signature.');

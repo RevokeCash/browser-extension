@@ -1,7 +1,8 @@
 import { WindowPostMessageStream } from '@metamask/post-message-stream';
 import Browser from 'webextension-polyfill';
-import { Identifier, RequestType } from '../lib/constants';
-import { sendAndAwaitResponseFromPort } from '../lib/utils/messages';
+import { Identifier } from '../lib/constants';
+import { InPageMessage } from '../lib/types';
+import { sendToPortAndAwaitResponse } from '../lib/utils/messages';
 
 // Connect to page
 const stream = new WindowPostMessageStream({
@@ -9,15 +10,13 @@ const stream = new WindowPostMessageStream({
   target: Identifier.INPAGE,
 });
 
-stream.on('data', (data) => {
+stream.on('data', (message: InPageMessage) => {
   // Connect to background script
   const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
 
   // Forward received messages to background.js
   const { hostname } = location;
-  sendAndAwaitResponseFromPort(extensionPort, { type: RequestType.TRANSACTION, hostname, ...data.data }).then(
-    (response) => {
-      stream.write({ id: data.id, data: response });
-    }
-  );
+  sendToPortAndAwaitResponse(extensionPort, { ...message.data, hostname }).then((response) => {
+    stream.write({ requestId: message.requestId, data: response });
+  });
 });
