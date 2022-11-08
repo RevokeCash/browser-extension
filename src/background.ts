@@ -1,8 +1,14 @@
 import { init, track } from '@amplitude/analytics-browser';
 import Browser from 'webextension-polyfill';
 import { AllowList, RequestType, WarningType } from './lib/constants';
+import {
+  Message,
+  MessageResponse,
+  TransactionMessage,
+  TypedSignatureMessage,
+  UntypedSignatureMessage,
+} from './lib/types';
 import { decodeApproval, decodeNftListing, decodePermit } from './lib/utils/decode';
-import { isBypassMessage } from './lib/utils/messages';
 import { randomId } from './lib/utils/misc';
 import { getStorage, setStorage } from './lib/utils/storage';
 
@@ -24,125 +30,110 @@ const messagePorts: { [index: string]: Browser.Runtime.Port } = {};
 const approvedMessages: string[] = [];
 
 const setupRemoteConnection = async (remotePort: Browser.Runtime.Port) => {
-  remotePort.onMessage.addListener((message) => {
+  remotePort.onMessage.addListener((message: Message) => {
     if (message.data.type === RequestType.TRANSACTION) {
-      return processTransactionRequest(message, remotePort);
-    } else if (message.data.type === RequestType.TRANSACTION_BYPASS_CHECK) {
-      return processTransactionBypassCheckRequest(message);
+      return processTransactionRequest(message as TransactionMessage, remotePort);
     } else if (message.data.type === RequestType.TYPED_SIGNATURE) {
-      return processTypedSignatureRequest(message, remotePort);
-    } else if (message.data.type === RequestType.TYPED_SIGNATURE_BYPASS_CHECK) {
-      return processTypedSignatureBypassCheckRequest(message);
+      return processTypedSignatureRequest(message as TypedSignatureMessage, remotePort);
     } else if (message.data.type === RequestType.UNTYPED_SIGNATURE) {
-      return processUntypedSignatureRequest(message, remotePort);
-    } else if (message.data.type === RequestType.UNTYPED_SIGNATURE_BYPASS_CHECK) {
-      return processUntypedSignatureBypassCheckRequest(message);
+      return processUntypedSignatureRequest(message as UntypedSignatureMessage, remotePort);
     }
   });
 };
 
 Browser.runtime.onConnect.addListener(setupRemoteConnection);
 
-Browser.runtime.onMessage.addListener((data) => {
-  const responsePort = messagePorts[data.requestId];
+Browser.runtime.onMessage.addListener((response: MessageResponse) => {
+  const responsePort = messagePorts[response.requestId];
 
-  track('Responded to request', data);
+  track('Responded to request', { requestId: response.requestId, response: response.data });
 
-  if (data.response) {
-    approvedMessages.push(data.requestId);
+  if (response.data) {
+    approvedMessages.push(response.requestId);
   }
 
   if (responsePort) {
-    responsePort.postMessage(data);
-    delete messagePorts[data.requestId];
+    responsePort.postMessage(response);
+    delete messagePorts[response.requestId];
     return;
   }
 });
 
-const processTransactionRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
+const processTransactionRequest = async (message: TransactionMessage, remotePort: Browser.Runtime.Port) => {
   const popupCreated = await createAllowancePopup(message);
 
+  if (message.data.bypassed) return;
+
   if (!popupCreated) {
-    remotePort.postMessage({ id: message.id, data: true });
+    remotePort.postMessage({ requestId: message.requestId, data: true });
     return;
   }
 
   // Store the remote port so the response can be sent back there
-  messagePorts[message.id] = remotePort;
+  messagePorts[message.requestId] = remotePort;
 };
 
-const processTransactionBypassCheckRequest = (message: any) => {
-  createAllowancePopup(message);
-};
-
-const processTypedSignatureRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
+const processTypedSignatureRequest = async (message: TypedSignatureMessage, remotePort: Browser.Runtime.Port) => {
   const { primaryType } = message?.data?.typedData ?? {};
 
   const popupCreated =
     primaryType === 'Permit' ? await createAllowancePopup(message) : await createNftListingPopup(message);
 
+  if (message.data.bypassed) return;
+
   if (!popupCreated) {
-    remotePort.postMessage({ id: message.id, data: true });
+    remotePort.postMessage({ requestId: message.requestId, data: true });
     return;
   }
 
   // Store the remote port so the response can be sent back there
-  messagePorts[message.id] = remotePort;
+  messagePorts[message.requestId] = remotePort;
 };
 
-const processTypedSignatureBypassCheckRequest = async (message: any) => {
-  const { primaryType } = message?.data?.typedData ?? {};
-
-  if (primaryType === 'Permit') {
-    await createAllowancePopup(message);
-  } else {
-    await createNftListingPopup(message);
-  }
-};
-
-const processUntypedSignatureRequest = async (message: any, remotePort: Browser.Runtime.Port) => {
+const processUntypedSignatureRequest = async (message: UntypedSignatureMessage, remotePort: Browser.Runtime.Port) => {
   const popupCreated = await createHashSignaturePopup(message);
 
+  if (message.data.bypassed) return;
+
   if (!popupCreated) {
-    remotePort.postMessage({ id: message.id, data: true });
+    remotePort.postMessage({ requestId: message.requestId, data: true });
     return;
   }
 
   // Store the remote port so the response can be sent back there
-  messagePorts[message.id] = remotePort;
+  messagePorts[message.requestId] = remotePort;
 };
 
-const processUntypedSignatureBypassCheckRequest = async (message: any) => {
-  createHashSignaturePopup(message);
-};
-
-const createAllowancePopup = async (message: any) => {
+const createAllowancePopup = async (message: TransactionMessage | TypedSignatureMessage) => {
   const warnOnApproval = await getStorage('local', 'settings:warnOnApproval', true);
   if (!warnOnApproval) return false;
 
-  const { transaction, typedData, chainId, hostname } = message.data;
+  const { requestId } = message;
+  const { chainId, hostname, bypassed } = message.data;
   if (AllowList.ALLOWANCE.includes(hostname)) return false;
-  if (approvedMessages.includes(message.id)) return false;
+  if (approvedMessages.includes(message.requestId)) return false;
 
-  const allowance = transaction ? decodeApproval(transaction) : decodePermit(typedData);
+  const allowance =
+    message.data.type === RequestType.TRANSACTION
+      ? decodeApproval(message.data.transaction)
+      : decodePermit(message.data.typedData);
   if (!allowance) return false;
 
   Promise.all([
     Browser.windows.getCurrent(),
     new Promise((resolve) => setTimeout(resolve, 100)), // Add a slight delay to prevent weird window positioning
   ]).then(async ([window]) => {
-    const bypassed = isBypassMessage(message);
     const queryString = new URLSearchParams({
       type: WarningType.ALLOWANCE,
-      requestId: message.id,
+      requestId,
       asset: allowance.asset,
       spender: allowance.spender,
-      chainId,
+      chainId: String(chainId),
       bypassed: String(bypassed),
       hostname,
     }).toString();
 
-    track('Allowance requested', { requestId: message.id, chainId, hostname, allowance });
+    track('Allowance requested', { requestId, chainId, hostname, allowance });
 
     const positions = getPopupPositions(window, 2, bypassed);
 
@@ -161,13 +152,14 @@ const createAllowancePopup = async (message: any) => {
   return true;
 };
 
-const createNftListingPopup = async (message: any) => {
+const createNftListingPopup = async (message: TypedSignatureMessage) => {
   const warnOnListing = await getStorage('local', 'settings:warnOnListing', true);
   if (!warnOnListing) return false;
 
-  const { typedData, chainId, hostname } = message.data;
+  const { requestId } = message;
+  const { typedData, chainId, hostname, bypassed } = message.data;
   if (AllowList.NFT_LISTING.includes(hostname)) return false;
-  if (approvedMessages.includes(message.id)) return false;
+  if (approvedMessages.includes(message.requestId)) return false;
 
   const { platform, listing } = decodeNftListing(typedData);
   if (!listing) return false;
@@ -176,18 +168,17 @@ const createNftListingPopup = async (message: any) => {
     Browser.windows.getCurrent(),
     new Promise((resolve) => setTimeout(resolve, 100)), // Add a slight delay to prevent weird window positioning
   ]).then(async ([window]) => {
-    const bypassed = isBypassMessage(message);
     const queryString = new URLSearchParams({
       type: WarningType.LISTING,
-      requestId: message.id,
+      requestId,
       listing: JSON.stringify(listing),
       platform,
-      chainId,
+      chainId: String(chainId),
       bypassed: String(bypassed),
       hostname,
     }).toString();
 
-    track('NFT listing requested', { requestId: message.id, chainId, hostname, platform, listing });
+    track('NFT listing requested', { requestId, chainId, hostname, platform, listing });
 
     const positions = getPopupPositions(window, listing.offer.length + listing.consideration.length, bypassed);
 
@@ -206,13 +197,14 @@ const createNftListingPopup = async (message: any) => {
   return true;
 };
 
-const createHashSignaturePopup = async (message: any) => {
+const createHashSignaturePopup = async (message: UntypedSignatureMessage) => {
   const warnOnHashSignatures = await getStorage('local', 'settings:warnOnHashSignatures', true);
   if (!warnOnHashSignatures) return false;
 
-  const { message: signMessage, hostname } = message.data;
+  const { requestId } = message;
+  const { message: signMessage, hostname, bypassed } = message.data;
   if (AllowList.HASH_SIGNATURE.includes(hostname)) return false;
-  if (approvedMessages.includes(message.id)) return false;
+  if (approvedMessages.includes(message.requestId)) return false;
 
   // If we're not signing a hash, we don't need to popup
   if (String(signMessage).replace(/0x/, '').length !== 64) return false;
@@ -221,15 +213,14 @@ const createHashSignaturePopup = async (message: any) => {
     Browser.windows.getCurrent(),
     new Promise((resolve) => setTimeout(resolve, 100)), // Add a slight delay to prevent weird window positioning
   ]).then(async ([window]) => {
-    const bypassed = isBypassMessage(message);
     const queryString = new URLSearchParams({
       type: WarningType.HASH,
-      requestId: message.id,
+      requestId,
       bypassed: String(bypassed),
       hostname,
     }).toString();
 
-    track('Hash signature requested', { requestId: message.id, hostname });
+    track('Hash signature requested', { requestId, hostname });
 
     const positions = getPopupPositions(window, 0, bypassed);
 
@@ -248,7 +239,7 @@ const createHashSignaturePopup = async (message: any) => {
   return true;
 };
 
-const getPopupPositions = (window: Browser.Windows.Window, contentLines: number, bypassed: boolean) => {
+const getPopupPositions = (window: Browser.Windows.Window, contentLines: number, bypassed?: boolean) => {
   const width = 480;
   const height = 320 + contentLines * 24 + (bypassed ? 24 : 0);
 

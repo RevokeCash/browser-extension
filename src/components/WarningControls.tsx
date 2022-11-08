@@ -11,8 +11,8 @@ interface Props {
 const WarningControls = ({ bypassed, requestId }: Props) => {
   const { t } = useTranslation();
 
-  const respond = async (response: boolean) => {
-    await Browser.runtime.sendMessage(undefined, { requestId, response });
+  const respond = async (data: boolean) => {
+    await Browser.runtime.sendMessage(undefined, { requestId, data });
     window.close();
   };
 
@@ -36,21 +36,3 @@ const WarningControls = ({ bypassed, requestId }: Props) => {
 };
 
 export default WarningControls;
-
-// "confirm_allowance": {
-//   "confirm": "You are about to approve an allowance on <0>{{hostname}}</0>!",
-//   "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to request an allowance on <0>{{hostname}}</0>!",
-//   "asset": "Asset",
-//   "spender": "Spender"
-// },
-// "confirm_hash": {
-//   "explanation": "This can be used to list NFTs for sale or authorize asset transfers.",
-//   "confirm": "You are about to sign a hash on <0>{{hostname}}</0>!",
-//   "bypassed": "This website bypassed the Revoke.cash confirmation process and is asking you to sign a hash on <0>{{hostname}}</0>!"
-// },
-// "confirm_listing": {
-//   "confirm": "You are about to list an item for sale on <0>{{platform}}</0>!",
-//   "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to list an item for sale on <0>{{platform}}</0>!",
-//   "you_sell": "You sell",
-//   "you_receive": "You receive (after fees)"
-// }
