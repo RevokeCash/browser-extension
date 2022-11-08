@@ -119,34 +119,18 @@ const createAllowancePopup = async (message: TransactionMessage | TypedSignature
       : decodePermit(message.data.typedData);
   if (!allowance) return false;
 
-  Promise.all([
-    Browser.windows.getCurrent(),
-    new Promise((resolve) => setTimeout(resolve, 100)), // Add a slight delay to prevent weird window positioning
-  ]).then(async ([window]) => {
-    const queryString = new URLSearchParams({
-      type: WarningType.ALLOWANCE,
-      requestId,
-      asset: allowance.asset,
-      spender: allowance.spender,
-      chainId: String(chainId),
-      bypassed: String(bypassed),
-      hostname,
-    }).toString();
+  const queryString = new URLSearchParams({
+    type: WarningType.ALLOWANCE,
+    requestId,
+    asset: allowance.asset,
+    spender: allowance.spender,
+    chainId: String(chainId),
+    bypassed: String(bypassed),
+    hostname,
+  }).toString();
 
-    track('Allowance requested', { requestId, chainId, hostname, allowance });
-
-    const positions = getPopupPositions(window, 2, bypassed);
-
-    const popupWindow = await Browser.windows.create({
-      url: `confirm.html?${queryString}`,
-      type: 'popup',
-      ...positions,
-    });
-
-    // Specifying window position does not work on Firefox, so we have to reposition after creation (6 y/o bug -_-).
-    // Has no effect on Chrome, because the window position is already correct.
-    await Browser.windows.update(popupWindow.id!, positions);
-  });
+  createConfirmationPopup(queryString, 2, bypassed);
+  track('Allowance requested', { requestId, chainId, hostname, allowance });
 
   // Return true after creating the popup
   return true;
@@ -164,34 +148,18 @@ const createNftListingPopup = async (message: TypedSignatureMessage) => {
   const { platform, listing } = decodeNftListing(typedData);
   if (!listing) return false;
 
-  Promise.all([
-    Browser.windows.getCurrent(),
-    new Promise((resolve) => setTimeout(resolve, 100)), // Add a slight delay to prevent weird window positioning
-  ]).then(async ([window]) => {
-    const queryString = new URLSearchParams({
-      type: WarningType.LISTING,
-      requestId,
-      listing: JSON.stringify(listing),
-      platform,
-      chainId: String(chainId),
-      bypassed: String(bypassed),
-      hostname,
-    }).toString();
+  const queryString = new URLSearchParams({
+    type: WarningType.LISTING,
+    requestId,
+    listing: JSON.stringify(listing),
+    platform,
+    chainId: String(chainId),
+    bypassed: String(bypassed),
+    hostname,
+  }).toString();
 
-    track('NFT listing requested', { requestId, chainId, hostname, platform, listing });
-
-    const positions = getPopupPositions(window, listing.offer.length + listing.consideration.length, bypassed);
-
-    const popupWindow = await Browser.windows.create({
-      url: `confirm.html?${queryString}`,
-      type: 'popup',
-      ...positions,
-    });
-
-    // Specifying window position does not work on Firefox, so we have to reposition after creation (6 y/o bug -_-).
-    // Has no effect on Chrome, because the window position is already correct.
-    await Browser.windows.update(popupWindow.id!, positions);
-  });
+  createConfirmationPopup(queryString, listing.offer.length + listing.consideration.length, bypassed);
+  track('NFT listing requested', { requestId, chainId, hostname, platform, listing });
 
   // Return true after creating the popup
   return true;
@@ -209,34 +177,35 @@ const createHashSignaturePopup = async (message: UntypedSignatureMessage) => {
   // If we're not signing a hash, we don't need to popup
   if (String(signMessage).replace(/0x/, '').length !== 64) return false;
 
-  Promise.all([
-    Browser.windows.getCurrent(),
-    new Promise((resolve) => setTimeout(resolve, 100)), // Add a slight delay to prevent weird window positioning
-  ]).then(async ([window]) => {
-    const queryString = new URLSearchParams({
-      type: WarningType.HASH,
-      requestId,
-      bypassed: String(bypassed),
-      hostname,
-    }).toString();
+  const queryString = new URLSearchParams({
+    type: WarningType.HASH,
+    requestId,
+    bypassed: String(bypassed),
+    hostname,
+  }).toString();
 
-    track('Hash signature requested', { requestId, hostname });
-
-    const positions = getPopupPositions(window, 0, bypassed);
-
-    const popupWindow = await Browser.windows.create({
-      url: `confirm.html?${queryString}`,
-      type: 'popup',
-      ...positions,
-    });
-
-    // Specifying window position does not work on Firefox, so we have to reposition after creation (6 y/o bug -_-).
-    // Has no effect on Chrome, because the window position is already correct.
-    await Browser.windows.update(popupWindow.id!, positions);
-  });
+  createConfirmationPopup(queryString, 0, bypassed);
+  track('Hash signature requested', { requestId, hostname });
 
   // Return true after creating the popup
   return true;
+};
+
+export const createConfirmationPopup = async (queryString: string, contentLines: number, bypassed?: boolean) => {
+  // Add a slight delay to prevent weird window positioning
+  const delayPromise = new Promise((resolve) => setTimeout(resolve, 150));
+  const [currentWindow] = await Promise.all([Browser.windows.getCurrent(), delayPromise]);
+  const positions = getPopupPositions(currentWindow, contentLines, bypassed);
+
+  const popupWindow = await Browser.windows.create({
+    url: `confirm.html?${queryString}`,
+    type: 'popup',
+    ...positions,
+  });
+
+  // Specifying window position does not work on Firefox, so we have to reposition after creation (6 y/o bug -_-).
+  // Has no effect on Chrome, because the window position is already correct.
+  await Browser.windows.update(popupWindow.id!, positions);
 };
 
 const getPopupPositions = (window: Browser.Windows.Window, contentLines: number, bypassed?: boolean) => {
