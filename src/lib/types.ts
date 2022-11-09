@@ -20,6 +20,18 @@ export interface UntypedSignatureMessage extends CommonMessage {
 
 export type Message = TransactionMessage | TypedSignatureMessage | UntypedSignatureMessage;
 
+export const isTransactionMessage = (message: Message): message is TransactionMessage => {
+  return message.data.type === RequestType.TRANSACTION;
+};
+
+export const isTypedSignatureMessage = (message: Message): message is TypedSignatureMessage => {
+  return message.data.type === RequestType.TYPED_SIGNATURE;
+};
+
+export const isUntypedSignatureMessage = (message: Message): message is TransactionMessage => {
+  return message.data.type === RequestType.UNTYPED_SIGNATURE;
+};
+
 export interface CommonMessageData {
   type: RequestType;
   hostname: string;
