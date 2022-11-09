@@ -2,6 +2,8 @@ import { init, track } from '@amplitude/analytics-browser';
 import Browser from 'webextension-polyfill';
 import { AllowList, RequestType, WarningType } from './lib/constants';
 import {
+  isTransactionMessage,
+  isTypedSignatureMessage,
   Message,
   MessageResponse,
   TransactionMessage,
@@ -31,13 +33,7 @@ const approvedMessages: string[] = [];
 
 const setupRemoteConnection = async (remotePort: Browser.Runtime.Port) => {
   remotePort.onMessage.addListener((message: Message) => {
-    if (message.data.type === RequestType.TRANSACTION) {
-      return processTransactionRequest(message as TransactionMessage, remotePort);
-    } else if (message.data.type === RequestType.TYPED_SIGNATURE) {
-      return processTypedSignatureRequest(message as TypedSignatureMessage, remotePort);
-    } else if (message.data.type === RequestType.UNTYPED_SIGNATURE) {
-      return processUntypedSignatureRequest(message as UntypedSignatureMessage, remotePort);
-    }
+    processMessage(message, remotePort);
   });
 };
 
@@ -59,11 +55,13 @@ Browser.runtime.onMessage.addListener((response: MessageResponse) => {
   }
 });
 
-const processTransactionRequest = async (message: TransactionMessage, remotePort: Browser.Runtime.Port) => {
-  const popupCreated = await createAllowancePopup(message);
+const processMessage = async (message: Message, remotePort: Browser.Runtime.Port) => {
+  const popupCreated = await createPopup(message);
 
+  // For bypassed messages we have no response to return
   if (message.data.bypassed) return;
 
+  // If no popup was created, we respond positively to indicate that the request should go through
   if (!popupCreated) {
     remotePort.postMessage({ requestId: message.requestId, data: true });
     return;
@@ -73,35 +71,15 @@ const processTransactionRequest = async (message: TransactionMessage, remotePort
   messagePorts[message.requestId] = remotePort;
 };
 
-const processTypedSignatureRequest = async (message: TypedSignatureMessage, remotePort: Browser.Runtime.Port) => {
-  const { primaryType } = message?.data?.typedData ?? {};
-
-  const popupCreated =
-    primaryType === 'Permit' ? await createAllowancePopup(message) : await createNftListingPopup(message);
-
-  if (message.data.bypassed) return;
-
-  if (!popupCreated) {
-    remotePort.postMessage({ requestId: message.requestId, data: true });
-    return;
+const createPopup = (message: Message): Promise<boolean> => {
+  if (isTransactionMessage(message)) {
+    return createAllowancePopup(message);
+  } else if (isTypedSignatureMessage(message)) {
+    const mayBePermit = message.data.typedData.primaryType === 'Permit';
+    return mayBePermit ? createAllowancePopup(message) : createNftListingPopup(message);
+  } else {
+    return createHashSignaturePopup(message);
   }
-
-  // Store the remote port so the response can be sent back there
-  messagePorts[message.requestId] = remotePort;
-};
-
-const processUntypedSignatureRequest = async (message: UntypedSignatureMessage, remotePort: Browser.Runtime.Port) => {
-  const popupCreated = await createHashSignaturePopup(message);
-
-  if (message.data.bypassed) return;
-
-  if (!popupCreated) {
-    remotePort.postMessage({ requestId: message.requestId, data: true });
-    return;
-  }
-
-  // Store the remote port so the response can be sent back there
-  messagePorts[message.requestId] = remotePort;
 };
 
 const createAllowancePopup = async (message: TransactionMessage | TypedSignatureMessage) => {
