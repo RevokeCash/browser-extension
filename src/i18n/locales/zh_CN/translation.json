@@ -2,7 +2,7 @@
   "common": {
     "continue": "继续",
     "dismiss": "取消",
-    "error_occurred": "An error occurred while trying to create a Revoke.cash popup. Please reach out about this in our <0>Discord</0>.",
+    "error_occurred": "如果你在尝试创建 Revoke.cash 弹出窗口时出错。请在 <0>Discord</0> 中联系我们。",
     "intention": "请确保这是你的意图。",
     "proceed_with_caution": "谨慎行事。",
     "reject": "拒绝",
