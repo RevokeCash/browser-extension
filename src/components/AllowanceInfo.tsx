@@ -40,7 +40,7 @@ const AllowanceInfo = ({ data }: Props) => {
       <div className="flex flex-col items-center">
         <div className="font-bold text-lg leading-tight">{t('confirm_allowance.spender')}</div>
         <Loadable loading={loadingSpender}>
-          <Link href={`${explorerUrl}/address/${data.asset}`}>{spenderDisplay}</Link>
+          <Link href={`${explorerUrl}/address/${data.spender}`}>{spenderDisplay}</Link>
         </Loadable>
       </div>
     </div>
