@@ -8,11 +8,13 @@ import ListingInfo from '../components/ListingInfo';
 import WarningControls from '../components/WarningControls';
 import WarningText from '../components/WarningText';
 import { Urls, WarningType } from '../lib/constants';
+import { ListingWarningData } from '../lib/types';
 import { decodeWarningData } from '../lib/utils/decode';
 import '../styles.css';
 
 const Confirm = () => {
   const data = decodeWarningData(new URLSearchParams(window.location.search));
+  const platform = (data as ListingWarningData).platform;
 
   // Display an error message when no data could be decoded
   if (!data) {
@@ -30,7 +32,7 @@ const Confirm = () => {
   return (
     <div className="flex flex-col gap-1 justify-center items-center w-full h-screen p-2">
       <Header size="large" />
-      <WarningText type={data.type} bypassed={data.bypassed} hostname={data.hostname} />
+      <WarningText type={data.type} bypassed={data.bypassed} hostname={data.hostname} platform={platform} />
       {data.type === WarningType.ALLOWANCE && <AllowanceInfo data={data} />}
       {data.type === WarningType.LISTING && <ListingInfo data={data} />}
       <WarningControls bypassed={data.bypassed} requestId={data.requestId} />
