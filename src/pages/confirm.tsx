@@ -30,7 +30,7 @@ const Confirm = () => {
   return (
     <div className="flex flex-col gap-1 justify-center items-center w-full h-screen p-2">
       <Header size="large" />
-      <WarningText type={WarningType.ALLOWANCE} bypassed={data.bypassed} hostname={data.hostname} />
+      <WarningText type={data.type} bypassed={data.bypassed} hostname={data.hostname} />
       {data.type === WarningType.ALLOWANCE && <AllowanceInfo data={data} />}
       {data.type === WarningType.LISTING && <ListingInfo data={data} />}
       <WarningControls bypassed={data.bypassed} requestId={data.requestId} />
