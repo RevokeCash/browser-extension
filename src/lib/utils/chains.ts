@@ -50,3 +50,53 @@ export const getChainProvider = (chainId: number, infuraKey: string = ''): provi
 };
 
 export const isSupportedChain = (chainId: number) => !!getChainRpcUrl(chainId);
+
+export const getChainName = (chainId: number): string => {
+  const overrides: { [chainId: number]: string } = {
+    [ChainId.EthereumMainnet]: 'Ethereum',
+    [ChainId.BinanceSmartChainMainnet]: 'Binance Smart Chain',
+    [ChainId['AvalancheC-Chain']]: 'Avalanche',
+    [ChainId.PolygonMainnet]: 'Polygon',
+    [ChainId.ArbitrumOne]: 'Arbitrum',
+    [42170]: 'Arbitrum Nova',
+    [ChainId.CronosMainnetBeta]: 'Cronos',
+    [ChainId.FantomOpera]: 'Fantom',
+    [ChainId.KlaytnMainnetCypress]: 'Klaytn',
+    [ChainId.KlaytnTestnetBaobab]: 'Klaytn Baobab',
+    [ChainId.AuroraMainnet]: 'Aurora',
+    [ChainId.CeloMainnet]: 'Celo',
+    [ChainId.HuobiECOChainMainnet]: 'HECO',
+    [ChainId.RSKMainnet]: 'RSK',
+    [ChainId.MetisAndromedaMainnet]: 'Metis',
+    [ChainId.TelosEVMMainnet]: 'Telos',
+    [ChainId.IoTeXNetworkMainnet]: 'IoTeX',
+    [ChainId.IoTeXNetworkTestnet]: 'IoTeX Testnet',
+    [ChainId.HarmonyMainnetShard0]: 'Harmony',
+    [ChainId.HarmonyTestnetShard0]: 'Harmony Testnet',
+    [ChainId.GodwokenMainnet]: 'Godwoken',
+    [ChainId['GodwokenTestnet(V1.1)']]: 'Godwoken Testnet',
+    [ChainId.SmartBitcoinCash]: 'SmartBCH',
+    [ChainId.FuseMainnet]: 'Fuse',
+    [ChainId.SyscoinMainnet]: 'Syscoin',
+    [ChainId.CLVParachain]: 'CLV',
+    [ChainId.BitTorrentChainMainnet]: 'BTT Chain',
+    [ChainId.Goerli]: 'Goerli',
+    [ChainId.BinanceSmartChainTestnet]: 'BSC Testnet',
+    [ChainId.AvalancheFujiTestnet]: 'Avalanche Fuji',
+    [ChainId.Mumbai]: 'Polygon Mumbai',
+    [ChainId.OptimisticEthereumTestnetGoerli]: 'Optimism Goerli',
+    [421613]: 'Arbitrum Goerli',
+    [ChainId.CeloAlfajoresTestnet]: 'Celo Alfajores',
+    [ChainId.HuobiECOChainTestnet]: 'HECO Testnet',
+    [ChainId.MetisStardustTestnet]: 'Metis Stardust',
+    [ChainId.TelosEVMTestnet]: 'Telos Testnet',
+    [ChainId.SmartBitcoinCashTestnet]: 'SmartBCH Testnet',
+    [ChainId.SyscoinTanenbaumTestnet]: 'Syscoin Tenenbaum',
+    [ChainId.BitTorrentChainTestnet]: 'BTTC Testnet',
+    [ChainId.EmeraldParatimeMainnet]: 'Oasis Emerald',
+    [ChainId.EmeraldParatimeTestnet]: 'Oasis Testnet',
+    [ChainId.EthereumClassicMainnet]: 'Ethereum Classic',
+  };
+
+  return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
+};

@@ -188,7 +188,7 @@ export const createConfirmationPopup = async (queryString: string, contentLines:
 
 const getPopupPositions = (window: Browser.Windows.Window, contentLines: number, bypassed?: boolean) => {
   const width = 480;
-  const height = 320 + contentLines * 24 + (bypassed ? 24 : 0);
+  const height = 340 + (contentLines + (bypassed ? 1 : 0)) * 24;
 
   const left = window.left! + Math.round((window.width! - width) * 0.5);
   const top = window.top! + Math.round((window.height! - height) * 0.2);

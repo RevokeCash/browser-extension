@@ -1,5 +1,6 @@
 {
   "common": {
+    "connected_to": "Connected to {{chainName}}",
     "continue": "Continue",
     "dismiss": "Dismiss",
     "error_occurred": "An error occurred while trying to create a Revoke.cash popup. Please reach out about this in our <0>Discord</0>.",

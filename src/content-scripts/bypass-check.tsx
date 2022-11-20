@@ -44,7 +44,7 @@ window.addEventListener('message', (message) => {
     }
   }
 
-  if (target === Identifier.METAMASK_INPAGE && data?.method === 'chainChanged') {
+  if (target === Identifier.METAMASK_INPAGE && data?.method?.includes('chainChanged')) {
     metamaskChainId = Number(data?.params?.chainId ?? metamaskChainId);
   }
 });

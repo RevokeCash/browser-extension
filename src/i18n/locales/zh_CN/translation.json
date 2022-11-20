@@ -1,5 +1,6 @@
 {
   "common": {
+    "connected_to": "与{{chainName}}相连",
     "continue": "继续",
     "dismiss": "取消",
     "error_occurred": "如果你在尝试创建 Revoke.cash 弹出窗口时出错。请在 <0>Discord</0> 中联系我们。",

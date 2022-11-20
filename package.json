@@ -14,7 +14,8 @@
     "zip": "run-p 'zip:*'",
     "clean": "rimraf dist",
     "lint": "prettier --write .",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "translations:update": "localazy upload && localazy download && yarn lint"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^1.2.3",

@@ -1,5 +1,6 @@
 {
   "common": {
+    "connected_to": "Conectado a {{chainName}}",
     "continue": "Continuar",
     "dismiss": "Descartar",
     "error_occurred": "Se ha producido un error al intentar crear una ventana emergente de Revoke.cash. Por favor comunícate con nosotros en nuestro <0>Discord</0>.",
