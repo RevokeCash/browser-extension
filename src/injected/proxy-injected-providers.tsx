@@ -179,11 +179,21 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
     },
   };
 
-  Object.defineProperty(ethereumProvider, 'request', { value: new Proxy(ethereumProvider.request, requestHandler) });
-  Object.defineProperty(ethereumProvider, 'send', { value: new Proxy(ethereumProvider.send, sendHandler) });
+  Object.defineProperty(ethereumProvider, 'request', {
+    value: new Proxy(ethereumProvider.request, requestHandler),
+    writable: true,
+  });
+
+  Object.defineProperty(ethereumProvider, 'send', {
+    value: new Proxy(ethereumProvider.send, sendHandler),
+    writable: true,
+  });
+
   Object.defineProperty(ethereumProvider, 'sendAsync', {
     value: new Proxy(ethereumProvider.sendAsync, sendAsyncHandler),
+    writable: true,
   });
+
   ethereumProvider.isRevokeCash = true;
   console.log('Added Revoke.cash to', name);
 };
@@ -196,10 +206,9 @@ const proxyAllEthereumProviders = () => {
   proxyEthereumProvider(window.ethereum, 'window.ethereum');
 
   // Proxy any other providers listed on the window.ethereum object
-  const altProviders = Object.entries(Object.fromEntries(window.ethereum.providerMap ?? []) ?? {});
-  altProviders.forEach(([name, provider], i) =>
-    proxyEthereumProvider(provider, `${name} (window.ethereum.providers[${i}])`)
-  );
+  window.ethereum?.providers?.forEach((provider: any, i: number) => {
+    proxyEthereumProvider(provider, `window.ethereum.providers[${i}]`);
+  });
 
   // Proxy the window.coinbaseWalletExtension provider if it exists
   proxyEthereumProvider(window.coinbaseWalletExtension, 'window.coinbaseWalletExtension');
