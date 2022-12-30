@@ -14,6 +14,11 @@ const Settings = () => {
         label={t('popup.settings.hash_signatures')}
         defaultValue={true}
       />
+      <BooleanSetting
+        storageKey="settings:warnOnSuspectedScams"
+        label={t('popup.settings.suspected_scams')}
+        defaultValue={true}
+      />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 {
   "common": {
+    "address": "Address",
     "connected_to": "与{{chainName}}相连",
     "continue": "继续",
     "dismiss": "取消",
@@ -27,11 +28,16 @@
     "you_receive": "你收到（扣除手续费）",
     "you_sell": "你卖出"
   },
+  "confirm_suspected_scam": {
+    "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to interact with a suspected scam address on <0>{{hostname}}</0>!",
+    "confirm": "You are about to interact with a suspected scam address on <0>{{hostname}}</0>!"
+  },
   "popup": {
     "settings": {
       "approvals": "关于批准的警告",
       "hash_signatures": "对哈希签名的警告",
-      "listings": "关于NFT列出的警告"
+      "listings": "关于NFT列出的警告",
+      "suspected_scams": "Warn on suspected scams"
     },
     "version": "版本"
   }

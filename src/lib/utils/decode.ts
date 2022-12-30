@@ -163,6 +163,7 @@ export const decodeWarningData = (params: URLSearchParams): WarningData | undefi
   const platform = params.get('platform');
   const asset = params.get('asset');
   const spender = params.get('spender');
+  const address = params.get('address');
 
   let listing;
   try {
@@ -179,6 +180,9 @@ export const decodeWarningData = (params: URLSearchParams): WarningData | undefi
     return { type, requestId, bypassed, hostname, chainId, listing, platform };
   } else if (type === WarningType.HASH) {
     return { type, requestId, bypassed, hostname };
+  } else if (type === WarningType.SUSPECTED_SCAM) {
+    if (!chainId || !address) return undefined;
+    return { type, address, requestId, bypassed, hostname, chainId };
   }
 
   return undefined;

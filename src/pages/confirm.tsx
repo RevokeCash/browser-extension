@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Trans } from 'react-i18next';
+import AddressInfo from '../components/AddressInfo';
 import AllowanceInfo from '../components/AllowanceInfo';
 import Header from '../components/Header';
 import Link from '../components/Link';
@@ -35,6 +36,7 @@ const Confirm = () => {
       <WarningText type={data.type} bypassed={data.bypassed} hostname={data.hostname} platform={platform} />
       {data.type === WarningType.ALLOWANCE && <AllowanceInfo data={data} />}
       {data.type === WarningType.LISTING && <ListingInfo data={data} />}
+      {data.type === WarningType.SUSPECTED_SCAM && <AddressInfo data={data} />}
       <WarningControls bypassed={data.bypassed} requestId={data.requestId} />
     </div>
   );

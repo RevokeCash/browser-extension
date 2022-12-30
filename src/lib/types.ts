@@ -122,4 +122,10 @@ export interface HashwarningData extends CommonWarningData {
   type: WarningType.HASH;
 }
 
-export type WarningData = AllowanceWarningData | ListingWarningData | HashwarningData;
+export interface SuspectedScamWarningData extends CommonWarningData {
+  type: WarningType.SUSPECTED_SCAM;
+  address: string;
+  chainId: number;
+}
+
+export type WarningData = AllowanceWarningData | ListingWarningData | HashwarningData | SuspectedScamWarningData;

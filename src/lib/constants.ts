@@ -21,6 +21,10 @@ export const SignatureIdentifier = {
   setApprovalForAll: '0xa22cb465',
 };
 
+export const ScamSignatureIdentifier = {
+  SecurityUpdate: '0x5fba79f5',
+};
+
 export const Signature = {
   approve: 'approve(address,uint256)',
   increaseAllowance: 'increaseAllowance(address,uint256)',
@@ -41,6 +45,7 @@ export enum WarningType {
   ALLOWANCE = 'allowance',
   LISTING = 'listing',
   HASH = 'hash',
+  SUSPECTED_SCAM = 'suspected_scam',
 }
 
 export const OpenSeaItemType = {

@@ -17,6 +17,10 @@ const WarningText = ({ type, bypassed, hostname, platform }: Props) => {
       return `${t('confirm_hash.explanation')} ${t('common.trust_website')}`;
     }
 
+    if (warningType === WarningType.SUSPECTED_SCAM) {
+      return t('common.proceed_with_caution');
+    }
+
     return bypassed ? t('common.proceed_with_caution') : t('common.intention');
   };
 
@@ -27,7 +31,7 @@ const WarningText = ({ type, bypassed, hostname, platform }: Props) => {
   return (
     <div>
       <div className="w-[400px] text-center">
-        {beforeText && <span className="font-bold uppercase">{t('common.warning')}</span>}
+        {beforeText && <span className="font-bold uppercase">{beforeText}</span>}
         {beforeText && ': '}
         <Trans i18nKey={i18nKey} values={{ hostname, platform }} components={[<span className="font-bold" />]} />{' '}
         {afterText}

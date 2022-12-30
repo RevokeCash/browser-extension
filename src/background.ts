@@ -12,6 +12,7 @@ import {
 } from './lib/types';
 import { decodeApproval, decodeNftListing, decodePermit } from './lib/utils/decode';
 import { randomId } from './lib/utils/misc';
+import { checkSuspectedScamAddress } from './lib/utils/scam';
 import { getStorage, setStorage } from './lib/utils/storage';
 
 // This is technically async, but it's safe to assume that this will complete before any tracking occurs
@@ -71,9 +72,11 @@ const processMessage = async (message: Message, remotePort: Browser.Runtime.Port
   messagePorts[message.requestId] = remotePort;
 };
 
-const createPopup = (message: Message): Promise<boolean> => {
+const createPopup = async (message: Message): Promise<boolean> => {
+  if (approvedMessages.includes(message.requestId)) return false;
+
   if (isTransactionMessage(message)) {
-    return createAllowancePopup(message);
+    return (await createAllowancePopup(message)) || (await createSuspectedScamPopup(message));
   } else if (isTypedSignatureMessage(message)) {
     const mayBePermit = message.data.typedData.primaryType === 'Permit';
     return mayBePermit ? createAllowancePopup(message) : createNftListingPopup(message);
@@ -89,7 +92,6 @@ const createAllowancePopup = async (message: TransactionMessage | TypedSignature
   const { requestId } = message;
   const { chainId, hostname, bypassed } = message.data;
   if (AllowList.ALLOWANCE.includes(hostname)) return false;
-  if (approvedMessages.includes(message.requestId)) return false;
 
   const allowance =
     message.data.type === RequestType.TRANSACTION
@@ -121,7 +123,6 @@ const createNftListingPopup = async (message: TypedSignatureMessage) => {
   const { requestId } = message;
   const { typedData, chainId, hostname, bypassed } = message.data;
   if (AllowList.NFT_LISTING.includes(hostname)) return false;
-  if (approvedMessages.includes(message.requestId)) return false;
 
   const { platform, listing } = decodeNftListing(typedData);
   if (!listing) return false;
@@ -150,7 +151,6 @@ const createHashSignaturePopup = async (message: UntypedSignatureMessage) => {
   const { requestId } = message;
   const { message: signMessage, hostname, bypassed } = message.data;
   if (AllowList.HASH_SIGNATURE.includes(hostname)) return false;
-  if (approvedMessages.includes(message.requestId)) return false;
 
   // If we're not signing a hash, we don't need to popup
   if (String(signMessage).replace(/0x/, '').length !== 64) return false;
@@ -164,6 +164,34 @@ const createHashSignaturePopup = async (message: UntypedSignatureMessage) => {
 
   createConfirmationPopup(queryString, 0, bypassed);
   track('Hash signature requested', { requestId, hostname });
+
+  // Return true after creating the popup
+  return true;
+};
+
+const createSuspectedScamPopup = async (message: TransactionMessage) => {
+  const warnOnSuspectedScams = await getStorage('local', 'settings:warnOnSuspectedScams', true);
+  console.log('warnOnSuspectedScams', warnOnSuspectedScams);
+  if (!warnOnSuspectedScams) return false;
+
+  const { requestId } = message;
+  const { chainId, hostname, bypassed, transaction } = message.data;
+
+  const address = checkSuspectedScamAddress(transaction);
+  console.log('scam address', address);
+  if (!address) return false;
+
+  const queryString = new URLSearchParams({
+    type: WarningType.SUSPECTED_SCAM,
+    requestId,
+    chainId: String(chainId),
+    bypassed: String(bypassed),
+    hostname,
+    address,
+  }).toString();
+
+  createConfirmationPopup(queryString, 2, bypassed);
+  track('Suspected scam detected', { requestId, chainId, hostname, address: transaction.to });
 
   // Return true after creating the popup
   return true;
