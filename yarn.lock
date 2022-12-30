@@ -7122,9 +7122,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-select@npm:^5.5.6":
-  version: 5.5.6
-  resolution: "react-select@npm:5.5.6"
+"react-select@npm:^5.7.0":
+  version: 5.7.0
+  resolution: "react-select@npm:5.7.0"
   dependencies:
     "@babel/runtime": ^7.12.0
     "@emotion/cache": ^11.4.0
@@ -7138,17 +7138,7 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: f5adc55b3e6d5de0a73fd10e57705f8d5ff94e97c6296fedce974d17949b56626bcb172eddab84fb9b76d22bdf06201b71dd5aac871e90fbd867debf98d8b4d2
-  languageName: node
-  linkType: hard
-
-"react-spinners@npm:^0.13.6":
-  version: 0.13.6
-  resolution: "react-spinners@npm:0.13.6"
-  peerDependencies:
-    react: ^16.0.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: 0e557190b5811e62774de0000f91fdcc3afe845872084abd5620d16335eb8292ed3fb3fdb94527fe2802a8366ac4e5d42c8e5bffda9e8ed0d85d3c34b3829d8e
+  checksum: 3d29f7bb6dd66ad55396d820f05da6112f1d21b67526422a8ff5aa6cd47c783804c1b73042ac2949ba0871056a3dc68c06a73a8281abb61571e475d72bbd80dc
   languageName: node
   linkType: hard
 
@@ -7515,8 +7505,7 @@ __metadata:
     react-async-hook: ^4.0.0
     react-dom: ^17.0.1
     react-i18next: ^11.18.6
-    react-select: ^5.5.6
-    react-spinners: ^0.13.6
+    react-select: ^5.7.0
     react-switch: ^6.1.0
     rimraf: "^3.0.2 "
     stream-browserify: ^3.0.0

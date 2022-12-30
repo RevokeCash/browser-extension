@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { ClipLoader } from 'react-spinners';
+import Spinner from './Spinner';
 
 interface Props {
   children: ReactNode;
@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Loadable = ({ children, loading }: Props) => {
-  if (loading) return <ClipLoader size={24} color={'#000'} loading={loading} />;
+  if (loading) return <Spinner className="w-5 h-5" />;
   return <>{children}</>;
 };
 

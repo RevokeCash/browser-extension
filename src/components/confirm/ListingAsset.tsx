@@ -1,11 +1,11 @@
 import React from 'react';
 import { useAsync } from 'react-async-hook';
-import { INFURA_API_KEY } from '../lib/constants';
-import { NftListingItem } from '../lib/types';
-import { getChainExplorerUrl, getChainProvider } from '../lib/utils/chains';
-import { getNftListingItemTokenData } from '../lib/utils/tokens';
-import Link from './Link';
-import Loadable from './Loadable';
+import { INFURA_API_KEY } from '../../lib/constants';
+import { NftListingItem } from '../../lib/types';
+import { getChainExplorerUrl, getChainProvider } from '../../lib/utils/chains';
+import { getNftListingItemTokenData } from '../../lib/utils/tokens';
+import Href from '../common/Href';
+import Loadable from '../common/Loadable';
 
 interface Props {
   chainId: number;
@@ -22,7 +22,9 @@ const ListingAsset = ({ item, chainId }: Props) => {
     <Loadable loading={loading}>
       <div>
         {result?.asset ? (
-          <Link href={`${explorerUrl}/address/${result?.asset}`}>{result?.display}</Link>
+          <Href underline="always" href={`${explorerUrl}/address/${result?.asset}`}>
+            {result?.display}
+          </Href>
         ) : (
           result?.display
         )}

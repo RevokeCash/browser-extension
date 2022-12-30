@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Trans } from 'react-i18next';
-import AddressInfo from '../components/AddressInfo';
-import AllowanceInfo from '../components/AllowanceInfo';
-import Header from '../components/Header';
-import Link from '../components/Link';
-import ListingInfo from '../components/ListingInfo';
-import WarningControls from '../components/WarningControls';
-import WarningText from '../components/WarningText';
+import Header from '../components/common/Header';
+import Href from '../components/common/Href';
+import AddressInfo from '../components/confirm/AddressInfo';
+import AllowanceInfo from '../components/confirm/AllowanceInfo';
+import ListingInfo from '../components/confirm/ListingInfo';
+import WarningControls from '../components/confirm/WarningControls';
+import WarningText from '../components/confirm/WarningText';
 import { Urls, WarningType } from '../lib/constants';
 import { decodeWarningData } from '../lib/utils/decode';
 import '../styles.css';
@@ -23,7 +23,7 @@ const Confirm = () => {
       <div className="flex flex-col gap-2 justify-center items-center w-full h-screen p-2">
         <Header size="large" />
         <div className="w-[400px] text-center">
-          <Trans i18nKey="common.error_occurred" components={[<Link href={Urls.DISCORD} />]} />
+          <Trans i18nKey="common.error_occurred" components={[<Href underline="always" href={Urls.DISCORD} />]} />
         </div>
         <WarningControls bypassed={true} requestId={'placeholder'} />
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Browser from 'webextension-polyfill';
-import { useTranslation } from '../i18n';
-import Button from './Button';
+import { useTranslation } from '../../i18n';
+import Button from '../common/Button';
 
 interface Props {
   requestId: string;
@@ -22,13 +22,17 @@ const WarningControls = ({ bypassed, requestId }: Props) => {
   return (
     <div className="flex gap-1 pt-2">
       {bypassed ? (
-        <Button onClick={() => window.close()}>{t('common.dismiss')}</Button>
+        <Button style="primary" size="md" onClick={() => window.close()}>
+          {t('common.dismiss')}
+        </Button>
       ) : (
         <>
-          <Button onClick={reject} secondary>
+          <Button onClick={reject} style="secondary" size="md">
             {t('common.reject')}
           </Button>
-          <Button onClick={confirm}>{t('common.continue')}</Button>
+          <Button style="primary" size="md" onClick={confirm}>
+            {t('common.continue')}
+          </Button>
         </>
       )}
     </div>

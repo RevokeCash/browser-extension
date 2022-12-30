@@ -190,7 +190,7 @@ const createSuspectedScamPopup = async (message: TransactionMessage) => {
     address,
   }).toString();
 
-  createConfirmationPopup(queryString, 2, bypassed);
+  createConfirmationPopup(queryString, 0, bypassed);
   track('Suspected scam detected', { requestId, chainId, hostname, address: transaction.to });
 
   // Return true after creating the popup

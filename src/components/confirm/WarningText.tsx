@@ -1,6 +1,6 @@
 import React from 'react';
-import { Trans, useTranslation } from '../i18n';
-import { WarningType } from '../lib/constants';
+import { Trans, useTranslation } from '../../i18n';
+import { WarningType } from '../../lib/constants';
 
 interface Props {
   type: WarningType;

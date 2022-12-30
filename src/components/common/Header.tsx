@@ -1,6 +1,6 @@
 import React from 'react';
-import { Trans } from '../i18n';
-import { getChainName } from '../lib/utils/chains';
+import { Trans } from '../../i18n';
+import { getChainName } from '../../lib/utils/chains';
 
 interface Props {
   size: 'small' | 'large';

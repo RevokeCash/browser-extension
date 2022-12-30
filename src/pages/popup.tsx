@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Browser from 'webextension-polyfill';
-import Header from '../components/Header';
-import LanguageSelect from '../components/LanguageSelect';
-import Link from '../components/Link';
-import LogoLink from '../components/LogoLink';
-import Settings from '../components/Settings';
+import Header from '../components/common/Header';
+import Href from '../components/common/Href';
+import LogoLink from '../components/common/LogoLink';
+import LanguageSelect from '../components/popup/LanguageSelect';
+import Settings from '../components/popup/Settings';
 import { useTranslation } from '../i18n';
 import { Urls } from '../lib/constants';
 import '../styles.css';
@@ -24,7 +24,9 @@ const Popup = () => {
         <LanguageSelect />
       </div>
       <div className="flex flex-col items-center">
-        <Link href={Urls.REVOKE_CASH}>Revoke.cash</Link>
+        <Href underline="always" href={Urls.REVOKE_CASH}>
+          Revoke.cash
+        </Href>
         <div>
           {t('popup.version')} {Browser.runtime.getManifest().version}
         </div>

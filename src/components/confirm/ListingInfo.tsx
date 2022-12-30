@@ -1,7 +1,7 @@
 import React from 'react';
-import { useTranslation } from '../i18n';
-import { PlaceHolderItem } from '../lib/constants';
-import { ListingWarningData } from '../lib/types';
+import { useTranslation } from '../../i18n';
+import { PlaceHolderItem } from '../../lib/constants';
+import { ListingWarningData } from '../../lib/types';
 import ListingAsset from './ListingAsset';
 
 interface Props {

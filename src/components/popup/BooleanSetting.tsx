@@ -1,6 +1,6 @@
 import React from 'react';
 import Switch from 'react-switch';
-import useBrowserStorage from '../hooks/use-browser-storage';
+import useBrowserStorage from '../../hooks/use-browser-storage';
 
 interface Props {
   storageKey: string;
@@ -14,7 +14,7 @@ const BooleanSetting = ({ storageKey, label, defaultValue }: Props) => {
   if (value === undefined) return null;
 
   return (
-    <div className="flex justify-between items-center w-full border border-black rounded px-2 py-1">
+    <div className="flex justify-between items-center w-full border border-black rounded-lg px-2 py-1">
       <div className="text-sm">{label}</div>
       <Switch
         checked={value}
