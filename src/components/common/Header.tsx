@@ -12,7 +12,12 @@ const Header = ({ size, chainId }: Props) => {
 
   return (
     <div className={size === 'small' ? 'w-[200px]' : 'w-[360px]'}>
-      <img src="/images/revoke.svg" alt="revoke.cash logo" width={size === 'small' ? '200' : '360'} />
+      <img
+        src="/images/revoke.svg"
+        alt="revoke.cash logo"
+        width={size === 'small' ? '200' : '360'}
+        className="filter dark:invert"
+      />
       {chainName && (
         <div className="text-center text-xs">
           <Trans i18nKey="common.connected_to" values={{ chainName }} />

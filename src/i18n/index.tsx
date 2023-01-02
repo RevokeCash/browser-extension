@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import { useEffect } from 'react';
 import { initReactI18next, useTranslation as useTranslationBase } from 'react-i18next';
 import Browser from 'webextension-polyfill';
-import useBrowserStorage from '../hooks/use-browser-storage';
+import useBrowserStorage from '../hooks/useBrowserStorage';
 import en from './locales/en/translation.json';
 import es from './locales/es/translation.json';
 import zh from './locales/zh_CN/translation.json';

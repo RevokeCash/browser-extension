@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^1.2.3",
+    "@heroicons/react": "^2.0.13",
     "@metamask/post-message-stream": "^5.0.0",
     "eth-chains": "^1.0.0",
     "eth-rpc-errors": "^4.0.3",

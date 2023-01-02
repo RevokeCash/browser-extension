@@ -35,6 +35,11 @@
   "popup": {
     "settings": {
       "approvals": "Warn on approvals",
+      "color_themes": {
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System"
+      },
       "hash_signatures": "Warn on hash signatures",
       "listings": "Warn on NFT listings",
       "suspected_scams": "Warn on suspected scams"

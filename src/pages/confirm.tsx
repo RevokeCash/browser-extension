@@ -8,6 +8,7 @@ import AllowanceInfo from '../components/confirm/AllowanceInfo';
 import ListingInfo from '../components/confirm/ListingInfo';
 import WarningControls from '../components/confirm/WarningControls';
 import WarningText from '../components/confirm/WarningText';
+import Page from '../components/Page';
 import { Urls, WarningType } from '../lib/constants';
 import { decodeWarningData } from '../lib/utils/decode';
 import '../styles.css';
@@ -31,14 +32,16 @@ const Confirm = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2 justify-center items-center w-full h-screen p-2">
-      <Header size="large" chainId={chainId} />
-      <WarningText type={data.type} bypassed={data.bypassed} hostname={data.hostname} platform={platform} />
-      {data.type === WarningType.ALLOWANCE && <AllowanceInfo data={data} />}
-      {data.type === WarningType.LISTING && <ListingInfo data={data} />}
-      {data.type === WarningType.SUSPECTED_SCAM && <AddressInfo data={data} />}
-      <WarningControls bypassed={data.bypassed} requestId={data.requestId} />
-    </div>
+    <Page>
+      <div className="flex flex-col gap-2 justify-center items-center w-full h-screen p-2">
+        <Header size="large" chainId={chainId} />
+        <WarningText type={data.type} bypassed={data.bypassed} hostname={data.hostname} platform={platform} />
+        {data.type === WarningType.ALLOWANCE && <AllowanceInfo data={data} />}
+        {data.type === WarningType.LISTING && <ListingInfo data={data} />}
+        {data.type === WarningType.SUSPECTED_SCAM && <AddressInfo data={data} />}
+        <WarningControls bypassed={data.bypassed} requestId={data.requestId} />
+      </div>
+    </Page>
   );
 };
 
