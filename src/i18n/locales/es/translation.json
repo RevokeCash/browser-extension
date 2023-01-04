@@ -1,6 +1,6 @@
 {
   "common": {
-    "address": "Address",
+    "address": "Dirección",
     "connected_to": "Conectado a {{chainName}}",
     "continue": "Continuar",
     "dismiss": "Descartar",
@@ -29,20 +29,20 @@
     "you_sell": "Vendes"
   },
   "confirm_suspected_scam": {
-    "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to interact with a suspected scam address on <0>{{hostname}}</0>!",
-    "confirm": "You are about to interact with a suspected scam address on <0>{{hostname}}</0>!"
+    "bypassed": "¡Este sitio web omitió el proceso de confirmación de Revoke.cash y está intentando interactuar con una dirección sospechosa de estafa en <0>{{hostname}}</0>!",
+    "confirm": "¡Estás a punto de interactuar con una dirección sospechosa de estafa en <0>{{hostname}}</0>!"
   },
   "popup": {
     "settings": {
       "approvals": "Advertencia sobre las autorizaciones",
       "color_themes": {
-        "dark": "Dark",
-        "light": "Light",
-        "system": "System"
+        "dark": "Oscuro",
+        "light": "Claro",
+        "system": "Sistema"
       },
       "hash_signatures": "Advertencia sobre las firmas de hash",
       "listings": "Advertencia sobre las publicaciones de venta de NFTs",
-      "suspected_scams": "Warn on suspected scams"
+      "suspected_scams": "Advertir sobre posibles estafas"
     },
     "version": "Versión"
   }

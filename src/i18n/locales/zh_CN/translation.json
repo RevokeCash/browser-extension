@@ -36,9 +36,9 @@
     "settings": {
       "approvals": "关于批准的警告",
       "color_themes": {
-        "dark": "Dark",
-        "light": "Light",
-        "system": "System"
+        "dark": "暗色",
+        "light": "明亮",
+        "system": "系统"
       },
       "hash_signatures": "对哈希签名的警告",
       "listings": "关于NFT列出的警告",
