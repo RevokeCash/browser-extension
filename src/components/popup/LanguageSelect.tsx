@@ -25,7 +25,7 @@ const LanguageSelect = () => {
       className="w-30"
       controlTheme={darkMode ? 'dark' : 'light'}
       menuTheme={darkMode ? 'dark' : 'light'}
-      value={options.find((option) => option.value === locale)}
+      value={options.find((option) => option.value === locale) ?? options[0]}
       options={options}
       onChange={update}
       formatOptionLabel={displayOption}
