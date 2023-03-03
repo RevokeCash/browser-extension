@@ -75,13 +75,21 @@ export const PlaceHolderItem = {
   },
 };
 
-export const AllowList = {
-  ALLOWANCE: [] as string[],
-  NFT_LISTING: ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io', 'blur.io'],
-  HASH_SIGNATURE: ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io', 'unstoppabledomains.com'],
+export const AllowList: Record<WarningType, string[]> = {
+  [WarningType.ALLOWANCE]: [],
+  [WarningType.LISTING]: ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io', 'blur.io'],
+  [WarningType.HASH]: [
+    'opensea.io',
+    'www.genie.xyz',
+    'www.gem.xyz',
+    'looksrare.org',
+    'x2y2.io',
+    'unstoppabledomains.com',
+  ],
+  [WarningType.SUSPECTED_SCAM]: [],
 };
 
-export const NFT_MARKETPLACES: { [address: string]: string } = {
+export const NFT_MARKETPLACES: Record<string, string> = {
   '0x00000000006c3852cbef3e08e8df289169ede581': 'OpenSea',
   '0x59728544b08ab483533076417fbbb2fd0b17ce3a': 'LooksRare',
   '0x000000000000ad05ccc4f10045630fb830b95127': 'Blur',
@@ -89,3 +97,10 @@ export const NFT_MARKETPLACES: { [address: string]: string } = {
 };
 
 export const INFURA_API_KEY = process.env.INFURA_API_KEY;
+
+export const warningSettingKeys: Record<WarningType, string> = {
+  [WarningType.ALLOWANCE]: 'settings:warnOnApproval',
+  [WarningType.LISTING]: 'settings:warnOnListing',
+  [WarningType.HASH]: 'settings:warnOnHashSignatures',
+  [WarningType.SUSPECTED_SCAM]: 'settings:warnOnSuspectedScams',
+};

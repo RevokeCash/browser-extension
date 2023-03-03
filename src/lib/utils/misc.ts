@@ -1,3 +1,6 @@
+import type { TypedDataDomain } from '@ethersproject/abstract-signer';
+import { NFT_MARKETPLACES } from '../constants';
+
 // https://learnersbucket.com/examples/javascript/unique-id-generator-in-javascript/
 export const randomId = () => {
   let s4 = () =>
@@ -6,4 +9,11 @@ export const randomId = () => {
       .substring(1);
   //return id of format aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+};
+
+export const getMarketplaceName = (domain: TypedDataDomain): string => {
+  // Derive the platform from the domain's address or name
+  const marketplaceAddress = domain?.verifyingContract?.toLowerCase();
+  const platform = NFT_MARKETPLACES[marketplaceAddress ?? ''] ?? domain?.name ?? 'Unknown Marketplace';
+  return platform;
 };

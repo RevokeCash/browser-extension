@@ -12,8 +12,11 @@ const WarningControls = ({ bypassed, requestId }: Props) => {
   const { t } = useTranslation();
 
   const respond = async (data: boolean) => {
-    await Browser.runtime.sendMessage(undefined, { requestId, data });
-    window.close();
+    try {
+      await Browser.runtime.sendMessage(undefined, { requestId, data });
+    } finally {
+      window.close();
+    }
   };
 
   const confirm = () => respond(true);

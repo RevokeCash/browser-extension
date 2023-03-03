@@ -4,7 +4,7 @@ import Browser from 'webextension-polyfill';
 // Updated from:
 // https://github.com/onikienko/use-chrome-storage/blob/master/src/useChromeStorage.js
 
-const useBrowserStorage = <T>(
+const useBrowserStorage = <T,>(
   area: 'local' | 'sync',
   key: string,
   initialValue?: T

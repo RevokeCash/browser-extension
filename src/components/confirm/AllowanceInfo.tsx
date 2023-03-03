@@ -30,7 +30,7 @@ const AllowanceInfo = ({ data }: Props) => {
   const spenderDisplay = spenderName || data.spender;
 
   return (
-    <div>
+    <>
       <div className="flex flex-col items-center">
         <div className="font-bold text-lg leading-tight">{t('confirm_allowance.asset')}</div>
         <Loadable loading={loadingAsset}>
@@ -47,7 +47,7 @@ const AllowanceInfo = ({ data }: Props) => {
           </Href>
         </Loadable>
       </div>
-    </div>
+    </>
   );
 };
 

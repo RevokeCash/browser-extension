@@ -195,7 +195,7 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
   });
 
   ethereumProvider.isRevokeCash = true;
-  console.log('Added Revoke.cash to', name);
+  // console.log('Added Revoke.cash to', name);
 };
 
 const proxyAllEthereumProviders = () => {

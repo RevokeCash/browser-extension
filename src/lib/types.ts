@@ -1,4 +1,4 @@
-import { TypedDataDomain } from '@ethersproject/abstract-signer';
+import type { TypedDataDomain } from '@ethersproject/abstract-signer';
 import { RequestType, WarningType } from './constants';
 
 export interface CommonMessage {
@@ -107,6 +107,7 @@ export interface CommonWarningData {
 export interface AllowanceWarningData extends CommonWarningData {
   type: WarningType.ALLOWANCE;
   chainId: number;
+  user: string;
   asset: string;
   spender: string;
 }

@@ -1,18 +1,19 @@
 import { init, track } from '@amplitude/analytics-browser';
 import Browser from 'webextension-polyfill';
-import { AllowList, RequestType, WarningType } from './lib/constants';
-import {
-  isTransactionMessage,
-  isTypedSignatureMessage,
-  Message,
-  MessageResponse,
-  TransactionMessage,
-  TypedSignatureMessage,
-  UntypedSignatureMessage,
-} from './lib/types';
-import { decodeApproval, decodeNftListing, decodePermit } from './lib/utils/decode';
+import { AllowList, warningSettingKeys, WarningType } from './lib/constants';
+import { AggregateDecoder } from './lib/decoders/AggregateDecoder';
+import { ApproveDecoder } from './lib/decoders/transaction/ApproveDecoder';
+import { IncreaseAllowanceDecoder } from './lib/decoders/transaction/IncreaseAllowanceDecoder';
+import { SetApprovalForAllDecoder } from './lib/decoders/transaction/SetApprovalForAllDecoder';
+import { SuspectedScamDecoder } from './lib/decoders/transaction/SuspectedScamDecoder';
+import { BlurBulkDecoder } from './lib/decoders/typed-signature/listing/BllurBulkDecoder';
+import { BlurDecorder } from './lib/decoders/typed-signature/listing/BlurDecoder';
+import { LooksRareDecoder } from './lib/decoders/typed-signature/listing/LooksRareDecoder';
+import { Seaport1Decoder } from './lib/decoders/typed-signature/listing/Seaport1Decoder';
+import { PermitDecoder } from './lib/decoders/typed-signature/PermitDecoder';
+import { HashDecoder } from './lib/decoders/untyped-signature/HashDecoder';
+import { Message, MessageResponse, WarningData } from './lib/types';
 import { randomId } from './lib/utils/misc';
-import { checkSuspectedScamAddress } from './lib/utils/scam';
 import { getStorage, setStorage } from './lib/utils/storage';
 
 // This is technically async, but it's safe to assume that this will complete before any tracking occurs
@@ -21,7 +22,11 @@ if (process.env.AMPLITUDE_API_KEY) {
     const storedId = await getStorage<string>('sync', 'user:id');
     const userId = storedId ?? randomId();
     if (!storedId) await setStorage('sync', 'user:id', userId);
-    init(process.env.AMPLITUDE_API_KEY!, userId);
+    init(process.env.AMPLITUDE_API_KEY!, userId, {
+      trackingOptions: {
+        ipAddress: false,
+      },
+    });
   };
 
   initialiseAmplitude();
@@ -31,6 +36,12 @@ if (process.env.AMPLITUDE_API_KEY) {
 // after 5 minutes of inactivity (see Manifest v3 docs).
 const messagePorts: { [index: string]: Browser.Runtime.Port } = {};
 const approvedMessages: string[] = [];
+
+const messageDecoder = new AggregateDecoder(
+  [new ApproveDecoder(), new IncreaseAllowanceDecoder(), new SetApprovalForAllDecoder(), new SuspectedScamDecoder()],
+  [new PermitDecoder(), new Seaport1Decoder(), new LooksRareDecoder(), new BlurDecorder(), new BlurBulkDecoder()],
+  [new HashDecoder()]
+);
 
 const setupRemoteConnection = async (remotePort: Browser.Runtime.Port) => {
   remotePort.onMessage.addListener((message: Message) => {
@@ -57,7 +68,7 @@ Browser.runtime.onMessage.addListener((response: MessageResponse) => {
 });
 
 const processMessage = async (message: Message, remotePort: Browser.Runtime.Port) => {
-  const popupCreated = await createPopup(message);
+  const popupCreated = await decodeMessageAndCreatePopupIfNeeded(message);
 
   // For bypassed messages we have no response to return
   if (message.data.bypassed) return;
@@ -72,137 +83,77 @@ const processMessage = async (message: Message, remotePort: Browser.Runtime.Port
   messagePorts[message.requestId] = remotePort;
 };
 
-const createPopup = async (message: Message): Promise<boolean> => {
+// Boolean result indicates whether a popup was created
+const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<boolean> => {
   if (approvedMessages.includes(message.requestId)) return false;
 
-  if (isTransactionMessage(message)) {
-    return (await createAllowancePopup(message)) || (await createSuspectedScamPopup(message));
-  } else if (isTypedSignatureMessage(message)) {
-    const mayBePermit = message.data.typedData.primaryType === 'Permit';
-    return mayBePermit ? createAllowancePopup(message) : createNftListingPopup(message);
-  } else {
-    return createHashSignaturePopup(message);
+  const warningData = messageDecoder.decode(message);
+  if (!warningData) return false;
+
+  const warningsTurnedOnForType = await getStorage('local', warningSettingKeys[warningData.type], true);
+  if (!warningsTurnedOnForType) return false;
+
+  const isAllowListed = AllowList[warningData.type].includes(warningData.hostname);
+  if (isAllowListed) return false;
+
+  createWarningPopup(warningData);
+  trackWarning(warningData);
+
+  return true;
+};
+
+const trackWarning = (warningData: WarningData) => {
+  if (warningData.type === WarningType.ALLOWANCE) {
+    const { requestId, chainId, hostname, bypassed, user, asset, spender } = warningData;
+    const allowance = { user, asset, spender };
+    track('Allowance requested', { requestId, chainId, hostname, bypassed, allowance });
+  } else if (warningData.type === WarningType.LISTING) {
+    const { requestId, chainId, hostname, bypassed, platform, listing } = warningData;
+    track('NFT listing requested', { requestId, chainId, hostname, bypassed, platform, listing });
+  } else if (warningData.type === WarningType.SUSPECTED_SCAM) {
+    const { requestId, chainId, hostname, bypassed, address } = warningData;
+    track('Suspected scam detected', { requestId, chainId, hostname, bypassed, address });
+  } else if (warningData.type === WarningType.HASH) {
+    const { requestId, hostname, bypassed } = warningData;
+    track('Hash signature requested', { requestId, hostname, bypassed });
   }
 };
 
-const createAllowancePopup = async (message: TransactionMessage | TypedSignatureMessage) => {
-  const warnOnApproval = await getStorage('local', 'settings:warnOnApproval', true);
-  if (!warnOnApproval) return false;
+const calculatePopupPositions = (window: Browser.Windows.Window, warningData: WarningData) => {
+  const width = 480;
+  const height = calculatePopupHeight(warningData);
 
-  const { requestId } = message;
-  const { chainId, hostname, bypassed } = message.data;
-  if (AllowList.ALLOWANCE.includes(hostname)) return false;
+  const left = window.left! + Math.round((window.width! - width) * 0.5);
+  const top = window.top! + Math.round((window.height! - height) * 0.2);
 
-  const allowance =
-    message.data.type === RequestType.TRANSACTION
-      ? decodeApproval(message.data.transaction)
-      : decodePermit(message.data.typedData);
-  if (!allowance) return false;
-
-  const queryString = new URLSearchParams({
-    type: WarningType.ALLOWANCE,
-    requestId,
-    asset: allowance.asset,
-    spender: allowance.spender,
-    chainId: String(chainId),
-    bypassed: String(bypassed),
-    hostname,
-  }).toString();
-
-  createConfirmationPopup(queryString, 2, bypassed);
-  track('Allowance requested', { requestId, chainId, hostname, allowance });
-
-  // Return true after creating the popup
-  return true;
+  return { width, height, left, top };
 };
 
-const createNftListingPopup = async (message: TypedSignatureMessage) => {
-  const warnOnListing = await getStorage('local', 'settings:warnOnListing', true);
-  if (!warnOnListing) return false;
+const calculatePopupHeight = (warningData: WarningData) => {
+  const lineHeight = 24;
+  const baseHeight = 11 * lineHeight;
+  const bypassHeight = warningData.bypassed ? lineHeight : 0;
 
-  const { requestId } = message;
-  const { typedData, chainId, hostname, bypassed } = message.data;
-  if (AllowList.NFT_LISTING.includes(hostname)) return false;
+  if (warningData.type === WarningType.ALLOWANCE) {
+    return baseHeight + bypassHeight + 4 * lineHeight;
+  } else if (warningData.type === WarningType.LISTING) {
+    const offerLines = warningData.listing.offer.length + 1;
+    const considerationLines = warningData.listing.consideration.length + 1;
+    return baseHeight + bypassHeight + offerLines * lineHeight + considerationLines * lineHeight;
+  } else if (warningData.type === WarningType.SUSPECTED_SCAM) {
+    return baseHeight + bypassHeight + 2 * lineHeight;
+  }
 
-  const { platform, listing } = decodeNftListing(typedData);
-  if (!listing) return false;
-
-  const queryString = new URLSearchParams({
-    type: WarningType.LISTING,
-    requestId,
-    listing: JSON.stringify(listing),
-    platform,
-    chainId: String(chainId),
-    bypassed: String(bypassed),
-    hostname,
-  }).toString();
-
-  createConfirmationPopup(queryString, listing.offer.length + listing.consideration.length, bypassed);
-  track('NFT listing requested', { requestId, chainId, hostname, platform, listing });
-
-  // Return true after creating the popup
-  return true;
+  return baseHeight + bypassHeight;
 };
 
-const createHashSignaturePopup = async (message: UntypedSignatureMessage) => {
-  const warnOnHashSignatures = await getStorage('local', 'settings:warnOnHashSignatures', true);
-  if (!warnOnHashSignatures) return false;
-
-  const { requestId } = message;
-  const { message: signMessage, hostname, bypassed } = message.data;
-  if (AllowList.HASH_SIGNATURE.includes(hostname)) return false;
-
-  // If we're not signing a hash, we don't need to popup
-  if (String(signMessage).replace(/0x/, '').length !== 64) return false;
-
-  const queryString = new URLSearchParams({
-    type: WarningType.HASH,
-    requestId,
-    bypassed: String(bypassed),
-    hostname,
-  }).toString();
-
-  createConfirmationPopup(queryString, 0, bypassed);
-  track('Hash signature requested', { requestId, hostname });
-
-  // Return true after creating the popup
-  return true;
-};
-
-const createSuspectedScamPopup = async (message: TransactionMessage) => {
-  const warnOnSuspectedScams = await getStorage('local', 'settings:warnOnSuspectedScams', true);
-  console.log('warnOnSuspectedScams', warnOnSuspectedScams);
-  if (!warnOnSuspectedScams) return false;
-
-  const { requestId } = message;
-  const { chainId, hostname, bypassed, transaction } = message.data;
-
-  const address = checkSuspectedScamAddress(transaction);
-  console.log('scam address', address);
-  if (!address) return false;
-
-  const queryString = new URLSearchParams({
-    type: WarningType.SUSPECTED_SCAM,
-    requestId,
-    chainId: String(chainId),
-    bypassed: String(bypassed),
-    hostname,
-    address,
-  }).toString();
-
-  createConfirmationPopup(queryString, 0, bypassed);
-  track('Suspected scam detected', { requestId, chainId, hostname, address: transaction.to });
-
-  // Return true after creating the popup
-  return true;
-};
-
-export const createConfirmationPopup = async (queryString: string, contentLines: number, bypassed?: boolean) => {
+const createWarningPopup = async (warningData: WarningData) => {
   // Add a slight delay to prevent weird window positioning
-  const delayPromise = new Promise((resolve) => setTimeout(resolve, 150));
+  const delayPromise = new Promise((resolve) => setTimeout(resolve, 200));
   const [currentWindow] = await Promise.all([Browser.windows.getCurrent(), delayPromise]);
-  const positions = getPopupPositions(currentWindow, contentLines, bypassed);
+  const positions = calculatePopupPositions(currentWindow, warningData);
 
+  const queryString = new URLSearchParams({ warningData: JSON.stringify(warningData) }).toString();
   const popupWindow = await Browser.windows.create({
     url: `confirm.html?${queryString}`,
     type: 'popup',
@@ -212,14 +163,4 @@ export const createConfirmationPopup = async (queryString: string, contentLines:
   // Specifying window position does not work on Firefox, so we have to reposition after creation (6 y/o bug -_-).
   // Has no effect on Chrome, because the window position is already correct.
   await Browser.windows.update(popupWindow.id!, positions);
-};
-
-const getPopupPositions = (window: Browser.Windows.Window, contentLines: number, bypassed?: boolean) => {
-  const width = 480;
-  const height = 340 + (contentLines + (bypassed ? 1 : 0)) * 24;
-
-  const left = window.left! + Math.round((window.width! - width) * 0.5);
-  const top = window.top! + Math.round((window.height! - height) * 0.2);
-
-  return { width, height, left, top };
 };
