@@ -18,16 +18,16 @@ const ListingInfo = ({ data }: Props) => {
       <div className="flex flex-col items-center">
         <div className="font-bold text-lg leading-tight">{t('confirm_listing.you_sell')}</div>
         <div className="flex flex-col items-center">
-          {data.listing.offer.map((asset) => (
-            <ListingAsset key={JSON.stringify(asset)} item={asset} chainId={data.chainId} />
+          {data.listing.offer.map((asset, i) => (
+            <ListingAsset key={`${JSON.stringify(asset)}-${i}`} item={asset} chainId={data.chainId} />
           ))}
         </div>
       </div>
       <div className="flex flex-col items-center">
         <div className="font-bold text-lg leading-tight">{t('confirm_listing.you_receive')}</div>
         <div className="flex flex-col items-center">
-          {consideration.map((asset) => (
-            <ListingAsset key={JSON.stringify(asset)} item={asset} chainId={data.chainId} />
+          {consideration.map((asset, i) => (
+            <ListingAsset key={`${JSON.stringify(asset)}-${i}`} item={asset} chainId={data.chainId} />
           ))}
         </div>
       </div>

@@ -25,13 +25,13 @@ window.addEventListener('message', (message) => {
       const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
       sendToPortAndDisregard(extensionPort, { type, bypassed, hostname, transaction, chainId });
     } else if (data.method === 'eth_signTypedData_v3' || data.method === 'eth_signTypedData_v4') {
-      const [_address, typedDataStr] = data.params ?? [];
+      const [address, typedDataStr] = data.params ?? [];
       const typedData = JSON.parse(typedDataStr);
       const type = RequestType.TYPED_SIGNATURE;
 
       // Forward received messages to background.js
       const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
-      sendToPortAndDisregard(extensionPort, { type, bypassed, hostname, typedData, chainId });
+      sendToPortAndDisregard(extensionPort, { type, bypassed, hostname, address, typedData, chainId });
     } else if (data.method === 'eth_sign' || data.method === 'personal_sign') {
       // if the first parameter is the address, the second is the message, otherwise the first is the message
       const [first, second] = data.params ?? [];
@@ -73,6 +73,7 @@ window.addEventListener('message', (message) => {
 
   if (data.request?.method === 'signEthereumMessage') {
     const typedDataStr = data.request.params.typedDataJson;
+    const address = data.request.params.address;
 
     if (typedDataStr) {
       const typedData = JSON.parse(typedDataStr);
@@ -81,7 +82,7 @@ window.addEventListener('message', (message) => {
 
       // Forward received messages to background.js
       const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
-      sendToPortAndDisregard(extensionPort, { type, bypassed, hostname, typedData, chainId });
+      sendToPortAndDisregard(extensionPort, { type, bypassed, hostname, address, typedData, chainId });
     } else {
       const message = data.request.params.message;
       const type = RequestType.UNTYPED_SIGNATURE;

@@ -83,7 +83,7 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
         const provider = new providers.Web3Provider(ethereumProvider);
         provider
           .getNetwork()
-          .then(({ chainId }) => sendToStreamAndAwaitResponse(stream, { type, typedData, chainId }))
+          .then(({ chainId }) => sendToStreamAndAwaitResponse(stream, { type, address, typedData, chainId }))
           .then((isOk) => {
             if (isOk) {
               return Reflect.apply(target, thisArg, argumentsList);
@@ -155,7 +155,7 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
         const { chainId } = await provider.getNetwork();
 
         const type = RequestType.TYPED_SIGNATURE;
-        const isOk = await sendToStreamAndAwaitResponse(stream, { type, typedData, chainId });
+        const isOk = await sendToStreamAndAwaitResponse(stream, { type, address, typedData, chainId });
 
         if (!isOk) {
           throw ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied message signature.');

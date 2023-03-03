@@ -47,6 +47,7 @@ export interface TransactionMessageData extends CommonMessageData {
 export interface TypedSignatureMessageData extends CommonMessageData {
   type: RequestType.TYPED_SIGNATURE;
   typedData: TypedData;
+  address: string;
   chainId: number;
 }
 

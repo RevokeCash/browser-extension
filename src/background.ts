@@ -9,6 +9,7 @@ import { SuspectedScamDecoder } from './lib/decoders/transaction/SuspectedScamDe
 import { BlurBulkDecoder } from './lib/decoders/typed-signature/listing/BllurBulkDecoder';
 import { BlurDecorder } from './lib/decoders/typed-signature/listing/BlurDecoder';
 import { LooksRareDecoder } from './lib/decoders/typed-signature/listing/LooksRareDecoder';
+import { Seaport14Decoder } from './lib/decoders/typed-signature/listing/Seaport14Decoder';
 import { Seaport1Decoder } from './lib/decoders/typed-signature/listing/Seaport1Decoder';
 import { PermitDecoder } from './lib/decoders/typed-signature/PermitDecoder';
 import { HashDecoder } from './lib/decoders/untyped-signature/HashDecoder';
@@ -39,7 +40,14 @@ const approvedMessages: string[] = [];
 
 const messageDecoder = new AggregateDecoder(
   [new ApproveDecoder(), new IncreaseAllowanceDecoder(), new SetApprovalForAllDecoder(), new SuspectedScamDecoder()],
-  [new PermitDecoder(), new Seaport1Decoder(), new LooksRareDecoder(), new BlurDecorder(), new BlurBulkDecoder()],
+  [
+    new PermitDecoder(),
+    new Seaport1Decoder(),
+    new Seaport14Decoder(),
+    new LooksRareDecoder(),
+    new BlurDecorder(),
+    new BlurBulkDecoder(),
+  ],
   [new HashDecoder()]
 );
 
