@@ -11,6 +11,8 @@ import { BlurDecorder } from './lib/decoders/typed-signature/listing/BlurDecoder
 import { LooksRareDecoder } from './lib/decoders/typed-signature/listing/LooksRareDecoder';
 import { Seaport14Decoder } from './lib/decoders/typed-signature/listing/Seaport14Decoder';
 import { Seaport1Decoder } from './lib/decoders/typed-signature/listing/Seaport1Decoder';
+import { BiconomyNativeDecoder } from './lib/decoders/typed-signature/metatransactions/BiconomyNativeDecoder';
+import { GsnRelayDecoder } from './lib/decoders/typed-signature/metatransactions/GsnRelayDecoder';
 import { PermitDecoder } from './lib/decoders/typed-signature/PermitDecoder';
 import { HashDecoder } from './lib/decoders/untyped-signature/HashDecoder';
 import { Message, MessageResponse, WarningData } from './lib/types';
@@ -38,18 +40,25 @@ if (process.env.AMPLITUDE_API_KEY) {
 const messagePorts: { [index: string]: Browser.Runtime.Port } = {};
 const approvedMessages: string[] = [];
 
-const messageDecoder = new AggregateDecoder(
-  [new ApproveDecoder(), new IncreaseAllowanceDecoder(), new SetApprovalForAllDecoder(), new SuspectedScamDecoder()],
-  [
-    new PermitDecoder(),
-    new Seaport1Decoder(),
-    new Seaport14Decoder(),
-    new LooksRareDecoder(),
-    new BlurDecorder(),
-    new BlurBulkDecoder(),
-  ],
-  [new HashDecoder()]
-);
+const transactionDecoders = [
+  new ApproveDecoder(),
+  new IncreaseAllowanceDecoder(),
+  new SetApprovalForAllDecoder(),
+  new SuspectedScamDecoder(),
+];
+const typedSignatureDecoders = [
+  new PermitDecoder(),
+  new Seaport1Decoder(),
+  new Seaport14Decoder(),
+  new LooksRareDecoder(),
+  new BlurDecorder(),
+  new BlurBulkDecoder(),
+  new GsnRelayDecoder(new AggregateDecoder(transactionDecoders, [], [])),
+  new BiconomyNativeDecoder(new AggregateDecoder(transactionDecoders, [], [])),
+];
+const untypedSignatureDecoders = [new HashDecoder()];
+
+const messageDecoder = new AggregateDecoder(transactionDecoders, typedSignatureDecoders, untypedSignatureDecoders);
 
 const setupRemoteConnection = async (remotePort: Browser.Runtime.Port) => {
   remotePort.onMessage.addListener((message: Message) => {
