@@ -15,7 +15,11 @@ export class ApproveDecoder implements TransactionDecoder {
     const decoded = iface.decodeFunctionData(Signature.approve, data);
     const [spender, approval] = Array.from(decoded);
 
-    if (BigNumber.from(approval).isZero() || spender === Address.ZERO) return undefined;
+    try {
+      if (BigNumber.from(approval).isZero() || spender === Address.ZERO) return undefined;
+    } catch {
+      return undefined;
+    }
 
     return {
       type: WarningType.ALLOWANCE,

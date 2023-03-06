@@ -15,7 +15,11 @@ export class IncreaseAllowanceDecoder implements TransactionDecoder {
     const decoded = iface.decodeFunctionData(Signature.increaseAllowance, data);
     const [spender, approval] = Array.from(decoded);
 
-    if (BigNumber.from(approval).isZero()) return undefined;
+    try {
+      if (BigNumber.from(approval).isZero()) return undefined;
+    } catch {
+      return undefined;
+    }
 
     return {
       type: WarningType.ALLOWANCE,
