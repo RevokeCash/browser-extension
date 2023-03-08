@@ -85,6 +85,7 @@ export const AllowList: Record<WarningType, string[]> = {
     'www.gem.xyz',
     'looksrare.org',
     'x2y2.io',
+    'blur.io',
     'unstoppabledomains.com',
   ],
   [WarningType.SUSPECTED_SCAM]: [],
