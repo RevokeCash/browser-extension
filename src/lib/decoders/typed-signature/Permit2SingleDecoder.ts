@@ -2,18 +2,18 @@ import { WarningType } from '../../constants';
 import { AllowanceWarningData, TypedSignatureMessage } from '../../types';
 import { TypedSignatureDecoder } from './TypedSignatureDecoder';
 
-export class PermitDecoder implements TypedSignatureDecoder {
+export class Permit2SingleDecoder implements TypedSignatureDecoder {
   decode(message: TypedSignatureMessage): AllowanceWarningData | undefined {
     const { domain, message: messageData, primaryType } = message?.data?.typedData ?? {};
 
     if (!domain || !messageData || !primaryType) return undefined;
-    if (primaryType !== 'Permit') return undefined;
+    if (primaryType !== 'PermitSingle') return undefined;
 
-    const asset = domain.verifyingContract;
-    const { spender, value, allowed, holder, owner } = messageData;
-    const user = owner ?? holder;
+    const { details, spender } = messageData;
+    const { token: asset, amount } = details ?? {};
+    const user = message.data.address;
 
-    if (!asset || value === '0' || allowed === false) return undefined;
+    if (!asset || amount === '0') return undefined;
 
     return {
       type: WarningType.ALLOWANCE,

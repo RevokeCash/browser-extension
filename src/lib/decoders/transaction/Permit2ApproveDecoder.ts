@@ -4,16 +4,18 @@ import { Address, Signature, SignatureIdentifier, WarningType } from '../../cons
 import { AllowanceWarningData, TransactionMessage } from '../../types';
 import { TransactionDecoder } from './TransactionDecoder';
 
-export class ApproveDecoder implements TransactionDecoder {
+export class Permit2ApproveDecoder implements TransactionDecoder {
   decode(message: TransactionMessage): AllowanceWarningData | undefined {
-    const { data, from: user, to: asset } = message?.data?.transaction ?? {};
+    const { data, from: user } = message?.data?.transaction ?? {};
 
-    if (!data || !user || !asset) return undefined;
+    if (!data || !user) return undefined;
     if (!data.startsWith(SignatureIdentifier.approve)) return undefined;
 
     const iface = new Interface([`function ${Signature.approve}`]);
     const decoded = iface.decodeFunctionData(Signature.approve, data);
-    const [spender, approval] = Array.from(decoded);
+    const [asset, spender, approval] = Array.from(decoded);
+
+    if (!asset || asset === Address.ZERO) return undefined;
 
     try {
       if (BigNumber.from(approval).isZero() || spender === Address.ZERO) return undefined;

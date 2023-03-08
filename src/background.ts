@@ -4,6 +4,7 @@ import { AllowList, warningSettingKeys, WarningType } from './lib/constants';
 import { AggregateDecoder } from './lib/decoders/AggregateDecoder';
 import { ApproveDecoder } from './lib/decoders/transaction/ApproveDecoder';
 import { IncreaseAllowanceDecoder } from './lib/decoders/transaction/IncreaseAllowanceDecoder';
+import { Permit2ApproveDecoder } from './lib/decoders/transaction/Permit2ApproveDecoder';
 import { SetApprovalForAllDecoder } from './lib/decoders/transaction/SetApprovalForAllDecoder';
 import { SuspectedScamDecoder } from './lib/decoders/transaction/SuspectedScamDecoder';
 import { BlurBulkDecoder } from './lib/decoders/typed-signature/listing/BllurBulkDecoder';
@@ -13,6 +14,8 @@ import { Seaport14Decoder } from './lib/decoders/typed-signature/listing/Seaport
 import { Seaport1Decoder } from './lib/decoders/typed-signature/listing/Seaport1Decoder';
 import { BiconomyNativeDecoder } from './lib/decoders/typed-signature/metatransactions/BiconomyNativeDecoder';
 import { GsnRelayDecoder } from './lib/decoders/typed-signature/metatransactions/GsnRelayDecoder';
+import { Permit2BatchDecoder } from './lib/decoders/typed-signature/Permit2BatchDecoder';
+import { Permit2SingleDecoder } from './lib/decoders/typed-signature/Permit2SingleDecoder';
 import { PermitDecoder } from './lib/decoders/typed-signature/PermitDecoder';
 import { HashDecoder } from './lib/decoders/untyped-signature/HashDecoder';
 import { Message, MessageResponse, WarningData } from './lib/types';
@@ -45,9 +48,12 @@ const transactionDecoders = [
   new IncreaseAllowanceDecoder(),
   new SetApprovalForAllDecoder(),
   new SuspectedScamDecoder(),
+  new Permit2ApproveDecoder(),
 ];
 const typedSignatureDecoders = [
   new PermitDecoder(),
+  new Permit2SingleDecoder(),
+  new Permit2BatchDecoder(),
   new Seaport1Decoder(),
   new Seaport14Decoder(),
   new LooksRareDecoder(),
@@ -121,8 +127,8 @@ const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<bo
 
 const trackWarning = (warningData: WarningData) => {
   if (warningData.type === WarningType.ALLOWANCE) {
-    const { requestId, chainId, hostname, bypassed, user, asset, spender } = warningData;
-    const allowance = { user, asset, spender };
+    const { requestId, chainId, hostname, bypassed, user, assets, spender } = warningData;
+    const allowance = { user, assets, spender };
     track('Allowance requested', { requestId, chainId, hostname, bypassed, allowance });
   } else if (warningData.type === WarningType.LISTING) {
     const { requestId, chainId, hostname, bypassed, platform, listing } = warningData;
@@ -152,7 +158,7 @@ const calculatePopupHeight = (warningData: WarningData) => {
   const bypassHeight = warningData.bypassed ? lineHeight : 0;
 
   if (warningData.type === WarningType.ALLOWANCE) {
-    return baseHeight + bypassHeight + 4 * lineHeight;
+    return baseHeight + bypassHeight + 3 * lineHeight + warningData.assets.length * lineHeight;
   } else if (warningData.type === WarningType.LISTING) {
     const offerLines = warningData.listing.offer.length + 1;
     const considerationLines = warningData.listing.consideration.length + 1;

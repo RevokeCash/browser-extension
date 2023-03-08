@@ -27,6 +27,7 @@ export const ScamSignatureIdentifier = {
 
 export const Signature = {
   approve: 'approve(address,uint256)',
+  permit2Approve: 'approve(address,address,uint160,uint48)',
   increaseAllowance: 'increaseAllowance(address,uint256)',
   setApprovalForAll: 'setApprovalForAll(address,bool)',
 };

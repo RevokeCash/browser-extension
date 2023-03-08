@@ -109,7 +109,7 @@ export interface AllowanceWarningData extends CommonWarningData {
   type: WarningType.ALLOWANCE;
   chainId: number;
   user: string;
-  asset: string;
+  assets: string[];
   spender: string;
 }
 

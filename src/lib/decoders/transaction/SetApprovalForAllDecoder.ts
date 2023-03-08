@@ -23,7 +23,7 @@ export class SetApprovalForAllDecoder implements TransactionDecoder {
       hostname: message.data.hostname,
       chainId: message.data.chainId,
       user,
-      asset,
+      assets: [asset],
       spender,
     };
   }
