@@ -6,11 +6,11 @@ This is where the Revoke.cash Browser Extension comes in. The extension pops up 
 
 The extension also informs you when you are about to list an item for sale on popular marketplaces such as OpenSea and LooksRare, or when you are about to sign a hash. These hashes are used by certain marketplaces like X2Y2 for listing NFTs.
 
-A common scam is to try to trick you into signing one of these gasless signatures on a phishing website, allowing the scammers to steal your NFTs. The official websites of OpenSea, LooksRare, X2Y2, Genie and Gem are allowlisted for these actions, so that the Revoke.cash browser extension does not interrupt your normal flow.
+A common scam is to try to trick you into signing one of these gasless signatures on a phishing website, allowing the scammers to steal your NFTs. The official websites of OpenSea, LooksRare, X2Y2, Genie, and Gem are allowlisted for these actions, so that the Revoke.cash browser extension does not interrupt your normal flow.
 
 The different categories of warnings can be turned on and off in the extension settings.
 
-The Revoke.cash browser extension works with every EVM-based chain including Ethereum, Polygon and Avalanche.
+The Revoke.cash browser extension works with every EVM-based chain including Ethereum, Polygon, and Avalanche.
 
 ## Development
 
