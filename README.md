@@ -36,6 +36,24 @@ To keep Revoke.cash free, we rely on donations and sponsorships for revenue. If 
 
 <p align="center">
   <a href="https://earni.fi">
+    <img width="300" src="https://github.com/RevokeCash/revoke.cash/blob/master/public/assets/images/vendor/sponsors/boring-security.png">
+    <br />
+    Boring Security
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://earni.fi">
+    <img width="300" src="https://github.com/RevokeCash/revoke.cash/blob/master/public/assets/images/vendor/sponsors/vulcan.jpg">
+    <img width="300" src="https://github.com/RevokeCash/revoke.cash/blob/master/public/assets/images/vendor/sponsors/premint.jpg">
+    <br />
+    Vulcan
+    PREMINT
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://earni.fi">
     <img width="300" src="https://github.com/RevokeCash/revoke.cash/blob/master/public/assets/images/vendor/earnifi.png">
     <br />
     Earni.fi
