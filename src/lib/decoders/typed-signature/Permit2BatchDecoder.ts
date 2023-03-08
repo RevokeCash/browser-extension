@@ -22,7 +22,7 @@ export class Permit2BatchDecoder implements TypedSignatureDecoder {
       requestId: message.requestId,
       bypassed: !!message.data.bypassed,
       hostname: message.data.hostname,
-      chainId: message.data.chainId,
+      chainId: Number(domain.chainId ?? message.data.chainId),
       user,
       assets,
       spender,

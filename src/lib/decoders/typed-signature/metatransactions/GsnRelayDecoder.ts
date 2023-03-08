@@ -23,7 +23,7 @@ export class GsnRelayDecoder implements TypedSignatureDecoder {
         ...message.data,
         type: RequestType.TRANSACTION,
         transaction,
-        chainId: Number(domain.chainId) ?? message.data.chainId, // GSN Relay may use chainId in the EIP712 domain
+        chainId: Number(domain.chainId ?? message.data.chainId),
       },
     };
 

@@ -23,7 +23,7 @@ export class BiconomyForwarderDecoder implements TypedSignatureDecoder {
         ...message.data,
         type: RequestType.TRANSACTION,
         transaction,
-        chainId: Number(domain.salt) ?? message.data.chainId, // Biconomy uses salt as chainId
+        chainId: Number(domain.salt ?? domain.chainId ?? message.data.chainId), // Biconomy uses salt as chainId
       },
     };
 

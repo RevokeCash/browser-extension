@@ -1,24 +1,19 @@
-import { BigNumber } from 'ethers';
 import { WarningType } from '../../constants';
 import { AllowanceWarningData, TypedSignatureMessage } from '../../types';
 import { TypedSignatureDecoder } from './TypedSignatureDecoder';
 
-export class Permit2SingleDecoder implements TypedSignatureDecoder {
+export class PermitForAllDecoder implements TypedSignatureDecoder {
   decode(message: TypedSignatureMessage): AllowanceWarningData | undefined {
     const { domain, message: messageData, primaryType } = message?.data?.typedData ?? {};
 
     if (!domain || !messageData || !primaryType) return undefined;
-    if (primaryType !== 'PermitSingle') return undefined;
+    if (primaryType !== 'PermitForAll') return undefined;
 
-    const { details, spender } = messageData;
-    const { token: asset, amount } = details ?? {};
-    const user = message.data.address;
+    const asset = domain.verifyingContract;
+    const { operator: spender, approved, owner: user } = messageData;
+    console.log('PermitForAllDecoder.ts: ', messageData, spender, approved, user);
 
-    try {
-      if (!asset || BigNumber.from(amount).isZero()) return undefined;
-    } catch {
-      return undefined;
-    }
+    if (!asset || String(approved) !== 'true') return undefined;
 
     return {
       type: WarningType.ALLOWANCE,

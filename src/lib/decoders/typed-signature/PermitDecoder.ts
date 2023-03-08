@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers';
 import { WarningType } from '../../constants';
 import { AllowanceWarningData, TypedSignatureMessage } from '../../types';
 import { TypedSignatureDecoder } from './TypedSignatureDecoder';
@@ -13,14 +14,20 @@ export class PermitDecoder implements TypedSignatureDecoder {
     const { spender, value, allowed, holder, owner } = messageData;
     const user = owner ?? holder;
 
-    if (!asset || value === '0' || allowed === false) return undefined;
+    if (!asset) return undefined;
+    try {
+      if (value && BigNumber.from(value).isZero()) return undefined;
+      if (allowed && String(allowed) !== 'true') return undefined;
+    } catch {
+      return undefined;
+    }
 
     return {
       type: WarningType.ALLOWANCE,
       requestId: message.requestId,
       bypassed: !!message.data.bypassed,
       hostname: message.data.hostname,
-      chainId: message.data.chainId,
+      chainId: Number(domain.chainId ?? message.data.chainId),
       user,
       assets: [asset],
       spender,

@@ -7,7 +7,7 @@ import { IncreaseAllowanceDecoder } from './lib/decoders/transaction/IncreaseAll
 import { Permit2ApproveDecoder } from './lib/decoders/transaction/Permit2ApproveDecoder';
 import { SetApprovalForAllDecoder } from './lib/decoders/transaction/SetApprovalForAllDecoder';
 import { SuspectedScamDecoder } from './lib/decoders/transaction/SuspectedScamDecoder';
-import { BlurBulkDecoder } from './lib/decoders/typed-signature/listing/BllurBulkDecoder';
+import { BlurBulkDecoder } from './lib/decoders/typed-signature/listing/BlurBulkDecoder';
 import { BlurDecorder } from './lib/decoders/typed-signature/listing/BlurDecoder';
 import { LooksRareDecoder } from './lib/decoders/typed-signature/listing/LooksRareDecoder';
 import { Seaport14Decoder } from './lib/decoders/typed-signature/listing/Seaport14Decoder';
@@ -17,6 +17,7 @@ import { GsnRelayDecoder } from './lib/decoders/typed-signature/metatransactions
 import { Permit2BatchDecoder } from './lib/decoders/typed-signature/Permit2BatchDecoder';
 import { Permit2SingleDecoder } from './lib/decoders/typed-signature/Permit2SingleDecoder';
 import { PermitDecoder } from './lib/decoders/typed-signature/PermitDecoder';
+import { PermitForAllDecoder } from './lib/decoders/typed-signature/PermitForAllDecoder';
 import { HashDecoder } from './lib/decoders/untyped-signature/HashDecoder';
 import { Message, MessageResponse, WarningData } from './lib/types';
 import { randomId } from './lib/utils/misc';
@@ -52,6 +53,7 @@ const transactionDecoders = [
 ];
 const typedSignatureDecoders = [
   new PermitDecoder(),
+  new PermitForAllDecoder(),
   new Permit2SingleDecoder(),
   new Permit2BatchDecoder(),
   new Seaport1Decoder(),
