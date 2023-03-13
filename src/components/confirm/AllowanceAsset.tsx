@@ -20,9 +20,11 @@ const AllowanceAsset = ({ address, chainId }: Props) => {
 
   return (
     <Loadable loading={loading}>
-      <Href underline="always" href={`${explorerUrl}/address/${address}`}>
-        {assetDisplay}
-      </Href>
+      <div>
+        <Href underline="always" href={`${explorerUrl}/address/${address}`}>
+          {assetDisplay}
+        </Href>
+      </div>
     </Loadable>
   );
 };

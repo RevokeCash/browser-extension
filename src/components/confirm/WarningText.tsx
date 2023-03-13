@@ -29,13 +29,11 @@ const WarningText = ({ type, bypassed, hostname, platform }: Props) => {
   const i18nKey = `confirm_${type}.${bypassed ? 'bypassed' : 'confirm'}`;
 
   return (
-    <div>
-      <div className="w-[416px] text-center">
-        {beforeText && <span className="font-bold uppercase">{beforeText}</span>}
-        {beforeText && ': '}
-        <Trans i18nKey={i18nKey} values={{ hostname, platform }} components={[<span className="font-bold" />]} />{' '}
-        {afterText}
-      </div>
+    <div className="w-104 text-center">
+      {beforeText && <span className="font-bold uppercase">{beforeText}</span>}
+      {beforeText && ': '}
+      <Trans i18nKey={i18nKey} values={{ hostname, platform }} components={[<span className="font-bold" />]} />{' '}
+      {afterText}
     </div>
   );
 };

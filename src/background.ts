@@ -155,8 +155,8 @@ const calculatePopupPositions = (window: Browser.Windows.Window, warningData: Wa
 };
 
 const calculatePopupHeight = (warningData: WarningData) => {
-  const lineHeight = 24;
-  const baseHeight = 11 * lineHeight;
+  const lineHeight = 20;
+  const baseHeight = 14 * lineHeight;
   const bypassHeight = warningData.bypassed ? lineHeight : 0;
 
   if (warningData.type === WarningType.ALLOWANCE) {

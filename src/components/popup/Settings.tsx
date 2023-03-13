@@ -30,7 +30,7 @@ const Settings = () => {
         label={t('popup.settings.suspected_scams')}
         defaultValue={true}
       />
-      <div className="flex gap-2">
+      <div className="flex w-full gap-2">
         <LanguageSelect />
         <ColorThemeSelect />
       </div>

@@ -15,6 +15,11 @@
         "group": "existing",
         "pattern": "src/i18n/locales/zh_CN/*.json",
         "lang": "zh-Hans"
+      },
+      {
+        "group": "existing",
+        "pattern": "src/i18n/locales/jp/*.json",
+        "lang": "jp"
       }
     ]
   },

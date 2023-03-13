@@ -23,7 +23,7 @@ const Confirm = () => {
     return (
       <div className="flex flex-col gap-2 justify-center items-center w-full h-screen p-2">
         <Header size="large" />
-        <div className="w-[400px] text-center">
+        <div className="w-104 text-center">
           <Trans i18nKey="common.error_occurred" components={[<Href underline="always" href={Urls.DISCORD} />]} />
         </div>
         <WarningControls bypassed={true} requestId={'placeholder'} />

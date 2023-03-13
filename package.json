@@ -37,6 +37,7 @@
     "webextension-polyfill": "^0.9.0"
   },
   "devDependencies": {
+    "@localazy/cli": "^1.7.1",
     "@types/chrome": "^0.0.191",
     "@types/object-hash": "^2.2.1",
     "@types/react": "^17.0.0",

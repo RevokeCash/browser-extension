@@ -16,8 +16,8 @@ const BooleanSetting = ({ storageKey, label, defaultValue }: Props) => {
   if (value === undefined) return null;
 
   return (
-    <div className="flex justify-between items-center w-full border border-black dark:border-white rounded-lg px-2 py-1">
-      <div className="text-sm">{label}</div>
+    <div className="flex justify-between items-center w-full border border-black dark:border-white rounded-lg px-2 py-1.5 gap-2">
+      <div className="py-px">{label}</div>
       <Switch
         checked={value}
         onChange={(checked: boolean) => setValue(checked)}
@@ -27,8 +27,8 @@ const BooleanSetting = ({ storageKey, label, defaultValue }: Props) => {
         offHandleColor="#333"
         checkedIcon={false}
         uncheckedIcon={false}
-        height={16}
-        width={32}
+        height={20}
+        width={40}
         activeBoxShadow="0 0 2px 3px #aaa"
       />
     </div>

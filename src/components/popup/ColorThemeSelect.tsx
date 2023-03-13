@@ -18,14 +18,14 @@ const ColorThemeSelect = () => {
 
   const displayOption = (option: typeof options[number]) => (
     <div className="flex gap-1 items-center">
-      {option.icon} {t(`popup.settings.color_themes.${option.value}`)}
+      <span className="shrink-0">{option.icon}</span> {t(`popup.settings.color_themes.${option.value}`)}
     </div>
   );
 
   return (
     <Select
       instanceId="color-theme-select"
-      className="w-30"
+      className="w-full"
       controlTheme={darkMode ? 'dark' : 'light'}
       menuTheme={darkMode ? 'dark' : 'light'}
       value={options.find((option) => option.value === theme)}

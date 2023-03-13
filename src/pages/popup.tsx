@@ -12,7 +12,7 @@ const Popup = () => {
 
   return (
     <Page>
-      <div className="flex flex-col gap-4 items-center p-4 w-[280px]">
+      <div className="flex flex-col gap-4 items-center p-4 w-92">
         <Header size="small" />
         <Settings />
         <Footer />

@@ -13,6 +13,7 @@ const LanguageSelect = () => {
     { value: 'en', name: 'English', emoji: '🇬🇧' },
     { value: 'es', name: 'Español', emoji: '🇪🇸' },
     { value: 'zh', name: '中文', emoji: '🇨🇳' },
+    { value: 'ja', name: '日本語', emoji: '🇯🇵' },
   ];
 
   const update = (option: any) => setLocale(option.value);
@@ -22,7 +23,7 @@ const LanguageSelect = () => {
   return (
     <Select
       instanceId="language-select"
-      className="w-30"
+      className="w-full"
       controlTheme={darkMode ? 'dark' : 'light'}
       menuTheme={darkMode ? 'dark' : 'light'}
       value={options.find((option) => option.value === locale) ?? options[0]}
