@@ -1,11 +1,11 @@
 import React from 'react';
-import ReactSelect, { components, OptionProps, Props as ReactSelectProps } from 'react-select';
+import ReactSelect, { components, GroupBase, OptionProps, Props as ReactSelectProps } from 'react-select';
 import { twMerge } from 'tailwind-merge';
 
-// This has been copy pasted with no mdifications from RevokeCash/revoke.cash
+// This has been copy pasted with no modifications from RevokeCash/revoke.cash
 
-interface Props extends ReactSelectProps {
-  minMenuWidth?: number;
+interface Props<O, I extends boolean, G extends GroupBase<O>> extends ReactSelectProps<O, I, G> {
+  minMenuWidth?: number | string;
   menuAlign?: 'left' | 'right';
   size?: 'sm' | 'md';
   controlTheme?: 'light' | 'dark';
@@ -14,7 +14,7 @@ interface Props extends ReactSelectProps {
 
 // This component is created to allow us to customise the styles of the react-select component
 // the className prop can still be used to customise some of the styles per component
-const Select = (props: Props) => {
+const Select = <O, I extends boolean, G extends GroupBase<O>>(props: Props<O, I, G>) => {
   const controlClassMapping = {
     sm: 'h-6 px-1',
     md: 'h-9 px-2',
@@ -24,16 +24,16 @@ const Select = (props: Props) => {
   const colors = {
     primary: 'black', // black
     secondary: 'white', // white
-    lightest: '#f3f4f6', // gray-100
-    light: '#d4d4d8', // gray-300
-    dark: '#6b7280', // gray-500
-    darkest: '#1f2937', // gray-800
+    lightest: '#f4f4f5', // zinc-100
+    light: '#d4d4d8', // zinc-300
+    dark: '#71717a', // zinc-500
+    darkest: '#27272a', // zinc-800
   };
 
   return (
     <ReactSelect
       {...props}
-      className={props.className}
+      className={twMerge(props.className)}
       components={{ IndicatorSeparator: null, ClearIndicator: () => null, Option, ...props.components }}
       classNames={{
         control: (state) =>
@@ -68,13 +68,18 @@ const Select = (props: Props) => {
           minWidth: props.minMenuWidth,
           position: 'absolute',
           right: props.menuAlign === 'right' ? undefined : 0,
+          // height: 400,
         }),
         groupHeading: (styles) => ({
           ...styles,
-          paddingTop: 12, // pt-3
+          paddingTop: '0.75rem', // pt-3
         }),
+        placeholder: removeSpacing,
         group: removeSpacing,
-        menuList: removeSpacing,
+        menuList: (styles) => ({
+          ...removeSpacing(styles),
+          maxHeight: '22rem',
+        }),
         dropdownIndicator: removeSpacing,
         clearIndicator: removeSpacing,
         valueContainer: removeSpacing,
@@ -83,7 +88,7 @@ const Select = (props: Props) => {
         option: (styles) => ({
           ...styles,
           cursor: 'pointer', // cursor-pointer
-          padding: '8px 8px', // p-2
+          padding: '0.5rem', // p-2
         }),
       }}
       theme={(theme) => ({
@@ -121,6 +126,6 @@ const removeSpacing = (styles: any) => ({
 });
 
 // Make sure that the selected option is not highlighted
-const Option = (props: OptionProps) => {
+const Option = <O, I extends boolean, G extends GroupBase<O>>(props: OptionProps<O, I, G>) => {
   return components.Option({ ...props, isSelected: false });
 };
