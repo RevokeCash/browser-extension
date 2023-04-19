@@ -61,6 +61,7 @@ window.addEventListener('message', (message) => {
       from: data.request.params.fromAddress,
       to: data.request.params.toAddress,
       data: data.request.params.data,
+      value: data.request.params.value, // TODO: Double check
     };
 
     const chainId = Number(data.request.params.chainId ?? 1);

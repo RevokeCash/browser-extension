@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from 'react';
+import { twMerge } from 'tailwind-merge';
 import { useColorTheme } from '../../hooks/useColorTheme';
-import { classNames } from '../../lib/utils/styles';
 
 // This has been copy pasted with slight mdifications from RevokeCash/revoke.cash
 
@@ -39,7 +39,7 @@ const Button = ({ disabled, style, size, onClick, href, external, children, clas
     none: '',
   };
 
-  const classes = classNames(
+  const classes = twMerge(
     'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black dark:focus-visible:ring-white',
     (style === 'none' || style === 'tertiary') && 'focus-visible:ring-2 focus-visible:rounded',
     style !== 'none' && classMapping.common,

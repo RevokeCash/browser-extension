@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { classNames } from '../../lib/utils/styles';
+import { twMerge } from 'tailwind-merge';
 
 // This has been copy pasted with slight mdifications from RevokeCash/revoke.cash
 
@@ -23,7 +23,7 @@ const Href = ({ href, children, className, underline, html }: Props) => {
     none: 'no-underline hover:no-underline',
   };
 
-  const classes = classNames(
+  const classes = twMerge(
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:rounded',
     className,
     styleMapping[html ? 'html' : 'inherit'],

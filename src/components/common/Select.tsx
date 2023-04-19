@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactSelect, { components, OptionProps, Props as ReactSelectProps } from 'react-select';
-import { classNames } from '../../lib/utils/styles';
+import { twMerge } from 'tailwind-merge';
 
 // This has been copy pasted with no mdifications from RevokeCash/revoke.cash
 
@@ -33,11 +33,11 @@ const Select = (props: Props) => {
   return (
     <ReactSelect
       {...props}
-      className={classNames(props.className)}
+      className={props.className}
       components={{ IndicatorSeparator: null, ClearIndicator: () => null, Option, ...props.components }}
       classNames={{
         control: (state) =>
-          classNames(
+          twMerge(
             // Attempt to match the browser's focus-visible behaviour for <select> elements
             // (only display the focus ring when the element is focused via the keyboard)
             state.isFocused && '[&:has(:focus-visible)]:ring-1 [&:has(:focus-visible)]:ring-current',
