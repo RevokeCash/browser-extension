@@ -46,7 +46,7 @@ export const getChainRpcUrl = (chainId: number, infuraKey: string = ''): string 
 
 export const getChainProvider = (chainId: number, infuraKey: string = ''): providers.Provider => {
   const rpcUrl = getChainRpcUrl(chainId, infuraKey) ?? getChainRpcUrl(1, infuraKey);
-  return new providers.JsonRpcProvider(rpcUrl, chainId);
+  return new providers.StaticJsonRpcProvider(rpcUrl, chainId);
 };
 
 export const isSupportedChain = (chainId: number) => !!getChainRpcUrl(chainId);
