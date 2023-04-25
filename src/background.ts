@@ -1,6 +1,6 @@
 import { init, track } from '@amplitude/analytics-browser';
 import Browser from 'webextension-polyfill';
-import { AllowList, warningSettingKeys, WarningType } from './lib/constants';
+import { AddressAllowList, HostnameAllowList, warningSettingKeys, WarningType } from './lib/constants';
 import { AggregateDecoder } from './lib/decoders/AggregateDecoder';
 import { ApproveDecoder } from './lib/decoders/transaction/ApproveDecoder';
 import { IncreaseAllowanceDecoder } from './lib/decoders/transaction/IncreaseAllowanceDecoder';
@@ -118,8 +118,12 @@ const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<bo
   const warningsTurnedOnForType = await getStorage('local', warningSettingKeys[warningData.type], true);
   if (!warningsTurnedOnForType) return false;
 
-  const isAllowListed = AllowList[warningData.type].includes(warningData.hostname);
-  if (isAllowListed) return false;
+  const isHostnameAllowListed = HostnameAllowList[warningData.type].includes(warningData.hostname);
+  if (isHostnameAllowListed) return false;
+
+  const address = 'spender' in warningData ? warningData.spender : 'address' in warningData ? warningData.address : '';
+  const isAddressAllowListed = AddressAllowList[warningData.type].includes(address);
+  if (isAddressAllowListed) return false;
 
   createWarningPopup(warningData);
   trackWarning(warningData);

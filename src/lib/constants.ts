@@ -89,19 +89,28 @@ export const PlaceHolderItem = {
   },
 };
 
-export const AllowList: Record<WarningType, string[]> = {
+export const HostnameAllowList: Record<WarningType, string[]> = {
   [WarningType.ALLOWANCE]: [],
-  [WarningType.LISTING]: ['opensea.io', 'www.genie.xyz', 'www.gem.xyz', 'looksrare.org', 'x2y2.io', 'blur.io'],
+  [WarningType.LISTING]: ['opensea.io', 'pro.opensea.io', 'app.uniswap.org', 'blur.io', 'looksrare.org', 'x2y2.io'],
   [WarningType.HASH]: [
     'opensea.io',
-    'www.genie.xyz',
-    'www.gem.xyz',
+    'pro.opensea.io',
+    'app.uniswap.org',
+    'blur.io',
     'looksrare.org',
     'x2y2.io',
-    'blur.io',
     'unstoppabledomains.com',
   ],
   [WarningType.SUSPECTED_SCAM]: [],
+};
+
+export const AddressAllowList: Record<WarningType, string[]> = {
+  [WarningType.ALLOWANCE]: [],
+  [WarningType.LISTING]: [],
+  [WarningType.HASH]: [],
+  [WarningType.SUSPECTED_SCAM]: [
+    '0x1EB7bcab5EdF75b5E02c9A72D3287E322EbaEfdB', // tevaera.com -> claim() | zkSync
+  ],
 };
 
 export const NFT_MARKETPLACES: Record<string, string> = {
