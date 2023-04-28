@@ -16,8 +16,8 @@ export class PermitDecoder implements TypedSignatureDecoder {
 
     if (!asset) return undefined;
     try {
-      if (value && BigNumber.from(value).isZero()) return undefined;
-      if (allowed && String(allowed) !== 'true') return undefined;
+      if (value !== undefined && BigNumber.from(value).isZero()) return undefined;
+      if (allowed !== undefined && String(allowed) !== 'true') return undefined;
     } catch {
       return undefined;
     }
