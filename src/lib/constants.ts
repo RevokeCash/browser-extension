@@ -109,7 +109,7 @@ export const AddressAllowList: Record<WarningType, string[]> = {
   [WarningType.LISTING]: [],
   [WarningType.HASH]: [],
   [WarningType.SUSPECTED_SCAM]: [
-    '0x1EB7bcab5EdF75b5E02c9A72D3287E322EbaEfdB', // tevaera.com -> claim() | zkSync
+    '0x1eb7bcab5edf75b5e02c9a72d3287e322ebaefdb', // tevaera.com -> claim() | zkSync
   ],
 };
 

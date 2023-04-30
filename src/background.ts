@@ -93,6 +93,7 @@ Browser.runtime.onMessage.addListener((response: MessageResponse) => {
 });
 
 const processMessage = async (message: Message, remotePort: Browser.Runtime.Port) => {
+  console.log('Processing message:', message);
   const popupCreated = await decodeMessageAndCreatePopupIfNeeded(message);
 
   // For bypassed messages we have no response to return
@@ -122,7 +123,7 @@ const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<bo
   if (isHostnameAllowListed) return false;
 
   const address = 'spender' in warningData ? warningData.spender : 'address' in warningData ? warningData.address : '';
-  const isAddressAllowListed = AddressAllowList[warningData.type].includes(address);
+  const isAddressAllowListed = AddressAllowList[warningData.type].includes(address.toLowerCase());
   if (isAddressAllowListed) return false;
 
   createWarningPopup(warningData);
