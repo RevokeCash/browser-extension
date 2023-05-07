@@ -1080,6 +1080,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@revoke.cash/chains@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@revoke.cash/chains@npm:1.0.0"
+  checksum: a0c1481128f5be06ae61f7dc0cd69ffaa3b8df8affb0829ff8ca92a3de25e11e89d488ae8422b5c72c806dc3d27f5a23c820b31670c55436256a6881885d4db3
+  languageName: node
+  linkType: hard
+
 "@sindresorhus/is@npm:^5.2.0":
   version: 5.3.0
   resolution: "@sindresorhus/is@npm:5.3.0"
@@ -3570,13 +3577,6 @@ __metadata:
   version: 2.0.3
   resolution: "esutils@npm:2.0.3"
   checksum: 22b5b08f74737379a840b8ed2036a5fb35826c709ab000683b092d9054e5c2a82c27818f12604bfc2a9a76b90b6834ef081edbc1c7ae30d1627012e067c6ec87
-  languageName: node
-  linkType: hard
-
-"eth-chains@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "eth-chains@npm:1.0.0"
-  checksum: 8680c38d16be3031ff14d423d9e3bf3fda941ee4ff0982fb1fac3cc858ae6807ade4cf01b0e49575b44ba57f3eebf3097e5016a744d8ba6ecf5856de62d7d0ba
   languageName: node
   linkType: hard
 
@@ -7519,6 +7519,7 @@ __metadata:
     "@heroicons/react": ^2.0.13
     "@localazy/cli": ^1.7.1
     "@metamask/post-message-stream": ^5.0.0
+    "@revoke.cash/chains": ^1.0.0
     "@types/chrome": ^0.0.191
     "@types/object-hash": ^2.2.1
     "@types/react": ^17.0.0
@@ -7531,7 +7532,6 @@ __metadata:
     cross-env: ^7.0.3
     css-loader: ^6.7.1
     dotenv-webpack: ^8.0.1
-    eth-chains: ^1.0.0
     eth-rpc-errors: ^4.0.3
     ethers: ^5.6.9
     extension-port-stream: ^2.0.1

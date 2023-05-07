@@ -1,7 +1,4 @@
-import dotenv from 'dotenv';
 import { getChainProvider } from '../../src/lib/utils/chains';
-
-dotenv.config();
 
 // Inclusive range
 const range = (start: number, end: number): number[] => {
@@ -10,7 +7,7 @@ const range = (start: number, end: number): number[] => {
 };
 
 export const getTransactionsInBlocks = async (blockCount: number = 1) => {
-  const provider = getChainProvider(1, process.env.INFURA_API_KEY);
+  const provider = getChainProvider(1);
 
   const toBlock = await provider.getBlockNumber();
   const fromBlock = toBlock - blockCount + 1;
