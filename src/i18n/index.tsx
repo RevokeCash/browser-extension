@@ -5,7 +5,8 @@ import Browser from 'webextension-polyfill';
 import useBrowserStorage from '../hooks/useBrowserStorage';
 import en from './locales/en/translation.json';
 import es from './locales/es/translation.json';
-// import ja from './locales/ja/translation.json';
+import ja from './locales/ja/translation.json';
+import ru from './locales/ru/translation.json';
 import zh from './locales/zh_CN/translation.json';
 
 const [lng] = Browser.i18n.getUILanguage().split('-');
@@ -13,9 +14,10 @@ const [lng] = Browser.i18n.getUILanguage().split('-');
 i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
-    es: { translation: es },
     zh: { translation: zh },
-    // ja: { translation: ja },
+    ru: { translation: ru },
+    ja: { translation: ja },
+    es: { translation: es },
   },
   lng,
   fallbackLng: 'en',

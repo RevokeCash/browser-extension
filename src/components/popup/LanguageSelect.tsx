@@ -19,7 +19,8 @@ const LanguageSelect = () => {
   const options: Option[] = [
     { value: 'en', name: 'English' },
     { value: 'zh', name: '中文' },
-    // { value: 'ja', name: '日本語' },
+    { value: 'ru', name: 'Русский' },
+    { value: 'ja', name: '日本語' },
     { value: 'es', name: 'Español' },
   ];
 
