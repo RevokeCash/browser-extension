@@ -16,32 +16,42 @@ window.addEventListener('message', (message) => {
 
   if (name !== Identifier.METAMASK_PROVIDER || !data) return;
 
-  if (target === Identifier.METAMASK_CONTENT_SCRIPT) {
-    if (data.method === 'eth_sendTransaction') {
-      const [transaction] = data.params ?? [];
-      const type = RequestType.TRANSACTION;
-
-      // Forward received messages to background.js
-      const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
-      sendToPortAndDisregard(extensionPort, { type, bypassed, hostname, transaction, chainId });
-    } else if (data.method === 'eth_signTypedData_v3' || data.method === 'eth_signTypedData_v4') {
-      const [address, typedDataStr] = data.params ?? [];
-      const typedData = JSON.parse(typedDataStr);
-      const type = RequestType.TYPED_SIGNATURE;
-
-      // Forward received messages to background.js
-      const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
-      sendToPortAndDisregard(extensionPort, { type, bypassed, hostname, address, typedData, chainId });
-    } else if (data.method === 'eth_sign' || data.method === 'personal_sign') {
-      // if the first parameter is the address, the second is the message, otherwise the first is the message
-      const [first, second] = data.params ?? [];
-      const message = String(first).replace(/0x/, '').length === 40 ? second : first;
-      const type = RequestType.UNTYPED_SIGNATURE;
-
-      // Forward received messages to background.js
-      const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
-      sendToPortAndDisregard(extensionPort, { type, bypassed, message, hostname });
+  const checkMetaMaskBypass = (messageData: any): void => {
+    if (!Array.isArray(messageData)) {
+      return void checkMetaMaskBypass([messageData]);
     }
+
+    messageData.forEach((item) => {
+      if (item.method === 'eth_sendTransaction') {
+        const [transaction] = item.params ?? [];
+        const type = RequestType.TRANSACTION;
+
+        // Forward received messages to background.js
+        const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
+        sendToPortAndDisregard(extensionPort, { type, bypassed, hostname, transaction, chainId });
+      } else if (item.method === 'eth_signTypedData_v3' || item.method === 'eth_signTypedData_v4') {
+        const [address, typedDataStr] = item.params ?? [];
+        const typedData = JSON.parse(typedDataStr);
+        const type = RequestType.TYPED_SIGNATURE;
+
+        // Forward received messages to background.js
+        const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
+        sendToPortAndDisregard(extensionPort, { type, bypassed, hostname, address, typedData, chainId });
+      } else if (item.method === 'eth_sign' || item.method === 'personal_sign') {
+        // if the first parameter is the address, the second is the message, otherwise the first is the message
+        const [first, second] = item.params ?? [];
+        const message = String(first).replace(/0x/, '').length === 40 ? second : first;
+        const type = RequestType.UNTYPED_SIGNATURE;
+
+        // Forward received messages to background.js
+        const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
+        sendToPortAndDisregard(extensionPort, { type, bypassed, message, hostname });
+      }
+    });
+  };
+
+  if (target === Identifier.METAMASK_CONTENT_SCRIPT) {
+    checkMetaMaskBypass(data);
   }
 
   if (target === Identifier.METAMASK_INPAGE && data?.method?.includes('chainChanged')) {
@@ -61,7 +71,7 @@ window.addEventListener('message', (message) => {
       from: data.request.params.fromAddress,
       to: data.request.params.toAddress,
       data: data.request.params.data,
-      value: data.request.params.value, // TODO: Double check
+      value: Number.parseInt(data.request.params.weiValue ?? '0').toString(16),
     };
 
     const chainId = Number(data.request.params.chainId ?? 1);

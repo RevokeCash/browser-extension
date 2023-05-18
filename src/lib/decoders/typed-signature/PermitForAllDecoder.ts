@@ -11,7 +11,6 @@ export class PermitForAllDecoder implements TypedSignatureDecoder {
 
     const asset = domain.verifyingContract;
     const { operator: spender, approved, owner: user } = messageData;
-    console.log('PermitForAllDecoder.ts: ', messageData, spender, approved, user);
 
     if (!asset || String(approved) !== 'true') return undefined;
 
