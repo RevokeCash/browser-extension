@@ -22,14 +22,16 @@ window.addEventListener('message', (message) => {
     }
 
     messageData.forEach((item) => {
-      if (item.method === 'eth_sendTransaction') {
+      if (!item) return;
+
+      if (checkMethod(item, 'eth_sendTransaction')) {
         const [transaction] = item.params ?? [];
         const type = RequestType.TRANSACTION;
 
         // Forward received messages to background.js
         const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
         sendToPortAndDisregard(extensionPort, { type, bypassed, hostname, transaction, chainId });
-      } else if (item.method === 'eth_signTypedData_v3' || item.method === 'eth_signTypedData_v4') {
+      } else if (checkMethod(item, 'eth_signTypedData')) {
         const [address, typedDataStr] = item.params ?? [];
         const typedData = JSON.parse(typedDataStr);
         const type = RequestType.TYPED_SIGNATURE;
@@ -37,7 +39,7 @@ window.addEventListener('message', (message) => {
         // Forward received messages to background.js
         const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
         sendToPortAndDisregard(extensionPort, { type, bypassed, hostname, address, typedData, chainId });
-      } else if (item.method === 'eth_sign' || item.method === 'personal_sign') {
+      } else if (checkMethod(item, 'eth_sign') || checkMethod(item, 'personal_sign')) {
         // if the first parameter is the address, the second is the message, otherwise the first is the message
         const [first, second] = item.params ?? [];
         const message = String(first).replace(/0x/, '').length === 40 ? second : first;
@@ -104,3 +106,7 @@ window.addEventListener('message', (message) => {
     }
   }
 });
+
+const checkMethod = (item: any, method: string): boolean => {
+  return String(item?.method)?.toLowerCase()?.includes(method?.toLowerCase());
+};

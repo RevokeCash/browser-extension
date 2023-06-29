@@ -80,9 +80,5 @@
   },
   "lint-staged": {
     "*": "prettier -u --write"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "printWidth": 120
   }
 }
