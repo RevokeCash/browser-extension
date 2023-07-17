@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAsync } from 'react-async-hook';
-import { addressToAppName } from '../../lib/utils/whois';
+import { getSpenderData } from '../../lib/utils/whois';
 import { AddressOrDisplay } from '../common/AddressOrDisplay';
 import Loadable from '../common/Loadable';
 
@@ -10,8 +10,8 @@ interface Props {
 }
 
 const AllowanceSpender = ({ address, chainId }: Props) => {
-  const { result, loading } = useAsync(() => addressToAppName(address, chainId), []);
-  const spenderDisplay = result || address;
+  const { result, loading } = useAsync(() => getSpenderData(address, chainId), []);
+  const spenderDisplay = result?.name || address;
 
   return (
     <Loadable loading={loading}>

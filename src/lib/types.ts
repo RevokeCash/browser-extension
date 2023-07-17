@@ -132,3 +132,8 @@ export interface SuspectedScamWarningData extends CommonWarningData {
 }
 
 export type WarningData = AllowanceWarningData | ListingWarningData | HashwarningData | SuspectedScamWarningData;
+
+export interface SpenderData {
+  name: string;
+  exploits?: string[];
+}
