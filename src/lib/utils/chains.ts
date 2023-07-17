@@ -6,7 +6,7 @@ import { INFURA_API_KEY } from '../constants';
 export const getChainName = (chainId: number): string => {
   const overrides: Record<number, string> = {
     [ChainId.EthereumMainnet]: 'Ethereum',
-    [ChainId.BinanceSmartChainMainnet]: 'Binance Smart Chain',
+    [ChainId.BNBSmartChainMainnet]: 'BNB Chain',
     [ChainId['AvalancheC-Chain']]: 'Avalanche',
     [ChainId.PolygonMainnet]: 'Polygon',
     [ChainId.ArbitrumOne]: 'Arbitrum',
@@ -26,14 +26,13 @@ export const getChainName = (chainId: number): string => {
     [ChainId.HarmonyMainnetShard0]: 'Harmony',
     [ChainId.HarmonyTestnetShard0]: 'Harmony Testnet',
     [ChainId.GodwokenMainnet]: 'Godwoken',
-    [ChainId.GodwokenTestnetv1]: 'Godwoken Testnet',
     [ChainId.SmartBitcoinCash]: 'SmartBCH',
     [ChainId.FuseMainnet]: 'Fuse',
     [ChainId.SyscoinMainnet]: 'Syscoin',
     [ChainId.CLVParachain]: 'CLV',
     [ChainId.BitTorrentChainMainnet]: 'BTT Chain',
     [ChainId.Goerli]: 'Goerli',
-    [ChainId.BinanceSmartChainTestnet]: 'BSC Testnet',
+    [ChainId.BNBSmartChainTestnet]: 'BNB Chain Testnet',
     [ChainId.AvalancheFujiTestnet]: 'Avalanche Fuji',
     [ChainId.Mumbai]: 'Polygon Mumbai',
     [ChainId.OptimismGoerliTestnet]: 'Optimism Goerli',
@@ -43,7 +42,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.MetisStardustTestnet]: 'Metis Stardust',
     [ChainId.TelosEVMTestnet]: 'Telos Testnet',
     [ChainId.SmartBitcoinCashTestnet]: 'SmartBCH Testnet',
-    [ChainId.SyscoinTanenbaumTestnet]: 'Syscoin Tenenbaum',
+    [ChainId.SyscoinTanenbaumTestnet]: 'Syscoin Tanenbaum',
     [ChainId.BitTorrentChainTestnet]: 'BTTC Testnet',
     [ChainId.OasisEmerald]: 'Oasis Emerald',
     [ChainId.OasisEmeraldTestnet]: 'Oasis Testnet',
@@ -65,28 +64,32 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ZkSyncEraMainnet]: 'zkSync Era',
     [ChainId.ZkSyncEraTestnet]: 'zkSync Era Goerli',
     [ChainId.PolygonzkEVM]: 'Polygon zkEVM',
-    [ChainId.PolygonzkEVMTestnet]: 'Polygon Test-zkEVM',
-    [ChainId.PulseChainTestnetv3]: 'PulseChain Testnet',
+    [ChainId.PolygonzkEVMTestnet]: 'Polygon zkEVM Testnet',
+    [ChainId.PulseChain]: 'PulseChain',
+    [ChainId.PulseChainTestnetv4]: 'PulseChain Testnet',
     [ChainId.LineaTestnet]: 'Linea Goerli',
     [ChainId.ScrollAlphaTestnet]: 'Scroll Alpha',
     [ChainId.BaseGoerliTestnet]: 'Base Goerli',
     [ChainId.RedlightChainMainnet]: 'Redlight',
     [ChainId.GatherMainnetNetwork]: 'Gather',
     [ChainId.GatherTestnetNetwork]: 'Gather Testnet',
-    [ChainId['Taiko(Alpha-2Testnet)']]: 'Taiko Alpha',
+    [ChainId['Taiko(Alpha-3Testnet)']]: 'Taiko Alpha',
     [ChainId.CoreBlockchainMainnet]: 'CORE',
     [ChainId.KCCMainnet]: 'KCC',
     [ChainId.ShimmerEVMTestnet]: 'Shimmer Testnet',
     [ChainId.OasysMainnet]: 'Oasys',
     [ChainId.ENULSMainnet]: 'ENULS',
+    [ChainId.ZetaChainAthensTestnet]: 'ZetaChain Athens',
+    [ChainId.OPMainnet]: 'Optimism',
   };
 
-  return overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
+  const name = overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
+  return name;
 };
 
 export const getChainExplorerUrl = (chainId: number): string | undefined => {
   const overrides: Record<number, string> = {
-    [ChainId.SmartBitcoinCash]: 'https://smartscan.cash',
+    [ChainId.SmartBitcoinCash]: 'https://www.smartscan.cash',
     [ChainId.CeloAlfajoresTestnet]: 'https://alfajores.celoscan.io',
     [ChainId.AuroraMainnet]: 'https://explorer.aurora.dev',
     [ChainId.BitTorrentChainMainnet]: 'https://bttcscan.com',
@@ -99,13 +102,16 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.KavaEVMTestnet]: 'https://explorer.testnet.kava.io',
     [ChainId.PolygonzkEVM]: 'https://zkevm.polygonscan.com',
     [ChainId.PolygonzkEVMTestnet]: 'https://testnet-zkevm.polygonscan.com',
-    [ChainId.PulseChainTestnetv3]: 'https://scan.v3.testnet.pulsechain.com',
+    [ChainId.PulseChain]: 'https://scan.pulsechain.com',
+    [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com',
     [ChainId.LineaTestnet]: 'https://explorer.goerli.linea.build',
     [ChainId.OasysMainnet]: 'https://scan.oasys.games',
     [ChainId.OptimismGoerliTestnet]: 'https://goerli-optimism.etherscan.io',
     [ChainId.FuseMainnet]: 'https://explorer.fuse.io',
     [ChainId.CallistoMainnet]: 'https://explorer.callisto.network',
     [ChainId.GodwokenMainnet]: 'https://www.gwscan.com',
+    [ChainId.Wanchain]: 'https://www.wanscan.org',
+    [ChainId.Canto]: 'https://tuber.build',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -124,11 +130,13 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.FantomTestnet]: 'https://rpc.ankr.com/fantom_testnet',
     [ChainId.Evmos]: 'https://evmos-evm.publicnode.com',
     [ChainId.Astar]: 'https://evm.astar.network',
-    [ChainId.Optimism]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
+    [ChainId.OPMainnet]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.OptimismGoerliTestnet]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
     [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
-    [ChainId.LineaTestnet]: 'https://consensys-zkevm-goerli-prealpha.infura.io/v3/4372a37c341846f0b2ce479dd29a429b', // TODO: Replace
+    [ChainId.LineaTestnet]: `https://linea-goerli.infura.io/v3/${infuraKey}`,
+    [ChainId.CoreBlockchainMainnet]: 'https://rpc-core.icecreamswap.com',
+    [ChainId.Base]: 'https://developer-access-mainnet.base.org',
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
