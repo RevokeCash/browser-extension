@@ -67,13 +67,14 @@ export const getChainName = (chainId: number): string => {
     [ChainId.PolygonzkEVMTestnet]: 'Polygon zkEVM Testnet',
     [ChainId.PulseChain]: 'PulseChain',
     [ChainId.PulseChainTestnetv4]: 'PulseChain Testnet',
+    [ChainId.Linea]: 'Linea',
     [ChainId.LineaTestnet]: 'Linea Goerli',
     [ChainId.ScrollAlphaTestnet]: 'Scroll Alpha',
     [ChainId.BaseGoerliTestnet]: 'Base Goerli',
     [ChainId.RedlightChainMainnet]: 'Redlight',
     [ChainId.GatherMainnetNetwork]: 'Gather',
     [ChainId.GatherTestnetNetwork]: 'Gather Testnet',
-    [ChainId['Taiko(Alpha-3Testnet)']]: 'Taiko Alpha',
+    [ChainId.TaikoGrimsvotnL2]: 'Taiko Grimsvotn',
     [ChainId.CoreBlockchainMainnet]: 'CORE',
     [ChainId.KCCMainnet]: 'KCC',
     [ChainId.ShimmerEVMTestnet]: 'Shimmer Testnet',
@@ -104,7 +105,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.PolygonzkEVMTestnet]: 'https://testnet-zkevm.polygonscan.com',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com',
     [ChainId.PulseChainTestnetv4]: 'https://scan.v4.testnet.pulsechain.com',
-    [ChainId.LineaTestnet]: 'https://explorer.goerli.linea.build',
+    [ChainId.LineaTestnet]: 'https://goerli.lineascan.build',
     [ChainId.OasysMainnet]: 'https://scan.oasys.games',
     [ChainId.OptimismGoerliTestnet]: 'https://goerli-optimism.etherscan.io',
     [ChainId.FuseMainnet]: 'https://explorer.fuse.io',
@@ -112,6 +113,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
     [ChainId.GodwokenMainnet]: 'https://www.gwscan.com',
     [ChainId.Wanchain]: 'https://www.wanscan.org',
     [ChainId.Canto]: 'https://tuber.build',
+    [ChainId.Linea]: 'https://lineascan.build',
   };
 
   const [explorer] = chains.get(chainId)?.explorers ?? [];
@@ -137,6 +139,8 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.LineaTestnet]: `https://linea-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.CoreBlockchainMainnet]: 'https://rpc-core.icecreamswap.com',
     [ChainId.Base]: 'https://developer-access-mainnet.base.org',
+    [ChainId.Canto]: 'https://mainnode.plexnode.org:8545',
+    [ChainId.Linea]: `https://linea-mainnet.infura.io/v3/${infuraKey}`,
   };
 
   const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
