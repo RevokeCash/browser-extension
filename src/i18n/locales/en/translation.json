@@ -13,8 +13,8 @@
   },
   "confirm_allowance": {
     "asset": "Asset",
-    "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to request an allowance on <0>{{hostname}}</0>!",
-    "confirm": "You are about to approve an allowance on <0>{{hostname}}</0>!",
+    "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to request an approval on <0>{{hostname}}</0>!",
+    "confirm": "You are about to sign an approval on <0>{{hostname}}</0>!",
     "spender": "Spender"
   },
   "confirm_hash": {
