@@ -11,7 +11,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.PolygonMainnet]: 'Polygon',
     [ChainId.ArbitrumOne]: 'Arbitrum',
     [ChainId.ArbitrumNova]: 'Arbitrum Nova',
-    [ChainId.CronosMainnetBeta]: 'Cronos',
+    [ChainId.CronosMainnet]: 'Cronos',
     [ChainId.FantomOpera]: 'Fantom',
     [ChainId.KlaytnMainnetCypress]: 'Klaytn',
     [ChainId.KlaytnTestnetBaobab]: 'Klaytn Baobab',
@@ -80,7 +80,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ShimmerEVMTestnet]: 'Shimmer Testnet',
     [ChainId.OasysMainnet]: 'Oasys',
     [ChainId.ENULSMainnet]: 'ENULS',
-    [ChainId.ZetaChainAthensTestnet]: 'ZetaChain Athens',
+    [ChainId.ZetaChainAthens3Testnet]: 'ZetaChain Athens',
     [ChainId.OPMainnet]: 'Optimism',
   };
 
@@ -134,7 +134,7 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
     [ChainId.Astar]: 'https://evm.astar.network',
     [ChainId.OPMainnet]: `https://optimism-mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.OptimismGoerliTestnet]: `https://optimism-goerli.infura.io/v3/${infuraKey}`,
-    [ChainId.CronosMainnetBeta]: 'https://node.croswap.com/rpc',
+    [ChainId.CronosMainnet]: 'https://node.croswap.com/rpc',
     [ChainId.Mumbai]: 'https://polygon-mumbai.blockpi.network/v1/rpc/public',
     [ChainId.LineaTestnet]: `https://linea-goerli.infura.io/v3/${infuraKey}`,
     [ChainId.CoreBlockchainMainnet]: 'https://rpc-core.icecreamswap.com',
