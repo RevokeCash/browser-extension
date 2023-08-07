@@ -895,12 +895,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@heroicons/react@npm:^2.0.13":
-  version: 2.0.13
-  resolution: "@heroicons/react@npm:2.0.13"
+"@heroicons/react@npm:^2.0.18":
+  version: 2.0.18
+  resolution: "@heroicons/react@npm:2.0.18"
   peerDependencies:
     react: ">= 16"
-  checksum: f03c393a129cb468d103e4334815df956d7afa9d0756ee09b33e9396214d39b786523a5e650709de73c68ba085facda3fe01984ff137bcc16c85d4ed2498e663
+  checksum: 597e8668818623d568a302e343ef06b69f62ce297c14b88c2ebbfed0c0f00cd85ec44fae33ec8a249931b4e7dcf145743ae3198095a9f4682108de5155f5f4c3
   languageName: node
   linkType: hard
 
@@ -974,9 +974,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@localazy/cli@npm:^1.7.1":
-  version: 1.7.1
-  resolution: "@localazy/cli@npm:1.7.1"
+"@localazy/cli@npm:^1.7.3":
+  version: 1.7.3
+  resolution: "@localazy/cli@npm:1.7.3"
   dependencies:
     abort-controller: 3.0.0
     node-fetch: 2.6.7
@@ -984,7 +984,7 @@ __metadata:
     ws: 6.2.2
   bin:
     localazy: index.js
-  checksum: 27d6e78f9665f3f952f962cb0ff6e86f9c9e6429394142f5abc4f5501f412c5ad53bf88f0a0eeb4f061d57f223c98216175a561b3c0dd34cd678fcabece12335
+  checksum: dd8466e7ee1eff978a414a2af27845d4de9d412dd932132d8e3b1b804be7e06a2a77397f0fd0af90d0b7ada63f8e182b3273ab4c6b4486dcee38aa17ba92ed85
   languageName: node
   linkType: hard
 
@@ -1080,10 +1080,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@revoke.cash/chains@npm:^9.0.0":
-  version: 9.0.0
-  resolution: "@revoke.cash/chains@npm:9.0.0"
-  checksum: 5a0c342c6d33f10ee176b29862d1e65e61afabb99bc9501a40748f14d2bdfeb1025503e971db6bc10b078eb3929733a01941c22dddb0d7444ccb6b0d3d8c59b3
+"@revoke.cash/chains@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "@revoke.cash/chains@npm:11.0.0"
+  checksum: c111c34603cc2dc28c07f54eb6952c777553d40c336d9fe2920dac4f2faa3e4845f2f4199d3a42d999ab731ed1d8774faec036deb1219d2580c4a8146d98d6ae
   languageName: node
   linkType: hard
 
@@ -1122,13 +1122,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chrome@npm:^0.0.191":
-  version: 0.0.191
-  resolution: "@types/chrome@npm:0.0.191"
+"@types/chrome@npm:^0.0.243":
+  version: 0.0.243
+  resolution: "@types/chrome@npm:0.0.243"
   dependencies:
     "@types/filesystem": "*"
     "@types/har-format": "*"
-  checksum: 2c0abc3b3b9d54db3c07a3faf121b208b98b5605942f90d7977814a02fb2a438645b209fd75461aead2276e42e4e089da3f3ec228bc266ff41d466aa031702b6
+  checksum: cd0a26f31d100760d6425ee55d1f0faaaa00bbb0a8f4932f780868b7173325156b2066491bf5393aaadb5d108c85d1fca931b832ca4c210d8e8134b47bb0d9a1
   languageName: node
   linkType: hard
 
@@ -1309,10 +1309,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webextension-polyfill@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "@types/webextension-polyfill@npm:0.9.0"
-  checksum: 7e266d0bb08ccdb6d7f49e1312600ae7471cfce053dc5843a0309e1f58f98f4234ffead76473261fa34e03069f4da74c6ffa312ddbcf915c0229a869188dcc1c
+"@types/webextension-polyfill@npm:^0.10.1":
+  version: 0.10.1
+  resolution: "@types/webextension-polyfill@npm:0.10.1"
+  checksum: 7315dcb1943aedf2e18fd0c536406a3b3b9a8dc11ad380e66cf810e700cd7cc0a2ac08c2b017b6c17aba8a71782efc55158e1cb93497f3b680ac90a8d7b6635d
   languageName: node
   linkType: hard
 
@@ -7516,16 +7516,16 @@ __metadata:
   resolution: "revoke-cash-browser-extension@workspace:."
   dependencies:
     "@amplitude/analytics-browser": ^1.2.3
-    "@heroicons/react": ^2.0.13
-    "@localazy/cli": ^1.7.1
+    "@heroicons/react": ^2.0.18
+    "@localazy/cli": ^1.7.3
     "@metamask/post-message-stream": ^5.0.0
-    "@revoke.cash/chains": ^9.0.0
-    "@types/chrome": ^0.0.191
+    "@revoke.cash/chains": ^11.0.0
+    "@types/chrome": ^0.0.243
     "@types/object-hash": ^2.2.1
     "@types/react": ^17.0.0
     "@types/react-dom": ^17.0.0
     "@types/readable-stream": ^2.3.13
-    "@types/webextension-polyfill": ^0.9.0
+    "@types/webextension-polyfill": ^0.10.1
     autoprefixer: ^10.4.7
     buffer: ^6.0.3
     copy-webpack-plugin: ^9.0.1
