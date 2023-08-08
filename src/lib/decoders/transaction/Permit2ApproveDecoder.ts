@@ -9,10 +9,10 @@ export class Permit2ApproveDecoder implements TransactionDecoder {
     const { data, from: user } = message?.data?.transaction ?? {};
 
     if (!data || !user) return undefined;
-    if (!data.startsWith(SignatureIdentifier.approve)) return undefined;
+    if (!data.startsWith(SignatureIdentifier.permit2Approve)) return undefined;
 
-    const iface = new Interface([`function ${Signature.approve}`]);
-    const decoded = iface.decodeFunctionData(Signature.approve, data);
+    const iface = new Interface([`function ${Signature.permit2Approve}`]);
+    const decoded = iface.decodeFunctionData(Signature.permit2Approve, data);
     const [asset, spender, approval] = Array.from(decoded);
 
     if (!asset || asset === Address.ZERO) return undefined;

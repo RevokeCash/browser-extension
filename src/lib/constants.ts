@@ -17,6 +17,7 @@ export const Identifier = {
 
 export const SignatureIdentifier = {
   approve: '0x095ea7b3',
+  permit2Approve: '0x87517c45',
   increaseAllowance: '0x39509351',
   setApprovalForAll: '0xa22cb465',
 };
