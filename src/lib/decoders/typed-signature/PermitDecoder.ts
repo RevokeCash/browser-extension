@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers';
 import { WarningType } from '../../constants';
 import { AllowanceWarningData, TypedSignatureMessage } from '../../types';
 import { TypedSignatureDecoder } from './TypedSignatureDecoder';
@@ -16,7 +15,7 @@ export class PermitDecoder implements TypedSignatureDecoder {
 
     if (!asset) return undefined;
     try {
-      if (value !== undefined && BigNumber.from(value).isZero()) return undefined;
+      if (value !== undefined && BigInt(value) === 0n) return undefined;
       if (allowed !== undefined && String(allowed) !== 'true') return undefined;
     } catch {
       return undefined;

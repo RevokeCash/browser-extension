@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers';
 import { WarningType } from '../../constants';
 import { AllowanceWarningData, TypedSignatureMessage } from '../../types';
 import { TypedSignatureDecoder } from './TypedSignatureDecoder';
@@ -15,7 +14,7 @@ export class Permit2SingleDecoder implements TypedSignatureDecoder {
     const user = message.data.address;
 
     try {
-      if (!asset || BigNumber.from(amount).isZero()) return undefined;
+      if (!asset || BigInt(amount) === 0n) return undefined;
     } catch {
       return undefined;
     }

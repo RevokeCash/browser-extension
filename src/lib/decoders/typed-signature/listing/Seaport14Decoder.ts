@@ -1,3 +1,4 @@
+import { Address } from 'viem';
 import { PlaceHolderItem, WarningType } from '../../../constants';
 import { ListingWarningData, NftListing, TypedSignatureMessage } from '../../../types';
 import { getMarketplaceName } from '../../../utils/misc';
@@ -28,7 +29,7 @@ export class Seaport14Decoder implements TypedSignatureDecoder {
     };
   }
 
-  decodeRecursive(treeNode: any, address: string): NftListing {
+  decodeRecursive(treeNode: any, address: Address): NftListing {
     if (Array.isArray(treeNode)) {
       // Recursively decode all sub-listings
       const listings = treeNode.flatMap((item: any) => this.decodeRecursive(item, address));

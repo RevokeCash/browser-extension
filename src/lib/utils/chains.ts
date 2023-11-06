@@ -1,7 +1,7 @@
 // ALL THE BELOW ARE COPIED FROM REVOKE.CASH AND SHOULD BE EXTRACTED AT SOME POINT
 import { ChainId, chains } from '@revoke.cash/chains';
-import { providers } from 'ethers';
 import { INFURA_API_KEY } from '../constants';
+import { Chain, PublicClient, createPublicClient, defineChain, http } from 'viem';
 
 export const getChainName = (chainId: number): string => {
   const overrides: Record<number, string> = {
@@ -88,7 +88,7 @@ export const getChainName = (chainId: number): string => {
   return name;
 };
 
-export const getChainExplorerUrl = (chainId: number): string | undefined => {
+export const getChainExplorerUrl = (chainId: number): string => {
   const overrides: Record<number, string> = {
     [ChainId.SmartBitcoinCash]: 'https://www.smartscan.cash',
     [ChainId.CeloAlfajoresTestnet]: 'https://alfajores.celoscan.io',
@@ -121,7 +121,7 @@ export const getChainExplorerUrl = (chainId: number): string | undefined => {
   return overrides[chainId] ?? explorer?.url;
 };
 
-export const getChainRpcUrl = (chainId: number): string | undefined => {
+export const getChainRpcUrl = (chainId: number): string => {
   const infuraKey = INFURA_API_KEY;
 
   const overrides: Record<number, string> = {
@@ -147,7 +147,46 @@ export const getChainRpcUrl = (chainId: number): string | undefined => {
   return overrides[chainId] ?? rpcUrl?.replace('${INFURA_API_KEY}', infuraKey);
 };
 
-export const getChainProvider = (chainId: number): providers.Provider => {
-  const rpcUrl = getChainRpcUrl(chainId) ?? getChainRpcUrl(1);
-  return new providers.StaticJsonRpcProvider(rpcUrl, chainId);
+export const getChainNativeToken = (chainId: number): string => {
+  const overrides: Record<number, string> = {
+    [ChainId.BitgertMainnet]: 'BRISE',
+    [ChainId.CoinExSmartChainMainnet]: 'CET',
+    [ChainId.CoinExSmartChainTestnet]: 'CETT',
+  };
+
+  return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
+};
+
+export const getViemChainConfig = (chainId: number): Chain | undefined => {
+  const chainInfo = chains.get(chainId);
+  const chainName = getChainName(chainId);
+  const fallbackNativeCurrency = { name: chainName, symbol: getChainNativeToken(chainId), decimals: 18 };
+
+  return defineChain({
+    id: chainId,
+    name: chainName,
+    network: chainName.toLowerCase().replaceAll(' ', '-'),
+    nativeCurrency: chainInfo?.nativeCurrency ?? fallbackNativeCurrency,
+    rpcUrls: {
+      default: { http: [getChainRpcUrl(chainId)] },
+      public: { http: [getChainRpcUrl(chainId)] },
+    },
+    blockExplorers: {
+      default: {
+        name: chainName + ' Explorer',
+        url: getChainExplorerUrl(chainId),
+      },
+    },
+    // contracts: getChainDeployedContracts(chainId),
+    // testnet: CHAIN_SELECT_TESTNETS.includes(chainId),
+  });
+};
+
+export const createViemPublicClientForChain = (chainId: number, url?: string): PublicClient => {
+  return createPublicClient({
+    pollingInterval: 4_000,
+    chain: getViemChainConfig(chainId),
+    transport: http(url ?? getChainRpcUrl(chainId)),
+    batch: { multicall: true },
+  });
 };

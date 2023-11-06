@@ -1,6 +1,6 @@
 import { WindowPostMessageStream } from '@metamask/post-message-stream';
 import { ethErrors } from 'eth-rpc-errors';
-import { providers } from 'ethers';
+import { createWalletClient, custom } from 'viem';
 import { Identifier, RequestType } from '../lib/constants';
 import { sendToStreamAndAwaitResponse } from '../lib/utils/messages';
 
@@ -54,10 +54,10 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
         if (!transaction) return Reflect.apply(target, thisArg, argumentsList);
 
         const type = RequestType.TRANSACTION;
-        const provider = new providers.Web3Provider(ethereumProvider);
-        provider
-          .getNetwork()
-          .then(({ chainId }) => sendToStreamAndAwaitResponse(stream, { type, transaction, chainId }))
+        const client = createWalletClient({ transport: custom(ethereumProvider) });
+        client
+          .getChainId()
+          .then((chainId) => sendToStreamAndAwaitResponse(stream, { type, transaction, chainId }))
           .then((isOk) => {
             if (isOk) {
               return Reflect.apply(target, thisArg, argumentsList);
@@ -80,10 +80,10 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
         const typedData = JSON.parse(typedDataStr);
 
         const type = RequestType.TYPED_SIGNATURE;
-        const provider = new providers.Web3Provider(ethereumProvider);
-        provider
-          .getNetwork()
-          .then(({ chainId }) => sendToStreamAndAwaitResponse(stream, { type, address, typedData, chainId }))
+        const client = createWalletClient({ transport: custom(ethereumProvider) });
+        client
+          .getChainId()
+          .then((chainId) => sendToStreamAndAwaitResponse(stream, { type, address, typedData, chainId }))
           .then((isOk) => {
             if (isOk) {
               return Reflect.apply(target, thisArg, argumentsList);
@@ -136,8 +136,8 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
         const [transaction] = request?.params ?? [];
         if (!transaction) return Reflect.apply(target, thisArg, argumentsList);
 
-        const provider = new providers.Web3Provider(ethereumProvider);
-        const { chainId } = await provider.getNetwork();
+        const client = createWalletClient({ transport: custom(ethereumProvider) });
+        const chainId = await client.getChainId();
 
         const type = RequestType.TRANSACTION;
         const isOk = await sendToStreamAndAwaitResponse(stream, { type, transaction, chainId });
@@ -151,8 +151,8 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
 
         const typedData = JSON.parse(typedDataStr);
 
-        const provider = new providers.Web3Provider(ethereumProvider);
-        const { chainId } = await provider.getNetwork();
+        const client = createWalletClient({ transport: custom(ethereumProvider) });
+        const chainId = await client.getChainId();
 
         const type = RequestType.TYPED_SIGNATURE;
         const isOk = await sendToStreamAndAwaitResponse(stream, { type, address, typedData, chainId });

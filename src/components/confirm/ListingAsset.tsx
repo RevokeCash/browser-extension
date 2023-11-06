@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAsync } from 'react-async-hook';
 import { NftListingItem } from '../../lib/types';
-import { getChainProvider } from '../../lib/utils/chains';
+import { createViemPublicClientForChain } from '../../lib/utils/chains';
 import { getNftListingItemTokenData } from '../../lib/utils/tokens';
 import { AddressOrDisplay } from '../common/AddressOrDisplay';
 import Loadable from '../common/Loadable';
@@ -12,8 +12,8 @@ interface Props {
 }
 
 const ListingAsset = ({ item, chainId }: Props) => {
-  const provider = getChainProvider(chainId);
-  const { result, loading } = useAsync(() => getNftListingItemTokenData(item, provider), []);
+  const client = createViemPublicClientForChain(chainId);
+  const { result, loading } = useAsync(() => getNftListingItemTokenData(item, client), []);
 
   return (
     <Loadable loading={loading}>

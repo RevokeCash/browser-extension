@@ -22,6 +22,7 @@ import { HashDecoder } from './lib/decoders/untyped-signature/HashDecoder';
 import { Message, MessageResponse, WarningData } from './lib/types';
 import { randomId } from './lib/utils/misc';
 import { getStorage, setStorage } from './lib/utils/storage';
+import { Hash } from 'viem';
 
 // This is technically async, but it's safe to assume that this will complete before any tracking occurs
 if (process.env.AMPLITUDE_API_KEY) {
@@ -41,8 +42,8 @@ if (process.env.AMPLITUDE_API_KEY) {
 
 // Note that these messages will be periodically cleared due to the background service shutting down
 // after 5 minutes of inactivity (see Manifest v3 docs).
-const messagePorts: { [index: string]: Browser.Runtime.Port } = {};
-const approvedMessages: string[] = [];
+const messagePorts: Record<string, Browser.Runtime.Port> = {};
+const approvedMessages: Array<Hash> = [];
 
 const transactionDecoders = [
   new ApproveDecoder(),

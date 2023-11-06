@@ -1,12 +1,13 @@
 import React from 'react';
 import { useAsync } from 'react-async-hook';
+import { Address } from 'viem';
 import { getSpenderData } from '../../lib/utils/whois';
 import { AddressOrDisplay } from '../common/AddressOrDisplay';
 import Loadable from '../common/Loadable';
 
 interface Props {
   chainId: number;
-  address: string;
+  address: Address;
 }
 
 const AllowanceSpender = ({ address, chainId }: Props) => {

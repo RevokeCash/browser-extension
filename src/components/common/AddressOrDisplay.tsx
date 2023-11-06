@@ -1,10 +1,11 @@
 import React from 'react';
+import { Address } from 'viem';
 import { getChainExplorerUrl } from '../../lib/utils/chains';
 import Href from './Href';
 
 interface Props {
   chainId: number;
-  address?: string;
+  address?: Address;
   display?: string;
 }
 

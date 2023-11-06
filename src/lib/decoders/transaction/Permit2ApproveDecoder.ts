@@ -1,8 +1,7 @@
-import { BigNumber } from 'ethers';
-import { Interface } from 'ethers/lib/utils';
 import { Address, Signature, SignatureIdentifier, WarningType } from '../../constants';
 import { AllowanceWarningData, TransactionMessage } from '../../types';
 import { TransactionDecoder } from './TransactionDecoder';
+import { decodeFunctionData, parseAbi } from 'viem';
 
 export class Permit2ApproveDecoder implements TransactionDecoder {
   decode(message: TransactionMessage): AllowanceWarningData | undefined {
@@ -11,14 +10,17 @@ export class Permit2ApproveDecoder implements TransactionDecoder {
     if (!data || !user) return undefined;
     if (!data.startsWith(SignatureIdentifier.permit2Approve)) return undefined;
 
-    const iface = new Interface([`function ${Signature.permit2Approve}`]);
-    const decoded = iface.decodeFunctionData(Signature.permit2Approve, data);
-    const [asset, spender, approval] = Array.from(decoded);
+    const decoded = decodeFunctionData({
+      abi: parseAbi([`function ${Signature.permit2Approve}`]),
+      data,
+    });
+
+    const [asset, spender, approval] = decoded.args;
 
     if (!asset || asset === Address.ZERO) return undefined;
 
     try {
-      if (BigNumber.from(approval).isZero() || spender === Address.ZERO) return undefined;
+      if (approval === 0n || spender === Address.ZERO) return undefined;
     } catch {
       return undefined;
     }

@@ -1,8 +1,8 @@
-import type { TypedDataDomain } from '@ethersproject/abstract-signer';
 import { RequestType, WarningType } from './constants';
+import { Address, Hash, Hex, TypedDataDomain } from 'viem';
 
 export interface CommonMessage {
-  requestId: string;
+  requestId: Hash;
   data: MessageData;
 }
 
@@ -47,19 +47,19 @@ export interface TransactionMessageData extends CommonMessageData {
 export interface TypedSignatureMessageData extends CommonMessageData {
   type: RequestType.TYPED_SIGNATURE;
   typedData: TypedData;
-  address: string;
+  address: Address;
   chainId: number;
 }
 
 export interface UntypedSignatureMessageData extends CommonMessageData {
   type: RequestType.UNTYPED_SIGNATURE;
-  message: string;
+  message: Hex;
 }
 
 export type MessageData = TransactionMessageData | TypedSignatureMessageData | UntypedSignatureMessageData;
 
 export interface MessageResponse {
-  requestId: string;
+  requestId: Hash;
   data: boolean;
 }
 
@@ -69,7 +69,7 @@ export type InPageMessageData =
   | Omit<UntypedSignatureMessageData, 'hostname'>;
 
 export interface InPageMessage {
-  requestId: string;
+  requestId: Hash;
   data: InPageMessageData;
 }
 
@@ -80,15 +80,15 @@ export interface TypedData {
 }
 
 export interface Transaction {
-  from?: string;
-  to?: string;
-  data?: string;
-  value?: string;
+  from?: Address;
+  to?: Address;
+  data?: Hex;
+  value?: string | bigint;
 }
 
 export interface NftListingItem {
   itemType: string;
-  token: string;
+  token: Address;
   identifierOrCriteria: string;
   startAmount: string;
   endAmount: string;
@@ -101,7 +101,7 @@ export interface NftListing {
 
 export interface CommonWarningData {
   type: WarningType;
-  requestId: string;
+  requestId: Hash;
   bypassed: boolean;
   hostname: string;
 }
@@ -109,9 +109,9 @@ export interface CommonWarningData {
 export interface AllowanceWarningData extends CommonWarningData {
   type: WarningType.ALLOWANCE;
   chainId: number;
-  user: string;
-  assets: string[];
-  spender: string;
+  user: Address;
+  assets: Address[];
+  spender: Address;
 }
 
 export interface ListingWarningData extends CommonWarningData {
@@ -127,7 +127,7 @@ export interface HashwarningData extends CommonWarningData {
 
 export interface SuspectedScamWarningData extends CommonWarningData {
   type: WarningType.SUSPECTED_SCAM;
-  address: string;
+  address: Address;
   chainId: number;
 }
 

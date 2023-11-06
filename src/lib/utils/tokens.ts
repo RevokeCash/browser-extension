@@ -1,7 +1,6 @@
-import { Contract, providers } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
 import { OpenSeaItemType } from '../constants';
 import { NftListingItem } from '../types';
+import { Address, PublicClient, formatUnits } from 'viem';
 
 const BASIC_ERC20 = [
   {
@@ -31,18 +30,21 @@ const BASIC_ERC20 = [
     stateMutability: 'view',
     type: 'function',
   },
-];
+] as const;
 
-export const getNftListingItemTokenData = async (item: NftListingItem, provider: providers.Provider) => {
+export const getNftListingItemTokenData = async (item: NftListingItem, client: PublicClient) => {
   // Some scammers use an incorrect interface using numbers so we convert it to string
   const itemType = String(item.itemType);
 
-  const tokenData = await getTokenData(item.token, provider);
+  const tokenData = await getTokenData(item.token, client);
 
   if (itemType === OpenSeaItemType.ETHER) {
-    return { display: `${formatUnits(item.startAmount, 'ether')} ETH` };
+    return { display: `${formatUnits(BigInt(item.startAmount), 18)} ETH` };
   } else if (itemType === OpenSeaItemType.ERC20) {
-    return { display: `${formatUnits(item.startAmount, tokenData.decimals)} ${tokenData.symbol}`, asset: item.token };
+    return {
+      display: `${formatUnits(BigInt(item.startAmount), Number(tokenData.decimals ?? 18))} ${tokenData.symbol}`,
+      asset: item.token,
+    };
   } else if (itemType === OpenSeaItemType.ERC721) {
     return { display: `${tokenData.name} (${tokenData.symbol}) #${item.identifierOrCriteria}`, asset: item.token };
   } else if (itemType === OpenSeaItemType.ERC1155) {
@@ -59,36 +61,45 @@ export const getNftListingItemTokenData = async (item: NftListingItem, provider:
   return { display: 'Unknown token(s)' };
 };
 
-export const getTokenData = async (address: string, provider: providers.Provider) => {
+export const getTokenData = async (address: Address, client: PublicClient) => {
   return {
-    name: await getTokenName(address, provider),
-    symbol: await getTokenSymbol(address, provider),
-    decimals: await getTokenDecimals(address, provider),
+    name: await getTokenName(address, client),
+    symbol: await getTokenSymbol(address, client),
+    decimals: await getTokenDecimals(address, client),
   };
 };
 
-const getTokenSymbol = async (address: string, provider: providers.Provider) => {
+const getTokenSymbol = async (address: Address, client: PublicClient) => {
   try {
-    const [symbol] = await new Contract(address, BASIC_ERC20, provider).functions.symbol();
-    return symbol;
+    return await client.readContract({
+      address,
+      abi: BASIC_ERC20,
+      functionName: 'symbol',
+    });
   } catch {
     return undefined;
   }
 };
 
-const getTokenDecimals = async (address: string, provider: providers.Provider) => {
+const getTokenDecimals = async (address: Address, client: PublicClient) => {
   try {
-    const [decimals] = await new Contract(address, BASIC_ERC20, provider).functions.decimals();
-    return decimals;
+    return await client.readContract({
+      address,
+      abi: BASIC_ERC20,
+      functionName: 'decimals',
+    });
   } catch {
     return undefined;
   }
 };
 
-const getTokenName = async (address: string, provider: providers.Provider) => {
+const getTokenName = async (address: Address, client: PublicClient) => {
   try {
-    const [name] = await new Contract(address, BASIC_ERC20, provider).functions.name();
-    return name;
+    return await client.readContract({
+      address,
+      abi: BASIC_ERC20,
+      functionName: 'name',
+    });
   } catch {
     return undefined;
   }

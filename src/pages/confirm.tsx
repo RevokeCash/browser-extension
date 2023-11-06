@@ -26,7 +26,7 @@ const Confirm = () => {
         <div className="w-104 text-center">
           <Trans i18nKey="common.error_occurred" components={[<Href underline="always" href={Urls.DISCORD} />]} />
         </div>
-        <WarningControls bypassed={true} requestId={'placeholder'} />
+        <WarningControls bypassed={true} requestId={'0xPlaceholder'} />
       </div>
     );
   }

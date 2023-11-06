@@ -1,10 +1,11 @@
 import React from 'react';
+import { Hash } from 'viem';
 import Browser from 'webextension-polyfill';
 import { useTranslation } from '../../i18n';
 import Button from '../common/Button';
 
 interface Props {
-  requestId: string;
+  requestId: Hash;
   bypassed: boolean;
 }
 

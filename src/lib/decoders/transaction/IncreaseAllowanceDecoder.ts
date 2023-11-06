@@ -1,5 +1,4 @@
-import { BigNumber } from 'ethers';
-import { Interface } from 'ethers/lib/utils';
+import { decodeFunctionData, parseAbi } from 'viem';
 import { Signature, SignatureIdentifier, WarningType } from '../../constants';
 import { AllowanceWarningData, TransactionMessage } from '../../types';
 import { TransactionDecoder } from './TransactionDecoder';
@@ -11,12 +10,15 @@ export class IncreaseAllowanceDecoder implements TransactionDecoder {
     if (!data || !user || !asset) return undefined;
     if (!data.startsWith(SignatureIdentifier.increaseAllowance)) return undefined;
 
-    const iface = new Interface([`function ${Signature.increaseAllowance}`]);
-    const decoded = iface.decodeFunctionData(Signature.increaseAllowance, data);
-    const [spender, approval] = Array.from(decoded);
+    const decoded = decodeFunctionData({
+      abi: parseAbi([`function ${Signature.increaseAllowance}`]),
+      data,
+    });
+
+    const [spender, approval] = decoded.args;
 
     try {
-      if (BigNumber.from(approval).isZero()) return undefined;
+      if (approval === 0n) return undefined;
     } catch {
       return undefined;
     }

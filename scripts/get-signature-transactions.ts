@@ -1,16 +1,16 @@
-import { Interface } from 'ethers/lib/utils';
 import { getTransactionsInBlocks } from './utils/transactions';
+import { keccak256, toBytes } from 'viem';
 
 const [_executable, _file, fragment, blockCountStr] = process.argv;
 
-const signature = new Interface([`function ${fragment}`]).getSighash(fragment);
+const signature = keccak256(toBytes(fragment)).slice(0, 10);
 const blockCount = Number(blockCountStr) || 1;
 
 const getTransactions = async () => {
   const transactions = await getTransactionsInBlocks(blockCount);
 
   const filteredTransactions = transactions.filter((transaction) => {
-    return transaction.data?.startsWith(signature);
+    return transaction.input?.startsWith(signature);
   });
 
   console.log(

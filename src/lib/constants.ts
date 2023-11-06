@@ -3,7 +3,7 @@ export const Urls = {
   DISCORD: 'https://discord.gg/revoke-cash',
   TWITTER: 'https://twitter.com/RevokeCash',
   GITHUB: 'https://github.com/RevokeCash/browser-extension',
-};
+} as const;
 
 export const Identifier = {
   INPAGE: 'revoke-inpage',
@@ -13,14 +13,14 @@ export const Identifier = {
   METAMASK_CONTENT_SCRIPT: 'metamask-contentscript',
   METAMASK_PROVIDER: 'metamask-provider',
   COINBASE_WALLET_REQUEST: 'extensionUIRequest',
-};
+} as const;
 
 export const SignatureIdentifier = {
   approve: '0x095ea7b3',
   permit2Approve: '0x87517c45',
   increaseAllowance: '0x39509351',
   setApprovalForAll: '0xa22cb465',
-};
+} as const;
 
 export const potentialScamSignatures = [
   '0x5fba79f5', // SecurityUpdate()
@@ -44,11 +44,11 @@ export const Signature = {
   permit2Approve: 'approve(address,address,uint160,uint48)',
   increaseAllowance: 'increaseAllowance(address,uint256)',
   setApprovalForAll: 'setApprovalForAll(address,bool)',
-};
+} as const;
 
 export const Address = {
   ZERO: '0x0000000000000000000000000000000000000000',
-};
+} as const;
 
 export enum RequestType {
   TRANSACTION = 'transaction',
@@ -71,24 +71,24 @@ export const OpenSeaItemType = {
   ERC721_CRITERIA: '4',
   ERC1155_CRITERIA: '5',
   UNKNOWN: '-1',
-};
+} as const;
 
 export const PlaceHolderItem = {
   UNKNOWN: {
     itemType: OpenSeaItemType.UNKNOWN,
-    token: 'unknown',
+    token: Address.ZERO,
     identifierOrCriteria: 'unknown',
     startAmount: 'unknown',
     endAmount: 'unknown',
   },
   ZERO_ETH: {
     itemType: OpenSeaItemType.ETHER,
-    token: '',
+    token: Address.ZERO,
     identifierOrCriteria: '',
     startAmount: '0',
     endAmount: '0',
   },
-};
+} as const;
 
 export const HostnameAllowList: Record<WarningType, string[]> = {
   [WarningType.ALLOWANCE]: [],

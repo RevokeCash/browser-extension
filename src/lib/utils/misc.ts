@@ -1,4 +1,4 @@
-import type { TypedDataDomain } from '@ethersproject/abstract-signer';
+import { TypedDataDomain } from 'viem';
 import { NFT_MARKETPLACES } from '../constants';
 
 // https://learnersbucket.com/examples/javascript/unique-id-generator-in-javascript/

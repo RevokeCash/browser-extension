@@ -36,17 +36,17 @@ const getTransactions = async () => {
   // SecurityUpdates() and ClaimRewards() type scam transactions often look like this:
   const filteredTransactions = transactions.filter((transaction) => {
     return (
-      transaction.value?.gt(0) &&
-      transaction.data.length >= 10 &&
-      transaction.data.length < 50 &&
-      !ignoredSignatures.includes(transaction.data.slice(0, 10))
+      transaction.value > 0n &&
+      transaction.input.length >= 10 &&
+      transaction.input.length < 50 &&
+      !ignoredSignatures.includes(transaction.input.slice(0, 10))
     );
   });
 
   console.log(`${filteredTransactions.length}/${transactions.length} in the last ${blockCount} blocks`);
 
   filteredTransactions.forEach((transaction) =>
-    console.log(transaction.hash, transaction.data.slice(0, 10), transaction.to)
+    console.log(transaction.hash, transaction.input.slice(0, 10), transaction.to)
   );
 
   return filteredTransactions;

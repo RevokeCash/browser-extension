@@ -1,5 +1,4 @@
-import { BigNumber } from 'ethers';
-import { Interface } from 'ethers/lib/utils';
+import { decodeFunctionData, parseAbi } from 'viem';
 import { Address, Signature, SignatureIdentifier, WarningType } from '../../constants';
 import { AllowanceWarningData, TransactionMessage } from '../../types';
 import { TransactionDecoder } from './TransactionDecoder';
@@ -11,12 +10,15 @@ export class ApproveDecoder implements TransactionDecoder {
     if (!data || !user || !asset) return undefined;
     if (!data.startsWith(SignatureIdentifier.approve)) return undefined;
 
-    const iface = new Interface([`function ${Signature.approve}`]);
-    const decoded = iface.decodeFunctionData(Signature.approve, data);
-    const [spender, approval] = Array.from(decoded);
+    const decoded = decodeFunctionData({
+      abi: parseAbi([`function ${Signature.approve}`]),
+      data,
+    });
+
+    const [spender, approval] = decoded.args;
 
     try {
-      if (BigNumber.from(approval).isZero() || spender === Address.ZERO) return undefined;
+      if (approval === 0n || spender === Address.ZERO) return undefined;
     } catch {
       return undefined;
     }

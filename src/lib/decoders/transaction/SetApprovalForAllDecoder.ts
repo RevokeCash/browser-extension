@@ -1,7 +1,7 @@
-import { Interface } from 'ethers/lib/utils';
 import { Signature, SignatureIdentifier, WarningType } from '../../constants';
 import { AllowanceWarningData, TransactionMessage } from '../../types';
 import { TransactionDecoder } from './TransactionDecoder';
+import { decodeFunctionData, parseAbi } from 'viem';
 
 export class SetApprovalForAllDecoder implements TransactionDecoder {
   decode(message: TransactionMessage): AllowanceWarningData | undefined {
@@ -10,9 +10,12 @@ export class SetApprovalForAllDecoder implements TransactionDecoder {
     if (!data || !user || !asset) return undefined;
     if (!data.startsWith(SignatureIdentifier.setApprovalForAll)) return undefined;
 
-    const iface = new Interface([`function ${Signature.setApprovalForAll}`]);
-    const decoded = iface.decodeFunctionData(Signature.setApprovalForAll, data);
-    const [spender, approved] = Array.from(decoded);
+    const decoded = decodeFunctionData({
+      abi: parseAbi([`function ${Signature.setApprovalForAll}`]),
+      data,
+    });
+
+    const [spender, approved] = decoded.args;
 
     if (!approved) return undefined;
 

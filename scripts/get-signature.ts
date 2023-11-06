@@ -1,6 +1,6 @@
-import { Interface } from 'ethers/lib/utils';
+import { keccak256, toBytes } from 'viem';
 
 const fragment = process.argv[2];
 
-const signature = new Interface([`function ${fragment}`]).getSighash(fragment);
+const signature = keccak256(toBytes(fragment)).slice(0, 10);
 console.log(signature);
