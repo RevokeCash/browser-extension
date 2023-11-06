@@ -1,3 +1,7 @@
+export const WHOIS_BASE_URL = 'https://raw.githubusercontent.com/RevokeCash/whois/master/data/generated';
+export const INFURA_API_KEY = process.env.INFURA_API_KEY!;
+export const HARPIE_API_KEY = process.env.HARPIE_API_KEY!;
+
 export const Urls = {
   REVOKE_CASH: 'https://revoke.cash',
   DISCORD: 'https://discord.gg/revoke-cash',
@@ -121,8 +125,6 @@ export const NFT_MARKETPLACES: Record<string, string> = {
   '0x000000000000ad05ccc4f10045630fb830b95127': 'Blur',
   '0x2445a4e934af7c786755931610af099554ba1354': 'UneMeta',
 };
-
-export const INFURA_API_KEY = process.env.INFURA_API_KEY!;
 
 export const warningSettingKeys: Record<WarningType, string> = {
   [WarningType.ALLOWANCE]: 'settings:warnOnApproval',
