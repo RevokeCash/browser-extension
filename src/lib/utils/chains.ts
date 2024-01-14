@@ -1,5 +1,5 @@
 // ALL THE BELOW ARE COPIED FROM REVOKE.CASH AND SHOULD BE EXTRACTED AT SOME POINT
-import { ChainId, chains } from '@revoke.cash/chains';
+import { ChainId, getChain } from '@revoke.cash/chains';
 import { INFURA_API_KEY } from '../constants';
 import { Chain, PublicClient, createPublicClient, defineChain, http } from 'viem';
 
@@ -13,6 +13,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.AvalancheFujiTestnet]: 'Avalanche Fuji',
     [ChainId.BaseGoerliTestnet]: 'Base Goerli',
     [ChainId.BitgertMainnet]: 'Bitgert',
+    [ChainId.BitrockMainnet]: 'Bitrock',
     [ChainId.BitTorrentChainMainnet]: 'BTT Chain',
     [ChainId.BitTorrentChainTestnet]: 'BTTC Testnet',
     [ChainId.BNBSmartChainMainnet]: 'BNB Chain',
@@ -30,7 +31,8 @@ export const getChainName = (chainId: number): string => {
     [ChainId.DogechainTestnet]: 'Dogechain Testnet',
     [ChainId.ElastosSmartChain]: 'Elastos',
     [ChainId.ENULSMainnet]: 'ENULS',
-    [ChainId.EthereumClassicMainnet]: 'Ethereum Classic',
+    [ChainId.EOSEVMNetwork]: 'EOS EVM',
+    [ChainId.EthereumClassic]: 'Ethereum Classic',
     [ChainId.EthereumMainnet]: 'Ethereum',
     [ChainId.ExosamaNetwork]: 'Exosama',
     [ChainId.FantomOpera]: 'Fantom',
@@ -55,6 +57,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.KCCMainnet]: 'KCC',
     [ChainId.KlaytnMainnetCypress]: 'Klaytn',
     [ChainId.KlaytnTestnetBaobab]: 'Klaytn Baobab',
+    [ChainId.LightlinkPhoenixMainnet]: 'Lightlink',
     [ChainId.Linea]: 'Linea',
     [ChainId.LineaTestnet]: 'Linea Goerli',
     [ChainId.MantaPacificMainnet]: 'Manta Pacific',
@@ -85,7 +88,7 @@ export const getChainName = (chainId: number): string => {
     [ChainId.ScrollSepoliaTestnet]: 'Scroll Sepolia',
     [ChainId.Sepolia]: 'Ethereum Sepolia',
     [ChainId.Shibarium]: 'Shibarium',
-    [ChainId.ShimmerEVMMainnet]: 'Shimmer',
+    [ChainId.ShimmerEVM]: 'Shimmer',
     [ChainId.ShimmerEVMTestnet]: 'Shimmer Testnet',
     [ChainId.SmartBitcoinCash]: 'SmartBCH',
     [ChainId['SongbirdCanary-Network']]: 'Songbird',
@@ -99,12 +102,14 @@ export const getChainName = (chainId: number): string => {
     [ChainId.XDCNetwork]: 'XDC',
     [ChainId.ZetaChainAthens3Testnet]: 'ZetaChain Athens',
     [ChainId.ZetaChainMainnet]: 'ZetaChain',
-    [ChainId.ZkSyncEraMainnet]: 'zkSync Era',
-    [ChainId.ZkSyncEraTestnet]: 'zkSync Era Goerli',
-    [1234567890]: 'Taiko', // TODO: This is a placeholder so we can add a description for Taiko
+    [ChainId.ZKFairMainnet]: 'ZKFair',
+    [ChainId.ZkSyncMainnet]: 'zkSync Era',
+    [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: 'zkSync Goerli',
+    [12345678901]: 'Taiko', // TODO: This is a placeholder so we can add a description for Taiko
+    [12345678902]: 'Frame', // TODO: This is a placeholder so we can add a description for Frame
   };
 
-  const name = overrides[chainId] ?? chains.get(chainId)?.name ?? `Chain ID ${chainId}`;
+  const name = overrides[chainId] ?? getChain(chainId)?.name ?? `Chain ID ${chainId}`;
 
   return name;
 };
@@ -128,6 +133,7 @@ export const getChainExplorerUrl = (chainId: number): string => {
     [ChainId.LineaTestnet]: 'https://goerli.lineascan.build',
     [ChainId.OasysMainnet]: 'https://scan.oasys.games',
     [ChainId.OptimismGoerliTestnet]: 'https://goerli-optimism.etherscan.io',
+    [ChainId.Palm]: 'https://www.ondora.xyz/network/palm',
     [ChainId.PolygonzkEVM]: 'https://zkevm.polygonscan.com',
     [ChainId.PolygonzkEVMTestnet]: 'https://testnet-zkevm.polygonscan.com',
     [ChainId.PulseChain]: 'https://scan.pulsechain.com',
@@ -138,7 +144,7 @@ export const getChainExplorerUrl = (chainId: number): string => {
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-3.blockscout.com',
   };
 
-  const [explorer] = chains.get(chainId)?.explorers ?? [];
+  const [explorer] = getChain(chainId)?.explorers ?? [];
 
   return overrides[chainId] ?? explorer?.url;
 };
@@ -154,7 +160,7 @@ export const getChainRpcUrl = (chainId: number): string => {
     [ChainId.Base]: 'https://mainnet.base.org',
     [ChainId.Canto]: 'https://mainnode.plexnode.org:8545',
     [ChainId.CoreBlockchainMainnet]: 'https://rpc.coredao.org',
-    [ChainId.CronosMainnet]: 'https://cronos.blockpi.network/v1/rpc/public',
+    [ChainId.CronosMainnet]: 'https://evm.cronos.org',
     [ChainId.EthereumMainnet]: `https://mainnet.infura.io/v3/${infuraKey}`,
     [ChainId.Evmos]: 'https://evmos-evm.publicnode.com',
     [ChainId.FantomTestnet]: 'https://rpc.ankr.com/fantom_testnet',
@@ -170,9 +176,10 @@ export const getChainRpcUrl = (chainId: number): string => {
     [ChainId.Shiden]: 'https://shiden.public.blastapi.io',
     [ChainId.XDCNetwork]: 'https://erpc.xdcrpc.com',
     [ChainId.ZetaChainAthens3Testnet]: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
+    [ChainId['ZkSyncEraGoerliTestnet(deprecated)']]: 'https://testnet.era.zksync.dev',
   };
 
-  const [rpcUrl] = chains.get(chainId)?.rpc ?? [];
+  const [rpcUrl] = getChain(chainId)?.rpc ?? [];
   return overrides[chainId] ?? rpcUrl?.replace('${INFURA_API_KEY}', infuraKey);
 };
 
@@ -183,11 +190,11 @@ export const getChainNativeToken = (chainId: number): string => {
     [ChainId.CoinExSmartChainTestnet]: 'CETT',
   };
 
-  return overrides[chainId] ?? chains.get(chainId)?.nativeCurrency?.symbol ?? 'ETH';
+  return overrides[chainId] ?? getChain(chainId)?.nativeCurrency?.symbol ?? 'ETH';
 };
 
 export const getViemChainConfig = (chainId: number): Chain | undefined => {
-  const chainInfo = chains.get(chainId);
+  const chainInfo = getChain(chainId);
   const chainName = getChainName(chainId);
   const fallbackNativeCurrency = { name: chainName, symbol: getChainNativeToken(chainId), decimals: 18 };
 
