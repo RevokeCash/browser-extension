@@ -7,7 +7,7 @@ const range = (start: number, end: number): number[] => {
 };
 
 export const getTransactionsInBlocks = async (blockCount: number = 1) => {
-  const client = createViemPublicClientForChain(1);
+  const client = createViemPublicClientForChain(1)!;
 
   const toBlock = Number(await client.getBlockNumber());
   const fromBlock = toBlock - blockCount + 1;

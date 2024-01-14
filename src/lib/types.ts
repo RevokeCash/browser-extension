@@ -137,3 +137,9 @@ export interface SpenderData {
   name: string;
   exploits?: string[];
 }
+
+export interface TokenData {
+  name?: string;
+  symbol?: string;
+  decimals?: bigint;
+}

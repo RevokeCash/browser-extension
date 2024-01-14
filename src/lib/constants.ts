@@ -41,6 +41,9 @@ export const potentialScamSignatures = [
   '0x5b88349d', // claimAirdrop()
   '0x9c9316c5', // NetworkMerge() (e.g. https://etherscan.io/address/0x00000f312c54d0dd25888ee9cdc3dee988700000#code)
   '0xa06adfa8', // networkMerge()
+  '0x143087ee', // Verify() (e.g. https://zkevm.polygonscan.com/address/0x00002cc5a5a9b61dc29203e428979b66c3880000)
+  '0xfc735e99', // verify() (e.g. https://etherscan.io/address/0x7073ee7074be8d156cbb886ed3cebe2d2d4703ae)
+  // --- also: confirm(), connect(), start(), gift(), enable()
 ];
 
 export const Signature = {

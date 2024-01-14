@@ -1,6 +1,7 @@
 import { OpenSeaItemType } from '../constants';
-import { NftListingItem } from '../types';
+import { NftListingItem, TokenData } from '../types';
 import { Address, PublicClient, formatUnits } from 'viem';
+import { createViemPublicClientForChain } from './chains';
 
 const BASIC_ERC20 = [
   {
@@ -32,11 +33,11 @@ const BASIC_ERC20 = [
   },
 ] as const;
 
-export const getNftListingItemTokenData = async (item: NftListingItem, client: PublicClient) => {
+export const getNftListingItemTokenData = async (item: NftListingItem, chainId: number) => {
   // Some scammers use an incorrect interface using numbers so we convert it to string
   const itemType = String(item.itemType);
 
-  const tokenData = await getTokenData(item.token, client);
+  const tokenData = await getTokenData(item.token, chainId);
 
   if (itemType === OpenSeaItemType.ETHER) {
     return { display: `${formatUnits(BigInt(item.startAmount), 18)} ETH` };
@@ -61,7 +62,11 @@ export const getNftListingItemTokenData = async (item: NftListingItem, client: P
   return { display: 'Unknown token(s)' };
 };
 
-export const getTokenData = async (address: Address, client: PublicClient) => {
+export const getTokenData = async (address: Address, chainId: number): Promise<TokenData> => {
+  const client = createViemPublicClientForChain(chainId);
+
+  if (!client) return {};
+
   return {
     name: await getTokenName(address, client),
     symbol: await getTokenSymbol(address, client),

@@ -209,11 +209,15 @@ export const getViemChainConfig = (chainId: number): Chain | undefined => {
   });
 };
 
-export const createViemPublicClientForChain = (chainId: number, url?: string): PublicClient => {
+export const createViemPublicClientForChain = (chainId: number, url?: string): PublicClient | undefined => {
+  const chainRpcUrl = url ?? getChainRpcUrl(chainId);
+
+  if (!chainRpcUrl) return undefined;
+
   return createPublicClient({
     pollingInterval: 4_000,
     chain: getViemChainConfig(chainId),
-    transport: http(url ?? getChainRpcUrl(chainId)),
+    transport: http(chainRpcUrl),
     batch: { multicall: true },
   });
 };

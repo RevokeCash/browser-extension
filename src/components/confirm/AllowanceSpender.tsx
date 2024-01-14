@@ -11,11 +11,11 @@ interface Props {
 }
 
 const AllowanceSpender = ({ address, chainId }: Props) => {
-  const { result, loading } = useAsync(() => getSpenderData(address, chainId), []);
+  const { result, loading, error } = useAsync(() => getSpenderData(address, chainId), []);
   const spenderDisplay = result?.name || address;
 
   return (
-    <Loadable loading={loading}>
+    <Loadable loading={loading} error={error}>
       <AddressOrDisplay address={address} display={spenderDisplay} chainId={chainId} />
     </Loadable>
   );

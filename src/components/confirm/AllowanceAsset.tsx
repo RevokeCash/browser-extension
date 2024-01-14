@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAsync } from 'react-async-hook';
 import { Address } from 'viem';
-import { createViemPublicClientForChain } from '../../lib/utils/chains';
 import { getTokenData } from '../../lib/utils/tokens';
 import { AddressOrDisplay } from '../common/AddressOrDisplay';
 import Loadable from '../common/Loadable';
@@ -12,14 +11,13 @@ interface Props {
 }
 
 const AllowanceAsset = ({ address, chainId }: Props) => {
-  const client = createViemPublicClientForChain(chainId);
-  const { result, loading } = useAsync(() => getTokenData(address, client), []);
+  const { result, loading, error } = useAsync(() => getTokenData(address, chainId), []);
 
   const { name, symbol } = result ?? {};
   const assetDisplay = name && symbol ? `${name} (${symbol})` : name || symbol || address;
 
   return (
-    <Loadable loading={loading}>
+    <Loadable loading={loading} error={error}>
       <AddressOrDisplay address={address} display={assetDisplay} chainId={chainId} />
     </Loadable>
   );
