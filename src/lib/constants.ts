@@ -1,4 +1,4 @@
-export const WHOIS_BASE_URL = 'https://raw.githubusercontent.com/RevokeCash/whois/master/data/generated';
+export const WHOIS_BASE_URL = 'https://whois.revoke.cash/generated';
 export const INFURA_API_KEY = process.env.INFURA_API_KEY!;
 export const HARPIE_API_KEY = process.env.HARPIE_API_KEY!;
 
