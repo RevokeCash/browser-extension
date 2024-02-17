@@ -1,12 +1,18 @@
 import { init, track } from '@amplitude/analytics-browser';
+import { Hash } from 'viem';
 import Browser from 'webextension-polyfill';
-import { AddressAllowList, HostnameAllowList, warningSettingKeys, WarningType } from './lib/constants';
+import { AddressAllowList, HostnameAllowList, WarningType, warningSettingKeys } from './lib/constants';
 import { AggregateDecoder } from './lib/decoders/AggregateDecoder';
 import { ApproveDecoder } from './lib/decoders/transaction/ApproveDecoder';
 import { IncreaseAllowanceDecoder } from './lib/decoders/transaction/IncreaseAllowanceDecoder';
+import { IncreaseApprovalDecoder } from './lib/decoders/transaction/IncreaseApprovalDecoder';
 import { Permit2ApproveDecoder } from './lib/decoders/transaction/Permit2ApproveDecoder';
 import { SetApprovalForAllDecoder } from './lib/decoders/transaction/SetApprovalForAllDecoder';
 import { SuspectedScamDecoder } from './lib/decoders/transaction/SuspectedScamDecoder';
+import { Permit2BatchDecoder } from './lib/decoders/typed-signature/Permit2BatchDecoder';
+import { Permit2SingleDecoder } from './lib/decoders/typed-signature/Permit2SingleDecoder';
+import { PermitDecoder } from './lib/decoders/typed-signature/PermitDecoder';
+import { PermitForAllDecoder } from './lib/decoders/typed-signature/PermitForAllDecoder';
 import { BlurBulkDecoder } from './lib/decoders/typed-signature/listing/BlurBulkDecoder';
 import { BlurDecorder } from './lib/decoders/typed-signature/listing/BlurDecoder';
 import { LooksRareDecoder } from './lib/decoders/typed-signature/listing/LooksRareDecoder';
@@ -14,15 +20,10 @@ import { Seaport14Decoder } from './lib/decoders/typed-signature/listing/Seaport
 import { Seaport1Decoder } from './lib/decoders/typed-signature/listing/Seaport1Decoder';
 import { BiconomyNativeDecoder } from './lib/decoders/typed-signature/metatransactions/BiconomyNativeDecoder';
 import { GsnRelayDecoder } from './lib/decoders/typed-signature/metatransactions/GsnRelayDecoder';
-import { Permit2BatchDecoder } from './lib/decoders/typed-signature/Permit2BatchDecoder';
-import { Permit2SingleDecoder } from './lib/decoders/typed-signature/Permit2SingleDecoder';
-import { PermitDecoder } from './lib/decoders/typed-signature/PermitDecoder';
-import { PermitForAllDecoder } from './lib/decoders/typed-signature/PermitForAllDecoder';
 import { HashDecoder } from './lib/decoders/untyped-signature/HashDecoder';
 import { Message, MessageResponse, WarningData } from './lib/types';
 import { randomId } from './lib/utils/misc';
 import { getStorage, setStorage } from './lib/utils/storage';
-import { Hash } from 'viem';
 
 // This is technically async, but it's safe to assume that this will complete before any tracking occurs
 if (process.env.AMPLITUDE_API_KEY) {
@@ -48,6 +49,7 @@ const approvedMessages: Array<Hash> = [];
 const transactionDecoders = [
   new ApproveDecoder(),
   new IncreaseAllowanceDecoder(),
+  new IncreaseApprovalDecoder(),
   new SetApprovalForAllDecoder(),
   new SuspectedScamDecoder(),
   new Permit2ApproveDecoder(),
