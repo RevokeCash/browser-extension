@@ -1,11 +1,8 @@
-import { Address, getAddress } from 'viem';
-import { SpenderData } from '../types';
+import { getAddress } from 'viem';
 import { HARPIE_API_KEY, WHOIS_BASE_URL } from '../constants';
+import { SpenderData } from '../types';
 
 // ALL THE BELOW ARE COPIED FROM REVOKE.CASH AND SHOULD BE EXTRACTED AT SOME POINT
-
-export const DATA_BASE_URL = 'https://raw.githubusercontent.com/RevokeCash/revoke.cash/master/data';
-export const ETHEREUM_LISTS_CONTRACTS = 'https://raw.githubusercontent.com/ethereum-lists/contracts/main';
 
 export const getSpenderData = async (
   address: string,

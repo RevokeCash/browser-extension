@@ -1,5 +1,5 @@
-import { getTransactionsInBlocks } from './utils/transactions';
 import { keccak256, toBytes } from 'viem';
+import { getTransactionsInBlocks } from './utils/transactions';
 
 const [_executable, _file, fragment, blockCountStr] = process.argv;
 

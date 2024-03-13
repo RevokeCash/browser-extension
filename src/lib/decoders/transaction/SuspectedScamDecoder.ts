@@ -14,7 +14,7 @@ export class SuspectedScamDecoder implements TransactionDecoder {
     if (Number.isNaN(valueAsNumber) || valueAsNumber === 0) return undefined;
 
     // Check if the function call is one of the common scam functions
-    if (!potentialScamSignatures.includes(data.toLowerCase().slice(0, 10))) return undefined;
+    if (!potentialScamSignatures.includes(data.slice(0, 10))) return undefined;
 
     return {
       type: WarningType.SUSPECTED_SCAM,

@@ -1,7 +1,7 @@
+import { decodeFunctionData, parseAbi } from 'viem';
 import { Address, Signature, SignatureIdentifier, WarningType } from '../../constants';
 import { AllowanceWarningData, TransactionMessage } from '../../types';
 import { TransactionDecoder } from './TransactionDecoder';
-import { decodeFunctionData, parseAbi } from 'viem';
 
 export class Permit2ApproveDecoder implements TransactionDecoder {
   decode(message: TransactionMessage): AllowanceWarningData | undefined {

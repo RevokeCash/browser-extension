@@ -1,6 +1,6 @@
+import { Address, PublicClient, formatUnits } from 'viem';
 import { OpenSeaItemType } from '../constants';
 import { NftListingItem, TokenData } from '../types';
-import { Address, PublicClient, formatUnits } from 'viem';
 import { createViemPublicClientForChain } from './chains';
 
 const BASIC_ERC20 = [

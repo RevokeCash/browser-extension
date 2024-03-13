@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Trans } from 'react-i18next';
+import Page from '../components/Page';
 import Header from '../components/common/Header';
 import Href from '../components/common/Href';
 import AddressInfo from '../components/confirm/AddressInfo';
@@ -8,7 +9,6 @@ import AllowanceInfo from '../components/confirm/AllowanceInfo';
 import ListingInfo from '../components/confirm/ListingInfo';
 import WarningControls from '../components/confirm/WarningControls';
 import WarningText from '../components/confirm/WarningText';
-import Page from '../components/Page';
 import { Urls, WarningType } from '../lib/constants';
 import { decodeWarningData } from '../lib/utils/decode';
 import '../styles.css';

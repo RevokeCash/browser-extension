@@ -1,7 +1,7 @@
 // ALL THE BELOW ARE COPIED FROM REVOKE.CASH AND SHOULD BE EXTRACTED AT SOME POINT
 import { ChainId, getChain } from '@revoke.cash/chains';
-import { INFURA_API_KEY } from '../constants';
 import { Chain, PublicClient, createPublicClient, defineChain, http } from 'viem';
+import { INFURA_API_KEY } from '../constants';
 
 export const getChainName = (chainId: number): string => {
   const overrides: Record<number, string> = {

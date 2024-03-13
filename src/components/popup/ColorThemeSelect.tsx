@@ -14,9 +14,9 @@ const ColorThemeSelect = () => {
     { value: 'light', icon: <SunIcon className="w-4 h-4" /> },
   ] as const;
 
-  const selectTheme = (option: typeof options[number]) => setTheme(option.value);
+  const selectTheme = (option: (typeof options)[number]) => setTheme(option.value);
 
-  const displayOption = (option: typeof options[number]) => (
+  const displayOption = (option: (typeof options)[number]) => (
     <div className="flex gap-1 items-center">
       <span className="shrink-0">{option.icon}</span> {t(`popup.settings.color_themes.${option.value}`)}
     </div>

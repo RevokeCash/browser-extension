@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Header from '../components/common/Header';
 import Page from '../components/Page';
+import Header from '../components/common/Header';
 import Footer from '../components/popup/Footer';
 import Settings from '../components/popup/Settings';
 import { useTranslation } from '../i18n';

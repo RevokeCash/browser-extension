@@ -22,6 +22,7 @@ import { BiconomyNativeDecoder } from './lib/decoders/typed-signature/metatransa
 import { GsnRelayDecoder } from './lib/decoders/typed-signature/metatransactions/GsnRelayDecoder';
 import { HashDecoder } from './lib/decoders/untyped-signature/HashDecoder';
 import { Message, MessageResponse, WarningData } from './lib/types';
+import { normaliseMessage } from './lib/utils/messages';
 import { randomId } from './lib/utils/misc';
 import { getStorage, setStorage } from './lib/utils/storage';
 
@@ -73,7 +74,7 @@ const messageDecoder = new AggregateDecoder(transactionDecoders, typedSignatureD
 
 const setupRemoteConnection = async (remotePort: Browser.Runtime.Port) => {
   remotePort.onMessage.addListener((message: Message) => {
-    processMessage(message, remotePort);
+    processMessage(normaliseMessage(message), remotePort);
   });
 };
 

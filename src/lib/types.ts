@@ -1,5 +1,5 @@
-import { RequestType, WarningType } from './constants';
 import { Address, Hash, Hex, TypedDataDomain } from 'viem';
+import { RequestType, WarningType } from './constants';
 
 export interface CommonMessage {
   requestId: Hash;
