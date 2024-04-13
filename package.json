@@ -20,6 +20,7 @@
   "dependencies": {
     "@amplitude/analytics-browser": "^1.2.3",
     "@heroicons/react": "^2.1.1",
+    "@lavamoat/allow-scripts": "^3.0.4",
     "@metamask/post-message-stream": "^5.1.0",
     "@revoke.cash/chains": "^30.0.0",
     "eth-rpc-errors": "^4.0.3",
@@ -38,6 +39,7 @@
     "webextension-polyfill": "^0.9.0"
   },
   "devDependencies": {
+    "@lavamoat/preinstall-always-fail": "^2.0.0",
     "@localazy/cli": "^1.7.5",
     "@types/chrome": "^0.0.259",
     "@types/object-hash": "^2.2.1",
@@ -81,5 +83,15 @@
   },
   "lint-staged": {
     "*": "prettier -u --write"
+  },
+  "lavamoat": {
+    "allowScripts": {
+      "$root$": true,
+      "@lavamoat/preinstall-always-fail": false,
+      "tsx>esbuild": false,
+      "web-ext>bunyan>dtrace-provider": true,
+      "web-ext>fx-runner>spawn-sync": false,
+      "web-ext>sign-addon>core-js": false
+    }
   }
 }
