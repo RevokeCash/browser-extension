@@ -138,12 +138,12 @@ const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<bo
 
 const trackWarning = (warningData: WarningData) => {
   if (warningData.type === WarningType.ALLOWANCE) {
-    const { requestId, chainId, hostname, bypassed, user, assets, spender } = warningData;
-    const allowance = { user, assets, spender };
+    const { requestId, chainId, hostname, bypassed, spender } = warningData;
+    const allowance = { spender };
     track('Allowance requested', { requestId, chainId, hostname, bypassed, allowance });
   } else if (warningData.type === WarningType.LISTING) {
-    const { requestId, chainId, hostname, bypassed, platform, listing } = warningData;
-    track('NFT listing requested', { requestId, chainId, hostname, bypassed, platform, listing });
+    const { requestId, chainId, hostname, bypassed, platform } = warningData;
+    track('NFT listing requested', { requestId, chainId, hostname, bypassed, platform });
   } else if (warningData.type === WarningType.SUSPECTED_SCAM) {
     const { requestId, chainId, hostname, bypassed, address } = warningData;
     track('Suspected scam detected', { requestId, chainId, hostname, bypassed, address });
