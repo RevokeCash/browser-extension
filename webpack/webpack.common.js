@@ -3,6 +3,7 @@ const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const WextManifestWebpackPlugin = require('wext-manifest-webpack-plugin');
 const DotenvPlugin = require('dotenv-webpack');
+const LavaMoatPlugin = require('@lavamoat/webpack');
 
 const srcDir = path.join(__dirname, '..', 'src');
 const targetBrowser = process.env.TARGET_BROWSER;
@@ -43,17 +44,20 @@ module.exports = {
       {
         test: /\.css$/i,
         include: path.resolve(srcDir),
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        use: ['style-loader', 'css-loader', 'postcss-loader', LavaMoatPlugin.exclude],
       },
       {
         type: 'javascript/auto', // prevent webpack handling json with its own loaders,
         test: /manifest\.json$/,
-        use: {
-          loader: 'wext-manifest-loader',
-          options: {
-            usePackageJSONVersion: true,
+        use: [
+          {
+            loader: 'wext-manifest-loader',
+            options: {
+              usePackageJSONVersion: true,
+            },
           },
-        },
+          LavaMoatPlugin.exclude,
+        ],
         exclude: /node_modules/,
       },
     ],
@@ -69,6 +73,10 @@ module.exports = {
   },
 
   plugins: [
+    new LavaMoatPlugin({
+      generatePolicy: true,
+      diagnosticsVerbosity: 2,
+    }),
     new WextManifestWebpackPlugin(),
     new CopyPlugin({
       patterns: [
