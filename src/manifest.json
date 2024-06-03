@@ -13,7 +13,6 @@
   },
 
   "icons": {
-    "16": "images/icon-16.png",
     "48": "images/icon-48.png",
     "128": "images/icon-128.png",
     "256": "images/icon-256.png"
@@ -21,7 +20,6 @@
 
   "__chrome__action": {
     "default_icon": {
-      "16": "images/icon-16.png",
       "48": "images/icon-48.png",
       "128": "images/icon-128.png",
       "256": "images/icon-256.png"
@@ -31,7 +29,6 @@
 
   "__firefox__browser_action": {
     "default_icon": {
-      "16": "images/icon-16.png",
       "48": "images/icon-48.png",
       "128": "images/icon-128.png",
       "256": "images/icon-256.png"

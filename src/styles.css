@@ -9,8 +9,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   @apply leading-tight;
-  @apply bg-white dark:bg-black;
-  @apply text-zinc-900 dark:text-zinc-100;
+  @apply bg-neutral-0 dark:bg-neutral-800;
+  @apply text-neutral-550 dark:text-neutral-400;
+  @apply font-medium;
 }
 
 .animate-spin-fast {

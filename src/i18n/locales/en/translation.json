@@ -34,16 +34,26 @@
   },
   "popup": {
     "settings": {
-      "approvals": "Warn on approvals",
-      "color_themes": {
+      "approvals": "Token approvals",
+      "hash_signatures": "Hash signatures",
+      "listings": "NFT listings",
+      "suspected_scams": "Suspected scams"
+    },
+    "about": {
+      "title": "About",
+      "version": "Version",
+      "official_website": "Official Website"
+    },
+    "language": {
+      "title": "Language"
+    },
+    "color_theme": {
+      "title": "Color Theme",
+      "themes": {
         "dark": "Dark",
         "light": "Light",
         "system": "System"
-      },
-      "hash_signatures": "Warn on hash signatures",
-      "listings": "Warn on NFT listings",
-      "suspected_scams": "Warn on suspected scams"
-    },
-    "version": "Version"
+      }
+    }
   }
 }

@@ -7,9 +7,9 @@ import Browser from 'webextension-polyfill';
 const useBrowserStorage = <T,>(
   area: 'local' | 'sync',
   key: string,
-  initialValue?: T
-): [T | undefined, (value: T) => void, boolean, string | undefined] => {
-  const [state, setState] = useState();
+  initialValue: T
+): [T, (value: T) => void, boolean, string | undefined] => {
+  const [state, setState] = useState(initialValue);
   const [isPersistent, setIsPersistent] = useState(true);
   const [error, setError] = useState<string>();
 
@@ -29,7 +29,7 @@ const useBrowserStorage = <T,>(
   }, [key, initialValue]);
 
   const updateValue = useCallback(
-    (newValue) => {
+    (newValue: T) => {
       const toStore = typeof newValue === 'function' ? newValue(state) : newValue;
 
       Browser.storage[area]

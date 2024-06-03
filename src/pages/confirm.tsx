@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Page from '../components/Page';
 import Header from '../components/common/Header';
 import AddressInfo from '../components/confirm/AddressInfo';
@@ -40,9 +40,8 @@ const Confirm = () => {
   );
 };
 
-ReactDOM.render(
+createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Confirm />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );

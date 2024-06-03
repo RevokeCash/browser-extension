@@ -1,26 +1,33 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+import { MemoryRouter, Route } from 'react-router-dom';
+import SlideRoutes from 'react-slide-routes';
 import Page from '../components/Page';
-import Header from '../components/common/Header';
-import Footer from '../components/popup/Footer';
-import Settings from '../components/popup/Settings';
+import AboutPage from '../components/popup/routes/AboutPage';
+import ColorThemeSelectPage from '../components/popup/routes/ColorThemeSelectPage';
+import LanguageSelectPage from '../components/popup/routes/LanguageSelectPage';
+import MainPage from '../components/popup/routes/MainPage';
 import '../styles.css';
 
 const Popup = () => {
   return (
     <Page>
-      <div className="flex flex-col gap-4 items-center p-4 w-92">
-        <Header size="small" />
-        <Settings />
-        <Footer />
+      <div className="w-100 h-150">
+        <MemoryRouter>
+          <SlideRoutes duration={100}>
+            <Route path="/" element={<MainPage />}></Route>
+            <Route path="/color-theme" element={<ColorThemeSelectPage />} />
+            <Route path="/language" element={<LanguageSelectPage />} />
+            <Route path="/about" element={<AboutPage />} />
+          </SlideRoutes>
+        </MemoryRouter>
       </div>
     </Page>
   );
 };
 
-ReactDOM.render(
+createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Popup />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );

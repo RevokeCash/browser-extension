@@ -7,7 +7,7 @@ export type Theme = 'system' | 'light' | 'dark';
 
 interface ColorThemeContext {
   darkMode: boolean;
-  theme?: Theme;
+  theme: Theme;
   setTheme: (theme: Theme) => void;
 }
 
