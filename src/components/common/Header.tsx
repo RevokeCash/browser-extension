@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans } from '../../i18n';
+import { useTranslations } from '../../i18n';
 import { getChainName } from '../../lib/utils/chains';
 
 interface Props {
@@ -8,16 +8,13 @@ interface Props {
 }
 
 const Header = ({ size, chainId }: Props) => {
+  const t = useTranslations();
   const chainName = chainId !== undefined ? getChainName(chainId) : undefined;
 
   return (
     <div className={size === 'small' ? 'w-60' : 'w-92'}>
       <img src="/images/revoke.svg" alt="Revoke.cash logo" className="filter dark:invert" />
-      {chainName && (
-        <div className="text-center text-xs">
-          <Trans i18nKey="common.connected_to" values={{ chainName }} />
-        </div>
-      )}
+      {chainName && <div className="text-center text-xs">{t('common.connected_to', { chainName })}</div>}
     </div>
   );
 };

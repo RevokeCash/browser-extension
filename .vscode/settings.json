@@ -6,5 +6,7 @@
       "fileMatch": ["/manifest.json"],
       "url": "http://json.schemastore.org/chrome-manifest"
     }
-  ]
+  ],
+  "i18n-ally.enabledFrameworks": ["next-intl"],
+  "i18n-ally.localesPaths": ["src/i18n/locales"]
 }

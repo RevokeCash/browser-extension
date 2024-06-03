@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormatOptionLabelMeta } from 'react-select';
 import { useColorTheme } from '../../hooks/useColorTheme';
-import { useTranslation } from '../../i18n';
+import { useLocale } from '../../i18n';
 import Logo from '../common/Logo';
 import Select from '../common/Select';
 
@@ -13,7 +13,7 @@ interface Option {
 }
 
 const LanguageSelect = () => {
-  const { locale, setLocale } = useTranslation();
+  const { locale, setLocale } = useLocale();
   const { darkMode } = useColorTheme();
 
   const options: Option[] = [

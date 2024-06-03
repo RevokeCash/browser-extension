@@ -1,12 +1,12 @@
 import { ComputerDesktopIcon, MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import { useColorTheme } from '../../hooks/useColorTheme';
-import { useTranslation } from '../../i18n';
+import { useTranslations } from '../../i18n';
 import Select from '../common/Select';
 
 const ColorThemeSelect = () => {
   const { darkMode, theme, setTheme } = useColorTheme();
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const options = [
     { value: 'system', icon: <ComputerDesktopIcon className="w-4 h-4" /> },

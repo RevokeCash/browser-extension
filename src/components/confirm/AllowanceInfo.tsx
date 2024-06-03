@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from '../../i18n';
+import { useTranslations } from '../../i18n';
 import { AllowanceWarningData } from '../../lib/types';
 import AllowanceAsset from './AllowanceAsset';
 import AllowanceSpender from './AllowanceSpender';
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const AllowanceInfo = ({ data }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <>

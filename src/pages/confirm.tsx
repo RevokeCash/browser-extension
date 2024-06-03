@@ -1,15 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Trans } from 'react-i18next';
 import Page from '../components/Page';
 import Header from '../components/common/Header';
-import Href from '../components/common/Href';
 import AddressInfo from '../components/confirm/AddressInfo';
 import AllowanceInfo from '../components/confirm/AllowanceInfo';
+import Error from '../components/confirm/Error';
 import ListingInfo from '../components/confirm/ListingInfo';
 import WarningControls from '../components/confirm/WarningControls';
 import WarningText from '../components/confirm/WarningText';
-import { Urls, WarningType } from '../lib/constants';
+import { WarningType } from '../lib/constants';
 import { decodeWarningData } from '../lib/utils/decode';
 import '../styles.css';
 
@@ -21,13 +20,9 @@ const Confirm = () => {
   // Display an error message when no data could be decoded
   if (!data) {
     return (
-      <div className="flex flex-col gap-2 justify-center items-center w-full h-screen p-2">
-        <Header size="large" />
-        <div className="w-104 text-center">
-          <Trans i18nKey="common.error_occurred" components={[<Href underline="always" href={Urls.DISCORD} />]} />
-        </div>
-        <WarningControls bypassed={true} requestId={'0xPlaceholder'} />
-      </div>
+      <Page>
+        <Error />
+      </Page>
     );
   }
 

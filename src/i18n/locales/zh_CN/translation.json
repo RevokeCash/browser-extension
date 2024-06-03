@@ -1,10 +1,10 @@
 {
   "common": {
     "address": "地址",
-    "connected_to": "与{{chainName}}相连",
+    "connected_to": "与{chainName}相连",
     "continue": "继续",
     "dismiss": "取消",
-    "error_occurred": "如果你在尝试创建 Revoke.cash 弹出窗口时出错。请在 <0>Discord</0> 中联系我们。",
+    "error_occurred": "如果你在尝试创建 Revoke.cash 弹出窗口时出错。请在 <discord-link>Discord</discord-link> 中联系我们。",
     "intention": "请确保这是你的意图。",
     "proceed_with_caution": "谨慎行事。",
     "reject": "拒绝",
@@ -13,24 +13,24 @@
   },
   "confirm_allowance": {
     "asset": "资产",
-    "bypassed": "这个网站绕过了Revoke.cash的确认过程，试图在<0>{{hostname}}</0>上申请授权!",
-    "confirm": "你即将批准<0>{{hostname}}</0>上的一项授权!",
+    "bypassed": "这个网站绕过了Revoke.cash的确认过程，试图在<b>{hostname}</b>上申请授权!",
+    "confirm": "你即将批准<b>{hostname}</b>上的一项授权!",
     "spender": "支出者"
   },
   "confirm_hash": {
-    "bypassed": "该网站绕过了 Revoke.cash 确认过程，并要求你在<0>{{hostname}}</0>上签名哈希！",
-    "confirm": "你即将在<0>{{hostname}}</0>上签署哈希！",
+    "bypassed": "该网站绕过了 Revoke.cash 确认过程，并要求你在<b>{hostname}</b>上签名哈希！",
+    "confirm": "你即将在<b>{hostname}</b>上签署哈希！",
     "explanation": "这可以用来列出待售的NFT或授权资产转移。"
   },
   "confirm_listing": {
-    "bypassed": "该网站绕过了 Revoke.cash 确认流程，并试图在<0>{{platform}}</0>上列出一个作品！",
-    "confirm": "您即将在<0>{{platform}}</0>上列出待售商品！",
+    "bypassed": "该网站绕过了 Revoke.cash 确认流程，并试图在<b>{platform}</b>上列出一个作品！",
+    "confirm": "您即将在<b>{platform}</b>上列出待售商品！",
     "you_receive": "你收到（扣除手续费）",
     "you_sell": "你卖出"
   },
   "confirm_suspected_scam": {
-    "bypassed": "该网站绕过了Revoke.cash的确认流程，正试图与 <0>{{hostname}}</0> 上的可疑欺诈地址进行交互！",
-    "confirm": "你即将与 <0>{{hostname}}</0> 上的可疑诈骗地址进行交互！"
+    "bypassed": "该网站绕过了Revoke.cash的确认流程，正试图与 <b>{hostname}</b> 上的可疑欺诈地址进行交互！",
+    "confirm": "你即将与 <b>{hostname}</b> 上的可疑诈骗地址进行交互！"
   },
   "popup": {
     "settings": {

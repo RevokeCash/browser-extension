@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans, useTranslation } from '../../i18n';
+import { useTranslations } from '../../i18n';
 import { WarningType } from '../../lib/constants';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const WarningText = ({ type, bypassed, hostname, platform }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const getAfterText = (warningType: WarningType, bypassed: boolean) => {
     if (warningType === WarningType.HASH) {
@@ -32,8 +32,7 @@ const WarningText = ({ type, bypassed, hostname, platform }: Props) => {
     <div className="w-104 text-center">
       {beforeText && <span className="font-bold uppercase">{beforeText}</span>}
       {beforeText && ': '}
-      <Trans i18nKey={i18nKey} values={{ hostname, platform }} components={[<span className="font-bold" />]} />{' '}
-      {afterText}
+      {t.rich(i18nKey, { hostname, platform })} {afterText}
     </div>
   );
 };

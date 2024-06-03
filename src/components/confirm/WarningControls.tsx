@@ -1,7 +1,7 @@
 import React from 'react';
 import { Hash } from 'viem';
 import Browser from 'webextension-polyfill';
-import { useTranslation } from '../../i18n';
+import { useTranslations } from '../../i18n';
 import Button from '../common/Button';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const WarningControls = ({ bypassed, requestId }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const respond = async (data: boolean) => {
     try {

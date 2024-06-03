@@ -1,42 +1,56 @@
-import i18n from 'i18next';
-import { useEffect } from 'react';
-import { initReactI18next, useTranslation as useTranslationBase } from 'react-i18next';
+import React from 'react';
+import { IntlProvider as BaseIntlProvider, RichTranslationValues } from 'use-intl';
 import Browser from 'webextension-polyfill';
+import Href from '../components/common/Href';
 import useBrowserStorage from '../hooks/useBrowserStorage';
+import { Urls } from '../lib/constants';
 import en from './locales/en/translation.json';
 import es from './locales/es/translation.json';
 import ja from './locales/ja/translation.json';
 import ru from './locales/ru/translation.json';
 import zh from './locales/zh_CN/translation.json';
 
-const [lng] = Browser.i18n.getUILanguage().split('-');
+const messagesMap = { en, es, ja, ru, zh } as const;
 
-i18n.use(initReactI18next).init({
-  resources: {
-    en: { translation: en },
-    zh: { translation: zh },
-    ru: { translation: ru },
-    ja: { translation: ja },
-    es: { translation: es },
-  },
-  lng,
-  fallbackLng: 'en',
-  interpolation: {
-    escapeValue: false,
-  },
-});
+const locales = ['en', 'es', 'ja', 'ru', 'zh'] as const;
+type Locale = (typeof locales)[number];
+const isLocale = (locale: string): locale is Locale => locales.includes(locale as Locale);
 
-// We have to wrap useTranslation() to allow us to update the i18n language after initialisation
-// NOTE: Not sure why it has to be like this, but this was the easiest fix
-export const useTranslation = () => {
-  const translation = useTranslationBase();
-  const [locale, setLocale] = useBrowserStorage('sync', 'settings:locale', lng);
+const [browserConfigLocale] = Browser.i18n.getUILanguage().split('-');
+const defaultLocale = isLocale(browserConfigLocale) ? browserConfigLocale : 'en';
 
-  useEffect(() => {
-    translation.i18n.changeLanguage(locale);
-  }, [locale]);
-
-  return { ...translation, locale, setLocale };
+export const defaultTranslationValues: RichTranslationValues = {
+  i: (children) => <span className="italic">{children}</span>,
+  b: (children) => <span className="font-bold">{children}</span>,
+  'discord-link': (children) => (
+    <Href href={Urls.DISCORD} underline="always">
+      {children}
+    </Href>
+  ),
 };
 
-export { Trans } from 'react-i18next';
+export const useLocale = () => {
+  const [locale, setLocale] = useBrowserStorage('sync', 'settings:locale', defaultLocale);
+  return { locale, setLocale };
+};
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export const IntlProvider = ({ children }: Props) => {
+  const [locale] = useBrowserStorage('sync', 'settings:locale', defaultLocale);
+  const messages = messagesMap[locale ?? defaultLocale];
+
+  return (
+    <BaseIntlProvider
+      locale={locale ?? defaultLocale}
+      messages={messages}
+      defaultTranslationValues={defaultTranslationValues}
+    >
+      {children}
+    </BaseIntlProvider>
+  );
+};
+
+export { useTranslations } from 'use-intl';

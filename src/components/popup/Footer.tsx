@@ -1,11 +1,11 @@
 import React from 'react';
 import Browser from 'webextension-polyfill';
-import { useTranslation } from '../../i18n';
+import { useTranslations } from '../../i18n';
 import { Urls } from '../../lib/constants';
 import Href from '../common/Href';
 
 const Footer = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <div className="flex flex-col gap-2 items-center">

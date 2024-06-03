@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from '../../i18n';
+import { useTranslations } from '../../i18n';
 import { PlaceHolderItem } from '../../lib/constants';
 import { ListingWarningData } from '../../lib/types';
 import ListingAsset from './ListingAsset';
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const ListingInfo = ({ data }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const consideration = data.listing.consideration.length > 0 ? data.listing.consideration : [PlaceHolderItem.ZERO_ETH];
 

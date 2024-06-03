@@ -1,12 +1,12 @@
 import React from 'react';
-import { useTranslation } from '../../i18n';
+import { useTranslations } from '../../i18n';
 import { warningSettingKeys, WarningType } from '../../lib/constants';
 import BooleanSetting from './BooleanSetting';
 import ColorThemeSelect from './ColorThemeSelect';
 import LanguageSelect from './LanguageSelect';
 
 const Settings = () => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <div className="flex flex-col justify-center items-center w-full gap-2">

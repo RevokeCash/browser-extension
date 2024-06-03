@@ -1,10 +1,10 @@
 {
   "common": {
     "address": "アドレス",
-    "connected_to": "接続{{chainName}}",
+    "connected_to": "接続{chainName}",
     "continue": "続ける",
     "dismiss": "却下する",
-    "error_occurred": "Revoke.cashのポップアップを作成しようとした際にエラーが発生しました。私たちの<0>Discord</0>を参照ください。",
+    "error_occurred": "Revoke.cashのポップアップを作成しようとした際にエラーが発生しました。私たちの<discord-link>Discord</discord-link>を参照ください。",
     "intention": "これが自分の意図によるものであることをご確認ください。",
     "proceed_with_caution": "注意して進めてください。",
     "reject": "却下",
@@ -13,24 +13,24 @@
   },
   "confirm_allowance": {
     "asset": "資産",
-    "bypassed": "このウェブサイトは、Revoke.cashの確認プロセスをバイパスし、<0>{{hostname}}</0>の許可を要求しようとしています。",
-    "confirm": "あなたは<0>{{hostname}}</0>の許可を承認しようとしています。",
+    "bypassed": "このウェブサイトは、Revoke.cashの確認プロセスをバイパスし、<b>{hostname}</b>の許可を要求しようとしています。",
+    "confirm": "あなたは<b>{hostname}</b>の許可を承認しようとしています。",
     "spender": "スペンダー"
   },
   "confirm_hash": {
-    "bypassed": "このウェブサイトは、Revoke.cashの確認プロセスをパイパスし、<0>{{hostname}}</0>のハッシュへの署名を求めています。",
-    "confirm": "あなたは<0>{{hostname}}</0>のハッシュに署名しようとしています。",
+    "bypassed": "このウェブサイトは、Revoke.cashの確認プロセスをパイパスし、<b>{hostname}</b>のハッシュへの署名を求めています。",
+    "confirm": "あなたは<b>{hostname}</b>のハッシュに署名しようとしています。",
     "explanation": "これは、NFTを販売のためにリストしたり、資産の譲渡を許可するために使用されます。"
   },
   "confirm_listing": {
-    "bypassed": "このウェブサイトは、Revoke.cashの確認プロセスをバイパスし、<0>{{platform}}</0>に販売用にアイテムをリストしようとしています。",
-    "confirm": "あなたは<0>{{platform}}</0>にアイテムをリストしようとしています。",
+    "bypassed": "このウェブサイトは、Revoke.cashの確認プロセスをバイパスし、<b>{platform}</b>に販売用にアイテムをリストしようとしています。",
+    "confirm": "あなたは<b>{platform}</b>にアイテムをリストしようとしています。",
     "you_receive": "あなたが受領するもの (手数料支払い後)",
     "you_sell": "あなたが売るもの"
   },
   "confirm_suspected_scam": {
-    "bypassed": "このウェブサイトは、Revoke.cashの確認プロセスをバイパスし、<0>{{hostname}}</0>という詐欺の疑いのあるアドレスとやり取りしようとしています。",
-    "confirm": "あなたは<0>{{hostname}}</0>という詐欺の疑いのあるアドレスとやり取りしようとしています。"
+    "bypassed": "このウェブサイトは、Revoke.cashの確認プロセスをバイパスし、<b>{hostname}</b>という詐欺の疑いのあるアドレスとやり取りしようとしています。",
+    "confirm": "あなたは<b>{hostname}</b>という詐欺の疑いのあるアドレスとやり取りしようとしています。"
   },
   "popup": {
     "settings": {

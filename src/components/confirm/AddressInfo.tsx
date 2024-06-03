@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from '../../i18n';
+import { useTranslations } from '../../i18n';
 import { SuspectedScamWarningData } from '../../lib/types';
 import { AddressOrDisplay } from '../common/AddressOrDisplay';
 
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const AddressInfo = ({ data }: Props) => {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <div className="flex flex-col items-center">
