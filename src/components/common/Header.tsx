@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Header = ({ size, chainId }: Props) => {
-  const chainName = chainId && getChainName(chainId);
+  const chainName = chainId !== undefined ? getChainName(chainId) : undefined;
 
   return (
     <div className={size === 'small' ? 'w-60' : 'w-92'}>
