@@ -26,7 +26,8 @@
         "pattern": "src/i18n/locales/es/*.json",
         "lang": "es"
       }
-    ]
+    ],
+    "deprecate": "project"
   },
 
   "download": {

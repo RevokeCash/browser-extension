@@ -9,26 +9,32 @@
     "proceed_with_caution": "Proceed with caution.",
     "reject": "Reject",
     "trust_website": "Please make sure you trust this website.",
-    "warning": "Warning"
+    "warning": "Warning",
+    "bypass": "Attention: this website attempted to bypass the Revoke.cash confirmation window. Proceed with caution."
   },
   "confirm_allowance": {
+    "title": "Granting a Token Approval",
     "asset": "Asset",
     "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to request an approval on <b>{hostname}</b>!",
     "confirm": "You are about to sign an approval on <b>{hostname}</b>!",
     "spender": "Spender"
   },
   "confirm_hash": {
+    "title": "Signing a Hash Signature",
+    "hash": "Hash",
     "bypassed": "This website bypassed the Revoke.cash confirmation process and is asking you to sign a hash on <b>{hostname}</b>!",
     "confirm": "You are about to sign a hash on <b>{hostname}</b>!",
-    "explanation": "This can be used to list NFTs for sale or authorize asset transfers."
+    "explanation": "This can be used to list NFTs for sale or authorize asset transfers. Please make sure you trust this website."
   },
   "confirm_listing": {
+    "title": "Signing an NFT Marketplace Listing",
     "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to list an item for sale on <b>{platform}</b>!",
     "confirm": "You are about to list an item for sale on <b>{platform}</b>!",
     "you_receive": "You receive (after fees)",
     "you_sell": "You sell"
   },
   "confirm_suspected_scam": {
+    "title": "Interacting with a Suspected Scam Address",
     "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to interact with a suspected scam address on <b>{hostname}</b>!",
     "confirm": "You are about to interact with a suspected scam address on <b>{hostname}</b>!"
   },
@@ -36,7 +42,7 @@
     "settings": {
       "approvals": "Token approvals",
       "hash_signatures": "Hash signatures",
-      "listings": "NFT listings",
+      "listings": "NFT marketplace listings",
       "suspected_scams": "Suspected scams"
     },
     "about": {

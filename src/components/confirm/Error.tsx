@@ -1,7 +1,7 @@
 import React from 'react';
-import Header from '../../components/common/Header';
 import WarningControls from '../../components/confirm/WarningControls';
 import { useTranslations } from '../../i18n';
+import Header from './Header';
 
 const Error = () => {
   const t = useTranslations();

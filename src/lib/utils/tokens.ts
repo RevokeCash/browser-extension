@@ -1,5 +1,5 @@
-import { Address, PublicClient, formatUnits } from 'viem';
-import { OpenSeaItemType } from '../constants';
+import { PublicClient, Address as TAddress, formatUnits } from 'viem';
+import { Address, OpenSeaItemType } from '../constants';
 import { NftListingItem, TokenData } from '../types';
 import { createViemPublicClientForChain } from './chains';
 
@@ -33,36 +33,79 @@ const BASIC_ERC20 = [
   },
 ] as const;
 
-export const getNftListingItemTokenData = async (item: NftListingItem, chainId: number) => {
+export interface ListingItemDisplayData {
+  asset: {
+    name?: string;
+    symbol?: string;
+    address?: TAddress;
+  };
+  specification?: string;
+}
+
+export const getNftListingItemTokenData = async (
+  item: NftListingItem,
+  chainId: number
+): Promise<ListingItemDisplayData> => {
   // Some scammers use an incorrect interface using numbers so we convert it to string
   const itemType = String(item.itemType);
 
   const tokenData = await getTokenData(item.token, chainId);
 
   if (itemType === OpenSeaItemType.ETHER) {
-    return { display: `${formatUnits(BigInt(item.startAmount), 18)} ETH` };
+    return {
+      asset: {
+        name: 'Ether',
+        symbol: 'ETH',
+        address: undefined,
+      },
+      specification: `${formatUnits(BigInt(item.startAmount), 18)}`,
+    };
   } else if (itemType === OpenSeaItemType.ERC20) {
     return {
-      display: `${formatUnits(BigInt(item.startAmount), Number(tokenData.decimals ?? 18))} ${tokenData.symbol}`,
-      asset: item.token,
+      asset: {
+        name: tokenData.name,
+        symbol: tokenData.symbol,
+        address: item.token,
+      },
+      specification: `${formatUnits(BigInt(item.startAmount), Number(tokenData.decimals ?? 18))}`,
     };
   } else if (itemType === OpenSeaItemType.ERC721) {
-    return { display: `${tokenData.name} (${tokenData.symbol}) #${item.identifierOrCriteria}`, asset: item.token };
+    return {
+      asset: {
+        name: tokenData.name,
+        symbol: tokenData.symbol,
+        address: item.token,
+      },
+      specification: `#${item.identifierOrCriteria}`,
+    };
   } else if (itemType === OpenSeaItemType.ERC1155) {
     return {
-      display: `${item.startAmount}x ${tokenData.name} (${tokenData.symbol}) #${item.identifierOrCriteria}`,
-      asset: item.token,
+      asset: {
+        name: tokenData.name,
+        symbol: tokenData.symbol,
+        address: item.token,
+      },
+      specification: `${item.startAmount}x #${item.identifierOrCriteria}`,
     };
-  } else if (itemType === OpenSeaItemType.ERC721_CRITERIA) {
-    return { display: `multiple ${tokenData.name} (${tokenData.symbol})`, asset: item.token };
-  } else if (itemType === OpenSeaItemType.ERC1155_CRITERIA) {
-    return { display: `multiple ${tokenData.name} (${tokenData.symbol})`, asset: item.token };
+  } else if (itemType === OpenSeaItemType.ERC721_CRITERIA || itemType === OpenSeaItemType.ERC1155_CRITERIA) {
+    return {
+      asset: {
+        name: tokenData.name,
+        symbol: tokenData.symbol,
+        address: item.token,
+      },
+      specification: `multiple`,
+    };
   }
 
-  return { display: 'Unknown token(s)' };
+  if (item.token === Address.ZERO) {
+    return { asset: { name: 'Unknown Asset(s)' } };
+  }
+
+  return { asset: { address: item.token } };
 };
 
-export const getTokenData = async (address: Address, chainId: number): Promise<TokenData> => {
+export const getTokenData = async (address: TAddress, chainId: number): Promise<TokenData> => {
   const client = createViemPublicClientForChain(chainId);
 
   if (!client) return {};
@@ -74,7 +117,7 @@ export const getTokenData = async (address: Address, chainId: number): Promise<T
   };
 };
 
-const getTokenSymbol = async (address: Address, client: PublicClient) => {
+const getTokenSymbol = async (address: TAddress, client: PublicClient) => {
   try {
     return await client.readContract({
       address,
@@ -86,7 +129,7 @@ const getTokenSymbol = async (address: Address, client: PublicClient) => {
   }
 };
 
-const getTokenDecimals = async (address: Address, client: PublicClient) => {
+const getTokenDecimals = async (address: TAddress, client: PublicClient) => {
   try {
     return await client.readContract({
       address,
@@ -98,7 +141,7 @@ const getTokenDecimals = async (address: Address, client: PublicClient) => {
   }
 };
 
-const getTokenName = async (address: Address, client: PublicClient) => {
+const getTokenName = async (address: TAddress, client: PublicClient) => {
   try {
     return await client.readContract({
       address,

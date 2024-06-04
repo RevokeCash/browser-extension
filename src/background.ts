@@ -164,21 +164,56 @@ const calculatePopupPositions = (window: Browser.Windows.Window, warningData: Wa
 };
 
 const calculatePopupHeight = (warningData: WarningData) => {
-  const lineHeight = 20;
-  const baseHeight = 14 * lineHeight;
-  const bypassHeight = warningData.bypassed ? lineHeight : 0;
+  // This is an estimate of the height of the frame around the popup, unfortunately we can't get the actual value (which is OS / browser dependent)
+  const FRAME_HEIGHT = 28;
+
+  const BORDER_HEIGHT = 1;
+  const MARGIN_HEIGHT = 12;
+
+  const HEADER_HEIGHT = 64;
+  const HOSTNAME_HEIGHT = 28;
+  const TITLE_HEIGHT = 44;
+
+  const LINE_HEIGHT = 44;
+  const DATA_SEPARATOR_HEIGHT = 28;
+
+  const FOOTER_HEIGHT = 64;
+  const WARNING_HEIGHT = 64;
+
+  const baseHeight =
+    FRAME_HEIGHT +
+    HEADER_HEIGHT +
+    BORDER_HEIGHT +
+    HOSTNAME_HEIGHT +
+    BORDER_HEIGHT +
+    TITLE_HEIGHT +
+    0 +
+    MARGIN_HEIGHT +
+    BORDER_HEIGHT +
+    FOOTER_HEIGHT;
+  const bypassHeight = warningData.bypassed ? WARNING_HEIGHT + MARGIN_HEIGHT : 0;
 
   if (warningData.type === WarningType.ALLOWANCE) {
-    return baseHeight + bypassHeight + 3 * lineHeight + warningData.assets.length * lineHeight;
+    const spenderHeight = LINE_HEIGHT;
+    const assetsHeight = LINE_HEIGHT * warningData.assets.length + BORDER_HEIGHT * (warningData.assets.length - 1);
+    const contentHeight = spenderHeight + DATA_SEPARATOR_HEIGHT + assetsHeight;
+    return baseHeight + bypassHeight + contentHeight;
   } else if (warningData.type === WarningType.LISTING) {
-    const offerLines = warningData.listing.offer.length + 1;
-    const considerationLines = warningData.listing.consideration.length + 1;
-    return baseHeight + bypassHeight + offerLines * lineHeight + considerationLines * lineHeight;
+    const offerHeight =
+      LINE_HEIGHT * warningData.listing.offer.length + BORDER_HEIGHT * (warningData.listing.offer.length - 1);
+    const considerationHeight =
+      LINE_HEIGHT * warningData.listing.consideration.length +
+      BORDER_HEIGHT * (warningData.listing.consideration.length - 1);
+    const contentHeight = offerHeight + DATA_SEPARATOR_HEIGHT + considerationHeight;
+    return baseHeight + bypassHeight + contentHeight;
   } else if (warningData.type === WarningType.SUSPECTED_SCAM) {
-    return baseHeight + bypassHeight + 2 * lineHeight;
+    return baseHeight + bypassHeight + LINE_HEIGHT;
+  } else if (warningData.type === WarningType.HASH) {
+    return baseHeight + bypassHeight + LINE_HEIGHT + WARNING_HEIGHT + MARGIN_HEIGHT;
   }
 
-  return baseHeight + bypassHeight;
+  // Should not be reachable
+  return baseHeight + bypassHeight + 2 * LINE_HEIGHT;
 };
 
 const createWarningPopup = async (warningData: WarningData) => {
@@ -191,6 +226,7 @@ const createWarningPopup = async (warningData: WarningData) => {
   const popupWindow = await Browser.windows.create({
     url: `confirm.html?${queryString}`,
     type: 'popup',
+    focused: true,
     ...positions,
   });
 
