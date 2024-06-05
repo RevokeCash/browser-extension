@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslations } from '../../../../i18n';
+import { getChainExplorerUrl } from '../../../../lib/chains/chains';
 import { Address, OpenSeaItemType, PlaceHolderItem } from '../../../../lib/constants';
 import { ListingWarningData, NftListingItem } from '../../../../lib/types';
-import { getChainExplorerUrl } from '../../../../lib/utils/chains';
 import DivideContainer from '../../../common/DivideContainer';
 import MenuItemOrLink from '../../../common/MenuItemOrLink';
 import DataSeparator from '../../common/DataSeparator';

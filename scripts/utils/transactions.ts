@@ -1,4 +1,4 @@
-import { createViemPublicClientForChain } from '../../src/lib/utils/chains';
+import { createViemPublicClientForChain } from '../../src/lib/chains/chains';
 
 // Inclusive range
 const range = (start: number, end: number): number[] => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslations } from '../../../../i18n';
+import { getChainExplorerUrl } from '../../../../lib/chains/chains';
 import { AllowanceWarningData } from '../../../../lib/types';
-import { getChainExplorerUrl } from '../../../../lib/utils/chains';
 import DivideContainer from '../../../common/DivideContainer';
 import KeyValue from '../../../common/KeyValue';
 import MenuItemOrLink from '../../../common/MenuItemOrLink';

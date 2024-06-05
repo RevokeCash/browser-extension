@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslations } from '../../../../i18n';
+import { getChainExplorerUrl } from '../../../../lib/chains/chains';
 import { SuspectedScamWarningData } from '../../../../lib/types';
-import { getChainExplorerUrl } from '../../../../lib/utils/chains';
 import { AddressOrDisplay } from '../../../common/AddressOrDisplay';
 import KeyValue from '../../../common/KeyValue';
 import MenuItemOrLink from '../../../common/MenuItemOrLink';
