@@ -68,7 +68,9 @@ export class Chain {
   }
 
   getLogoUrl(): string | undefined {
-    if (!this.options.logoUrl) return undefined;
+    if (!this.options.logoUrl) {
+      return getChain(this.chainId)?.iconURL;
+    }
 
     if (this.options.logoUrl.startsWith('/')) {
       return `https://revoke.cash${this.options.logoUrl}`;

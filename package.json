@@ -21,7 +21,7 @@
     "@amplitude/analytics-browser": "^1.2.3",
     "@heroicons/react": "^2.1.1",
     "@metamask/post-message-stream": "^5.1.0",
-    "@revoke.cash/chains": "^43.0.0",
+    "@revoke.cash/chains": "^44.0.0",
     "eth-rpc-errors": "^4.0.3",
     "extension-port-stream": "^2.1.1",
     "object-hash": "^3.0.0",

@@ -21,24 +21,11 @@ const Logo = ({ src, alt, size, square, border, className }: Props) => {
   }
 
   const classes = twMerge(
-    'aspect-square object-cover bg-white',
+    'aspect-square bg-white',
     square ? 'rounded-lg' : 'rounded-full',
     border && 'border border-black dark:border-white',
     className
   );
-
-  if (!src.startsWith('/')) {
-    return (
-      <img
-        src={src}
-        alt={alt}
-        height={size ?? 24}
-        width={size ?? 24}
-        className={classes}
-        onError={() => setError(true)}
-      />
-    );
-  }
 
   return (
     <img
