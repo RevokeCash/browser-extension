@@ -1,49 +1,49 @@
 {
   "common": {
     "address": "Dirección",
-    "connected_to": "Conectado a {chainName}",
+    "bypass": "Atención: este sitio web intentó eludir la ventana de confirmación de Revoke.cash. Proceda con cautela.",
     "continue": "Continuar",
     "dismiss": "Descartar",
     "error_occurred": "Se ha producido un error al intentar crear una ventana emergente de Revoke.cash. Por favor comunícate con nosotros en nuestro <discord-link>Discord</discord-link>.",
-    "intention": "Por favor asegúrate de que esta es tu intención",
-    "proceed_with_caution": "Proceda con precaución.",
-    "reject": "Rechazar",
-    "trust_website": "Por favor asegúrate de confiar en este sitio web.",
-    "warning": "Advertencia"
+    "reject": "Rechazar"
   },
   "confirm_allowance": {
-    "asset": "Activo",
-    "bypassed": "¡Este sitio web omitió el proceso de confirmación de Revoke.cash y te está pidiendo una autorización en <b>{hostname}</b>!",
-    "confirm": "¡Estás a punto de aprobar una autorización en <b>{hostname}</b>!",
-    "spender": "Gastador"
+    "spender": "Gastador",
+    "title": "Otorgar una Aprobación de Token"
   },
   "confirm_hash": {
-    "bypassed": "¡Este sitio web omitió el proceso de confirmación de Revoke.cash y te está pidiendo firmar un hash en <b>{hostname}</b>!",
-    "confirm": "¡Estás a punto de firmar un hash en <b>{hostname}</b>!",
-    "explanation": "Esto puede ser usado para publicar a la venta NFTs o autorizar transferencias de activos."
+    "explanation": "Esto se puede utilizar para enumerar NFT a la venta o autorizar transferencias de activos. Por favor asegúrese de confiar en este sitio web.",
+    "hash": "Hash",
+    "title": "Firmar una Firma Hash"
   },
   "confirm_listing": {
-    "bypassed": "¡Este sitio web omitió el proceso de confirmación de Revoke.cash y está intentando publicar un artículo a la venta en <b>{platform}</b>!",
-    "confirm": "¡Estás a punto de poner un artículo a la venta en <b>{platform}</b>!",
-    "you_receive": "Recibes (después de comisiones)",
-    "you_sell": "Vendes"
+    "title": "Firmar un Listado del Mercado NFT"
   },
   "confirm_suspected_scam": {
-    "bypassed": "¡Este sitio web omitió el proceso de confirmación de Revoke.cash y está intentando interactuar con una dirección sospechosa de estafa en <b>{hostname}</b>!",
-    "confirm": "¡Estás a punto de interactuar con una dirección sospechosa de estafa en <b>{hostname}</b>!"
+    "title": "Interactuar con una Dirección Sospechosa de Estafa"
   },
   "popup": {
-    "settings": {
-      "approvals": "Advertencia sobre las autorizaciones",
-      "color_themes": {
+    "about": {
+      "official_website": "Página Web Oficial",
+      "title": "Acerca de",
+      "version": "Versión"
+    },
+    "color_theme": {
+      "themes": {
         "dark": "Oscuro",
-        "light": "Claro",
+        "light": "Brillante",
         "system": "Sistema"
       },
-      "hash_signatures": "Advertencia sobre las firmas de hash",
-      "listings": "Advertencia sobre las publicaciones de venta de NFTs",
-      "suspected_scams": "Advertencia sobre posibles estafas"
+      "title": "Color del Tema"
     },
-    "version": "Versión"
+    "language": {
+      "title": "Idioma"
+    },
+    "settings": {
+      "approvals": "Aprobaciones de tokens",
+      "hash_signatures": "Firmas Hash",
+      "listings": "Listados del mercado NFT",
+      "suspected_scams": "Sospechosas de estafa"
+    }
   }
 }

@@ -1,49 +1,49 @@
 {
   "common": {
     "address": "アドレス",
-    "connected_to": "接続{chainName}",
+    "bypass": "注意：このウェブサイトはRevoke.cashの確認ウィンドウをバイパスしようとしました。注意して進めてください。",
     "continue": "続ける",
     "dismiss": "却下する",
     "error_occurred": "Revoke.cashのポップアップを作成しようとした際にエラーが発生しました。私たちの<discord-link>Discord</discord-link>を参照ください。",
-    "intention": "これが自分の意図によるものであることをご確認ください。",
-    "proceed_with_caution": "注意して進めてください。",
-    "reject": "却下",
-    "trust_website": "このサイトが信頼できるかどうか、ご確認をお願いします。",
-    "warning": "警告"
+    "reject": "却下"
   },
   "confirm_allowance": {
-    "asset": "資産",
-    "bypassed": "このウェブサイトは、Revoke.cashの確認プロセスをバイパスし、<b>{hostname}</b>の許可を要求しようとしています。",
-    "confirm": "あなたは<b>{hostname}</b>の許可を承認しようとしています。",
-    "spender": "スペンダー"
+    "spender": "スペンダー",
+    "title": "トークン承認の付与"
   },
   "confirm_hash": {
-    "bypassed": "このウェブサイトは、Revoke.cashの確認プロセスをパイパスし、<b>{hostname}</b>のハッシュへの署名を求めています。",
-    "confirm": "あなたは<b>{hostname}</b>のハッシュに署名しようとしています。",
-    "explanation": "これは、NFTを販売のためにリストしたり、資産の譲渡を許可するために使用されます。"
+    "explanation": "これを使用して、販売中のNFTを一覧表示したり、資産譲渡を承認したりできます。本ウェブサイトを信頼してください。",
+    "hash": "ハッシュ",
+    "title": "ハッシュ署名の署名"
   },
   "confirm_listing": {
-    "bypassed": "このウェブサイトは、Revoke.cashの確認プロセスをバイパスし、<b>{platform}</b>に販売用にアイテムをリストしようとしています。",
-    "confirm": "あなたは<b>{platform}</b>にアイテムをリストしようとしています。",
-    "you_receive": "あなたが受領するもの (手数料支払い後)",
-    "you_sell": "あなたが売るもの"
+    "title": "NFTマーケットプレイスリストの署名"
   },
   "confirm_suspected_scam": {
-    "bypassed": "このウェブサイトは、Revoke.cashの確認プロセスをバイパスし、<b>{hostname}</b>という詐欺の疑いのあるアドレスとやり取りしようとしています。",
-    "confirm": "あなたは<b>{hostname}</b>という詐欺の疑いのあるアドレスとやり取りしようとしています。"
+    "title": "詐欺の疑いのあるアドレスとのやり取り"
   },
   "popup": {
-    "settings": {
-      "approvals": "承認についての警告",
-      "color_themes": {
+    "about": {
+      "official_website": "公式ウェブサイト",
+      "title": "について",
+      "version": "バージョン"
+    },
+    "color_theme": {
+      "themes": {
         "dark": "暗い",
         "light": "明るい",
         "system": "システム"
       },
-      "hash_signatures": "ハッシュ署名についての警告",
-      "listings": "NFTリスティングについての警告",
-      "suspected_scams": "詐欺の疑いについての警告"
+      "title": "カラーテーマ"
     },
-    "version": "バージョン"
+    "language": {
+      "title": "言語"
+    },
+    "settings": {
+      "approvals": "トークンの承認",
+      "hash_signatures": "ハッシュ署名",
+      "listings": "NFTマーケットプレイスのリスト",
+      "suspected_scams": "詐欺の疑い"
+    }
   }
 }

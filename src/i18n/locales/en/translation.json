@@ -1,65 +1,49 @@
 {
   "common": {
     "address": "Address",
-    "connected_to": "Connected to {chainName}",
+    "bypass": "Attention: this website attempted to bypass the Revoke.cash confirmation window. Proceed with caution.",
     "continue": "Continue",
     "dismiss": "Dismiss",
     "error_occurred": "An error occurred while trying to create a Revoke.cash popup. Please reach out about this in our <discord-link>Discord</discord-link>.",
-    "intention": "Please make sure this is your intention.",
-    "proceed_with_caution": "Proceed with caution.",
-    "reject": "Reject",
-    "trust_website": "Please make sure you trust this website.",
-    "warning": "Warning",
-    "bypass": "Attention: this website attempted to bypass the Revoke.cash confirmation window. Proceed with caution."
+    "reject": "Reject"
   },
   "confirm_allowance": {
-    "title": "Granting a Token Approval",
-    "asset": "Asset",
-    "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to request an approval on <b>{hostname}</b>!",
-    "confirm": "You are about to sign an approval on <b>{hostname}</b>!",
-    "spender": "Spender"
+    "spender": "Spender",
+    "title": "Granting a Token Approval"
   },
   "confirm_hash": {
-    "title": "Signing a Hash Signature",
+    "explanation": "This can be used to list NFTs for sale or authorize asset transfers. Please make sure you trust this website.",
     "hash": "Hash",
-    "bypassed": "This website bypassed the Revoke.cash confirmation process and is asking you to sign a hash on <b>{hostname}</b>!",
-    "confirm": "You are about to sign a hash on <b>{hostname}</b>!",
-    "explanation": "This can be used to list NFTs for sale or authorize asset transfers. Please make sure you trust this website."
+    "title": "Signing a Hash Signature"
   },
   "confirm_listing": {
-    "title": "Signing an NFT Marketplace Listing",
-    "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to list an item for sale on <b>{platform}</b>!",
-    "confirm": "You are about to list an item for sale on <b>{platform}</b>!",
-    "you_receive": "You receive (after fees)",
-    "you_sell": "You sell"
+    "title": "Signing an NFT Marketplace Listing"
   },
   "confirm_suspected_scam": {
-    "title": "Interacting with a Suspected Scam Address",
-    "bypassed": "This website bypassed the Revoke.cash confirmation process and is trying to interact with a suspected scam address on <b>{hostname}</b>!",
-    "confirm": "You are about to interact with a suspected scam address on <b>{hostname}</b>!"
+    "title": "Interacting with a Suspected Scam Address"
   },
   "popup": {
+    "about": {
+      "official_website": "Official Website",
+      "title": "About",
+      "version": "Version"
+    },
+    "color_theme": {
+      "themes": {
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System"
+      },
+      "title": "Color Theme"
+    },
+    "language": {
+      "title": "Language"
+    },
     "settings": {
       "approvals": "Token approvals",
       "hash_signatures": "Hash signatures",
       "listings": "NFT marketplace listings",
       "suspected_scams": "Suspected scams"
-    },
-    "about": {
-      "title": "About",
-      "version": "Version",
-      "official_website": "Official Website"
-    },
-    "language": {
-      "title": "Language"
-    },
-    "color_theme": {
-      "title": "Color Theme",
-      "themes": {
-        "dark": "Dark",
-        "light": "Light",
-        "system": "System"
-      }
     }
   }
 }
