@@ -18,7 +18,7 @@ const Header = ({ size, chainId }: Props) => {
       {chainName ? (
         <div className="flex items-center gap-1">
           {/* TODO: Improve the logo handling to use https://github.com/ethereum-lists/chains/tree/master/_data/icons as a fallback */}
-          {chainLogo ? <Logo src={chainLogo} alt={chainName} border /> : null}
+          {chainLogo ? <Logo src={chainLogo} alt={chainName} /> : null}
           <div className="text-sm">{chainName}</div>
         </div>
       ) : null}

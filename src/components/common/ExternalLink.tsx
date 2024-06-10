@@ -1,4 +1,4 @@
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
+import { ArrowUpRightIcon } from '@heroicons/react/24/outline';
 import React, { ReactNode } from 'react';
 import Href from './Href';
 import MenuItem from './MenuItem';
@@ -13,10 +13,10 @@ interface Props<T> {
 
 const ExternalLink = <T,>({ href, children, className, size, colorChangeOnHover }: Props<T>) => {
   return (
-    <Href href={href} className="w-full hover:text-neutral-850 hover:dark:text-neutral-300" underline="none">
+    <Href href={href} className="group w-full hover:text-neutral-850 hover:dark:text-neutral-300" underline="none">
       <MenuItem size={size} className={className} colorChangeOnHover={colorChangeOnHover}>
         {children}
-        <ArrowTopRightOnSquareIcon className="w-5 h-5" />
+        <ArrowUpRightIcon className="w-4 h-4 text-neutral-550/30 dark:text-neutral-400/30 group-hover:text-neutral-850 group-hover:dark:text-neutral-300" />
       </MenuItem>
     </Href>
   );
