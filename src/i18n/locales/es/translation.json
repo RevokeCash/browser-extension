@@ -5,7 +5,8 @@
     "continue": "Continuar",
     "dismiss": "Descartar",
     "error_occurred": "Se ha producido un error al intentar crear una ventana emergente de Revoke.cash. Por favor comunícate con nosotros en nuestro <discord-link>Discord</discord-link>.",
-    "reject": "Rechazar"
+    "reject": "Rechazar",
+    "unknown_asset": "Activo desconocido"
   },
   "confirm_allowance": {
     "spender": "Gastador",

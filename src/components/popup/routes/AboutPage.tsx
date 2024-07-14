@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from '../../../i18n';
 import Browser from 'webextension-polyfill';
 import { Urls } from '../../../lib/constants';
 import ExternalLink from '../../common/ExternalLink';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslations } from 'use-intl';
+import { useTranslations } from '../../../i18n';
 import InfoBlock from './InfoBlock';
 
 const BypassWarning = () => {

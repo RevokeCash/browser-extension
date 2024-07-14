@@ -5,7 +5,8 @@
     "continue": "继续",
     "dismiss": "取消",
     "error_occurred": "如果你在尝试创建 Revoke.cash 弹出窗口时出错。请在 <discord-link>Discord</discord-link> 中联系我们。",
-    "reject": "拒绝"
+    "reject": "拒绝",
+    "unknown_asset": "未知资产"
   },
   "confirm_allowance": {
     "spender": "支出者",

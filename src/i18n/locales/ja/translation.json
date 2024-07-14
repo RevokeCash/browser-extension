@@ -5,7 +5,8 @@
     "continue": "続ける",
     "dismiss": "却下する",
     "error_occurred": "Revoke.cashのポップアップを作成しようとした際にエラーが発生しました。私たちの<discord-link>Discord</discord-link>を参照ください。",
-    "reject": "却下"
+    "reject": "却下",
+    "unknown_asset": "不明な資産"
   },
   "confirm_allowance": {
     "spender": "スペンダー",

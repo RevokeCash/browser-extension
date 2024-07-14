@@ -5,7 +5,8 @@
     "continue": "Продолжить",
     "dismiss": "ОК",
     "error_occurred": "Произошла ошибка при попытке создать всплывающее окно Revoke.cash. Пожалуйста, расскажите об этом в нашем <discord-link>Discord</discord-link>.",
-    "reject": "Отклонить"
+    "reject": "Отклонить",
+    "unknown_asset": "Неизвестный актив"
   },
   "confirm_allowance": {
     "spender": "Spender",
