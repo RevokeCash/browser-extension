@@ -14,7 +14,7 @@ export class AggregateDecoder implements Decoder {
   constructor(
     private transactionDecoders: TransactionDecoder[],
     private typedSignatureDecoders: TypedSignatureDecoder[],
-    private untypedSignatureDecoders: UntypedSignatureDecoder[]
+    private untypedSignatureDecoders: UntypedSignatureDecoder[],
   ) {}
 
   decode(message: Message): WarningData | undefined {

@@ -7,7 +7,7 @@ import Browser from 'webextension-polyfill';
 const useBrowserStorage = <T,>(
   area: 'local' | 'sync',
   key: string,
-  initialValue: T
+  initialValue: T,
 ): [T, (value: T) => void, boolean, string | undefined] => {
   const [state, setState] = useState(initialValue);
   const [isPersistent, setIsPersistent] = useState(true);
@@ -45,7 +45,7 @@ const useBrowserStorage = <T,>(
           setError(error);
         });
     },
-    [key, state]
+    [key, state],
   );
 
   useEffect(() => {

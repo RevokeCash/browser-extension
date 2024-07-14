@@ -40,7 +40,7 @@ export class Seaport14Decoder implements TypedSignatureDecoder {
           offer: acc.offer.concat(item.offer),
           consideration: acc.consideration.concat(item.consideration),
         }),
-        { offer: [], consideration: [] }
+        { offer: [], consideration: [] },
       );
     }
 

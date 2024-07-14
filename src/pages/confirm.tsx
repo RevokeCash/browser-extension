@@ -52,5 +52,5 @@ const Confirm = () => {
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Confirm />
-  </React.StrictMode>
+  </React.StrictMode>,
 );

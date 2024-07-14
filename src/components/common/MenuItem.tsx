@@ -19,7 +19,7 @@ const MenuItem = ({ className, size, colorChangeOnHover, children }: Props) => {
     classMapping[`size-${size}`],
     colorChangeOnHover &&
       'hover:bg-neutral-150 hover:text-neutral-850 hover:dark:bg-neutral-800 hover:dark:text-neutral-300',
-    className
+    className,
   );
 
   return <div className={classes}>{children}</div>;

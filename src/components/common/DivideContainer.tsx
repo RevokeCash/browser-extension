@@ -9,7 +9,7 @@ interface Props {
 const DivideContainer = ({ children, className }: Props) => {
   const classes = twMerge(
     'w-full flex flex-col items-stretch bg-neutral-0 dark:bg-neutral-750 divide-y divide-neutral-150 dark:divide-neutral-800',
-    className
+    className,
   );
 
   return <div className={classes}>{children}</div>;

@@ -63,7 +63,7 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
               return Reflect.apply(target, thisArg, argumentsList);
             } else {
               const error = ethErrors.provider.userRejectedRequest(
-                'Revoke.cash Confirmation: User denied transaction signature.'
+                'Revoke.cash Confirmation: User denied transaction signature.',
               );
               const response = {
                 id: request?.id,
@@ -89,7 +89,7 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
               return Reflect.apply(target, thisArg, argumentsList);
             } else {
               const error = ethErrors.provider.userRejectedRequest(
-                'Revoke.cash Confirmation: User denied message signature.'
+                'Revoke.cash Confirmation: User denied message signature.',
               );
               const response = {
                 id: request?.id,
@@ -112,7 +112,7 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
             return Reflect.apply(target, thisArg, argumentsList);
           } else {
             const error = ethErrors.provider.userRejectedRequest(
-              'Revoke.cash Confirmation: User denied message signature.'
+              'Revoke.cash Confirmation: User denied message signature.',
             );
             const response = {
               id: request?.id,

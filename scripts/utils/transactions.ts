@@ -14,8 +14,8 @@ export const getTransactionsInBlocks = async (blockCount: number = 1) => {
 
   const blocks = await Promise.all(
     range(fromBlock, toBlock).map((blockNumber) =>
-      client.getBlock({ blockNumber: BigInt(blockNumber), includeTransactions: true })
-    )
+      client.getBlock({ blockNumber: BigInt(blockNumber), includeTransactions: true }),
+    ),
   );
 
   const transactions = blocks.flatMap((block) => block.transactions);

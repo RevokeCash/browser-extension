@@ -27,7 +27,7 @@ const Href = ({ href, children, className, underline, html }: Props) => {
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:rounded',
     className,
     styleMapping[html ? 'html' : 'inherit'],
-    underlineMapping[underline ?? 'always']
+    underlineMapping[underline ?? 'always'],
   );
 
   return (

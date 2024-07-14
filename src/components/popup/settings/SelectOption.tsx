@@ -17,7 +17,7 @@ const SelectOption = <T,>({ option, isSelected, select }: Props<T>) => {
         size="large"
         colorChangeOnHover={true}
         className={twMerge(
-          isSelected && 'pl-8 text-brand dark:text-brand hover:text-brand hover:dark:text-brand font-bold'
+          isSelected && 'pl-8 text-brand dark:text-brand hover:text-brand hover:dark:text-brand font-bold',
         )}
       >
         {option.label}

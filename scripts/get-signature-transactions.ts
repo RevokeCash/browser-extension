@@ -14,7 +14,7 @@ const getTransactions = async () => {
   });
 
   console.log(
-    `${filteredTransactions.length}/${transactions.length} transactions match the signature in the last ${blockCount} blocks`
+    `${filteredTransactions.length}/${transactions.length} transactions match the signature in the last ${blockCount} blocks`,
   );
 
   filteredTransactions.forEach((transaction) => console.log(transaction.hash, transaction.to));

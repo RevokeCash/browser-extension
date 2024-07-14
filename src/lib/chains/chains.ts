@@ -1336,7 +1336,7 @@ export const getChainSlug = (chainId: number): string | undefined => {
 };
 
 const REVERSE_CHAIN_SLUGS: Record<string, number> = Object.fromEntries(
-  SUPPORTED_CHAINS.map((chainId) => [getChainSlug(chainId), chainId])
+  SUPPORTED_CHAINS.map((chainId) => [getChainSlug(chainId), chainId]),
 );
 
 export const getChainIdFromSlug = (slug: string): number | undefined => {

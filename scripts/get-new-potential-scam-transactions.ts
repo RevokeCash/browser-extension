@@ -46,7 +46,7 @@ const getTransactions = async () => {
   console.log(`${filteredTransactions.length}/${transactions.length} in the last ${blockCount} blocks`);
 
   filteredTransactions.forEach((transaction) =>
-    console.log(transaction.hash, transaction.input.slice(0, 10), transaction.to)
+    console.log(transaction.hash, transaction.input.slice(0, 10), transaction.to),
   );
 
   return filteredTransactions;

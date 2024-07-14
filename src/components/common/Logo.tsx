@@ -24,7 +24,7 @@ const Logo = ({ src, alt, size, square, border, className }: Props) => {
     'aspect-square bg-white',
     square ? 'rounded-lg' : 'rounded-full',
     border && 'border border-black dark:border-white',
-    className
+    className,
   );
 
   return (

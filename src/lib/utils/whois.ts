@@ -7,7 +7,7 @@ import { SpenderData } from '../types';
 export const getSpenderData = async (
   address: string,
   chainId?: number,
-  openseaProxyAddress?: string
+  openseaProxyAddress?: string,
 ): Promise<SpenderData | null> => {
   if (!chainId) return null;
   if (!address) return null;

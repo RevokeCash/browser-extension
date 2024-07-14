@@ -44,7 +44,7 @@ export interface ListingItemDisplayData {
 
 export const getNftListingItemTokenData = async (
   item: NftListingItem,
-  chainId: number
+  chainId: number,
 ): Promise<ListingItemDisplayData> => {
   // Some scammers use an incorrect interface using numbers so we convert it to string
   const itemType = String(item.itemType);
