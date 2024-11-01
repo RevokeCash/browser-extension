@@ -14,6 +14,7 @@ export const CHAINS: Record<number, Chain> = {
     type: SupportType.PROVIDER,
     chainId: ChainId.Amoy,
     name: 'Polygon Amoy',
+    nativeToken: 'POL',
     logoUrl: '/assets/images/vendor/chains/polygon.svg',
     rpc: {
       main: `https://polygon-amoy.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
@@ -22,6 +23,20 @@ export const CHAINS: Record<number, Chain> = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.PolygonMainnet,
   }),
+  [ChainId.ApeChain]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.ApeChain,
+    name: 'ApeChain',
+    nativeToken: 'APE',
+    logoUrl: '/assets/images/vendor/chains/apechain.svg',
+    explorerUrl: 'https://apescan.io',
+    infoUrl: 'https://apechain.com',
+    rpc: {
+      main: `https://apechain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://apechain.calderachain.xyz/http',
+    },
+    deployedContracts: { ...MULTICALL },
+  }),
   [ChainId.ArbitrumNova]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.ArbitrumNova,
@@ -29,6 +44,9 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/arbitrum-nova.svg',
     explorerUrl: 'https://nova.arbiscan.io',
     etherscanCompatibleApiUrl: 'https://api-nova.arbiscan.io/api',
+    rpc: {
+      main: `https://arbnova-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.ArbitrumOne]: new Chain({
@@ -38,9 +56,11 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/arbitrum.svg',
     explorerUrl: 'https://arbiscan.io',
     rpc: {
-      main: `https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      main: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      // main: `https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://arb1.arbitrum.io/rpc',
     },
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.ArbitrumSepolia]: new Chain({
     type: SupportType.PROVIDER,
@@ -118,6 +138,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/base.svg',
     etherscanCompatibleApiUrl: 'https://api.basescan.org/api',
     rpc: {
+      // main: `https://base-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       main: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
@@ -159,12 +180,12 @@ export const CHAINS: Record<number, Chain> = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Beam,
   }),
-  [ChainId.BerachainArtio]: new Chain({
+  [ChainId.BerachainbArtio]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.BerachainArtio,
-    name: 'Berachain Artio',
+    chainId: ChainId.BerachainbArtio,
+    name: 'Berachain bArtio',
     logoUrl: '/assets/images/vendor/chains/berachain.jpg',
-    etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/testnet/evm/80085/etherscan/api',
+    etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/testnet/evm/80084/etherscan/api',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: 12345678903, // TODO: This is a placeholder so we can add a description for Berachain
@@ -176,6 +197,9 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/bitgert.svg',
     etherscanCompatibleApiUrl: 'https://brisescan.com/api',
     nativeToken: 'BRISE',
+    rpc: {
+      main: 'https://mainnet-rpc.brisescan.com',
+    },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.BitrockMainnet]: new Chain({
@@ -183,7 +207,7 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.BitrockMainnet,
     name: 'Bitrock',
     logoUrl: '/assets/images/vendor/chains/bitrock.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.bit-rock.io/api',
+    etherscanCompatibleApiUrl: 'http://explorer.bit-rock.io/api',
   }),
   [ChainId.BitTorrentChainMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -202,7 +226,8 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://blastscan.io',
     etherscanCompatibleApiUrl: 'https://api.blastscan.io/api',
     rpc: {
-      main: 'https://rpc.ankr.com/blast',
+      // main: `https://blast-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      main: `https://blast-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),
@@ -214,7 +239,7 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://sepolia.blastscan.io',
     etherscanCompatibleApiUrl: 'https://api-sepolia.blastscan.io/api',
     rpc: {
-      main: 'https://sepolia.blast.io',
+      main: `https://blast-sepolia.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -226,14 +251,19 @@ export const CHAINS: Record<number, Chain> = {
     name: 'BNB Chain',
     logoUrl: '/assets/images/vendor/chains/bnb-chain.svg',
     etherscanCompatibleApiUrl: 'https://api.bscscan.com/api',
+    rpc: {
+      main: `https://bnb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.BNBSmartChainTestnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.BNBSmartChainTestnet,
     name: 'BNB Chain Testnet',
     logoUrl: '/assets/images/vendor/chains/bnb-chain.svg',
-    etherscanCompatibleApiUrl: 'https://api-testnet.bscscan.com/api',
+    rpc: {
+      main: `https://bnb-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.BNBSmartChainMainnet,
@@ -244,6 +274,7 @@ export const CHAINS: Record<number, Chain> = {
     name: 'BOB',
     logoUrl: '/assets/images/vendor/chains/bob.svg',
     etherscanCompatibleApiUrl: 'https://explorer.gobob.xyz/api',
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.BobaNetwork]: new Chain({
     type: SupportType.COVALENT,
@@ -257,8 +288,12 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.CallistoMainnet,
     name: 'Callisto',
     logoUrl: '/assets/images/vendor/chains/callisto.png',
-    explorerUrl: 'https://explorer.callisto.network',
-    etherscanCompatibleApiUrl: 'https://explorer.callisto.network/api',
+    explorerUrl: 'https://explorer.callistodao.org',
+    etherscanCompatibleApiUrl: 'https://explorer.callistodao.org/api',
+    rpc: {
+      main: 'https://rpc.callistodao.org',
+      free: 'https://rpc.callistodao.org',
+    },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.Canto]: new Chain({
@@ -292,8 +327,17 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Celo',
     logoUrl: '/assets/images/vendor/chains/celo.svg',
     rpc: {
+      // main: `https://celo-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY} `,
       main: `https://celo-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
+    deployedContracts: { ...MULTICALL },
+  }),
+  [ChainId.ChilizChainMainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.ChilizChainMainnet,
+    name: 'Chiliz',
+    logoUrl: '/assets/images/vendor/chains/chiliz.png',
+    etherscanCompatibleApiUrl: 'https://scan.chiliz.com/api',
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.CoinExSmartChainMainnet]: new Chain({
@@ -327,9 +371,9 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.CrabNetwork,
     name: 'Crab',
     logoUrl: '/assets/images/vendor/chains/crab.svg',
-    etherscanCompatibleApiUrl: 'https://crab.subview.xyz/api',
+    etherscanCompatibleApiUrl: 'https://crab-scan.darwinia.network/api',
     rpc: {
-      main: 'https://crab-rpc.darwiniacommunitydao.xyz',
+      main: 'https://crab-rpc.darwinia.network',
     },
     deployedContracts: { ...MULTICALL },
     isCanary: true,
@@ -361,7 +405,7 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.DarwiniaNetwork,
     name: 'Darwinia',
     logoUrl: '/assets/images/vendor/chains/darwinia.svg',
-    etherscanCompatibleApiUrl: 'https://darwinia.subview.xyz/api',
+    etherscanCompatibleApiUrl: 'https://explorer.darwinia.network/api',
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.DegenChain]: new Chain({
@@ -422,6 +466,7 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Ethereum',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     rpc: {
+      // main: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       main: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://eth.llamarpc.com',
     },
@@ -454,6 +499,9 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Fantom',
     logoUrl: '/assets/images/vendor/chains/fantom.svg',
     etherscanCompatibleApiUrl: 'https://api.ftmscan.com/api',
+    rpc: {
+      main: `https://fantom-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.FantomTestnet]: new Chain({
@@ -463,7 +511,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/fantom.svg',
     etherscanCompatibleApiUrl: 'https://api-testnet.ftmscan.com/api',
     rpc: {
-      main: 'https://rpc.ankr.com/fantom_testnet',
+      main: `https://fantom-testnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -476,15 +524,6 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/flare.svg',
     etherscanCompatibleApiUrl: 'https://flare-explorer.flare.network/api',
     deployedContracts: { ...MULTICALL },
-  }),
-  [ChainId.FrameTestnet]: new Chain({
-    type: SupportType.PROVIDER,
-    chainId: ChainId.FrameTestnet,
-    name: 'Frame Testnet',
-    logoUrl: '/assets/images/vendor/chains/frame.jpg',
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: 12345678902, // TODO: This is a placeholder so we can add a description for Frame
   }),
   [ChainId.Fraxtal]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -521,6 +560,9 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://gnosisscan.io',
     etherscanCompatibleApiUrl: 'https://api.gnosisscan.io/api',
     deployedContracts: { ...MULTICALL },
+    rpc: {
+      main: `https://gnosis-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
   }),
   [ChainId.GoldXChainMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -530,20 +572,24 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://explorer.goldxchain.io/api',
   }),
   [ChainId.HarmonyMainnetShard0]: new Chain({
-    type: SupportType.COVALENT,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.HarmonyMainnetShard0,
     name: 'Harmony',
     logoUrl: '/assets/images/vendor/chains/harmony.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.harmony.one/api',
     deployedContracts: { ...MULTICALL },
+    rpc: {
+      main: 'https://api.harmony.one',
+    },
   }),
   [ChainId.Holesky]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.Holesky,
     name: 'Ethereum Holesky',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
-    etherscanCompatibleApiUrl: 'https://api-holesky.etherscan.io/api',
     rpc: {
-      main: 'https://holesky.drpc.org',
+      main: `https://eth-holesky.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+      free: 'https://holesky.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -554,7 +600,7 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.HorizenEONMainnet,
     name: 'Horizen EON',
     logoUrl: '/assets/images/vendor/chains/horizen.png',
-    etherscanCompatibleApiUrl: 'https://eon-explorer.horizenlabs.io/api',
+    etherscanCompatibleApiUrl: 'https://eon-explorer-api.horizenlabs.io/api',
     rpc: {
       main: 'https://eon-rpc.horizenlabs.io/ethv1',
     },
@@ -565,7 +611,7 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Horizen Gobi',
     logoUrl: '/assets/images/vendor/chains/horizen.png',
     explorerUrl: 'https://gobi-explorer.horizenlabs.io',
-    etherscanCompatibleApiUrl: 'https://gobi-explorer.horizenlabs.io/api',
+    etherscanCompatibleApiUrl: 'https://gobi-explorer-api.horizenlabs.io/api',
     isTestnet: true,
     correspondingMainnetChainId: ChainId.HorizenEONMainnet,
   }),
@@ -622,15 +668,6 @@ export const CHAINS: Record<number, Chain> = {
     explorerUrl: 'https://explorer.kardiachain.io',
     etherscanCompatibleApiUrl: 'https://explorer.kardiachain.io/api',
   }),
-  [ChainId.Kava]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.Kava,
-    name: 'Kava',
-    logoUrl: '/assets/images/vendor/chains/kava.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.kavalabs.io/api',
-    deployedContracts: { ...MULTICALL },
-    // TODO: Potentially add Curve.fi strategy to support KAVA
-  }),
   [ChainId.KCCMainnet]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.KCCMainnet,
@@ -638,11 +675,11 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/kcc.svg',
     deployedContracts: { ...MULTICALL },
   }),
-  [ChainId.KlaytnMainnetCypress]: new Chain({
+  [ChainId.KaiaMainnet]: new Chain({
     type: SupportType.UNSUPPORTED,
-    chainId: ChainId.KlaytnMainnetCypress,
-    name: 'Klaytn',
-    logoUrl: '/assets/images/vendor/chains/klaytn.svg',
+    chainId: ChainId.KaiaMainnet,
+    name: 'Kaia',
+    logoUrl: '/assets/images/vendor/chains/kaia.svg',
   }),
   [ChainId.Kroma]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -651,6 +688,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/kroma.svg',
     explorerUrl: 'https://kromascan.com',
     etherscanCompatibleApiUrl: 'https://api.kromascan.com/api',
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.KromaSepolia]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -677,6 +715,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/linea.png',
     explorerUrl: 'https://lineascan.build',
     rpc: {
+      // main: `https://linea-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       main: `https://linea-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
@@ -726,6 +765,9 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Mantle',
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
     etherscanCompatibleApiUrl: 'https://explorer.mantle.xyz/api',
+    rpc: {
+      main: `https://mantle-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.MantleSepoliaTestnet]: new Chain({
@@ -733,7 +775,10 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.MantleSepoliaTestnet,
     name: 'Mantle Sepolia',
     logoUrl: '/assets/images/vendor/chains/mantle.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.sepolia.mantle.xyz//api',
+    etherscanCompatibleApiUrl: 'https://explorer.sepolia.mantle.xyz/api',
+    rpc: {
+      main: `https://mantle-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Mantle,
@@ -761,6 +806,9 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.MetisAndromedaMainnet,
     name: 'Metis',
     logoUrl: '/assets/images/vendor/chains/metis.svg',
+    rpc: {
+      main: `https://metis-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.MilkomedaC1Mainnet]: new Chain({
@@ -769,6 +817,14 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Milkomeda C1',
     logoUrl: '/assets/images/vendor/chains/milkomeda.svg',
     etherscanCompatibleApiUrl: 'https://explorer-mainnet-cardano-evm.c1.milkomeda.com/api',
+    deployedContracts: { ...MULTICALL },
+  }),
+  [ChainId.MintMainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.MintMainnet,
+    name: 'Mint',
+    logoUrl: '/assets/images/vendor/chains/mint.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.mintchain.io/api',
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.Mode]: new Chain({
@@ -808,12 +864,35 @@ export const CHAINS: Record<number, Chain> = {
     isCanary: true,
     correspondingMainnetChainId: ChainId.Moonbeam,
   }),
-  [ChainId.Nahmii2Mainnet]: new Chain({
+  [ChainId.Morph]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.Nahmii2Mainnet,
+    chainId: ChainId.Morph,
+    name: 'Morph',
+    logoUrl: '/assets/images/vendor/chains/morph.svg',
+    etherscanCompatibleApiUrl: 'https://explorer-api.morphl2.io/api',
+    rpc: {
+      main: 'https://rpc.morphl2.io',
+    },
+  }),
+  [ChainId.MorphHolesky]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.MorphHolesky,
+    name: 'Morph Holesky',
+    logoUrl: '/assets/images/vendor/chains/morph.svg',
+    etherscanCompatibleApiUrl: 'https://explorer-api-holesky.morphl2.io/api',
+    rpc: {
+      main: 'https://rpc-holesky.morphl2.io',
+    },
+    isTestnet: true,
+    correspondingMainnetChainId: ChainId.Morph,
+  }),
+  [ChainId.Nahmii3Mainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.Nahmii3Mainnet,
     name: 'Nahmii',
     logoUrl: '/assets/images/vendor/chains/nahmii.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.nahmii.io/api',
+    etherscanCompatibleApiUrl: 'https://backend.explorer.n3.nahmii.io/api',
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.NeonEVMMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -823,6 +902,13 @@ export const CHAINS: Record<number, Chain> = {
     etherscanCompatibleApiUrl: 'https://neon.blockscout.com/api',
     deployedContracts: { ...MULTICALL },
   }),
+  // [ChainId.NumbersMainnet]: new Chain({
+  //   type: SupportType.ETHERSCAN_COMPATIBLE,
+  //   chainId: ChainId.NumbersMainnet,
+  //   name: 'Numbers',
+  //   // logoUrl: '/assets/images/vendor/chains/numbers.png',
+  //   etherscanCompatibleApiUrl: 'https://mainnet.num.network/api',
+  // }),
   [ChainId.OasisEmerald]: new Chain({
     type: SupportType.COVALENT,
     chainId: ChainId.OasisEmerald,
@@ -858,6 +944,9 @@ export const CHAINS: Record<number, Chain> = {
     name: 'opBNB',
     logoUrl: '/assets/images/vendor/chains/bnb-chain.svg',
     etherscanCompatibleApiUrl: 'https://api-opbnb.bscscan.com/api',
+    rpc: {
+      main: `https://opbnb-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.OPMainnet]: new Chain({
@@ -866,10 +955,10 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Optimism',
     logoUrl: '/assets/images/vendor/chains/optimism.svg',
     rpc: {
+      // main: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       main: `https://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
-    // TODO: Look at integrating Velodrome for OP
   }),
   [ChainId.OPSepoliaTestnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -901,14 +990,6 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/pego.jpg',
     etherscanCompatibleApiUrl: 'https://scan.pego.network/api',
   }),
-  [ChainId['PGN(PublicGoodsNetwork)']]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId['PGN(PublicGoodsNetwork)'],
-    name: 'PGN',
-    logoUrl: '/assets/images/vendor/chains/pgn.svg',
-    etherscanCompatibleApiUrl: 'https://explorer.publicgoods.network/api',
-    deployedContracts: { ...MULTICALL },
-  }),
   [ChainId.PolygonMainnet]: new Chain({
     type: SupportType.PROVIDER,
     chainId: ChainId.PolygonMainnet,
@@ -916,6 +997,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/polygon.svg',
     rpc: {
       main: `https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+      // main: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       logs: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
@@ -951,10 +1033,8 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.PulseChain,
     name: 'PulseChain',
     logoUrl: '/assets/images/vendor/chains/pulsechain.png',
-    explorerUrl: 'https://scan.pulsechainfoundation.org',
+    explorerUrl: 'https://scan.pulsechainfoundation.org/#',
     etherscanCompatibleApiUrl: 'https://api.scan.pulsechain.com/api',
-    // Although multicall is deployed on Pulsechain, it is causing issues
-    // deployedContracts: { ...MULTICALL },
   }),
   [ChainId.RARIChainMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -968,12 +1048,13 @@ export const CHAINS: Record<number, Chain> = {
       main: 'https://mainnet.rpc.rarichain.org/http',
     },
   }),
-  [ChainId.RedlightChainMainnet]: new Chain({
+  [ChainId['Re.al']]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.RedlightChainMainnet,
-    name: 'Redlight',
-    logoUrl: '/assets/images/vendor/chains/redlight.png',
-    etherscanCompatibleApiUrl: 'https://redlightscan.finance/api',
+    chainId: ChainId['Re.al'],
+    name: 'Re.al',
+    logoUrl: '/assets/images/vendor/chains/re-al.svg',
+    etherscanCompatibleApiUrl: 'https://explorer.re.al/api',
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.Redstone]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -981,14 +1062,17 @@ export const CHAINS: Record<number, Chain> = {
     name: 'Redstone',
     logoUrl: '/assets/images/vendor/chains/redstone.svg',
     etherscanCompatibleApiUrl: 'https://explorer.redstone.xyz/api',
-    // deployedContracts: { ...MULTICALL },
   }),
   [ChainId.RolluxMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
+    type: SupportType.PROVIDER,
     chainId: ChainId.RolluxMainnet,
     name: 'Rollux',
     logoUrl: '/assets/images/vendor/chains/rollux.svg',
     etherscanCompatibleApiUrl: 'https://explorer.rollux.com/api',
+    rpc: {
+      main: 'https://rpc.ankr.com/rollux',
+      logs: 'https://rpc.rollux.com',
+    },
     deployedContracts: { ...MULTICALL },
   }),
   [ChainId.RootstockMainnet]: new Chain({
@@ -1017,14 +1101,28 @@ export const CHAINS: Record<number, Chain> = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.RSS3VSLMainnet,
   }),
+  [ChainId.Sanko]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.Sanko,
+    name: 'Sanko',
+    logoUrl: '/assets/images/vendor/chains/sanko.webp',
+    etherscanCompatibleApiUrl: 'https://explorer.sanko.xyz/api',
+  }),
   [ChainId.Scroll]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.Scroll,
     name: 'Scroll',
     logoUrl: '/assets/images/vendor/chains/scroll.svg',
     explorerUrl: 'https://scrollscan.com',
-    etherscanCompatibleApiUrl: 'https://api.scrollscan.com/api', // TODO
+    etherscanCompatibleApiUrl: 'https://api.scrollscan.com/api',
+    rpc: {
+      main: `https://scroll-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
     deployedContracts: { ...MULTICALL },
+    // backendPriceStrategy: new ReservoirNftPriceStrategy({
+    //   apiKey: RESERVOIR_API_KEY,
+    //   apiUrl: 'https://api-scroll.reservoir.tools',
+    // }),
   }),
   [ChainId.ScrollSepoliaTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1035,6 +1133,14 @@ export const CHAINS: Record<number, Chain> = {
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Scroll,
+  }),
+  [ChainId.SeiNetwork]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.SeiNetwork,
+    name: 'Sei',
+    logoUrl: '/assets/images/vendor/chains/sei.svg',
+    etherscanCompatibleApiUrl: 'https://seitrace.com/pacific-1/api',
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.Sepolia]: new Chain({
     type: SupportType.PROVIDER,
@@ -1103,7 +1209,7 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/syscoin.svg',
     etherscanCompatibleApiUrl: 'https://explorer.syscoin.org/api',
     rpc: {
-      main: 'https://syscoin.public-rpc.com',
+      main: 'https://rpc.syscoin.org',
     },
     deployedContracts: { ...MULTICALL },
   }),
@@ -1133,13 +1239,24 @@ export const CHAINS: Record<number, Chain> = {
     correspondingMainnetChainId: 12345678905, // TODO: This is a placeholder so we can add a description for Tabi
   }),
   [ChainId.TaikoHeklaL2]: new Chain({
-    type: SupportType.PROVIDER,
+    type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.TaikoHeklaL2,
     name: 'Taiko Hekla',
     logoUrl: '/assets/images/vendor/chains/taiko.svg',
+    explorerUrl: 'https://hekla.taikoscan.io',
+    etherscanCompatibleApiUrl: 'https://api-hekla.taikoscan.io/api',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
-    correspondingMainnetChainId: 12345678901, // TODO: This is a placeholder so we can add a description for Taiko
+    correspondingMainnetChainId: ChainId.TaikoMainnet,
+  }),
+  [ChainId.TaikoMainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.TaikoMainnet,
+    name: 'Taiko',
+    logoUrl: '/assets/images/vendor/chains/taiko.svg',
+    explorerUrl: 'https://taikoscan.io',
+    etherscanCompatibleApiUrl: 'https://api.taikoscan.io/api',
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.TelosEVMMainnet]: new Chain({
     type: SupportType.UNSUPPORTED,
@@ -1180,14 +1297,14 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/wemix.svg',
     etherscanCompatibleApiUrl: 'https://api.wemixscan.com/api',
   }),
-  [ChainId.XDCNetwork]: new Chain({
+  [ChainId.WorldChain]: new Chain({
     type: SupportType.PROVIDER,
-    chainId: ChainId.XDCNetwork,
-    name: 'XDC',
-    logoUrl: '/assets/images/vendor/chains/xdc.svg',
-    infoUrl: 'https://xdc.org',
+    chainId: ChainId.WorldChain,
+    name: 'World Chain',
+    logoUrl: '/assets/images/vendor/chains/worldchain.svg',
+    explorerUrl: 'https://worldchain-mainnet.explorer.alchemy.com',
     rpc: {
-      main: 'https://erpc.xdcrpc.com',
+      main: `https://worldchain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
     deployedContracts: { ...MULTICALL },
   }),
@@ -1196,16 +1313,17 @@ export const CHAINS: Record<number, Chain> = {
     chainId: ChainId.XLayerMainnet,
     name: 'X Layer',
     logoUrl: '/assets/images/vendor/chains/xlayer.svg',
+    deployedContracts: { ...MULTICALL },
   }),
-  [ChainId.ZetaChainAthens3Testnet]: new Chain({
+  [ChainId.ZetaChainTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.ZetaChainAthens3Testnet,
-    name: 'ZetaChain Athens',
+    chainId: ChainId.ZetaChainTestnet,
+    name: 'ZetaChain Testnet',
     logoUrl: '/assets/images/vendor/chains/zetachain.svg',
     explorerUrl: 'https://zetachain-athens-3.blockscout.com',
     etherscanCompatibleApiUrl: 'https://zetachain-athens-3.blockscout.com/api',
     rpc: {
-      main: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
+      main: 'https://zeta-chain-testnet.drpc.org',
     },
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
@@ -1222,6 +1340,15 @@ export const CHAINS: Record<number, Chain> = {
       main: 'https://zetachain-evm.blockpi.network/v1/rpc/public',
     },
     deployedContracts: { ...MULTICALL },
+  }),
+  [ChainId.ZircuitMainnet]: new Chain({
+    type: SupportType.PROVIDER,
+    chainId: ChainId.ZircuitMainnet,
+    name: 'Zircuit',
+    logoUrl: '/assets/images/vendor/chains/zircuit.svg',
+    rpc: {
+      main: 'https://zircuit-mainnet.drpc.org',
+    },
   }),
   [ChainId.ZKFairMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1250,6 +1377,7 @@ export const CHAINS: Record<number, Chain> = {
     deployedContracts: {
       multicall3: { address: '0xF9cda624FBC7e059355ce98a31693d299FACd963' },
     },
+    // TODO: Add SyncSwap strategy to support ZkSync
   }),
   [ChainId.ZkSyncSepoliaTestnet]: new Chain({
     type: SupportType.PROVIDER,
@@ -1274,18 +1402,9 @@ export const CHAINS: Record<number, Chain> = {
     logoUrl: '/assets/images/vendor/chains/zora.svg',
     etherscanCompatibleApiUrl: 'https://explorer.zora.energy/api',
     deployedContracts: { ...MULTICALL },
-  }),
-  // TODO: This is a placeholder so we can add a description for Taiko
-  [12345678901]: new Chain({
-    type: SupportType.UNSUPPORTED,
-    chainId: 12345678901,
-    name: 'Taiko',
-  }),
-  // TODO: This is a placeholder so we can add a description for Frame
-  [12345678902]: new Chain({
-    type: SupportType.UNSUPPORTED,
-    chainId: 12345678902,
-    name: 'Frame',
+    rpc: {
+      main: `https://zora-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
   }),
   // TODO: This is a placeholder so we can add a description for Berachain
   [12345678903]: new Chain({
@@ -1310,10 +1429,23 @@ export const ETHERSCAN_SUPPORTED_CHAINS = Object.values(CHAINS)
   .map((chain) => chain.chainId);
 
 export const getChainConfig = (chainId: number): Chain | undefined => {
-  return CHAINS[chainId] ?? new Chain({ chainId, type: SupportType.PROVIDER }); // Add a fallback for unknown chains so that we don't break the app
+  return CHAINS[chainId];
 };
 
 // TODO: All these functions below are kept for backwards compatibility and should be removed in the future in favor of getChainConfig
+
+export const isSupportedChain = (chainId: number): boolean => {
+  return Boolean(getChainConfig(chainId)?.isSupported());
+};
+
+export const isBackendSupportedChain = (chainId: number): boolean => {
+  const chain = getChainConfig(chainId);
+  return !!chain && chain.isSupported() && chain.type !== SupportType.PROVIDER;
+};
+
+export const isProviderSupportedChain = (chainId: number): boolean => {
+  return getChainConfig(chainId)?.type === SupportType.PROVIDER;
+};
 
 export const isCovalentSupportedChain = (chainId: number): boolean => {
   return getChainConfig(chainId)?.type === SupportType.COVALENT;

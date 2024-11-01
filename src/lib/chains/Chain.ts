@@ -56,7 +56,7 @@ export class Chain {
 
   getSlug(): string {
     const chainName = this.getName();
-    return chainName.toLowerCase().replace(' (unsupported)', '').replace(/\s/g, '-');
+    return chainName.toLowerCase().replace(' (unsupported)', '').replace(/\s/g, '-').replace(/\./g, '-');
   }
 
   isTestnet(): boolean {
@@ -68,15 +68,11 @@ export class Chain {
   }
 
   getLogoUrl(): string | undefined {
-    if (!this.options.logoUrl) {
-      return getChain(this.chainId)?.iconURL;
-    }
-
-    if (this.options.logoUrl.startsWith('/')) {
+    if (this.options.logoUrl?.startsWith('/')) {
       return `https://revoke.cash${this.options.logoUrl}`;
     }
 
-    return this.options.logoUrl;
+    return this.options.logoUrl ?? getChain(this.chainId)?.iconURL;
   }
 
   getExplorerUrl(): string {
@@ -107,7 +103,7 @@ export class Chain {
   getInfoUrl(): string | undefined {
     // TODO: Ideally we would call getInfoUrl() for the mainnet chain here in case it has overridden infoUrl, but then
     // we run into circular dependency issues 😅
-    const mainnetChainId = this.getCorrespondingMainnetChainId()!;
+    const mainnetChainId = this.getCorrespondingMainnetChainId() ?? -1;
     return this.options.infoUrl ?? getChain(mainnetChainId)?.infoURL ?? getChain(this.chainId)?.infoURL;
   }
 

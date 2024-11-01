@@ -1,6 +1,6 @@
 {
   "name": "revoke-cash-browser-extension",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "The Revoke.cash browser extension helps you stay safe from crypto allowance scams.",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "@amplitude/analytics-browser": "^1.2.3",
     "@heroicons/react": "^2.1.3",
     "@metamask/post-message-stream": "^8.1.0",
-    "@revoke.cash/chains": "^45.0.0",
+    "@revoke.cash/chains": "^54.0.0",
     "eth-rpc-errors": "^4.0.3",
     "object-hash": "^3.0.0",
     "react": "^18.3.1",
