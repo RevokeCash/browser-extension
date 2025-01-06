@@ -1,6 +1,6 @@
 import { ChainId } from '@revoke.cash/chains';
 import { PublicClient, Chain as ViemChain } from 'viem';
-import { Chain, SupportType } from '../chains/Chain';
+import { Chain, SupportType } from './Chain';
 import { ALCHEMY_API_KEY, INFURA_API_KEY } from '../constants';
 
 const MULTICALL = {
