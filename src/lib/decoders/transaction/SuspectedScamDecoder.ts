@@ -13,6 +13,9 @@ export class SuspectedScamDecoder implements TransactionDecoder {
     // If the transaction does not include a value, it is most likely not a "suspected scam"
     if (Number.isNaN(valueAsNumber) || valueAsNumber === 0) return undefined;
 
+    // Some legitimate transactions include small "claim" fees (e.g. unvest), so we ignore them
+    if (valueAsNumber < 0.002) return undefined;
+
     // Check if the function call is one of the common scam functions
     if (!potentialScamSignatures.includes(data.slice(0, 10))) return undefined;
 

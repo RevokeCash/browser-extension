@@ -121,8 +121,8 @@ export const AddressAllowList: Record<WarningType, string[]> = {
   [WarningType.SUSPECTED_SCAM]: [
     '0x1eb7bcab5edf75b5e02c9a72d3287e322ebaefdb', // tevaera.com -> claim() | zkSync
     '0xd0c155595929fd6be034c3848c00daebc6d330f6', // omni.network -> claim() | ETH
-    '0x61A58Cba8e715bfe1b93cfa1695C14979A6006d2', // unvest.io -> claim() | ETH
-    '0xAe2B459e55c5391e807830549F4CA7965B81ac55', // unvest.io -> claim() | Base
+    '0x61a58cba8e715bfe1b93cfa1695c14979a6006d2', // unvest.io -> claim() | ETH
+    '0xae2b459e55c5391e807830549f4ca7965b81ac55', // unvest.io -> claim() | Base
   ],
 };
 
