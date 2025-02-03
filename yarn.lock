@@ -1414,10 +1414,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@revoke.cash/chains@npm:^59.0.0":
-  version: 59.0.0
-  resolution: "@revoke.cash/chains@npm:59.0.0"
-  checksum: 3b4ac2525118b24918918c05d920d738ccb8526302ab09c94d4dc79f0cf0f2f08bea089d5e199e76840fd8404b332bd665055ff83e60d71e3d09fc6e117db965
+"@revoke.cash/chains@npm:^63.0.0":
+  version: 63.0.0
+  resolution: "@revoke.cash/chains@npm:63.0.0"
+  checksum: 14495bcab3fb15acc9ddff24077e2b6851ecb04f0aebb792675ac36bd47ac2a7269f5da7dd0fab8a25898b2b7d161d8d44461ae78c9af0d3b45fc33531239d06
   languageName: node
   linkType: hard
 
@@ -8072,7 +8072,7 @@ __metadata:
     "@heroicons/react": ^2.1.3
     "@localazy/cli": ^1.7.10
     "@metamask/post-message-stream": ^8.1.0
-    "@revoke.cash/chains": ^59.0.0
+    "@revoke.cash/chains": ^63.0.0
     "@types/chrome": ^0.0.268
     "@types/object-hash": ^3.0.6
     "@types/react": ^18.3.3
@@ -8109,7 +8109,7 @@ __metadata:
     tailwindcss: ^3.4.4
     ts-loader: ^9.5.1
     tsx: ^4.15.1
-    typescript: ^5.4.5
+    typescript: ^5.7.3
     use-intl: ^3.14.1
     viem: ^2.13.7
     web-ext: ^8.0.0
@@ -9179,23 +9179,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.4.5":
-  version: 5.4.5
-  resolution: "typescript@npm:5.4.5"
+"typescript@npm:^5.7.3":
+  version: 5.7.3
+  resolution: "typescript@npm:5.7.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 53c879c6fa1e3bcb194b274d4501ba1985894b2c2692fa079db03c5a5a7140587a1e04e1ba03184605d35f439b40192d9e138eb3279ca8eee313c081c8bcd9b0
+  checksum: 6c38b1e989918e576f0307e6ee013522ea480dfce5f3ca85c9b2d8adb1edeffd37f4f30cd68de0c38a44563d12ba922bdb7e36aa2dac9c51de5d561e6e9a2e9c
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^5.4.5#~builtin<compat/typescript>":
-  version: 5.4.5
-  resolution: "typescript@patch:typescript@npm%3A5.4.5#~builtin<compat/typescript>::version=5.4.5&hash=a1c5e5"
+"typescript@patch:typescript@^5.7.3#~builtin<compat/typescript>":
+  version: 5.7.3
+  resolution: "typescript@patch:typescript@npm%3A5.7.3#~builtin<compat/typescript>::version=5.7.3&hash=a1c5e5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 2373c693f3b328f3b2387c3efafe6d257b057a142f9a79291854b14ff4d5367d3d730810aee981726b677ae0fd8329b23309da3b6aaab8263dbdccf1da07a3ba
+  checksum: 633cd749d6cd7bc842c6b6245847173bba99742a60776fae3c0fbcc0d1733cd51a733995e5f4dadd8afb0e64e57d3c7dbbeae953a072ee303940eca69e22f311
   languageName: node
   linkType: hard
 

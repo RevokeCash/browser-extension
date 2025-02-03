@@ -1,8 +1,10 @@
 // NOTE: THIS FILE IS TAKEN FROM THE REVOKE.CASH CODEBASE WITH MINIMAL MODIFICATIONS
 
 import { getChain } from '@revoke.cash/chains';
-import { Address, PublicClient, Chain as ViemChain, createPublicClient, defineChain, http } from 'viem';
 import { INFURA_API_KEY } from '../constants';
+import { isNullish } from '../utils/misc';
+import { SECOND } from '../utils/time';
+import { http, type Address, type PublicClient, type Chain as ViemChain, createPublicClient, defineChain } from 'viem';
 
 export interface ChainOptions {
   type: SupportType;
@@ -56,7 +58,12 @@ export class Chain {
 
   getSlug(): string {
     const chainName = this.getName();
-    return chainName.toLowerCase().replace(' (unsupported)', '').replace(/\s/g, '-').replace(/\./g, '-');
+    return chainName
+      .toLowerCase()
+      .replace(' (unsupported)', '')
+      .replace(/\s/g, '-')
+      .replace(/\./g, '-')
+      .replace(/zerθ/g, 'zero');
   }
 
   isTestnet(): boolean {
@@ -87,8 +94,8 @@ export class Chain {
 
   getRpcUrls(): string[] {
     const baseRpcUrls =
-      getChain(this.chainId)?.rpc?.map((url) => url.replace('${INFURA_API_KEY}', INFURA_API_KEY)) ?? [];
-    const specifiedRpcUrls = [this.options.rpc?.main].flat().filter(Boolean) as string[];
+      getChain(this.chainId)?.rpc?.map((url) => url.replace('${INFURA_API_KEY}', `${INFURA_API_KEY}`)) ?? [];
+    const specifiedRpcUrls = [this.options.rpc?.main].flat().filter((url) => !isNullish(url));
     return [...specifiedRpcUrls, ...baseRpcUrls];
   }
 
@@ -107,8 +114,9 @@ export class Chain {
     return this.options.infoUrl ?? getChain(mainnetChainId)?.infoURL ?? getChain(this.chainId)?.infoURL;
   }
 
+  // Note: we run tests to make sure that this is configured correctly for all chains (which is why we override the type)
   getNativeToken(): string {
-    return this.options.nativeToken ?? getChain(this.chainId)?.nativeCurrency?.symbol ?? 'ETH';
+    return (this.options.nativeToken ?? getChain(this.chainId)?.nativeCurrency?.symbol) as string;
   }
 
   getCorrespondingMainnetChainId(): number | undefined {
@@ -135,7 +143,7 @@ export class Chain {
       },
       blockExplorers: {
         default: {
-          name: chainName + ' Explorer',
+          name: `${chainName} Explorer`,
           url: this.getExplorerUrl(),
         },
       },
@@ -147,7 +155,7 @@ export class Chain {
   createViemPublicClient(overrideUrl?: string): PublicClient {
     // @ts-ignore TODO: This gives a TypeScript error since Viem v2
     return createPublicClient({
-      pollingInterval: 4_000,
+      pollingInterval: 4 * SECOND,
       chain: this.getViemChainConfig(),
       transport: http(overrideUrl ?? this.getRpcUrl()),
       batch: { multicall: true },

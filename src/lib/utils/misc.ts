@@ -17,3 +17,7 @@ export const getMarketplaceName = (domain: TypedDataDomain): string => {
   const platform = NFT_MARKETPLACES[marketplaceAddress ?? ''] ?? domain?.name ?? 'Unknown Marketplace';
   return platform;
 };
+
+export const isNullish = (value: unknown): value is null | undefined => {
+  return value === null || value === undefined;
+};
