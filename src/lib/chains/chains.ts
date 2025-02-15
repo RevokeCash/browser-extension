@@ -206,15 +206,27 @@ export const CHAINS = {
     isTestnet: true,
     correspondingMainnetChainId: ChainId.Beam,
   }),
+  [ChainId.Berachain]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.Berachain,
+    name: 'Berachain',
+    logoUrl: '/assets/images/vendor/chains/berachain.svg',
+    explorerUrl: 'https://berascan.com',
+    etherscanCompatibleApiUrl: 'https://api.berascan.com/api',
+    rpc: {
+      main: `https://berachain-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+    },
+    deployedContracts: { ...MULTICALL },
+  }),
   [ChainId.BerachainbArtio]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.BerachainbArtio,
     name: 'Berachain bArtio',
-    logoUrl: '/assets/images/vendor/chains/berachain.jpg',
+    logoUrl: '/assets/images/vendor/chains/berachain.svg',
     etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/testnet/evm/80084/etherscan/api',
     deployedContracts: { ...MULTICALL },
     isTestnet: true,
-    correspondingMainnetChainId: 12345678903, // TODO: This is a placeholder so we can add a description for Berachain
+    correspondingMainnetChainId: ChainId.Berachain,
   }),
   [ChainId.BitgertMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -511,6 +523,7 @@ export const CHAINS = {
     name: 'Ethereum',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     rpc: {
+      // main: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
       main: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
       free: 'https://eth.llamarpc.com',
     },
@@ -519,6 +532,13 @@ export const CHAINS = {
       ensRegistry: { address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e' },
       ensUniversalResolver: { address: '0xc0497E381f536Be9ce14B0dD3817cBcAe57d2F62' },
     },
+  }),
+  [ChainId.Ethernity]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.Ethernity,
+    name: 'Ethernity',
+    logoUrl: '/assets/images/vendor/chains/ethernity.png',
+    etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/mainnet/evm/183/etherscan/api',
   }),
   [ChainId.ExosamaNetwork]: new Chain({
     type: SupportType.PROVIDER,
@@ -616,6 +636,13 @@ export const CHAINS = {
     logoUrl: '/assets/images/vendor/chains/goldx.jpg',
     etherscanCompatibleApiUrl: 'https://explorer.goldxchain.io/api',
   }),
+  [ChainId.GravityAlphaMainnet]: new Chain({
+    type: SupportType.ETHERSCAN_COMPATIBLE,
+    chainId: ChainId.GravityAlphaMainnet,
+    name: 'Gravity Alpha',
+    logoUrl: '/assets/images/vendor/chains/gravity.svg',
+    etherscanCompatibleApiUrl: 'https://explorer-gravity-mainnet-0.t.conduit.xyz/api',
+  }),
   [ChainId.HarmonyMainnetShard0]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
     chainId: ChainId.HarmonyMainnetShard0,
@@ -672,6 +699,7 @@ export const CHAINS = {
     name: 'Immutable zkEVM',
     logoUrl: '/assets/images/vendor/chains/immutable.svg',
     etherscanCompatibleApiUrl: 'https://explorer.immutable.com/api',
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.InEVMMainnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -689,6 +717,7 @@ export const CHAINS = {
     rpc: {
       main: `https://ink-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
     },
+    // deployedContracts: { ...MULTICALL },
   }),
   [ChainId.IOTAEVM]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -696,6 +725,7 @@ export const CHAINS = {
     name: 'IOTA EVM',
     logoUrl: '/assets/images/vendor/chains/iota.svg',
     etherscanCompatibleApiUrl: 'https://explorer.evm.iota.org/api',
+    deployedContracts: { ...MULTICALL },
   }),
   [ChainId.IOTAEVMTestnet]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
@@ -1372,21 +1402,10 @@ export const CHAINS = {
     isTestnet: true,
     correspondingMainnetChainId: 12345678905, // TODO: This is a placeholder so we can add a description for Tabi
   }),
-  [ChainId.TaikoHeklaL2]: new Chain({
+  [ChainId.TaikoAlethia]: new Chain({
     type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.TaikoHeklaL2,
-    name: 'Taiko Hekla',
-    logoUrl: '/assets/images/vendor/chains/taiko.svg',
-    explorerUrl: 'https://hekla.taikoscan.io',
-    etherscanCompatibleApiUrl: 'https://api-hekla.taikoscan.io/api',
-    deployedContracts: { ...MULTICALL },
-    isTestnet: true,
-    correspondingMainnetChainId: ChainId.TaikoMainnet,
-  }),
-  [ChainId.TaikoMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.TaikoMainnet,
-    name: 'Taiko',
+    chainId: ChainId.TaikoAlethia,
+    name: 'Taiko Alethia',
     logoUrl: '/assets/images/vendor/chains/taiko.svg',
     explorerUrl: 'https://taikoscan.io',
     etherscanCompatibleApiUrl: 'https://api.taikoscan.io/api',
@@ -1566,12 +1585,6 @@ export const CHAINS = {
     chainId: 12345678902,
     name: 'Creator Chain',
   }),
-  // TODO: This is a placeholder so we can add a description for Berachain
-  [12345678903]: new Chain({
-    type: SupportType.UNSUPPORTED,
-    chainId: 12345678903,
-    name: 'Berachain',
-  }),
   // TODO: This is a placeholder so we can add a description for Tabi
   [12345678905]: new Chain({
     type: SupportType.UNSUPPORTED,
@@ -1596,102 +1609,63 @@ export const getChainConfig = (chainId: DocumentedChainId): Chain => {
 
 // TODO: All these functions below are kept for backwards compatibility and should be removed in the future in favor of getChainConfig
 
-export const isSupportedChain = (chainId: DocumentedChainId): boolean => {
-  return Boolean(getChainConfig(chainId)?.isSupported());
-};
-
-export const isBackendSupportedChain = (chainId: DocumentedChainId): boolean => {
-  const chain = getChainConfig(chainId);
-  return chain.isSupported() && chain.type !== SupportType.PROVIDER;
-};
-
-export const isProviderSupportedChain = (chainId: DocumentedChainId): boolean => {
-  return getChainConfig(chainId).type === SupportType.PROVIDER;
-};
-
-export const isCovalentSupportedChain = (chainId: DocumentedChainId): boolean => {
-  return getChainConfig(chainId).type === SupportType.COVALENT;
-};
-
-export const isEtherscanSupportedChain = (chainId: DocumentedChainId): boolean => {
-  return getChainConfig(chainId).type === SupportType.ETHERSCAN_COMPATIBLE;
-};
-
-export const isNodeSupportedChain = (chainId: DocumentedChainId): boolean => {
-  return getChainConfig(chainId).type === SupportType.BACKEND_NODE;
-};
-
 export const isMainnetChain = (chainId: DocumentedChainId): boolean => {
   return !isTestnetChain(chainId);
 };
 
 export const isTestnetChain = (chainId: DocumentedChainId): boolean => {
-  return getChainConfig(chainId).isTestnet();
+  return getChainConfig(chainId)?.isTestnet();
 };
 
 export const getChainName = (chainId: DocumentedChainId): string => {
-  return getChainConfig(chainId).getName();
-};
-
-export const getChainSlug = (chainId: DocumentedChainId): string => {
-  return getChainConfig(chainId).getSlug();
-};
-
-const REVERSE_CHAIN_SLUGS: Record<string, number> = Object.fromEntries(
-  SUPPORTED_CHAINS.map((chainId) => [getChainSlug(chainId), chainId]),
-);
-
-export type ChainSlug = keyof typeof REVERSE_CHAIN_SLUGS;
-
-export const getChainIdFromSlug = (slug: ChainSlug): DocumentedChainId => {
-  return REVERSE_CHAIN_SLUGS[slug];
+  return getChainConfig(chainId)?.getName();
 };
 
 export const getChainExplorerUrl = (chainId: DocumentedChainId): string => {
-  return getChainConfig(chainId).getExplorerUrl();
+  return getChainConfig(chainId)?.getExplorerUrl();
 };
 
 // This is used on the "Add a network" page
 export const getChainFreeRpcUrl = (chainId: DocumentedChainId): string => {
-  return getChainConfig(chainId).getFreeRpcUrl();
+  return getChainConfig(chainId)?.getFreeRpcUrl();
 };
 
 export const getChainRpcUrl = (chainId: DocumentedChainId): string => {
-  return getChainConfig(chainId).getRpcUrl();
+  return getChainConfig(chainId)?.getRpcUrl();
 };
 
 export const getChainRpcUrls = (chainId: DocumentedChainId): string[] => {
-  return getChainConfig(chainId).getRpcUrls();
+  return getChainConfig(chainId)?.getRpcUrls();
 };
 
 export const getChainLogsRpcUrl = (chainId: DocumentedChainId): string => {
-  return getChainConfig(chainId).getLogsRpcUrl();
+  return getChainConfig(chainId)?.getLogsRpcUrl();
 };
 
 export const getChainLogo = (chainId: DocumentedChainId): string | undefined => {
-  return getChainConfig(chainId).getLogoUrl();
+  return getChainConfig(chainId)?.getLogoUrl();
 };
 
 export const getChainInfoUrl = (chainId: DocumentedChainId): string | undefined => {
-  return getChainConfig(chainId).getInfoUrl();
+  return getChainConfig(chainId)?.getInfoUrl();
 };
 
 export const getChainNativeToken = (chainId: DocumentedChainId): string => {
-  return getChainConfig(chainId).getNativeToken();
+  return getChainConfig(chainId)?.getNativeToken();
 };
 
 export const getCorrespondingMainnetChainId = (chainId: DocumentedChainId): number | undefined => {
-  return getChainConfig(chainId).getCorrespondingMainnetChainId();
+  return getChainConfig(chainId)?.getCorrespondingMainnetChainId();
 };
 
 export const getChainDeployedContracts = (chainId: DocumentedChainId): DeployedContracts | undefined => {
-  return getChainConfig(chainId).getDeployedContracts();
+  return getChainConfig(chainId)?.getDeployedContracts();
 };
 
 export const getViemChainConfig = (chainId: DocumentedChainId): ViemChain => {
-  return getChainConfig(chainId).getViemChainConfig();
+  return getChainConfig(chainId)?.getViemChainConfig();
 };
 
 export const createViemPublicClientForChain = (chainId: DocumentedChainId, url?: string): PublicClient => {
-  return getChainConfig(chainId).createViemPublicClient(url);
+  return getChainConfig(chainId)?.createViemPublicClient(url);
 };
