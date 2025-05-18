@@ -26,7 +26,7 @@ const WarningControls = ({ bypassed, requestId }: Props) => {
   const dismiss = () => window.close();
 
   return (
-    <div className="flex w-full h-16 divide-x divide-neutral-50 dark:divide-neutral-750 mt-3">
+    <div className="flex w-full h-16 divide-x divide-neutral-50 dark:divide-neutral-750 mt-3 shrink-0">
       {bypassed ? (
         <WarningControlsButton onClick={dismiss}>{t('common.dismiss')}</WarningControlsButton>
       ) : (

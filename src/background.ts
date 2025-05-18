@@ -154,7 +154,7 @@ const trackWarning = (warningData: WarningData) => {
 };
 
 const calculatePopupPositions = (window: Browser.Windows.Window, warningData: WarningData) => {
-  const width = 480;
+  const width = 520;
   const height = calculatePopupHeight(warningData);
 
   const left = window.left! + Math.round((window.width! - width) * 0.5);
@@ -171,7 +171,7 @@ const calculatePopupHeight = (warningData: WarningData) => {
   const MARGIN_HEIGHT = 12;
 
   const HEADER_HEIGHT = 64;
-  const HOSTNAME_HEIGHT = 28;
+  const HOSTNAME_HEIGHT = 92; // Includes the Kerberus domain check
   const TITLE_HEIGHT = 44;
 
   const LINE_HEIGHT = 44;

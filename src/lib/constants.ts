@@ -8,6 +8,7 @@ export const Urls = {
   DISCORD: 'https://discord.gg/revoke-cash',
   TWITTER: 'https://twitter.com/RevokeCash',
   GITHUB: 'https://github.com/RevokeCash/browser-extension',
+  KERBERUS: 'https://www.kerberus.com/extension/?ref=REVOKECASH',
 } as const;
 
 export const Identifier = {

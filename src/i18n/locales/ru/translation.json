@@ -4,6 +4,15 @@
     "bypass": "Внимание: этот веб-сайт попытался обойти окно подтверждения Revoke.cash. Действуйте осторожно.",
     "continue": "Продолжить",
     "dismiss": "ОК",
+    "domain_analysis": {
+      "checking_domain": "Checking domain",
+      "install_for_coverage": "Install for $30k scam coverage",
+      "no_issues_found": "Domain Check: No Issues Found",
+      "no_issues_found_description": "Our partner Kerberus has scanned this domain and found no issues.",
+      "powered_by": "Powered by <kerberus-word>Kerberus</kerberus-word>",
+      "risk_detected": "Domain Check: Security Risk Detected",
+      "risk_detected_description": "Our partner Kerberus has scanned this domain and found potential security risks. It is recommended to avoid this domain or proceed with caution."
+    },
     "error_occurred": "Произошла ошибка при попытке создать всплывающее окно Revoke.cash. Пожалуйста, расскажите об этом в нашем <discord-link>Discord</discord-link>.",
     "reject": "Отклонить",
     "unknown_asset": "Неизвестный актив"
