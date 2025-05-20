@@ -5,7 +5,7 @@ import InfoBlock from './common/InfoBlock';
 import { twMerge } from 'tailwind-merge';
 import Spinner from '../common/Spinner';
 import Href from '../common/Href';
-import { Urls } from '../../lib/constants';
+import { KERBERUS_API_KEY, Urls } from '../../lib/constants';
 import { useTranslations } from 'use-intl';
 
 interface Props {
@@ -21,7 +21,7 @@ const HostnameAnalysis = ({ hostname }: Props) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.KERBERUS_API_KEY!,
+        'x-api-key': KERBERUS_API_KEY,
       },
     });
     return res.json();
