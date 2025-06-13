@@ -5,13 +5,14 @@
     "continue": "Continuar",
     "dismiss": "Descartar",
     "domain_analysis": {
-      "checking_domain": "Checking domain",
-      "install_for_coverage": "Install for $30k scam coverage",
-      "no_issues_found": "Domain Check: No Issues Found",
-      "no_issues_found_description": "Our partner Kerberus has scanned this domain and found no issues.",
-      "powered_by": "Powered by <kerberus-word>Kerberus</kerberus-word>",
-      "risk_detected": "Domain Check: Security Risk Detected",
-      "risk_detected_description": "Our partner Kerberus has scanned this domain and found potential security risks. It is recommended to avoid this domain or proceed with caution."
+      "checking_domain": "Comprobación del dominio",
+      "error": "Error Occurred",
+      "install_for_coverage": "Instalación para cobertura de estafa de $30.000",
+      "no_issues_found": "Comprobación del Dominio: No se han Encontrado Problemas",
+      "no_issues_found_description": "Nuestro socio Kerberus ha escaneado este dominio y no ha encontrado ningún problema.",
+      "powered_by": "Desarrollado por <kerberus-word>Kerberus</kerberus-word>",
+      "risk_detected": "Comprobación de Dominio: Riesgo de Seguridad Detectado",
+      "risk_detected_description": "Nuestro socio Kerberus ha escaneado este dominio y ha encontrado riesgos potenciales para la seguridad. Se recomienda evitar este dominio o proceder con precaución."
     },
     "error_occurred": "Se ha producido un error al intentar crear una ventana emergente de Revoke.cash. Por favor comunícate con nosotros en nuestro <discord-link>Discord</discord-link>.",
     "reject": "Rechazar",

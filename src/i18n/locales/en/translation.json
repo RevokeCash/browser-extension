@@ -6,6 +6,7 @@
     "dismiss": "Dismiss",
     "domain_analysis": {
       "checking_domain": "Checking domain",
+      "error": "Error Occurred",
       "install_for_coverage": "Install for $30k scam coverage",
       "no_issues_found": "Domain Check: No Issues Found",
       "no_issues_found_description": "Our partner Kerberus has scanned this domain and found no issues.",

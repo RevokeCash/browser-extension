@@ -22,15 +22,16 @@ const HostnameAnalysis = ({ hostname }: Props) => {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': KERBERUS_API_KEY,
+        'x-referer-url': 'moz-extension://nmniboccheadcclilkfkonokbcoceced',
       },
     });
     return res.json();
   }, []);
 
-  if (error) return null;
-
   const className = twMerge(
-    result?.data?.isBlocked ? 'bg-red-600/10 dark:bg-red-300/10' : 'bg-green-600/10 dark:bg-green-300/10',
+    result?.data?.isBlocked || error || result?.error?.errorMessage
+      ? 'bg-red-600/10 dark:bg-red-300/10'
+      : 'bg-green-600/10 dark:bg-green-300/10',
     loading && 'bg-neutral-200 dark:bg-neutral-750',
     'h-12 px-3 text-xs mt-2',
   );
@@ -39,7 +40,11 @@ const HostnameAnalysis = ({ hostname }: Props) => {
     <InfoBlock className={className}>
       <div className="w-full flex flex-col gap-2">
         <div className="flex gap-2 justify-between">
-          <HostnameAnalysisResult isBlocked={result?.data?.isBlocked} isLoading={loading} />
+          <HostnameAnalysisResult
+            isBlocked={result?.data?.isBlocked}
+            isLoading={loading}
+            error={error?.message || result?.error?.errorMessage}
+          />
           <Href
             href={Urls.KERBERUS}
             className="flex flex-col items-end justify-center text-zinc-500 dark:text-zinc-400 visited:text-zinc-500 dark:visited:text-zinc-400 hover:text-[#5470FF] hover:visited:text-[#5470FF] hover:dark:text-[#5470FF]"
@@ -60,9 +65,10 @@ const HostnameAnalysis = ({ hostname }: Props) => {
 interface HostnameAnalysisResultProps {
   isBlocked?: boolean;
   isLoading?: boolean;
+  error?: string;
 }
 
-const HostnameAnalysisResult = ({ isBlocked, isLoading }: HostnameAnalysisResultProps) => {
+const HostnameAnalysisResult = ({ isBlocked, isLoading, error }: HostnameAnalysisResultProps) => {
   const t = useTranslations();
 
   if (isLoading) {
@@ -70,6 +76,17 @@ const HostnameAnalysisResult = ({ isBlocked, isLoading }: HostnameAnalysisResult
       <div className="flex items-center gap-2 shrink-0">
         <Spinner />
         <div>{t('common.domain_analysis.checking_domain')}</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center gap-2 shrink-0">
+        <XCircleIcon className="h-6 w-6 text-red-600" />
+        <div>
+          {t('common.domain_analysis.error')}: {error}
+        </div>
       </div>
     );
   }

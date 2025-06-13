@@ -5,13 +5,14 @@
     "continue": "继续",
     "dismiss": "取消",
     "domain_analysis": {
-      "checking_domain": "Checking domain",
-      "install_for_coverage": "Install for $30k scam coverage",
-      "no_issues_found": "Domain Check: No Issues Found",
-      "no_issues_found_description": "Our partner Kerberus has scanned this domain and found no issues.",
-      "powered_by": "Powered by <kerberus-word>Kerberus</kerberus-word>",
-      "risk_detected": "Domain Check: Security Risk Detected",
-      "risk_detected_description": "Our partner Kerberus has scanned this domain and found potential security risks. It is recommended to avoid this domain or proceed with caution."
+      "checking_domain": "正在检查域名",
+      "error": "Error Occurred",
+      "install_for_coverage": "安装获取 3 万美元诈骗保险",
+      "no_issues_found": "域名检查：未发现问题",
+      "no_issues_found_description": "我们的合作伙伴 Kerberus 已扫描该域名，未发现任何问题。",
+      "powered_by": "由<kerberus-word>Kerberus</kerberus-word>提供支持",
+      "risk_detected": "域名检查：检测到安全风险",
+      "risk_detected_description": "我们的合作伙伴 Kerberus 已扫描此域名，发现存在潜在安全风险。建议避开此域名或谨慎操作。"
     },
     "error_occurred": "如果你在尝试创建 Revoke.cash 弹出窗口时出错。请在 <discord-link>Discord</discord-link> 中联系我们。",
     "reject": "拒绝",

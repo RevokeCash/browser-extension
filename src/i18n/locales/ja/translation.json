@@ -5,13 +5,14 @@
     "continue": "続ける",
     "dismiss": "却下する",
     "domain_analysis": {
-      "checking_domain": "Checking domain",
-      "install_for_coverage": "Install for $30k scam coverage",
-      "no_issues_found": "Domain Check: No Issues Found",
-      "no_issues_found_description": "Our partner Kerberus has scanned this domain and found no issues.",
-      "powered_by": "Powered by <kerberus-word>Kerberus</kerberus-word>",
-      "risk_detected": "Domain Check: Security Risk Detected",
-      "risk_detected_description": "Our partner Kerberus has scanned this domain and found potential security risks. It is recommended to avoid this domain or proceed with caution."
+      "checking_domain": "ドメインをチェック中",
+      "error": "Error Occurred",
+      "install_for_coverage": "インストールすると3万ドルの詐欺補償が受けられます",
+      "no_issues_found": "ドメインチェック：問題は見つかりませんでした",
+      "no_issues_found_description": "パートナーのKerberusがこのドメインをスキャンしましたが、問題は見つかりませんでした。",
+      "powered_by": "<kerberus-word>Kerberus</kerberus-word>が提供します",
+      "risk_detected": "ドメインチェック：セキュリティーリスクが検出されました",
+      "risk_detected_description": "パートナーのKerberusがこのドメインをスキャンし、潜在的なセキュリティーリスクを発見しました。このドメインは避けるか、注意して進めることをお勧めします。"
     },
     "error_occurred": "Revoke.cashのポップアップを作成しようとした際にエラーが発生しました。私たちの<discord-link>Discord</discord-link>を参照ください。",
     "reject": "却下",
