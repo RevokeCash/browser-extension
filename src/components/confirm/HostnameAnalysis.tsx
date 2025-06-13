@@ -7,6 +7,7 @@ import Spinner from '../common/Spinner';
 import Href from '../common/Href';
 import { KERBERUS_API_KEY, Urls } from '../../lib/constants';
 import { useTranslations } from 'use-intl';
+import { isFirefox } from '../../lib/utils/misc';
 
 interface Props {
   hostname: string;
@@ -15,6 +16,11 @@ interface Props {
 const HostnameAnalysis = ({ hostname }: Props) => {
   const t = useTranslations();
 
+  // This is a hardcoded value for Firefox to allow Kerberus to detect the extension.
+  const refererHeaders = isFirefox()
+    ? { 'x-referer-url': 'moz-extension://nmniboccheadcclilkfkonokbcoceced' }
+    : undefined;
+
   const { result, loading, error } = useAsync(async () => {
     const API_BASE_URL = 'https://v3.kerberus.com/detection/v3/v1';
     const res = await fetch(`${API_BASE_URL}/widget/scan/domain/${hostname}`, {
@@ -22,7 +28,7 @@ const HostnameAnalysis = ({ hostname }: Props) => {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': KERBERUS_API_KEY,
-        'x-referer-url': 'moz-extension://nmniboccheadcclilkfkonokbcoceced',
+        ...refererHeaders,
       },
     });
     return res.json();

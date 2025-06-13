@@ -1,5 +1,6 @@
 import { TypedDataDomain } from 'viem';
 import { NFT_MARKETPLACES } from '../constants';
+import Browser from 'webextension-polyfill';
 
 // https://learnersbucket.com/examples/javascript/unique-id-generator-in-javascript/
 export const randomId = () => {
@@ -20,4 +21,8 @@ export const getMarketplaceName = (domain: TypedDataDomain): string => {
 
 export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
+};
+
+export const isFirefox = () => {
+  return Browser.runtime.getURL('').startsWith('moz-extension://');
 };
