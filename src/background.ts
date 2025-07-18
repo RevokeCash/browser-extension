@@ -1,4 +1,3 @@
-import { init, track } from '@amplitude/analytics-browser';
 import { Hash } from 'viem';
 import Browser from 'webextension-polyfill';
 import { AddressAllowList, HostnameAllowList, WarningType, warningSettingKeys } from './lib/constants';
@@ -23,24 +22,8 @@ import { GsnRelayDecoder } from './lib/decoders/typed-signature/metatransactions
 import { HashDecoder } from './lib/decoders/untyped-signature/HashDecoder';
 import { Message, MessageResponse, WarningData } from './lib/types';
 import { normaliseMessage } from './lib/utils/messages';
-import { randomId } from './lib/utils/misc';
-import { getStorage, setStorage } from './lib/utils/storage';
-
-// This is technically async, but it's safe to assume that this will complete before any tracking occurs
-if (process.env.AMPLITUDE_API_KEY) {
-  const initialiseAmplitude = async () => {
-    const storedId = await getStorage<string>('sync', 'user:id');
-    const userId = storedId ?? randomId();
-    if (!storedId) await setStorage('sync', 'user:id', userId);
-    init(process.env.AMPLITUDE_API_KEY!, userId, {
-      trackingOptions: {
-        ipAddress: false,
-      },
-    });
-  };
-
-  initialiseAmplitude();
-}
+import { getStorage } from './lib/utils/storage';
+import { track } from './lib/utils/analytics';
 
 // Note that these messages will be periodically cleared due to the background service shutting down
 // after 5 minutes of inactivity (see Manifest v3 docs).
@@ -117,6 +100,8 @@ const processMessage = async (message: Message, remotePort: Browser.Runtime.Port
 const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<boolean> => {
   if (approvedMessages.includes(message.requestId)) return false;
 
+  trackMessage(message);
+
   const warningData = messageDecoder.decode(message);
   if (!warningData) return false;
 
@@ -151,6 +136,10 @@ const trackWarning = (warningData: WarningData) => {
     const { requestId, hostname, bypassed } = warningData;
     track('Hash signature requested', { requestId, hostname, bypassed });
   }
+};
+
+const trackMessage = (message: Message) => {
+  track('Message received', { message });
 };
 
 const calculatePopupPositions = (window: Browser.Windows.Window, warningData: WarningData) => {
