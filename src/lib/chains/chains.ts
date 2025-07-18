@@ -1262,9 +1262,9 @@ export const CHAINS = {
     etherscanCompatibleApiUrl: 'https://seitrace.com/pacific-1/api',
     deployedContracts: { ...MULTICALL },
   }),
-  [ChainId.Sepolia]: new Chain({
+  [ChainId.EthereumSepolia]: new Chain({
     type: SupportType.PROVIDER,
-    chainId: ChainId.Sepolia,
+    chainId: ChainId.EthereumSepolia,
     name: 'Ethereum Sepolia',
     logoUrl: '/assets/images/vendor/chains/ethereum.svg',
     rpc: {
@@ -1604,7 +1604,13 @@ export const ETHERSCAN_SUPPORTED_CHAINS = Object.values(CHAINS)
 export type DocumentedChainId = keyof typeof CHAINS;
 
 export const getChainConfig = (chainId: DocumentedChainId): Chain => {
-  return CHAINS[chainId];
+  return (
+    CHAINS[chainId] ??
+    new Chain({
+      type: SupportType.PROVIDER,
+      chainId: chainId,
+    })
+  );
 };
 
 // TODO: All these functions below are kept for backwards compatibility and should be removed in the future in favor of getChainConfig

@@ -1414,10 +1414,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@revoke.cash/chains@npm:^64.0.0":
-  version: 64.0.0
-  resolution: "@revoke.cash/chains@npm:64.0.0"
-  checksum: 10/cf564cb89f7f65ebae3fc13fce746444eafb4631ffaa6ab277b2f212bf1c8b428625748ca76754b050c3676e259dcf55b1183e5efcb5ccd69346aef1007ba7ea
+"@revoke.cash/chains@npm:^69.0.0":
+  version: 69.0.0
+  resolution: "@revoke.cash/chains@npm:69.0.0"
+  checksum: 10/db7ac5d6a7b91946fbde5ee849002c59d399dbbed04bd7eaa4effcbeaa6c7d17a5acfc44e4a1c9daa532344fd15b85c9363c7b03930de797f199b79debadc07c
   languageName: node
   linkType: hard
 
@@ -8072,7 +8072,7 @@ __metadata:
     "@heroicons/react": "npm:^2.1.3"
     "@localazy/cli": "npm:^1.7.10"
     "@metamask/post-message-stream": "npm:^8.1.0"
-    "@revoke.cash/chains": "npm:^64.0.0"
+    "@revoke.cash/chains": "npm:^69.0.0"
     "@types/chrome": "npm:^0.0.268"
     "@types/object-hash": "npm:^3.0.6"
     "@types/react": "npm:^18.3.3"
