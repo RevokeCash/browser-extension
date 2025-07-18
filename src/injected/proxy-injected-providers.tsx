@@ -122,6 +122,40 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
             callback(error, response);
           }
         });
+      } else if (request?.method === 'wallet_sendCalls') {
+        const [options] = request?.params ?? [];
+        const { from = '0x0000000000000000000000000000000000000000', calls } = options ?? {};
+        if (!calls) return Reflect.apply(target, thisArg, argumentsList);
+
+        const type = RequestType.TRANSACTION;
+        const client = createWalletClient({ transport: custom(ethereumProvider) });
+
+        client
+          .getChainId()
+          .then(async (chainId) => {
+            for (const call of calls) {
+              const transaction = { from, ...call };
+              const isOk = await sendToStreamAndAwaitResponse(stream, { type, transaction, chainId });
+              if (!isOk) return false;
+            }
+
+            return true;
+          })
+          .then((isOk) => {
+            if (isOk) {
+              return Reflect.apply(target, thisArg, argumentsList);
+            } else {
+              const error = ethErrors.provider.userRejectedRequest(
+                'Revoke.cash Confirmation: User denied transaction signature.',
+              );
+              const response = {
+                id: request?.id,
+                jsonrpc: '2.0',
+                error,
+              };
+              callback(error, response);
+            }
+          });
       } else {
         return Reflect.apply(target, thisArg, argumentsList);
       }
@@ -172,6 +206,24 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
 
         if (!isOk) {
           throw ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied message signature.');
+        }
+      } else if (request?.method === 'wallet_sendCalls') {
+        const [options] = request?.params ?? [];
+        const { from = '0x0000000000000000000000000000000000000000', calls } = options ?? {};
+        if (!calls) return Reflect.apply(target, thisArg, argumentsList);
+
+        const client = createWalletClient({ transport: custom(ethereumProvider) });
+        const chainId = await client.getChainId();
+
+        const type = RequestType.TRANSACTION;
+
+        for (const call of calls) {
+          const transaction = { from, ...call };
+          const isOk = await sendToStreamAndAwaitResponse(stream, { type, transaction, chainId });
+
+          if (!isOk) {
+            throw ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied message signature.');
+          }
         }
       }
 

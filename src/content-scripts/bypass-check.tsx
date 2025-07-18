@@ -48,6 +48,17 @@ window.addEventListener('message', (message) => {
         // Forward received messages to background.js
         const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
         sendToPortAndDisregard(extensionPort, { type, bypassed, message, hostname });
+      } else if (checkMethod(item, 'wallet_sendCalls')) {
+        const [options] = item.params ?? [];
+        const { from = '0x0000000000000000000000000000000000000000', calls } = options ?? {};
+        const type = RequestType.TRANSACTION;
+
+        // Forward received messages to background.js
+        const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
+        for (const call of calls) {
+          const transaction = { from, ...call };
+          sendToPortAndDisregard(extensionPort, { type, bypassed, hostname, transaction, chainId });
+        }
       }
     });
   };
