@@ -15,6 +15,7 @@ module.exports = {
     'pages/confirm': path.join(srcDir, 'pages', 'confirm.tsx'),
     'content-scripts/bypass-check': path.join(srcDir, 'content-scripts', 'bypass-check.tsx'),
     'content-scripts/inject-scripts': path.join(srcDir, 'content-scripts', 'inject-scripts.tsx'),
+    'content-scripts/injection-callback': path.join(srcDir, 'content-scripts', 'injection-callback.tsx'),
     'content-scripts/window-ethereum-messages': path.join(srcDir, 'content-scripts', 'window-ethereum-messages.tsx'),
     'injected/proxy-injected-providers': path.join(srcDir, 'injected', 'proxy-injected-providers.tsx'),
   },

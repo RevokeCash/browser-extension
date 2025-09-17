@@ -13,6 +13,8 @@ export const Urls = {
 
 export const Identifier = {
   INPAGE: 'revoke-inpage',
+  INJECTION_INPAGE: 'revoke-injection-inpage',
+  INJECTION_CALLBACK: 'revoke-injection-callback',
   CONTENT_SCRIPT: 'revoke-contentscript',
   CONFIRM: 'revoke-confirm',
   METAMASK_INPAGE: 'metamask-inpage',

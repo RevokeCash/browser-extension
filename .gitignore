@@ -16,3 +16,5 @@ package-lock.json
 
 .env
 localazy.keys.json
+
+raw-data

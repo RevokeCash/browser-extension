@@ -15,6 +15,11 @@ const stream = new WindowPostMessageStream({
   target: Identifier.CONTENT_SCRIPT,
 });
 
+const injectionCallbackStream = new WindowPostMessageStream({
+  name: Identifier.INJECTION_INPAGE,
+  target: Identifier.INJECTION_CALLBACK,
+});
+
 let proxyInterval: NodeJS.Timer;
 
 const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
@@ -231,23 +236,27 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
     },
   };
 
-  Object.defineProperty(ethereumProvider, 'request', {
-    value: new Proxy(ethereumProvider.request, requestHandler),
-    writable: true,
-  });
+  try {
+    Object.defineProperty(ethereumProvider, 'request', {
+      value: new Proxy(ethereumProvider.request, requestHandler),
+      writable: true,
+    });
 
-  Object.defineProperty(ethereumProvider, 'send', {
-    value: new Proxy(ethereumProvider.send, sendHandler),
-    writable: true,
-  });
+    Object.defineProperty(ethereumProvider, 'send', {
+      value: new Proxy(ethereumProvider.send, sendHandler),
+      writable: true,
+    });
 
-  Object.defineProperty(ethereumProvider, 'sendAsync', {
-    value: new Proxy(ethereumProvider.sendAsync, sendAsyncHandler),
-    writable: true,
-  });
+    Object.defineProperty(ethereumProvider, 'sendAsync', {
+      value: new Proxy(ethereumProvider.sendAsync, sendAsyncHandler),
+      writable: true,
+    });
 
-  ethereumProvider.isRevokeCash = true;
-  // console.log('Added Revoke.cash to', name);
+    ethereumProvider.isRevokeCash = true;
+    injectionCallbackStream.write({ success: true, hasKerberus: window.ethereum.isKerberus });
+  } catch (error) {
+    injectionCallbackStream.write({ success: false, hasKerberus: window.ethereum.isKerberus });
+  }
 };
 
 const proxyAllEthereumProviders = () => {

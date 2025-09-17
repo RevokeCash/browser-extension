@@ -148,3 +148,7 @@ export interface TokenData {
   symbol?: string;
   decimals?: bigint;
 }
+
+export type InjectionCallbackMessage = {
+  success: boolean;
+};
