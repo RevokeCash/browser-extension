@@ -17,6 +17,7 @@ module.exports = {
     'content-scripts/inject-scripts': path.join(srcDir, 'content-scripts', 'inject-scripts.tsx'),
     'content-scripts/window-ethereum-messages': path.join(srcDir, 'content-scripts', 'window-ethereum-messages.tsx'),
     'content-scripts/etherscan-poison-detector': path.join(srcDir, 'content-scripts', 'etherscan-poison-detector.ts'),
+    'content-scripts/google-sponsored-detector': path.join(srcDir, 'content-scripts', 'google-sponsored-detector.ts'),
     'injected/proxy-injected-providers': path.join(srcDir, 'injected', 'proxy-injected-providers.tsx'),
   },
 

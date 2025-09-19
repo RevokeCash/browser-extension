@@ -1,3 +1,4 @@
+export {};
 // Etherscan address poisoning detector (ported from external extension)
 // Note: This repo does not use Plasmo. This file is loaded via manifest matches for Etherscan only.
 
