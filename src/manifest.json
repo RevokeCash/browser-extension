@@ -47,6 +47,12 @@
       ],
       "all_frames": true,
       "run_at": "document_start"
+    },
+    {
+      "matches": ["https://etherscan.io/*", "https://*.etherscan.io/*"],
+      "js": ["js/vendor.js", "js/content-scripts/etherscan-poison-detector.js"],
+      "all_frames": true,
+      "run_at": "document_start"
     }
   ],
 
