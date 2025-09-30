@@ -1,16 +1,24 @@
 import React from 'react';
-import { ColorThemeProvider } from '../hooks/useColorTheme';
-import { IntlProvider } from '../i18n';
 
-interface Props {
+type Props = {
   children: React.ReactNode;
-}
+};
 
-const Page = ({ children }: Props) => {
+const Page: React.FC<Props> = ({ children }) => {
   return (
-    <IntlProvider>
-      <ColorThemeProvider>{children}</ColorThemeProvider>
-    </IntlProvider>
+    <div
+      className="
+        w-[360px] h-[600px]
+        bg-[#0B0B0B] text-[#EDEDED]
+        overflow-hidden rounded-[12px]
+      "
+      style={{
+        WebkitFontSmoothing: 'antialiased',
+        MozOsxFontSmoothing: 'grayscale',
+      }}
+    >
+      {children}
+    </div>
   );
 };
 

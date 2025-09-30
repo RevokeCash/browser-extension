@@ -12,7 +12,7 @@ import '../styles.css';
 const Popup = () => {
   return (
     <Page>
-      <div className="w-100 h-150">
+      <div className="w-full h-full">
         <MemoryRouter>
           <SlideRoutes duration={100}>
             <Route path="/" element={<MainPage />}></Route>
