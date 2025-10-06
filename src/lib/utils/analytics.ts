@@ -25,3 +25,8 @@ export const track = (event: string, properties: Record<string, any>) => {
   console.log('Tracking event', event, properties, process.env.AMPLITUDE_API_KEY);
   if (process.env.AMPLITUDE_API_KEY) amplitude.track(event, properties);
 };
+
+export const setUserProperty = (property: string, value: any) => {
+  const identify = new amplitude.Identify().set(property, value);
+  if (process.env.AMPLITUDE_API_KEY) amplitude.identify(identify);
+};
