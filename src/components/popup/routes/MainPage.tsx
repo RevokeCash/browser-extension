@@ -6,6 +6,7 @@ import DomainBar from '../ui/DomainBar';
 import FeatureCard from '../ui/FeatureCard';
 import SettingsPanel from '../ui/SettingsPanel';
 import FeeDetailsModal from '../ui/FeeDetailsModal';
+import ApprovalsPanel from '../ui/ApprovalsPanel';
 
 const MainPage = () => {
   const [activeTab, setActiveTab] = useState<'features' | 'approvals' | 'settings'>('features');
@@ -28,11 +29,7 @@ const MainPage = () => {
 
       <div className="flex-1 overflow-auto px-3 pb-3">
         {activeTab === 'features' && <FeatureCard onFeeDetails={openFee} />}
-        {activeTab === 'approvals' && (
-          <div className="text-sm text-neutral-400 p-3 border border-[#1E1E1E] rounded-xl bg-[#0E0E0E]">
-            Approvals UI goes here.
-          </div>
-        )}
+        {activeTab === 'approvals' && <ApprovalsPanel />}
         {activeTab === 'settings' && <SettingsPanel />}
       </div>
 
