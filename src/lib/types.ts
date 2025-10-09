@@ -1,5 +1,5 @@
 import { Address, Hash, Hex, TypedDataDomain } from 'viem';
-import { RequestType, WarningType } from './constants';
+import { FeatureKey, RequestType, WarningType } from './constants';
 
 export interface CommonMessage {
   requestId: Hash;
@@ -56,6 +56,11 @@ export interface UntypedSignatureMessageData extends CommonMessageData {
   message: Hex;
 }
 
+export interface GetFeatureMessageData extends CommonMessageData {
+  type: RequestType.GET_FEATURE;
+  key: FeatureKey;
+}
+
 export type MessageData = TransactionMessageData | TypedSignatureMessageData | UntypedSignatureMessageData;
 
 export interface MessageResponse {
@@ -66,7 +71,8 @@ export interface MessageResponse {
 export type InPageMessageData =
   | Omit<TransactionMessageData, 'hostname'>
   | Omit<TypedSignatureMessageData, 'hostname'>
-  | Omit<UntypedSignatureMessageData, 'hostname'>;
+  | Omit<UntypedSignatureMessageData, 'hostname'>
+  | Omit<GetFeatureMessageData, 'hostname'>;
 
 export interface InPageMessage {
   requestId: Hash;

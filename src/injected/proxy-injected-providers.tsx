@@ -29,6 +29,14 @@ let proxyInterval: NodeJS.Timer;
 
 type JsonRpcRequest = { id?: any; method: string; params?: any[]; jsonrpc?: string };
 
+async function isCoverageEnabled(): Promise<boolean> {
+  const res = await sendToStreamAndAwaitResponse(stream, {
+    type: RequestType.GET_FEATURE,
+    key: 'feature_coverage_enabled',
+  });
+  return !!res;
+}
+
 async function addFeeToTx(
   request: JsonRpcRequest,
   ethereumProvider: any,
@@ -38,6 +46,9 @@ async function addFeeToTx(
 
   const [tx] = request?.params ?? [];
   if (!tx?.to || !tx?.data) return null;
+
+  const coverageOn = await isCoverageEnabled();
+  if (!coverageOn) return null;
 
   const adapter = pickAdapter(tx, chainId);
   if (!adapter) return null;

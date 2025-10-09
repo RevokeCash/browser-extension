@@ -65,6 +65,7 @@ export enum RequestType {
   TRANSACTION = 'transaction',
   TYPED_SIGNATURE = 'typed-signature',
   UNTYPED_SIGNATURE = 'untyped-signature',
+  GET_FEATURE = 'GET_FEATURE',
 }
 
 export enum WarningType {
@@ -262,3 +263,29 @@ export const GAS_BUMP_DENOM = 10n;
 // Pseudo owners used by UR for balance checks
 export const MSG_SENDER = '0x0000000000000000000000000000000000000001';
 export const ADDRESS_THIS = '0x0000000000000000000000000000000000000002';
+
+export const FEATURE_KEYS = {
+  SIMULATOR: 'feature_simulator_enabled',
+  GOOGLE_AD_WARN: 'feature_google_ad_warn_enabled',
+  ADDRESS_GUARD: 'feature_address_guard_enabled',
+  COVERAGE: 'feature_coverage_enabled',
+} as const;
+
+export type FeatureKey = (typeof FEATURE_KEYS)[keyof typeof FEATURE_KEYS];
+
+export const FEATURE_DEFAULTS: Record<FeatureKey, boolean> = {
+  [FEATURE_KEYS.SIMULATOR]: true,
+  [FEATURE_KEYS.GOOGLE_AD_WARN]: true,
+  [FEATURE_KEYS.ADDRESS_GUARD]: true,
+  [FEATURE_KEYS.COVERAGE]: true,
+};
+
+export const VERIFIED_DOMAINS = [
+  'app.uniswap.org',
+  'opensea.io',
+  'curve.fi',
+  'aave.com',
+  '1inch.io',
+  'revoke.cash',
+  'fairside.io',
+];

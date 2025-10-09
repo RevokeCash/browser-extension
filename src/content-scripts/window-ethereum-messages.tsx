@@ -1,6 +1,6 @@
 import { WindowPostMessageStream } from '@metamask/post-message-stream';
 import Browser from 'webextension-polyfill';
-import { Identifier } from '../lib/constants';
+import { Identifier, RequestType } from '../lib/constants';
 import { InPageMessage } from '../lib/types';
 import { sendToPortAndAwaitResponse } from '../lib/utils/messages';
 
@@ -10,13 +10,20 @@ const stream = new WindowPostMessageStream({
   target: Identifier.INPAGE,
 });
 
-stream.on('data', (message: InPageMessage) => {
-  // Connect to background script
-  const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
-
-  // Forward received messages to background.js
+stream.on('data', async (message: InPageMessage) => {
   const { hostname } = location;
-  sendToPortAndAwaitResponse(extensionPort, { ...message.data, hostname }).then((response) => {
-    stream.write({ requestId: message.requestId, data: response });
-  });
+
+  if (message?.data?.type === RequestType.GET_FEATURE) {
+    const key = message.data.key;
+    const res = await Browser.storage.local.get(key);
+    const enabled = typeof res?.[key] === 'boolean' ? res[key] : true;
+
+    stream.write({ requestId: message.requestId, data: enabled });
+    return;
+  }
+
+  // Otherwise: forward to background as before
+  const extensionPort = Browser.runtime.connect({ name: Identifier.CONTENT_SCRIPT });
+  const response = await sendToPortAndAwaitResponse(extensionPort, { ...message.data, hostname });
+  stream.write({ requestId: message.requestId, data: response });
 });

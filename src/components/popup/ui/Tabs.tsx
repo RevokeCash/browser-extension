@@ -37,7 +37,7 @@ export default function Tabs({
       <div className="flex w-full">
         <Tab id="features" label="Features" />
         <Tab id="approvals" label="Approvals" />
-        <Tab id="settings" label="Settings" />
+        {/* <Tab id="settings" label="Settings" /> */}
       </div>
     </div>
   );
