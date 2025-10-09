@@ -33,7 +33,7 @@ const MainPage = () => {
       <Tabs active={activeTab} onChange={setActiveTab} />
 
       <div className="px-3">
-        <DomainBar domain={domain} />
+        <DomainBar />
       </div>
 
       <div className="flex-1 overflow-auto px-3 pb-3">

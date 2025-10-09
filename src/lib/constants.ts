@@ -289,3 +289,5 @@ export const VERIFIED_DOMAINS = [
   'revoke.cash',
   'fairside.io',
 ];
+
+export const CHAINPATROL_API_KEY = 'cp_live_EkidX6Z1CxkXgrfmJDdAcz6pepyAWHWrtBkxdHq7Tgmf';
