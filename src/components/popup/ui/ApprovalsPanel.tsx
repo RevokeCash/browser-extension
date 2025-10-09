@@ -231,7 +231,7 @@ function WalletsModal({
             <input
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="vitalik.eth or 0x..."
+              placeholder="revoke.eth or 0x..."
               className="h-9 rounded-[10px] bg-[#090909] border border-[#2A2A2A] px-3 text-[13px] outline-none"
             />
             <div className="flex justify-end mt-1">

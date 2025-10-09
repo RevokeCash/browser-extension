@@ -794,6 +794,75 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@envio-dev/hypersync-client-darwin-arm64@npm:0.6.6":
+  version: 0.6.6
+  resolution: "@envio-dev/hypersync-client-darwin-arm64@npm:0.6.6"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@envio-dev/hypersync-client-darwin-x64@npm:0.6.6":
+  version: 0.6.6
+  resolution: "@envio-dev/hypersync-client-darwin-x64@npm:0.6.6"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@envio-dev/hypersync-client-linux-arm64-gnu@npm:0.6.6":
+  version: 0.6.6
+  resolution: "@envio-dev/hypersync-client-linux-arm64-gnu@npm:0.6.6"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@envio-dev/hypersync-client-linux-x64-gnu@npm:0.6.6":
+  version: 0.6.6
+  resolution: "@envio-dev/hypersync-client-linux-x64-gnu@npm:0.6.6"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@envio-dev/hypersync-client-linux-x64-musl@npm:0.6.6":
+  version: 0.6.6
+  resolution: "@envio-dev/hypersync-client-linux-x64-musl@npm:0.6.6"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@envio-dev/hypersync-client-win32-x64-msvc@npm:0.6.6":
+  version: 0.6.6
+  resolution: "@envio-dev/hypersync-client-win32-x64-msvc@npm:0.6.6"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@envio-dev/hypersync-client@npm:^0.6.6":
+  version: 0.6.6
+  resolution: "@envio-dev/hypersync-client@npm:0.6.6"
+  dependencies:
+    "@envio-dev/hypersync-client-darwin-arm64": "npm:0.6.6"
+    "@envio-dev/hypersync-client-darwin-x64": "npm:0.6.6"
+    "@envio-dev/hypersync-client-linux-arm64-gnu": "npm:0.6.6"
+    "@envio-dev/hypersync-client-linux-x64-gnu": "npm:0.6.6"
+    "@envio-dev/hypersync-client-linux-x64-musl": "npm:0.6.6"
+    "@envio-dev/hypersync-client-win32-x64-msvc": "npm:0.6.6"
+  dependenciesMeta:
+    "@envio-dev/hypersync-client-darwin-arm64":
+      optional: true
+    "@envio-dev/hypersync-client-darwin-x64":
+      optional: true
+    "@envio-dev/hypersync-client-linux-arm64-gnu":
+      optional: true
+    "@envio-dev/hypersync-client-linux-x64-gnu":
+      optional: true
+    "@envio-dev/hypersync-client-linux-x64-musl":
+      optional: true
+    "@envio-dev/hypersync-client-win32-x64-msvc":
+      optional: true
+  checksum: 10/1767fdce21916391f604e8df1969db5ceb545bf042296b97c61e87161949ad9d0eac0942dbf7a1d81f459c12ba707ece1eff46631a3dfea985ab7fe24e0088ee
+  languageName: node
+  linkType: hard
+
 "@esbuild/aix-ppc64@npm:0.21.5":
   version: 0.21.5
   resolution: "@esbuild/aix-ppc64@npm:0.21.5"
@@ -1704,6 +1773,54 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mixpanel/rrdom@npm:^2.0.0-alpha.18":
+  version: 2.0.0-alpha.18.2
+  resolution: "@mixpanel/rrdom@npm:2.0.0-alpha.18.2"
+  dependencies:
+    "@mixpanel/rrweb-snapshot": "npm:^2.0.0-alpha.18"
+  checksum: 10/8bc3bc626673c6a728a8c51acf5a083b86302bb27b179a830ef798c376d93cfd67c30f821fc5e840f55b17ea5e06fbd7eafbf7741afc8b8420a8fcdaeac17490
+  languageName: node
+  linkType: hard
+
+"@mixpanel/rrweb-snapshot@npm:^2.0.0-alpha.18":
+  version: 2.0.0-alpha.18.2
+  resolution: "@mixpanel/rrweb-snapshot@npm:2.0.0-alpha.18.2"
+  dependencies:
+    postcss: "npm:^8.4.38"
+  checksum: 10/274bf8c76b27c2ca865feec486081bfc8df9f2dcb02de609c1191282174b349c1c5655428f6f91701fc02ed8735ade8decc0d88bc81c4e0ba779fda612a61a34
+  languageName: node
+  linkType: hard
+
+"@mixpanel/rrweb-types@npm:^2.0.0-alpha.18":
+  version: 2.0.0-alpha.18.2
+  resolution: "@mixpanel/rrweb-types@npm:2.0.0-alpha.18.2"
+  checksum: 10/3e7260bb830850f43c4196c8194ae7036e27a8c47e8630f20bfa45d2e89afcbd69b8cba6bf6de135f7ebe292750a926928a6cbda79f7a55666f808c4e6115dfd
+  languageName: node
+  linkType: hard
+
+"@mixpanel/rrweb-utils@npm:^2.0.0-alpha.18":
+  version: 2.0.0-alpha.18.2
+  resolution: "@mixpanel/rrweb-utils@npm:2.0.0-alpha.18.2"
+  checksum: 10/3c30cb0195b2913ac3868f9be3310a6de288c4709b1e3af5ac49fe8a8a82442d8a0eb8ae699ff4e7b4a30ed6313499f59f11bf0bfe63606b2d6100bb1109b633
+  languageName: node
+  linkType: hard
+
+"@mixpanel/rrweb@npm:2.0.0-alpha.18.2":
+  version: 2.0.0-alpha.18.2
+  resolution: "@mixpanel/rrweb@npm:2.0.0-alpha.18.2"
+  dependencies:
+    "@mixpanel/rrdom": "npm:^2.0.0-alpha.18"
+    "@mixpanel/rrweb-snapshot": "npm:^2.0.0-alpha.18"
+    "@mixpanel/rrweb-types": "npm:^2.0.0-alpha.18"
+    "@mixpanel/rrweb-utils": "npm:^2.0.0-alpha.18"
+    "@types/css-font-loading-module": "npm:0.0.7"
+    "@xstate/fsm": "npm:^1.4.0"
+    base64-arraybuffer: "npm:^1.0.1"
+    mitt: "npm:^3.0.0"
+  checksum: 10/7541631b7517433ba85ce565dc43a5b7671433bd3c859c1db1debcf311c67bb3470128acb7ffda5f0e1276dbef8d525370a9a6f1624a605679ae88fb24fb7bc2
+  languageName: node
+  linkType: hard
+
 "@noble/curves@npm:1.2.0, @noble/curves@npm:~1.2.0":
   version: 1.2.0
   resolution: "@noble/curves@npm:1.2.0"
@@ -1902,6 +2019,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.90.2":
+  version: 5.90.2
+  resolution: "@tanstack/query-core@npm:5.90.2"
+  checksum: 10/38b9ba6150cd74884f4233ab8cf617f006a819afe0cc43c0574dec11fac835f45e40a4148a83b6506bd8041ccc856bc6c975e08c0e9977b57a2554df33479910
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.90.2":
+  version: 5.90.2
+  resolution: "@tanstack/react-query@npm:5.90.2"
+  dependencies:
+    "@tanstack/query-core": "npm:5.90.2"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10/001260539db3c9f7369817c22840175e0a32631dd7cbb50b85cf116d2aa11f632fbeb1303fe3840fe2d88cbaf699f08e98e830d4843c5fbd1ff4549ea50e4a8c
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:2":
   version: 2.0.0
   resolution: "@tootallnate/once@npm:2.0.0"
@@ -1928,6 +2063,13 @@ __metadata:
     "@types/filesystem": "npm:*"
     "@types/har-format": "npm:*"
   checksum: 10/f03cf2f816f7c8f19319299af9399dd3eed8b46b3e4791bd7c1c70d982ae63634580a4c03509841cd65b91e99e6bc47f05358811d2c8b707968746d3d482b983
+  languageName: node
+  linkType: hard
+
+"@types/css-font-loading-module@npm:0.0.7":
+  version: 0.0.7
+  resolution: "@types/css-font-loading-module@npm:0.0.7"
+  checksum: 10/f70b9098ee3b2e006f5f6d5cecc627dcc7b898f266bfc594e73a8720636f1a3bc5f8c38fa0e8f7e5b7878038b46fd70da0c797c3288e072af984097210f4c056
   languageName: node
   linkType: hard
 
@@ -2137,6 +2279,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@upstash/core-analytics@npm:^0.0.10":
+  version: 0.0.10
+  resolution: "@upstash/core-analytics@npm:0.0.10"
+  dependencies:
+    "@upstash/redis": "npm:^1.28.3"
+  checksum: 10/945ed44fa02915a37a2ceaa254f38b3e1b305daede520164b8887681bb1bfbe722f4b90b41c6ca5a87f50b9a22bfe48367f7b5ff9b2a8feb1b467ab803663354
+  languageName: node
+  linkType: hard
+
+"@upstash/ratelimit@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "@upstash/ratelimit@npm:2.0.6"
+  dependencies:
+    "@upstash/core-analytics": "npm:^0.0.10"
+  peerDependencies:
+    "@upstash/redis": ^1.34.3
+  checksum: 10/ef74aabd3dd245da51916b8325d92b838efc70adcf8054d607565e002caa9b90b8243f269182b0b6e8e0f392bb5d8cf7b23f5d2bbbd894788d8b51b2490bf835
+  languageName: node
+  linkType: hard
+
+"@upstash/redis@npm:^1.28.3, @upstash/redis@npm:^1.35.5":
+  version: 1.35.5
+  resolution: "@upstash/redis@npm:1.35.5"
+  dependencies:
+    uncrypto: "npm:^0.1.3"
+  checksum: 10/2d9c660a9ca017449e70b12701621bd1b077c1e901bd71cbdc2424a5bf8f0cf27e5ff9903f90a4b79c88d18b8cc79f28b03bfb799cb14c59b9d1763b487a0764
+  languageName: node
+  linkType: hard
+
 "@webassemblyjs/ast@npm:1.12.1, @webassemblyjs/ast@npm:^1.12.1":
   version: 1.12.1
   resolution: "@webassemblyjs/ast@npm:1.12.1"
@@ -2318,6 +2489,13 @@ __metadata:
     webpack-dev-server:
       optional: true
   checksum: 10/20424e5c1e664e4d7ab11facee7033bb729f6acd86493138069532934c1299c1426da72942822dedb00caca8fc60cc8aec1626e610ee0e8a9679e3614f555860
+  languageName: node
+  linkType: hard
+
+"@xstate/fsm@npm:^1.4.0":
+  version: 1.6.5
+  resolution: "@xstate/fsm@npm:1.6.5"
+  checksum: 10/deae1501169d41d5395ce1581d7b08bde17911b7dec1533eacd5bee17060d22273055d6d6bc7e8f32222a502e4dcf510cd29064a5c9c5fa5aa2ced0ad60b2512
   languageName: node
   linkType: hard
 
@@ -2786,6 +2964,13 @@ __metadata:
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
   checksum: 10/9706c088a283058a8a99e0bf91b0a2f75497f185980d9ffa8b304de1d9e58ebda7c72c07ebf01dadedaac5b2907b2c6f566f660d62bd336c3468e960403b9d65
+  languageName: node
+  linkType: hard
+
+"base64-arraybuffer@npm:^1.0.1":
+  version: 1.0.2
+  resolution: "base64-arraybuffer@npm:1.0.2"
+  checksum: 10/15e6400d2d028bf18be4ed97702b11418f8f8779fb8c743251c863b726638d52f69571d4cc1843224da7838abef0949c670bde46936663c45ad078e89fee5c62
   languageName: node
   linkType: hard
 
@@ -3826,6 +4011,13 @@ __metadata:
   version: 1.1.2
   resolution: "depd@npm:1.1.2"
   checksum: 10/2ed6966fc14463a9e85451db330ab8ba041efed0b9a1a472dbfc6fbf2f82bab66491915f996b25d8517dddc36c8c74e24c30879b34877f3c4410733444a51d1d
+  languageName: node
+  linkType: hard
+
+"dexie@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "dexie@npm:4.2.1"
+  checksum: 10/3720cb4cdcd75775dbb148f24b7210eefc3623ed6fb0a9df788a635e30526dbc735c67ba4bfdedde854b6d79cffd844fcfa712c7f98021197e4733ccfb47f4f3
   languageName: node
   linkType: hard
 
@@ -6168,6 +6360,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ky@npm:^1.11.0":
+  version: 1.11.0
+  resolution: "ky@npm:1.11.0"
+  checksum: 10/df4315ffce22d6ffcd420fdefe5c9a3fd65d96b5e265af64bb5cbdecc77b3905ddae5b5b9bc667be7a485593388d0d65b7e06a92c2852e34f62c68a89293917e
+  languageName: node
+  linkType: hard
+
 "latest-version@npm:^7.0.0":
   version: 7.0.0
   resolution: "latest-version@npm:7.0.0"
@@ -6698,6 +6897,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mitt@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "mitt@npm:3.0.1"
+  checksum: 10/287c70d8e73ffc25624261a4989c783768aed95ecb60900f051d180cf83e311e3e59865bfd6e9d029cdb149dc20ba2f128a805e9429c5c4ce33b1416c65bbd14
+  languageName: node
+  linkType: hard
+
+"mixpanel-browser@npm:^2.71.0":
+  version: 2.71.0
+  resolution: "mixpanel-browser@npm:2.71.0"
+  dependencies:
+    "@mixpanel/rrweb": "npm:2.0.0-alpha.18.2"
+  checksum: 10/0c85314f18ffaa56c7980b1b97526718fbc318f1af26f43d5afcada88c4bc3e249f450ec32cf9418f15604a55613e0a19859d117b3742f5a956072e2e0a37fe2
+  languageName: node
+  linkType: hard
+
 "mkdirp@npm:1.0.4, mkdirp@npm:^1.0.3, mkdirp@npm:^1.0.4":
   version: 1.0.4
   resolution: "mkdirp@npm:1.0.4"
@@ -7200,6 +7415,23 @@ __metadata:
   dependencies:
     aggregate-error: "npm:^3.0.0"
   checksum: 10/7ba4a2b1e24c05e1fc14bbaea0fc6d85cf005ae7e9c9425d4575550f37e2e584b1af97bcde78eacd7559208f20995988d52881334db16cf77bc1bcf68e48ed7c
+  languageName: node
+  linkType: hard
+
+"p-queue@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "p-queue@npm:9.0.0"
+  dependencies:
+    eventemitter3: "npm:^5.0.1"
+    p-timeout: "npm:^7.0.0"
+  checksum: 10/62df9f8bcfc738372b6b64a0398e7388eee3991d979697dd51b61f6b533622ff4e71b05ad516c06355d41858535e59a72e380e20b82a50a53d7fecfaf65d630e
+  languageName: node
+  linkType: hard
+
+"p-timeout@npm:^7.0.0":
+  version: 7.0.1
+  resolution: "p-timeout@npm:7.0.1"
+  checksum: 10/1d65827a07fd10eae5bc1fa493ef5c40522acda21cbbb04131cdb0f63f703c91e5fac2701431e28e308992284a86807d7138dbc2be694e2b8342bee20be652f6
   languageName: node
   linkType: hard
 
@@ -8601,28 +8833,36 @@ __metadata:
   resolution: "revoke-cash-browser-extension@workspace:."
   dependencies:
     "@amplitude/analytics-browser": "npm:^1.2.3"
+    "@envio-dev/hypersync-client": "npm:^0.6.6"
     "@heroicons/react": "npm:^2.1.3"
     "@localazy/cli": "npm:^1.7.10"
     "@metamask/post-message-stream": "npm:^8.1.0"
     "@revoke.cash/chains": "npm:^69.0.0"
+    "@tanstack/react-query": "npm:^5.90.2"
     "@types/chrome": "npm:^0.0.268"
     "@types/object-hash": "npm:^3.0.6"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@types/readable-stream": "npm:^4.0.14"
     "@types/webextension-polyfill": "npm:^0.10.7"
+    "@upstash/ratelimit": "npm:^2.0.6"
+    "@upstash/redis": "npm:^1.35.5"
     autoprefixer: "npm:^10.4.19"
     buffer: "npm:^6.0.3"
     copy-webpack-plugin: "npm:^12.0.2"
     cross-env: "npm:^7.0.3"
     css-loader: "npm:^7.1.2"
+    dexie: "npm:^4.2.1"
     dotenv-webpack: "npm:^8.1.0"
     eth-rpc-errors: "npm:^4.0.3"
     ethers: "npm:^5.8.0"
     husky: "npm:^9.0.11"
+    ky: "npm:^1.11.0"
     lint-staged: "npm:^15.2.5"
+    mixpanel-browser: "npm:^2.71.0"
     npm-run-all: "npm:^4.1.5"
     object-hash: "npm:^3.0.0"
+    p-queue: "npm:^9.0.0"
     postcss: "npm:^8.4.38"
     postcss-loader: "npm:^8.1.1"
     postcss-preset-env: "npm:^9.5.14"
@@ -9748,6 +9988,13 @@ __metadata:
     has-symbols: "npm:^1.0.3"
     which-boxed-primitive: "npm:^1.0.2"
   checksum: 10/06e1ee41c1095e37281cb71a975cb3350f7cb470a0665d2576f02cc9564f623bd90cfc0183693b8a7fdf2d242963dcc3010b509fa3ac683f540c765c0f3e7e43
+  languageName: node
+  linkType: hard
+
+"uncrypto@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "uncrypto@npm:0.1.3"
+  checksum: 10/0020f74b0ce34723196d8982a73bb7f40cff455a41b8f88ae146b86885f4e66e41a1241fe80a887505c3bd2c7f07ed362b6ed041968370073c40a98496e6a737
   languageName: node
   linkType: hard
 
