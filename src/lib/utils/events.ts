@@ -1,6 +1,6 @@
-import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from 'lib/abis';
+import { ERC20_ABI, ERC721_ABI, PERMIT2_ABI } from '../abis';
 import { ADDRESS_ZERO, MOONBIRDS_ADDRESS } from '../constants';
-import type { Nullable, SpenderRiskData } from 'lib/interfaces';
+import type { Nullable, SpenderRiskData } from '../interfaces';
 import { type Address, decodeEventLog, type Hash, type Hex, toEventSelector } from 'viem';
 import { addressToTopic, isNullish } from '.';
 import { type AllowancePayload, AllowanceType } from './allowances';

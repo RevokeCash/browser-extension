@@ -1,11 +1,11 @@
 import { ChainId } from '@revoke.cash/chains';
-import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY, MULTICALL_ADDRESS } from 'lib/constants';
+import { ALCHEMY_API_KEY, DRPC_API_KEY, INFURA_API_KEY, MULTICALL_ADDRESS } from '../constants';
 import type { RateLimit } from '../interfaces';
-import { AggregatePriceStrategy, AggregationType } from 'lib/price/AggregatePriceStrategy';
-import { HardcodedPriceStrategy } from 'lib/price/HardcodedPriceStrategy';
-import type { PriceStrategy } from 'lib/price/PriceStrategy';
-import { UniswapV2PriceStrategy } from 'lib/price/UniswapV2PriceStrategy';
-import { UniswapV3ReadonlyPriceStrategy } from 'lib/price/UniswapV3ReadonlyPriceStrategy';
+import { AggregatePriceStrategy, AggregationType } from '../price/AggregatePriceStrategy';
+import { HardcodedPriceStrategy } from '../price/HardcodedPriceStrategy';
+import type { PriceStrategy } from '../price/PriceStrategy';
+import { UniswapV2PriceStrategy } from '../price/UniswapV2PriceStrategy';
+import { UniswapV3ReadonlyPriceStrategy } from '../price/UniswapV3ReadonlyPriceStrategy';
 import { type AddEthereumChainParameter, type PublicClient, toHex, type Chain as ViemChain } from 'viem';
 import { Chain, type DeployedContracts, SupportType } from '../chains/Chain';
 

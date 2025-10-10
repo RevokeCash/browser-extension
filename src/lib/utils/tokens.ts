@@ -395,7 +395,7 @@ export const throwIfSpam = async (contract: TokenContract, events: TokenEvent[])
 
 // TODO: Investigate other proxy patterns to see if they result in false positives
 export const throwIfSpamBytecode = async (contract: TokenContract) => {
-  const bytecode = (await contract.publicClient.getCode({ address: contract.address })) ?? '';
+  const bytecode = (await contract.publicClient.getBytecode({ address: contract.address })) ?? '';
 
   // This is technically possible, but I've seen many "spam" NFTs with a very tiny bytecode, which we want to filter out
   if (bytecode.length < 250) {

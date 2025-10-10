@@ -1,4 +1,4 @@
-import { isBrowser } from '../utils/index.js'; // TODO
+import { isBrowser } from '../utils';
 import type { Log, TimeLog } from '../utils/events';
 import type { PublicClient } from 'viem';
 import type { Block } from './cache/BlocksDexie';

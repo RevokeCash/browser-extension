@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAsync } from 'react-async-hook';
 import { Address } from 'viem';
-import { getTokenData } from '../../../../lib/utils/tokens';
+import { getBasicTokenData } from '../../../../lib/utils/tokens';
 import { AddressOrDisplay } from '../../../common/AddressOrDisplay';
 import Loadable from '../../../common/Loadable';
 import { AssetDisplay } from '../../../common/AssetDisplay';
@@ -13,7 +13,7 @@ interface Props {
 
 // TODO: Add token logo
 const AllowanceAsset = ({ address, chainId }: Props) => {
-  const { result, loading, error } = useAsync(() => getTokenData(address, chainId), []);
+  const { result, loading, error } = useAsync(() => getBasicTokenData(address, chainId), []);
 
   return (
     <Loadable loading={loading} error={error}>

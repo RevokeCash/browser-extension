@@ -1,6 +1,6 @@
 import { AGW_SESSIONS_ABI } from '../abis';
 import blocksDB from '../databases/blocks';
-import type { useSessions } from 'lib/hooks/ethereum/sessions/useSessions';
+// Removed useSessions hook dependency - not needed for extension
 import { type Address, decodeEventLog, type Hash, type Hex, type PublicClient, type WalletClient } from 'viem';
 import { getWalletAddress, isNullish, writeContractUnlessExcessiveGas } from '.';
 import type { Log, TimeLog } from './events';
@@ -147,4 +147,5 @@ export const getSessionKey = (session: Session) => {
   return `session-${session.chainId}-${session.account}-${session.payload.sessionHash}`;
 };
 
-export type OnSessionRevoke = ReturnType<typeof useSessions>['onSessionRevoke'];
+// Minimal callback signature for session revocation
+export type OnSessionRevoke = (session: Session) => void;

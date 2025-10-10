@@ -23,13 +23,18 @@ const HostnameAnalysis = ({ hostname }: Props) => {
 
   const { result, loading, error } = useAsync(async () => {
     const API_BASE_URL = 'https://v3.kerberus.com/detection/v3/v1';
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'x-api-key': KERBERUS_API_KEY || '',
+    };
+
+    if (refererHeaders) {
+      Object.assign(headers, refererHeaders);
+    }
+
     const res = await fetch(`${API_BASE_URL}/widget/scan/domain/${hostname}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': KERBERUS_API_KEY,
-        ...refererHeaders,
-      },
+      headers,
     });
     return res.json();
   }, []);

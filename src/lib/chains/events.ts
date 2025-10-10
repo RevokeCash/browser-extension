@@ -34,8 +34,7 @@ const getEventPrerequisites = async (chainId: DocumentedChainId, address: Addres
   const publicClient = createViemPublicClientForChain(chainId);
   const logsProvider = getLogsProvider(chainId);
 
-  const isLoggedIn = await apiLogin();
-  if (!isLoggedIn) throw new Error('Failed to create an API session');
+  // No server-side authentication needed in extension
 
   const [openSeaProxy, fromBlock, toBlock, nonce] = await Promise.all([
     getOpenSeaProxyAddress(address),

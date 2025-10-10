@@ -27,13 +27,9 @@ module.exports = {
     filename: 'js/[name].js',
   },
 
+  // Disable vendor splitting to avoid separate vendor.js referenced by manifest content scripts
   optimization: {
-    splitChunks: {
-      name: 'vendor',
-      chunks(chunk) {
-        return chunk.name !== 'background';
-      },
-    },
+    splitChunks: false,
   },
 
   module: {

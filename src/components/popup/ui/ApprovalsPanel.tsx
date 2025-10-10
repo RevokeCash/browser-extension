@@ -1,7 +1,17 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GhostButton } from './controls';
 import Modal from './Modal';
 import useBrowserStorage from '../../../hooks/useBrowserStorage';
+import { fetchAllowances, mapAllowancesToUIFormat } from '../../../lib/utils/events-fetcher';
+import type { Address } from 'viem';
+
+declare global {
+  interface Window {
+    ethereum?: {
+      request: (args: { method: string }) => Promise<string[]>;
+    };
+  }
+}
 
 type Wallet = {
   id: string;
@@ -49,15 +59,62 @@ function WalletPill({ label, onPrev, onNext }: { label: string; onPrev: () => vo
 
 const STORAGE_KEY = 'approvals.watchlist';
 
+// Helper function to detect connected wallet address
+const getConnectedWalletAddress = async (): Promise<string | null> => {
+  try {
+    if (typeof window !== 'undefined' && window.ethereum) {
+      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+      return accounts?.[0] || null;
+    }
+  } catch (error) {
+    console.warn('Failed to get connected wallet address:', error);
+  }
+  return null;
+};
+
 export default function ApprovalsPanel() {
   const [wallets, setWallets] = useBrowserStorage<Wallet[]>('local', STORAGE_KEY, []);
   const [activeIndex, setActiveIndex] = useState(0);
   const [manageOpen, setManageOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [approvalsState, setApprovalsState] = useState<Approval[]>([]);
 
   const activeWallet = wallets?.[activeIndex];
 
-  // Real approvals will be wired later; show empty state until integrated
-  const approvals: Approval[] = useMemo(() => [], []);
+  // Load approvals for the first enabled wallet when the tab is open
+  useEffect(() => {
+    const loadApprovals = async () => {
+      console.log('Loading approvals for wallets:', wallets);
+      const enabledWallets = (wallets || []).filter((w) => w.enabled);
+      console.log('Enabled wallets:', enabledWallets);
+      const wallet = enabledWallets[activeIndex] || enabledWallets[0];
+      console.log('Selected wallet:', wallet);
+      if (!wallet) {
+        console.log('No wallet selected, clearing approvals');
+        setApprovalsState([]);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const chainId = 1; // default to Ethereum mainnet for now
+        console.log('Fetching allowances for:', wallet.address, 'chainId:', chainId);
+        const allowances = await fetchAllowances(wallet.address as Address, chainId);
+        console.log('Raw allowances:', allowances);
+        const mappedApprovals = mapAllowancesToUIFormat(allowances);
+        console.log('Mapped approvals:', mappedApprovals);
+        setApprovalsState(mappedApprovals);
+      } catch (error) {
+        console.error('Failed to load approvals:', error);
+        setApprovalsState([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadApprovals();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeIndex, JSON.stringify(wallets)]);
 
   function onPrev() {
     setActiveIndex((i) => (i - 1 + wallets.length) % wallets.length);
@@ -88,7 +145,9 @@ export default function ApprovalsPanel() {
               <span className="text-neutral-400">|</span>
               <span className="text-neutral-400">{truncateMiddle(activeWallet?.address || '')}</span>
             </div>
-            <div className="text-[12px] text-neutral-400">0 open approvals</div>
+            <div className="text-[12px] text-neutral-400">
+              {loading ? 'Loading…' : `${approvalsState.length} open approvals`}
+            </div>
 
             <div className="mt-3 flex items-center justify-between">
               <WalletPill label={activeWallet?.label ?? ''} onPrev={onPrev} onNext={onNext} />
@@ -104,11 +163,11 @@ export default function ApprovalsPanel() {
                 <div className="text-right">Allowance</div>
               </div>
               <div className="h-[1px] bg-[#1A1A1A]" />
-              {approvals.length === 0 ? (
+              {approvalsState.length === 0 ? (
                 <div className="px-3 py-6 text-[13px] text-neutral-400">No approvals found for this wallet yet.</div>
               ) : (
                 <ul>
-                  {approvals.map((a, idx) => (
+                  {approvalsState.map((a, idx) => (
                     <li key={idx} className="px-3 py-3 grid grid-cols-[1fr,1fr,1fr] items-center text-[13px]">
                       <div className="font-medium">{a.token}</div>
                       <div className="min-w-0">

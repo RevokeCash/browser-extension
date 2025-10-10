@@ -1,10 +1,21 @@
 // NOTE: THIS FILE IS TAKEN FROM THE REVOKE.CASH CODEBASE WITH MINIMAL MODIFICATIONS
 
 import { getChain } from '@revoke.cash/chains';
-import { INFURA_API_KEY } from '../constants';
+import { ETHERSCAN_API_KEYS, ETHERSCAN_RATE_LIMITS, INFURA_API_KEY } from '../constants';
 import { isNullish } from '../utils/misc';
 import { SECOND } from '../utils/time';
-import { http, type Address, type PublicClient, type Chain as ViemChain, createPublicClient, defineChain } from 'viem';
+import type { EtherscanPlatform, RateLimit } from '../interfaces';
+import type { PriceStrategy } from '../price/PriceStrategy';
+import {
+  http,
+  type Address,
+  type PublicClient,
+  type Chain as ViemChain,
+  createPublicClient,
+  defineChain,
+  AddEthereumChainParameter,
+  ChainContract,
+} from 'viem';
 
 export interface ChainOptions {
   type: SupportType;
@@ -15,6 +26,7 @@ export interface ChainOptions {
   infoUrl?: string;
   nativeToken?: string;
   explorerUrl?: string;
+  nativeTokenCoingeckoId?: string;
   etherscanCompatibleApiUrl?: string;
   rpc?: {
     main?: string | string[];
@@ -22,19 +34,24 @@ export interface ChainOptions {
     free?: string;
   };
   deployedContracts?: DeployedContracts;
+  priceStrategy?: PriceStrategy;
+  backendPriceStrategy?: PriceStrategy;
   isTestnet?: boolean;
   isCanary?: boolean;
   correspondingMainnetChainId?: number;
 }
 
-export type DeployedContracts = Record<string, { address: Address }>;
+export type DeployedContracts = Record<string, ChainContract>;
 
 export enum SupportType {
-  PROVIDER = 'provider',
-  ETHERSCAN_COMPATIBLE = 'etherscan_compatible',
-  COVALENT = 'covalent',
-  BACKEND_NODE = 'backend_node',
-  UNSUPPORTED = 'unsupported',
+  PROVIDER = 'PROVIDER',
+  HYPERSYNC = 'HYPERSYNC',
+  ETHERSCAN_COMPATIBLE = 'ETHERSCAN_COMPATIBLE',
+  BLOCKSCOUT = 'BLOCKSCOUT', // Note that this is mostly Etherscan Compatible, with slight differences in the API
+  COVALENT = 'COVALENT',
+  BACKEND_NODE = 'BACKEND_NODE',
+  BACKEND_CUSTOM = 'BACKEND_CUSTOM',
+  UNSUPPORTED = 'UNSUPPORTED',
 }
 
 export class Chain {
@@ -48,6 +65,21 @@ export class Chain {
 
   isSupported(): boolean {
     return this.type !== SupportType.UNSUPPORTED;
+  }
+
+  getAddEthereumChainParameter(): AddEthereumChainParameter {
+    const fallbackNativeCurrency = { name: this.getName(), symbol: this.getNativeToken(), decimals: 18 };
+    const iconUrl = getChain(this.chainId)?.iconURL;
+    const addEthereumChainParameter = {
+      chainId: String(this.chainId),
+      chainName: this.getName(),
+      nativeCurrency: getChain(this.chainId)?.nativeCurrency ?? fallbackNativeCurrency,
+      rpcUrls: [this.getFreeRpcUrl()],
+      blockExplorerUrls: [this.getExplorerUrl()],
+      iconUrls: iconUrl ? [iconUrl] : [],
+    };
+
+    return addEthereumChainParameter;
   }
 
   getName(): string {
@@ -127,6 +159,10 @@ export class Chain {
     return this.options.deployedContracts;
   }
 
+  getNativeTokenCoingeckoId(): string | undefined {
+    return this.options.nativeTokenCoingeckoId ?? (this.getNativeToken() === 'ETH' ? 'ethereum' : undefined);
+  }
+
   getViemChainConfig(): ViemChain {
     const chainInfo = getChain(this.chainId);
     const chainName = this.getName();
@@ -151,6 +187,50 @@ export class Chain {
       testnet: this.isTestnet(),
     });
   }
+  getEtherscanCompatibleApiUrl(): string | undefined {
+    return this.options.etherscanCompatibleApiUrl ?? 'https://api.etherscan.io/v2/api';
+  }
+
+  getEtherscanCompatibleApiKey(): string | undefined {
+    const platform = this.getEtherscanCompatiblePlatformNames();
+    const subdomainApiKey = ETHERSCAN_API_KEYS[`${platform?.subdomain}.${platform?.domain}`];
+    const domainApiKey = ETHERSCAN_API_KEYS[`${platform?.domain}`];
+    return subdomainApiKey ?? domainApiKey;
+  }
+
+  getEtherscanCompatibleApiRateLimit(): RateLimit {
+    const platform = this.getEtherscanCompatiblePlatformNames();
+    const subdomainRateLimit = ETHERSCAN_RATE_LIMITS[`${platform?.subdomain}.${platform?.domain}`];
+    const domainRateLimit = ETHERSCAN_RATE_LIMITS[`${platform?.domain}`];
+    const customRateLimit = subdomainRateLimit ?? domainRateLimit;
+
+    if (customRateLimit) {
+      return { interval: 1000, intervalCap: customRateLimit };
+    }
+
+    // For all other chains we assume a rate limit of 5 requests per second (which we underestimate as 4/s to be safe)
+    // Note that Etherscan requests without an API key are limited to 1 per 5 seconds, so we essentially assume that
+    // all chains have an API key (since 1 per 5 seconds would be prohibitively slow for our use case)
+    return { interval: 1000, intervalCap: 4 };
+  }
+
+  // TODO: Blockscout-hosted chains will all get identified as 'blockscout:undefined'. It is unclear if Blockscout
+  // has a single rate limit for all chains or if each chain has its own rate limit. If the former, we're all good,
+  // if the latter, we need to add a special case for these chains.
+  getEtherscanCompatibleApiIdentifier(): string {
+    const platform = this.getEtherscanCompatiblePlatformNames();
+    const apiKey = this.getEtherscanCompatibleApiKey();
+    return `${platform?.domain}:${apiKey}`;
+  }
+
+  private getEtherscanCompatiblePlatformNames = (): EtherscanPlatform | undefined => {
+    const apiUrl = this.getEtherscanCompatibleApiUrl();
+    if (!apiUrl) return undefined;
+
+    const domain = new URL(apiUrl).hostname.split('.').at(-2)!;
+    const subdomain = new URL(apiUrl).hostname.split('.').at(-3)?.split('-').at(-1);
+    return { domain, subdomain };
+  };
 
   createViemPublicClient(overrideUrl?: string): PublicClient {
     // @ts-ignore TODO: This gives a TypeScript error since Viem v2
@@ -160,5 +240,13 @@ export class Chain {
       transport: http(overrideUrl ?? this.getRpcUrl()),
       batch: { multicall: true },
     });
+  }
+
+  getPriceStrategy(): PriceStrategy | undefined {
+    return this.options.priceStrategy;
+  }
+
+  getBackendPriceStrategy(): PriceStrategy | undefined {
+    return this.options.backendPriceStrategy;
   }
 }

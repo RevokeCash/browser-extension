@@ -1,9 +1,5 @@
 import { ChainId } from '@revoke.cash/chains';
-import type { Delegation } from 'lib/delegations/DelegatePlatform';
-import type { TransactionSubmitted } from 'lib/interfaces';
-import ky from 'lib/ky';
-import type { getTranslations } from 'next-intl/server';
-import { toast } from 'react-toastify';
+import type { TransactionSubmitted } from '../interfaces';
 import {
   type Address,
   type EstimateContractGasParameters,
@@ -31,22 +27,7 @@ export const isNullish = (value: unknown): value is null | undefined => {
   return value === null || value === undefined;
 };
 
-export const delegationEquals = (a: Delegation, b: Delegation): boolean => {
-  // Handle null/undefined cases
-  if (isNullish(a) || isNullish(b)) return false;
-  if (isNullish(a.delegator) || isNullish(a.delegate)) return false;
-  if (isNullish(b.delegator) || isNullish(b.delegate)) return false;
-
-  return (
-    a.delegator === b.delegator &&
-    a.delegate === b.delegate &&
-    a.type === b.type &&
-    a.contract === b.contract &&
-    a.tokenId === b.tokenId &&
-    a.platform === b.platform &&
-    a.direction === b.direction
-  );
-};
+// Removed delegationEquals function - not needed for extension
 
 export const topicToAddress = (topic: Hex) => getAddress(slice(topic, 12));
 export const addressToTopic = (address: Address) => pad(address, { size: 32 }).toLowerCase() as Hex;
@@ -110,21 +91,7 @@ export const filterLogsByTopics = (logs: Log[], topics: string[]) => {
   });
 };
 
-export const writeToClipBoard = (
-  text: string,
-  t: Awaited<ReturnType<typeof getTranslations<string>>>,
-  displayToast: boolean = true,
-) => {
-  if (typeof navigator === 'undefined' || !navigator?.clipboard?.writeText) {
-    toast.info(t('common.toasts.clipboard_failed'), { autoClose: 1000 });
-  }
-
-  navigator.clipboard.writeText(text);
-
-  if (displayToast) {
-    toast.info(t('common.toasts.clipboard_success'), { autoClose: 1000 });
-  }
-};
+// Removed writeToClipBoard function - not needed for extension
 
 export const normaliseLabel = (label: string) => {
   return label.toLowerCase().replace(/[ -]/g, '_');
@@ -231,20 +198,15 @@ export const normaliseRiskData = (riskData: any, sourceOverride: string) => {
 export const range = (length: number) => Array.from({ length }, (_, i) => i);
 
 export const apiLogin = async () => {
-  // In a backend context, we do not need to login
-  if (!isBrowser()) return true;
-
-  return ky
-    .post('/api/login')
-    .json<any>()
-    .then((res) => !!res?.ok);
+  // No server-side session in the extension; always treat as logged in
+  return true;
 };
 
 export const isBrowser = () => typeof window !== 'undefined';
 
 export type AccountType = 'EOA' | 'EIP7702 Account' | 'Smart Contract';
 export const getAccountType = async (address: Address, publicClient: PublicClient): Promise<AccountType> => {
-  const code = await publicClient.getCode({ address });
+  const code = await publicClient.getBytecode({ address });
   if (isNullish(code) || code === '0x') return 'EOA';
   if (code.startsWith('0xef0100')) return 'EIP7702 Account';
   return 'Smart Contract';
