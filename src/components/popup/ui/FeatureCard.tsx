@@ -21,7 +21,7 @@ const rows: Row[] = [
   },
   {
     id: 'GOOGLE_AD_WARN',
-    title: 'Google Ad/Result Warnings',
+    title: 'Ad Warnings',
     desc: 'Catch spoofed sites before you click',
     storageKey: FEATURE_KEYS.GOOGLE_AD_WARN,
     defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.GOOGLE_AD_WARN],
@@ -29,7 +29,7 @@ const rows: Row[] = [
   {
     id: 'ADDRESS_GUARD',
     title: 'Address Guard',
-    desc: 'Anti-poisoning on explorers',
+    desc: 'Flags suspicious addresses on explorers',
     storageKey: FEATURE_KEYS.ADDRESS_GUARD,
     defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.ADDRESS_GUARD],
   },
@@ -55,16 +55,6 @@ export default function FeatureCard({ onFeeDetails }: { onFeeDetails?: () => voi
         {rows.map((r, i) => (
           <FeatureRowItem key={r.id} row={r} darkMode={darkMode} isLast={i === rows.length - 1} />
         ))}
-
-        <div className="mt-2 mb-3 text-[12px] text-neutral-500">
-          Wallet Drain Coverage adds 0.8% to covered transactions.{` `}
-          <button
-            onClick={onFeeDetails}
-            className="underline text-neutral-300 hover:text-neutral-100 transition-colors"
-          >
-            Coverage Benefits
-          </button>
-        </div>
       </div>
     </div>
   );

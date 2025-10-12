@@ -41,7 +41,7 @@ export default function DisableCoverageModal({
           onClick={onCancel}
           className="flex-1 h-10 rounded-[12px] text-[13px] font-semibold text-neutral-300 border border-[#2A2A2A] bg-transparent hover:bg-[#151515] transition-colors"
         >
-          Keep features
+          Keep protection
         </button>
         <button
           onClick={onConfirm}
@@ -49,7 +49,7 @@ export default function DisableCoverageModal({
           style={{ backgroundColor: YELLOW }}
           autoFocus
         >
-          Lose benefits
+          Lose Coverage
         </button>
       </div>
     </Modal>

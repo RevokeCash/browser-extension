@@ -15,80 +15,105 @@ export default function FeeDetailsModal({
   onGotIt: () => void;
   onFileClaim?: () => void;
 }) {
-  const items = [
-    'Malicious transactions that slip through',
-    'Address poisoning attacks',
-    'Wallet drains on supported chains',
-    'Up to $30,000 reimbursement per incident',
+  const covered = [
+    {
+      title: 'Malicious Transactions',
+      desc: 'Drainer contracts our simulator didn’t flag',
+    },
+    {
+      title: 'Address Poisoning',
+      desc: 'Spoofed addresses we didn’t catch',
+    },
+    {
+      title: 'Permit Signatures',
+      desc: 'Malicious permit exploits that bypass detection',
+    },
   ];
 
   return (
     <Modal open={open} onClose={onClose}>
-      <div className="px-4 pt-5 pb-4">
-        <div className="text-[22px] font-extrabold leading-tight text-neutral-100">$30,000 Theft Protection</div>
-        <div className="mt-1 text-[12px] text-neutral-400">
-          Comprehensive wallet drain coverage for just ~0.8% per transaction
+      <div className="w-[340px] max-w-full bg-[#0B0B0B] rounded-[16px] border border-[#222] overflow-hidden">
+        <div className="px-4 pt-4">
+          <div className="text-[19px] font-extrabold leading-tight text-neutral-100">Wallet Drain Coverage</div>
+          <div className="mt-[2px] text-[11px] leading-[1.2] text-neutral-400">
+            Get your money back if our warnings miss a scam
+          </div>
         </div>
-      </div>
 
-      <div className="px-4">
-        <div className="rounded-[14px] bg-[#0F0F0F] border border-[#2A2A2A] px-4 py-4">
-          <div className="text-[13px] font-semibold text-neutral-100 mb-3">What’s covered:</div>
+        <div className="px-4 mt-5">
+          <div className="flex items-baseline gap-2">
+            <div className="text-[22px] font-extrabold text-[#54b05e] leading-none">$30,000</div>
+            <span className="text-[10px] font-semibold tracking-wide text-neutral-400">protection</span>
+          </div>
+          <div className="mt-[3px] text-[10px] text-neutral-400 leading-none">Maximum reimbursement per incident</div>
+        </div>
 
-          <ul className="space-y-2">
-            {items.map((txt) => (
-              <li key={txt} className="flex items-start gap-2">
-                <span
-                  className="mt-[2px] inline-flex h-4 w-4 items-center justify-center rounded-full"
-                  style={{ color: GREEN }}
-                  aria-hidden
+        <div className="px-4 mt-4">
+          <div className="rounded-[12px] bg-[#0F0F0F] border border-[#222] px-3 py-3">
+            <div className="text-[10px] font-semibold tracking-[0.08em] uppercase text-neutral-400 mb-2">
+              What’s covered
+            </div>
+
+            <div className="space-y-2">
+              {covered.map((item) => (
+                <div
+                  key={item.title}
+                  className="flex items-start gap-2 rounded-[10px] bg-[#111] border border-[#222] px-1 py-[10px]"
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M5 12.5l4 4 10-10"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-                <span className="text-[12px] text-neutral-300 leading-snug">{txt}</span>
-              </li>
-            ))}
-          </ul>
+                  <span
+                    className="mt-[2px] inline-flex h-[18px] w-[18px] items-center justify-center rounded-full"
+                    style={{ backgroundColor: GREEN }}
+                    aria-hidden
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M5 12.5l4 4 10-10"
+                        stroke="white"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
 
-          <div className="mt-4">
-            <button
-              onClick={onFileClaim}
-              className="w-full h-9 rounded-[10px] text-[12px] font-semibold border border-[#3A3A3A] text-neutral-200 hover:bg-[#151515] transition-colors"
-            >
-              File a claim
+                  <div className="flex-1">
+                    <div className="text-[12px] font-semibold text-neutral-100 leading-[1.1]">{item.title}</div>
+                    <div className="text-[11px] text-neutral-400 leading-snug">{item.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-3 text-center text-[10px] text-neutral-500">
+              0.8% fee per transaction · No fees when off
+            </div>
+          </div>
+        </div>
+
+        <div className="px-4 pt-3">
+          <button
+            onClick={onGotIt}
+            className="w-full h-9 rounded-[12px] text-[13px] font-semibold text-black hover:opacity-95 active:opacity-90 transition-opacity"
+            style={{ backgroundColor: YELLOW }}
+          >
+            Got it
+          </button>
+        </div>
+
+        <div className="px-4 pt-2 text-center">
+          <div className="text-[11px] text-neutral-500">
+            Got drained?{' '}
+            <button onClick={onFileClaim} className="underline text-neutral-300 hover:text-[#22C55E] transition-colors">
+              File claim
             </button>
           </div>
         </div>
-      </div>
 
-      <div className="px-4 pt-3 text-center">
-        <div className="text-[11px] text-neutral-500">Turn coverage ON/OFF anytime — fees only apply when active</div>
-      </div>
-
-      <div className="px-4 pb-4 pt-3">
-        <button
-          onClick={onGotIt}
-          className="w-full h-10 rounded-[12px] text-[13px] font-semibold text-black hover:opacity-95 active:opacity-90 transition-opacity"
-          style={{ backgroundColor: YELLOW }}
-        >
-          Got it
-        </button>
-
-        <button
-          onClick={onClose}
-          className="mt-2 w-full h-8 rounded-[10px] text-[12px] font-medium text-neutral-300 hover:text-neutral-200"
-          aria-label="Close"
-        >
-          Close
-        </button>
+        <div className="px-4 pb-4 pt-2">
+          <div className="text-[9px] leading-snug text-neutral-600 text-center">
+            Coverage provided by Fairside. Subject to policy terms &amp; exclusions.
+          </div>
+        </div>
       </div>
     </Modal>
   );
