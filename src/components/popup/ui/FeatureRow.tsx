@@ -56,7 +56,7 @@ export default function FeatureRowItem({ row, darkMode, isLast }: { row: Row; da
             <div className="text-[13px] font-semibold text-neutral-100 break-words">{row.title}</div>
             <div
               className={`text-[12px] leading-snug break-words ${
-                isCoverage && isOff ? 'text-red-400' : 'text-neutral-400'
+                isCoverage && isOff ? 'text-[#ef4444]' : 'text-neutral-400'
               }`}
             >
               {desc}

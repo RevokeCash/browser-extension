@@ -9,8 +9,8 @@ const GREEN = '#22C55E';
 const GREEN_BG = 'rgba(34,197,94,0.12)';
 const YELLOW = '#F6B74A';
 const YELLOW_BG = 'rgba(246,183,74,0.12)';
-const RED = '#B71C1C';
-const RED_BG = 'rgba(183,28,28,0.12)';
+const RED = '#ef4444';
+const RED_BG = 'rgba(239,68,68,0.10)';
 
 function StatusPill({ label, color, bg }: { label: string; color: string; bg: string }) {
   return (

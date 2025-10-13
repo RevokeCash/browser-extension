@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from './Modal';
 
-const YELLOW = '#F6B74A';
+const RED = '#EF4444';
 
 export default function DisableCoverageModal({
   open,
@@ -46,7 +46,7 @@ export default function DisableCoverageModal({
         <button
           onClick={onConfirm}
           className="flex-1 h-10 rounded-[12px] text-[13px] font-semibold text-black hover:opacity-95 active:opacity-90 transition-opacity"
-          style={{ backgroundColor: YELLOW }}
+          style={{ backgroundColor: RED }}
           autoFocus
         >
           Lose Coverage
