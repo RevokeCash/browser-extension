@@ -52,7 +52,7 @@ function ensureStyles() {
     'position: absolute;' +
     'top: 0;' +
     'right: 0;' +
-    'background: #F97316;' +
+    'background: #fdb952;' +
     'color: white;' +
     'padding: 4px 10px;' +
     'border-bottom-left-radius: 8px;' +
@@ -66,30 +66,21 @@ function ensureStyles() {
     'position: absolute;' +
     'bottom: 12px;' +
     'right: 12px;' +
-    'background: white;' +
-    'border: 1px solid #e8eaed;' +
-    'border-radius: 4px;' +
-    'padding: 4px 8px;' +
-    'font-size: 11px;' +
-    'color: #5f6368;' +
-    'box-shadow: 0 2px 4px rgba(0,0,0,0.15);' +
-    'z-index: 10;' +
-    'display: flex;' +
-    'align-items: center;' +
-    'gap: 6px;' +
-    '}' +
-    '.rev-revoke-badge::before {' +
-    'content: "D";' +
-    'width: 14px;' +
-    'height: 14px;' +
-    'background: #F97316;' +
+    'background: #fdb952;' +
+    'color: #ffffff;' +
+    'border: none;' +
     'border-radius: 3px;' +
+    'padding: 6px 12px;' +
+    'font-size: 12px;' +
+    'font-weight: 800;' +
+    'line-height: 1;' +
+    'letter-spacing: 0.2px;' +
+    'text-transform: lowercase;' +
+    'z-index: 10;' +
     'display: inline-flex;' +
     'align-items: center;' +
     'justify-content: center;' +
-    'color: white;' +
-    'font-size: 8px;' +
-    'font-weight: bold;' +
+    'box-shadow: 0 2px 6px rgba(0,0,0,0.18);' +
     '}' +
     '.rev-google-ad-content {' +
     'padding: 14px 16px !important;' +
@@ -127,7 +118,7 @@ function highlightSponsoredElements() {
     // badge
     const revokeBadge = document.createElement('div');
     revokeBadge.className = 'rev-revoke-badge';
-    revokeBadge.textContent = 'RevokePro';
+    revokeBadge.textContent = 'revoke';
     containerEl.appendChild(revokeBadge);
 
     // main content area varies; in your snippet it used .vdQmEd

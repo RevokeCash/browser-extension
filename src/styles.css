@@ -8,10 +8,12 @@ body {
   font-size: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
   @apply leading-tight;
   @apply bg-neutral-0 dark:bg-neutral-800;
   @apply text-neutral-550 dark:text-neutral-400;
   @apply font-medium;
+  background-color: black;
 }
 
 .animate-spin-fast {

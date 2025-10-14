@@ -62,6 +62,7 @@ export enum RequestType {
   TRANSACTION = 'transaction',
   TYPED_SIGNATURE = 'typed-signature',
   UNTYPED_SIGNATURE = 'untyped-signature',
+  GET_FEATURE = 'GET_FEATURE',
 }
 
 export enum WarningType {
@@ -296,3 +297,30 @@ export const KERBERUS_API_KEY = process.env.KERBERUS_API_KEY ?? process.env.NEXT
 
 export const COINGECKO_API_KEY = process.env.COINGECKO_API_KEY ?? process.env.NEXT_PUBLIC_COINGECKO_API_KEY;
 export const COINGECKO_API_BASE_URL = 'https://pro-api.coingecko.com/api/v3';
+export const FEATURE_KEYS = {
+  SIMULATOR: 'feature_simulator_enabled',
+  GOOGLE_AD_WARN: 'feature_google_ad_warn_enabled',
+  ADDRESS_GUARD: 'feature_address_guard_enabled',
+  COVERAGE: 'feature_coverage_enabled',
+} as const;
+
+export type FeatureKey = (typeof FEATURE_KEYS)[keyof typeof FEATURE_KEYS];
+
+export const FEATURE_DEFAULTS: Record<FeatureKey, boolean> = {
+  [FEATURE_KEYS.SIMULATOR]: true,
+  [FEATURE_KEYS.GOOGLE_AD_WARN]: true,
+  [FEATURE_KEYS.ADDRESS_GUARD]: true,
+  [FEATURE_KEYS.COVERAGE]: true,
+};
+
+export const VERIFIED_DOMAINS = [
+  'app.uniswap.org',
+  'opensea.io',
+  'curve.fi',
+  'aave.com',
+  '1inch.io',
+  'revoke.cash',
+  'fairside.io',
+];
+
+export const CHAINPATROL_API_KEY = 'cp_live_EkidX6Z1CxkXgrfmJDdAcz6pepyAWHWrtBkxdHq7Tgmf';
