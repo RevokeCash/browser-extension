@@ -78,7 +78,6 @@ const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Addres
   const permit2ApprovalFilter = { topics: [getPermit2EventSelector('Approval'), addressTopic], fromBlock, toBlock };
   const permit2PermitFilter = { topics: [getPermit2EventSelector('Permit'), addressTopic], fromBlock, toBlock };
   const permit2LockdownFilter = { topics: [getPermit2EventSelector('Lockdown'), addressTopic], fromBlock, toBlock };
-
   const [transferTo, transferFrom, approval, approvalForAllUnpatched, permit2Approval, permit2Permit, permit2Lockdown] =
     await Promise.all([
       eventsDB.getLogs(logsProvider, transferToFilter, chainId, 'Transfer (to)'),
@@ -89,7 +88,6 @@ const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Addres
       eventsDB.getLogs(logsProvider, permit2PermitFilter, chainId, 'Permit2 Permit'),
       eventsDB.getLogs(logsProvider, permit2LockdownFilter, chainId, 'Permit2 Lockdown'),
     ]);
-
   // Manually patch the ApprovalForAll events
   const approvalForAll = [
     ...approvalForAllUnpatched,
@@ -112,8 +110,11 @@ const getTokenEventsDefault = async (chainId: DocumentedChainId, address: Addres
     ...transferTo.map((log) => parseTransferLog(log, chainId, address)),
   ];
 
+  const filteredEvents = parsedEvents.filter((event) => !isNullish(event));
+
   // We sort the events in reverse chronological order to ensure that the most recent events are processed first
-  return sortTokenEventsChronologically(parsedEvents.filter((event) => !isNullish(event))).reverse();
+  const sortedEvents = sortTokenEventsChronologically(filteredEvents).reverse();
+  return sortedEvents;
 };
 
 export const getSessionEvents = async (

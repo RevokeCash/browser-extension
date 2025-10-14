@@ -97,15 +97,12 @@ export const getAllowancesFromEvents = async (
   publicClient: PublicClient,
   chainId: number,
 ): Promise<TokenAllowanceData[]> => {
-  console.log('getAllowancesFromEvents called with:', { owner, eventsCount: events.length, chainId });
   const contracts = createTokenContracts(events, publicClient);
-  console.log('Created contracts:', contracts.length);
 
   // Look up token data for all tokens, add their lists of approvals
   const allowances = await Promise.all(
     contracts.map(async (contract) => {
       const contractEvents = events.filter((event) => event.token === contract.address);
-      console.log(`Processing contract ${contract.address} with ${contractEvents.length} events`);
 
       try {
         const [tokenData, unfilteredAllowances] = await Promise.all([
@@ -113,12 +110,8 @@ export const getAllowancesFromEvents = async (
           getAllowancesForToken(contract, contractEvents, owner),
         ]);
 
-        console.log(`Token data for ${contract.address}:`, tokenData);
-        console.log(`Unfiltered allowances for ${contract.address}:`, unfilteredAllowances.length);
-
         // Filter out zero-value allowances
         const allowances = unfilteredAllowances.filter((allowance) => !hasZeroAllowance(allowance, tokenData));
-        console.log(`Filtered allowances for ${contract.address}:`, allowances.length);
 
         if (allowances.length === 0) {
           return [tokenData as TokenAllowanceData];
@@ -137,7 +130,6 @@ export const getAllowancesFromEvents = async (
           (allowance) => !allowance.payload?.revokeError?.includes('Excessive gas limit'),
         );
 
-        console.log(`Final allowances for ${contract.address}:`, filteredAllowances.length);
         return filteredAllowances;
       } catch (e) {
         console.error(`Error processing contract ${contract.address}:`, e);
@@ -154,14 +146,12 @@ export const getAllowancesFromEvents = async (
 
   // Filter out any zero-balance + zero-allowance tokens
   const flatAllowances = allowances.flat();
-  console.log('Flattened allowances:', flatAllowances.length);
 
   const finalAllowances = flatAllowances
     .filter((allowance) => allowance.payload || allowance.balance !== 'ERC1155')
     .filter((allowance) => allowance.payload || !hasZeroBalance(allowance.balance, allowance.metadata.decimals))
     .sort((a, b) => a.metadata.symbol.localeCompare(b.metadata.symbol));
 
-  console.log('Final allowances:', finalAllowances.length);
   return finalAllowances;
 };
 

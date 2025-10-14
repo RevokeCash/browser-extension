@@ -430,12 +430,26 @@ export const hasZeroBalance = (balance: TokenBalance, decimals?: number) => {
 };
 
 export const createTokenContracts = (events: TokenEvent[], publicClient: PublicClient): TokenContract[] => {
+  console.log('createTokenContracts called with events:', events.length);
+  console.log('Input events:', events);
+
   // Remove transfer events FROM the owner, because if that is the *only* event, it's likely a spam token
   const filteredEvents = events.filter((event) => !(isTransferTokenEvent(event) && event.owner === event.payload.from));
+  console.log('Filtered events:', filteredEvents.length);
+  console.log('Filtered events:', filteredEvents);
 
-  return deduplicateArray(filteredEvents, (event) => event.token)
+  const deduplicatedEvents = deduplicateArray(filteredEvents, (event) => event.token);
+  console.log('Deduplicated events:', deduplicatedEvents.length);
+  console.log('Deduplicated events:', deduplicatedEvents);
+
+  const contracts = deduplicatedEvents
     .map((event) => createTokenContract(event, publicClient))
     .filter((contract) => contract !== undefined);
+
+  console.log('Created contracts:', contracts.length);
+  console.log('Created contracts:', contracts);
+
+  return contracts;
 };
 
 export const createTokenContract = (event: TokenEvent, publicClient: PublicClient): TokenContract | undefined => {

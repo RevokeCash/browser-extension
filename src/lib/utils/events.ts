@@ -125,13 +125,24 @@ export const parsePermit2Log = (log: Log, chainId: number): Permit2Event | undef
     const amount = parsedEvent.eventName === 'Lockdown' ? 0n : maybeAmount;
     const time = { transactionHash: log.transactionHash, blockNumber: log.blockNumber, timestamp: log.timestamp };
 
-    if ([owner, token, spender, amount, expiration].some((arg) => isNullish(arg))) return undefined;
+    if ([owner, token, spender, amount, expiration].some((arg) => isNullish(arg))) {
+      return undefined;
+    }
 
     // Different chains may have different instances of Permit2, so we use the address of the instance that emitted the approval event
     const payload = { spender, permit2Address: log.address, amount, expiration };
-    return { type: TokenEventType.PERMIT2, rawLog: log, token, chainId, owner, time, payload };
-  } catch {
-    console.error('Malformed Permit2 log:', log);
+    const result: Permit2Event = {
+      type: TokenEventType.PERMIT2,
+      rawLog: log,
+      token,
+      chainId,
+      owner,
+      time,
+      payload,
+    };
+    return result;
+  } catch (error) {
+    console.error('Malformed Permit2 log:', log, error);
     return undefined;
   }
 };
@@ -153,10 +164,34 @@ export const parseApprovalLog = (log: Log, chainId: number): Erc20ApprovalEvent 
       return undefined;
     }
 
-    const payload = { spender, tokenId, amount };
-    return { type, rawLog: log, token: log.address, chainId, owner, time, payload };
-  } catch {
-    console.error('Malformed approval log:', log);
+    // Build a properly discriminated object to satisfy the return type
+    if (type === TokenEventType.APPROVAL_ERC721) {
+      const payload = { spender, tokenId } as { spender: Address; tokenId: bigint };
+      const result: Erc721ApprovalEvent = {
+        type: TokenEventType.APPROVAL_ERC721,
+        rawLog: log,
+        token: log.address,
+        chainId,
+        owner,
+        time,
+        payload,
+      };
+      return result;
+    } else {
+      const payload = { spender, amount } as { spender: Address; amount: bigint };
+      const result: Erc20ApprovalEvent = {
+        type: TokenEventType.APPROVAL_ERC20,
+        rawLog: log,
+        token: log.address,
+        chainId,
+        owner,
+        time,
+        payload,
+      };
+      return result;
+    }
+  } catch (error) {
+    console.error('Malformed approval log:', log, error);
     return undefined;
   }
 };
@@ -168,12 +203,23 @@ export const parseApprovalForAllLog = (log: Log, chainId: number): Erc721Approva
     const { owner, spender, approved } = parsedEvent.args;
     const time = { transactionHash: log.transactionHash, blockNumber: log.blockNumber, timestamp: log.timestamp };
 
-    if ([owner, spender, approved].some((arg) => isNullish(arg))) return undefined;
+    if ([owner, spender, approved].some((arg) => isNullish(arg))) {
+      return undefined;
+    }
 
     const payload = { spender, approved };
-    return { type: TokenEventType.APPROVAL_FOR_ALL, rawLog: log, token: log.address, chainId, owner, time, payload };
-  } catch {
-    console.error('Malformed approval for all log:', log);
+    const result: Erc721ApprovalForAllEvent = {
+      type: TokenEventType.APPROVAL_FOR_ALL,
+      rawLog: log,
+      token: log.address,
+      chainId,
+      owner,
+      time,
+      payload,
+    };
+    return result;
+  } catch (error) {
+    console.error('Malformed approval for all log:', log, error);
     return undefined;
   }
 };

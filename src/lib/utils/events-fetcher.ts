@@ -18,7 +18,6 @@ export async function fetchTokenEvents(address: Address, chainId: number): Promi
  * This replaces the useAllowances React hook for Chrome extension compatibility
  */
 export async function fetchAllowances(address: Address, chainId: number): Promise<TokenAllowanceData[]> {
-  console.log('fetchAllowances called with:', { address, chainId });
   const publicClient = createViemPublicClientForChain(chainId);
   if (!publicClient) {
     console.warn(`No public client available for chain ${chainId}`);
@@ -26,12 +25,8 @@ export async function fetchAllowances(address: Address, chainId: number): Promis
   }
 
   try {
-    console.log('Fetching token events...');
     const events = await fetchTokenEvents(address, chainId);
-    console.log('Token events fetched:', events.length, 'events');
-    console.log('Getting allowances from events...');
     const allowances = await getAllowancesFromEvents(address, events, publicClient, chainId);
-    console.log('Allowances processed:', allowances.length, 'allowances');
     return allowances;
   } catch (error) {
     console.error('Failed to fetch allowances:', error);
@@ -43,11 +38,7 @@ export async function fetchAllowances(address: Address, chainId: number): Promis
  * Helper function to map TokenAllowanceData to a simple UI format
  */
 export function mapAllowancesToUIFormat(allowances: TokenAllowanceData[]) {
-  console.log('mapAllowancesToUIFormat called with:', allowances.length, 'allowances');
-  console.log('Raw allowances:', allowances);
-
   const filtered = allowances.filter((a) => Boolean(a.payload));
-  console.log('Filtered allowances with payload:', filtered.length);
 
   const mapped = filtered.map((a) => {
     const allowanceText =

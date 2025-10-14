@@ -84,13 +84,9 @@ export default function ApprovalsPanel() {
   // Load approvals for the first enabled wallet when the tab is open
   useEffect(() => {
     const loadApprovals = async () => {
-      console.log('Loading approvals for wallets:', wallets);
       const enabledWallets = (wallets || []).filter((w) => w.enabled);
-      console.log('Enabled wallets:', enabledWallets);
       const wallet = enabledWallets[activeIndex] || enabledWallets[0];
-      console.log('Selected wallet:', wallet);
       if (!wallet) {
-        console.log('No wallet selected, clearing approvals');
         setApprovalsState([]);
         return;
       }
@@ -98,11 +94,8 @@ export default function ApprovalsPanel() {
       try {
         setLoading(true);
         const chainId = 1; // default to Ethereum mainnet for now
-        console.log('Fetching allowances for:', wallet.address, 'chainId:', chainId);
         const allowances = await fetchAllowances(wallet.address as Address, chainId);
-        console.log('Raw allowances:', allowances);
         const mappedApprovals = mapAllowancesToUIFormat(allowances);
-        console.log('Mapped approvals:', mappedApprovals);
         setApprovalsState(mappedApprovals);
       } catch (error) {
         console.error('Failed to load approvals:', error);
