@@ -59,6 +59,74 @@ function WalletPill({ label, onPrev, onNext }: { label: string; onPrev: () => vo
 
 const STORAGE_KEY = 'approvals.watchlist';
 
+function CopyButton({ value, size = 14, className }: { value: string; size?: number; className?: string }) {
+  const [copied, setCopied] = useState(false);
+
+  async function copyToClipboard(text: string) {
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      try {
+        const el = document.createElement('textarea');
+        el.value = text;
+        el.style.position = 'fixed';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.focus();
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+      } catch {}
+    }
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1200);
+  }
+
+  return (
+    <button
+      type="button"
+      aria-label="Copy address"
+      onClick={() => copyToClipboard(value)}
+      className={`shrink-0 inline-flex items-center justify-center rounded-md hover:bg-[#141414] border border-transparent hover:border-[#2A2A2A] transition-colors ${
+        className || ''
+      }`}
+      style={{ width: size + 8, height: size + 8 }}
+    >
+      {copied ? (
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-neutral-300"
+        >
+          <path d="M20 6L9 17l-5-5" />
+        </svg>
+      ) : (
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-neutral-400"
+        >
+          <rect x="9" y="9" width="12" height="12" rx="2" />
+          <rect x="3" y="3" width="12" height="12" rx="2" />
+        </svg>
+      )}
+    </button>
+  );
+}
+
 // Helper function to detect connected wallet address
 const getConnectedWalletAddress = async (): Promise<string | null> => {
   try {
@@ -136,7 +204,10 @@ export default function ApprovalsPanel() {
             <div className="flex items-center gap-2 text-[13px]">
               <div className="font-semibold">{activeWallet?.label}</div>
               <span className="text-neutral-400">|</span>
-              <span className="text-neutral-400">{truncateMiddle(activeWallet?.address || '')}</span>
+              <div className="flex items-center gap-1 min-w-0">
+                <span className="text-neutral-400 truncate">{truncateMiddle(activeWallet?.address || '')}</span>
+                <CopyButton value={activeWallet?.address || ''} size={12} />
+              </div>
             </div>
             <div className="text-[12px] text-neutral-400">
               {loading ? 'Loading…' : `${approvalsState.length} open approvals`}
@@ -159,18 +230,23 @@ export default function ApprovalsPanel() {
               {approvalsState.length === 0 ? (
                 <div className="px-3 py-6 text-[13px] text-neutral-400">No approvals found for this wallet yet.</div>
               ) : (
-                <ul>
-                  {approvalsState.map((a, idx) => (
-                    <li key={idx} className="px-3 py-3 grid grid-cols-[1fr,1fr,1fr] items-center text-[13px]">
-                      <div className="font-medium">{a.token}</div>
-                      <div className="min-w-0">
-                        <div className="truncate">{a.spender}</div>
-                        <div className="text-[12px] text-neutral-400 -mt-0.5">{a.spenderLabel}</div>
-                      </div>
-                      <div className="text-right font-semibold">{a.allowance}</div>
-                    </li>
-                  ))}
-                </ul>
+                <div className="max-h-[360px] overflow-auto">
+                  <ul>
+                    {approvalsState.map((a, idx) => (
+                      <li key={idx} className="px-3 py-3 grid grid-cols-[1fr,1fr,1fr] items-center text-[13px]">
+                        <div className="font-medium">{a.token}</div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1 min-w-0">
+                            <span className="truncate">{a.spender}</span>
+                            <CopyButton value={a.spender} />
+                          </div>
+                          <div className="text-[12px] text-neutral-400 -mt-0.5">{a.spenderLabel}</div>
+                        </div>
+                        <div className="text-right font-semibold">{a.allowance}</div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
           </>
