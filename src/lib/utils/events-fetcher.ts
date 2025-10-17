@@ -1,6 +1,6 @@
 import { createViemPublicClientForChain } from '../chains/chains';
 import { getTokenEvents } from '../chains/events';
-import { getAllowancesFromEvents } from './allowances';
+import { getAllowancesFromEvents, formatErc20Allowance, isErc20Allowance, AllowanceType } from './allowances';
 import type { Address } from 'viem';
 import type { TokenEvent } from './events';
 import type { TokenAllowanceData } from './allowances';
@@ -41,14 +41,17 @@ export function mapAllowancesToUIFormat(allowances: TokenAllowanceData[]) {
   const filtered = allowances.filter((a) => Boolean(a.payload));
 
   const mapped = filtered.map((a) => {
-    const allowanceText =
-      a.payload?.type === 'ERC20'
-        ? a.metadata?.decimals != null
-          ? (Number(a.payload!.amount) / 10 ** (a.metadata.decimals || 0)).toString()
-          : a.payload!.amount.toString()
-        : a.payload?.type === 'ERC721_SINGLE'
-          ? `#${(a.payload as any).tokenId}`
-          : 'All';
+    let allowanceText: string;
+
+    if (a.payload && isErc20Allowance(a.payload)) {
+      // Use shared formatter which returns 'Unlimited' when allowance exceeds totalSupply
+      allowanceText = formatErc20Allowance(a.payload.amount, a.metadata.decimals, a.metadata.totalSupply);
+    } else if (a.payload?.type === AllowanceType.ERC721_SINGLE) {
+      allowanceText = `#${(a.payload as any).tokenId}`;
+    } else {
+      // Covers ERC721 all-collection approvals
+      allowanceText = 'All';
+    }
 
     return {
       token: a.metadata.symbol || a.contract.address,

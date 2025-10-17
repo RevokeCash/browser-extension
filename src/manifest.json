@@ -59,6 +59,12 @@
       "js": ["js/content-scripts/google-sponsored-detector.js"],
       "all_frames": true,
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://dexscreener.com/*"],
+      "js": ["js/content-scripts/dexscreener-ad-highlighter.js"],
+      "all_frames": true,
+      "run_at": "document_idle"
     }
   ],
 

@@ -3,6 +3,7 @@ import { GhostButton } from './controls';
 import Modal from './Modal';
 import useBrowserStorage from '../../../hooks/useBrowserStorage';
 import { fetchAllowances, mapAllowancesToUIFormat } from '../../../lib/utils/events-fetcher';
+import { getJsonCookie, setJsonCookie } from '../../../lib/utils/cookies';
 import type { Address } from 'viem';
 
 declare global {
@@ -162,9 +163,32 @@ export default function ApprovalsPanel() {
       try {
         setLoading(true);
         const chainId = 1; // default to Ethereum mainnet for now
+
+        // 1-hour cache in cookies per address+chain
+        const cacheKey = `approvals:${chainId}:${wallet.address.toLowerCase()}`;
+        const TTL_SECONDS = 60 * 60;
+
+        // Try cache first
+        const cached = getJsonCookie<{ data: Approval[]; ts: number }>(cacheKey);
+        const now = Date.now();
+        if (
+          cached &&
+          typeof cached.ts === 'number' &&
+          now - cached.ts < TTL_SECONDS * 1000 &&
+          Array.isArray(cached.data)
+        ) {
+          setApprovalsState(cached.data);
+          setLoading(false);
+          return;
+        }
+
+        // Fetch fresh if no valid cache
         const allowances = await fetchAllowances(wallet.address as Address, chainId);
         const mappedApprovals = mapAllowancesToUIFormat(allowances);
         setApprovalsState(mappedApprovals);
+
+        // Save to cookie cache (1 hour)
+        setJsonCookie(cacheKey, { data: mappedApprovals, ts: now }, TTL_SECONDS);
       } catch (error) {
         console.error('Failed to load approvals:', error);
         setApprovalsState([]);

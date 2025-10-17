@@ -12,14 +12,44 @@ import '../styles.css';
 const Popup = () => {
   return (
     <Page>
-      <div className="w-full h-full">
+      <div className="w-full h-full flex flex-col min-h-0">
         <MemoryRouter>
-          <SlideRoutes duration={100}>
-            <Route path="/" element={<MainPage />}></Route>
-            <Route path="/color-theme" element={<ColorThemeSelectPage />} />
-            <Route path="/language" element={<LanguageSelectPage />} />
-            <Route path="/about" element={<AboutPage />} />
-          </SlideRoutes>
+          <div className="flex-1 min-h-0 h-full flex flex-col overflow-hidden">
+            <SlideRoutes duration={100}>
+              <Route
+                path="/"
+                element={
+                  <div className="h-full min-h-0 flex flex-col">
+                    <MainPage />
+                  </div>
+                }
+              ></Route>
+              <Route
+                path="/color-theme"
+                element={
+                  <div className="h-full min-h-0 flex flex-col">
+                    <ColorThemeSelectPage />
+                  </div>
+                }
+              />
+              <Route
+                path="/language"
+                element={
+                  <div className="h-full min-h-0 flex flex-col">
+                    <LanguageSelectPage />
+                  </div>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <div className="h-full min-h-0 flex flex-col">
+                    <AboutPage />
+                  </div>
+                }
+              />
+            </SlideRoutes>
+          </div>
         </MemoryRouter>
       </div>
     </Page>

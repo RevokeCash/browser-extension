@@ -50,7 +50,7 @@ const MainPage = () => {
   }, []);
 
   return (
-    <div className="flex flex-col h-full bg-[#0B0B0B] text-[#EDEDED]">
+    <div className="flex flex-col h-full min-h-0 bg-[#0B0B0B] text-[#EDEDED]">
       <TopBar />
       <UpdateBanner />
       <Tabs active={activeTab} onChange={setActiveTab} />
@@ -60,7 +60,7 @@ const MainPage = () => {
       </div>
 
       <div
-        className="flex-1 overflow-auto px-3"
+        className="flex-1 min-h-0 overflow-auto px-3"
         style={{ paddingBottom: activeTab === 'features' ? FOOTER_SPACE_PX : 12 }}
       >
         {activeTab === 'features' && <FeatureCard onFeeDetails={openFee} />}
