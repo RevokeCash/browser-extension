@@ -71,6 +71,12 @@
       "js": ["js/content-scripts/coingecko-ad-highlighter.js"],
       "all_frames": true,
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://dextools.io/*", "*://www.dextools.io/*"],
+      "js": ["js/content-scripts/dextools-ad-highlighter.js"],
+      "all_frames": true,
+      "run_at": "document_idle"
     }
   ],
 
