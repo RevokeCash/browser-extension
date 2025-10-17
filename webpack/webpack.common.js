@@ -19,6 +19,7 @@ module.exports = {
     'content-scripts/etherscan-poison-detector': path.join(srcDir, 'content-scripts', 'etherscan-poison-detector.ts'),
     'content-scripts/google-sponsored-detector': path.join(srcDir, 'content-scripts', 'google-sponsored-detector.ts'),
     'content-scripts/dexscreener-ad-highlighter': path.join(srcDir, 'content-scripts', 'dexscreener-ad-highlighter.ts'),
+    'content-scripts/coingecko-ad-highlighter': path.join(srcDir, 'content-scripts', 'coingecko-ad-highlighter.ts'),
     'content-scripts/antiphish': path.join(srcDir, 'content-scripts', 'antiphish.ts'),
     'injected/proxy-injected-providers': path.join(srcDir, 'injected', 'proxy-injected-providers.tsx'),
   },

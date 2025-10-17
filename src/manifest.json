@@ -65,6 +65,12 @@
       "js": ["js/content-scripts/dexscreener-ad-highlighter.js"],
       "all_frames": true,
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://www.coingecko.com/*", "*://coingecko.com/*"],
+      "js": ["js/content-scripts/coingecko-ad-highlighter.js"],
+      "all_frames": true,
+      "run_at": "document_idle"
     }
   ],
 
