@@ -24,8 +24,8 @@ const AboutPage = () => {
       <ExternalLink size="large" colorChangeOnHover href={Urls.GITHUB}>
         GitHub
       </ExternalLink>
-      <ExternalLink size="large" colorChangeOnHover href={Urls.TWITTER}>
-        X (Twitter)
+      <ExternalLink size="large" colorChangeOnHover href={Urls.X}>
+        X
       </ExternalLink>
       <ExternalLink size="large" colorChangeOnHover href={Urls.DISCORD}>
         Discord

@@ -293,8 +293,14 @@ function init() {
   }, 1000);
 }
 
-try {
-  init();
-} catch (error) {
-  log('Error initializing:', error);
-}
+// Check feature flag before initializing
+chrome.storage.local.get(['feature_x_op_detector_enabled'], (result) => {
+  const enabled = result.feature_x_op_detector_enabled ?? true;
+  if (enabled) {
+    try {
+      init();
+    } catch (error) {
+      log('Error initializing:', error);
+    }
+  }
+});

@@ -46,11 +46,7 @@ export default function FeatureRowItem({ row, darkMode, isLast }: { row: Row; da
 
   return (
     <>
-      <div
-        className={`py-3 px-3 border rounded-[8px] transition-colors ${
-          isCoverage && isOff ? 'border-[#B71C1C]' : 'border-transparent'
-        }`}
-      >
+      <div className="py-3 px-3">
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-col flex-[0.9] min-w-0">
             <div className="text-[13px] font-semibold text-neutral-100 break-words">{row.title}</div>
@@ -87,8 +83,6 @@ export default function FeatureRowItem({ row, darkMode, isLast }: { row: Row; da
             />
           </button>
         </div>
-
-        {!isLast && <div className="mt-3 h-px bg-[#232323]" />}
       </div>
 
       <DisableCoverageModal open={showDisable} onCancel={cancelDisable} onConfirm={confirmDisable} />

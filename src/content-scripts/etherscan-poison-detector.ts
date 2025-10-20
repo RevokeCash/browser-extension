@@ -832,6 +832,12 @@ function init() {
   window.addEventListener('popstate', handleNav);
 }
 
-try {
-  init();
-} catch {}
+// Check feature flag before initializing
+chrome.storage.local.get(['feature_address_guard_enabled'], (result) => {
+  const enabled = result.feature_address_guard_enabled ?? true;
+  if (enabled) {
+    try {
+      init();
+    } catch {}
+  }
+});

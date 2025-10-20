@@ -240,8 +240,14 @@ function init() {
   mo.observe(document.documentElement, { childList: true, subtree: true });
 }
 
-try {
-  init();
-} catch (e) {
-  log('Error initializing:', e);
-}
+// Check feature flag before initializing
+chrome.storage.local.get(['feature_coingecko_ad_warn_enabled'], (result) => {
+  const enabled = result.feature_coingecko_ad_warn_enabled ?? true;
+  if (enabled) {
+    try {
+      init();
+    } catch (e) {
+      log('Error initializing:', e);
+    }
+  }
+});

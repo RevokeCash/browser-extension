@@ -4,7 +4,7 @@ export const FEE_RECIPIENT = process.env.FEE_RECIPIENT;
 export const Urls = {
   REVOKE_CASH: 'https://revoke.cash',
   DISCORD: 'https://discord.gg/revoke-cash',
-  TWITTER: 'https://twitter.com/RevokeCash',
+  X: 'https://x.com/RevokeCash',
   GITHUB: 'https://github.com/RevokeCash/browser-extension',
   KERBERUS: 'https://www.kerberus.com/extension/?ref=REVOKECASH',
 } as const;
@@ -266,7 +266,7 @@ export const CHROME_EXTENSION_URL =
 export const FIREFOX_EXTENSION_URL = 'https://addons.mozilla.org/en-US/firefox/addon/revoke-cash/';
 export const DISCORD_URL = 'https://discord.gg/revoke-cash';
 export const GITHUB_URL = 'https://github.com/RevokeCash/revoke.cash';
-export const TWITTER_URL = 'https://twitter.com/RevokeCash';
+export const X_URL = 'https://x.com/RevokeCash';
 
 export const ADDRESS_ZERO_PADDED = '0x0000000000000000000000000000000000000000000000000000000000000000' as const;
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000' as const;
@@ -300,6 +300,10 @@ export const COINGECKO_API_BASE_URL = 'https://pro-api.coingecko.com/api/v3';
 export const FEATURE_KEYS = {
   SIMULATOR: 'feature_simulator_enabled',
   GOOGLE_AD_WARN: 'feature_google_ad_warn_enabled',
+  COINGECKO_AD_WARN: 'feature_coingecko_ad_warn_enabled',
+  DEXTOOLS_AD_WARN: 'feature_dextools_ad_warn_enabled',
+  DEXSCREENER_AD_WARN: 'feature_dexscreener_ad_warn_enabled',
+  X_OP_DETECTOR: 'feature_x_op_detector_enabled',
   ADDRESS_GUARD: 'feature_address_guard_enabled',
   COVERAGE: 'feature_coverage_enabled',
 } as const;
@@ -309,6 +313,10 @@ export type FeatureKey = (typeof FEATURE_KEYS)[keyof typeof FEATURE_KEYS];
 export const FEATURE_DEFAULTS: Record<FeatureKey, boolean> = {
   [FEATURE_KEYS.SIMULATOR]: true,
   [FEATURE_KEYS.GOOGLE_AD_WARN]: true,
+  [FEATURE_KEYS.COINGECKO_AD_WARN]: true,
+  [FEATURE_KEYS.DEXTOOLS_AD_WARN]: true,
+  [FEATURE_KEYS.DEXSCREENER_AD_WARN]: true,
+  [FEATURE_KEYS.X_OP_DETECTOR]: true,
   [FEATURE_KEYS.ADDRESS_GUARD]: true,
   [FEATURE_KEYS.COVERAGE]: true,
 };

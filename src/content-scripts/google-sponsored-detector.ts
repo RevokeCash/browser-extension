@@ -172,6 +172,12 @@ function init() {
   mo.observe(document.documentElement, { childList: true, subtree: true });
 }
 
-try {
-  init();
-} catch {}
+// Check feature flag before initializing
+chrome.storage.local.get(['feature_google_ad_warn_enabled'], (result) => {
+  const enabled = result.feature_google_ad_warn_enabled ?? true;
+  if (enabled) {
+    try {
+      init();
+    } catch {}
+  }
+});
