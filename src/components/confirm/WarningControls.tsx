@@ -1,7 +1,6 @@
 import React from 'react';
 import { Hash } from 'viem';
 import Browser from 'webextension-polyfill';
-import { useTranslations } from '../../i18n';
 import MenuItem from '../common/MenuItem';
 import Title from '../common/Title';
 
@@ -11,8 +10,6 @@ interface Props {
 }
 
 const WarningControls = ({ bypassed, requestId }: Props) => {
-  const t = useTranslations();
-
   const respond = async (data: boolean) => {
     try {
       await Browser.runtime.sendMessage(undefined, { requestId, data });
@@ -26,13 +23,13 @@ const WarningControls = ({ bypassed, requestId }: Props) => {
   const dismiss = () => window.close();
 
   return (
-    <div className="flex w-full h-16 divide-x divide-neutral-50 dark:divide-neutral-750 mt-3 shrink-0">
+    <div className="flex w-full h-16 divide-x divide-neutral-800 mt-3 shrink-0 bg-neutral-950">
       {bypassed ? (
-        <WarningControlsButton onClick={dismiss}>{t('common.dismiss')}</WarningControlsButton>
+        <WarningControlsButton onClick={dismiss}>Dismiss</WarningControlsButton>
       ) : (
         <>
-          <WarningControlsButton onClick={reject}>{t('common.reject')}</WarningControlsButton>
-          <WarningControlsButton onClick={confirm}>{t('common.continue')}</WarningControlsButton>
+          <WarningControlsButton onClick={reject}>Reject</WarningControlsButton>
+          <WarningControlsButton onClick={confirm}>Continue</WarningControlsButton>
         </>
       )}
     </div>
@@ -51,7 +48,16 @@ const WarningControlsButton = ({ children, onClick }: ButtonProps) => {
     <button onClick={onClick} className="grow">
       <MenuItem
         size="small"
-        className="bg-neutral-100 dark:bg-neutral-800 hover:text-neutral-850 hover:dark:text-neutral-300 h-full w-full hover:bg-neutral-0 hover:dark:bg-neutral-750 justify-center"
+        className="
+          bg-neutral-900 
+          text-neutral-200 
+          hover:text-white 
+          hover:bg-neutral-800 
+          h-full w-full 
+          justify-center 
+          transition-colors duration-150
+          border border-neutral-800
+        "
       >
         <Title>{children}</Title>
       </MenuItem>

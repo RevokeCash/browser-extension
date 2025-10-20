@@ -1,5 +1,9 @@
 export const WHOIS_BASE_URL = 'https://whois.revoke.cash/generated';
 export const FEE_RECIPIENT = process.env.FEE_RECIPIENT;
+export const CHAINPATROL_API_KEY = process.env.CHAINPATROL_API_KEY;
+export const TENDERLY_ACCOUNT = process.env.TENDERLY_ACCOUNT;
+export const TENDERLY_PROJECT = process.env.TENDERLY_PROJECT;
+export const TENDERLY_ACCESS_KEY = process.env.TENDERLY_ACCESS_KEY;
 
 export const Urls = {
   REVOKE_CASH: 'https://revoke.cash',
@@ -320,15 +324,3 @@ export const FEATURE_DEFAULTS: Record<FeatureKey, boolean> = {
   [FEATURE_KEYS.ADDRESS_GUARD]: true,
   [FEATURE_KEYS.COVERAGE]: true,
 };
-
-export const VERIFIED_DOMAINS = [
-  'app.uniswap.org',
-  'opensea.io',
-  'curve.fi',
-  'aave.com',
-  '1inch.io',
-  'revoke.cash',
-  'fairside.io',
-];
-
-export const CHAINPATROL_API_KEY = 'cp_live_EkidX6Z1CxkXgrfmJDdAcz6pepyAWHWrtBkxdHq7Tgmf';
