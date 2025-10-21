@@ -39,7 +39,7 @@ export default function DomainBar() {
 
         if (!cancelled) setDomain(host);
 
-        const s = await checkUrlFull(tabUrl, CHAINPATROL_API_KEY);
+        const s = await checkUrlFull(tabUrl, CHAINPATROL_API_KEY ?? '');
         if (!cancelled) {
           setStatus(s);
 

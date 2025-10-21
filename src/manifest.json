@@ -7,9 +7,7 @@
   "default_locale": "en",
 
   "__firefox__browser_specific_settings": {
-    "gecko": {
-      "id": "webextension@revoke.cash"
-    }
+    "gecko": { "id": "webextension@revoke.cash" }
   },
 
   "icons": {
@@ -26,7 +24,6 @@
     },
     "default_popup": "popup.html"
   },
-
   "__firefox__browser_action": {
     "default_icon": {
       "48": "images/icon-48.png",
@@ -89,18 +86,30 @@
   "web_accessible_resources": [
     {
       "matches": ["<all_urls>"],
-      "resources": ["js/injected/proxy-injected-providers.js"]
+      "resources": [
+        "js/injected/proxy-injected-providers.js",
+        "confirm.html",
+        "js/pages/confirm.js",
+        "js/vendor.js",
+        "assets/*"
+      ]
     }
   ],
-  "__firefox__web_accessible_resources": ["js/injected/proxy-injected-providers.js"],
+  "__firefox__web_accessible_resources": [
+    "js/injected/proxy-injected-providers.js",
+    "confirm.html",
+    "js/pages/confirm.js",
+    "js/vendor.js",
+    "assets/*"
+  ],
 
   "background": {
     "__chrome__service_worker": "js/background.js",
     "__firefox__scripts": ["js/background.js"]
   },
 
-  "permissions": ["storage"],
-  "__firefox__permissions": ["<all_urls>", "storage"],
+  "permissions": ["storage", "windows"],
+  "__firefox__permissions": ["<all_urls>", "storage", "tabs"],
 
-  "__chrome__host_permissions": ["<all_urls>"]
+  "__chrome__host_permissions": ["<all_urls>", "https://api.tenderly.co/*"]
 }

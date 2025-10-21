@@ -12,16 +12,22 @@ import AllowanceData from '../components/confirm/warning-types/allowance/Allowan
 import HashSignatureData from '../components/confirm/warning-types/hash/HashSignatureData';
 import MarketplaceListingData from '../components/confirm/warning-types/listing/MarketplaceListingData';
 import SuspectedScamData from '../components/confirm/warning-types/suspected-scam/SuspectedScamData';
+import SimulationCard from '../components/confirm/tenderly/SimulationCard'; // <-- NEW
 import { WarningType } from '../lib/constants';
 import { decodeWarningData } from '../lib/utils/decode';
 import '../styles.css';
 
 const Confirm = () => {
-  const data = decodeWarningData(new URLSearchParams(window.location.search));
+  const params = new URLSearchParams(window.location.search);
+  const data = decodeWarningData(params);
   const chainId = data?.type !== WarningType.HASH ? data?.chainId : undefined;
 
-  // Display an error message when no data could be decoded
-  if (!data) {
+  const tenderlySummaryParam = params.get('tenderlySummary');
+  const tenderlySummary = tenderlySummaryParam ? JSON.parse(tenderlySummaryParam) : null;
+
+  const requestIdFromQuery = params.get('requestId') || data?.requestId;
+
+  if (!data && !tenderlySummary) {
     return (
       <Page>
         <Error />
@@ -29,21 +35,34 @@ const Confirm = () => {
     );
   }
 
+  // Render both when available; otherwise render whichever exists
   return (
     <Page>
-      <div className="flex flex-col justify-start items-stretch w-full h-screen divide-y divide-neutral-50 dark:divide-neutral-750 bg-neutral-100 dark:bg-neutral-800">
+      <div className="flex flex-col justify-start items-stretch w-full h-screen bg-black text-white divide-y divide-neutral-800">
         <Header size="large" chainId={chainId} />
-        <Hostname hostname={data.hostname} />
-        <DataContainer>
-          <WarningTypeTitle type={data.type} />
-          {data.type === WarningType.ALLOWANCE && <AllowanceData data={data} />}
-          {data.type === WarningType.LISTING && <MarketplaceListingData data={data} />}
-          {data.type === WarningType.SUSPECTED_SCAM && <SuspectedScamData data={data} />}
-          {data.type === WarningType.HASH && <HashSignatureData data={data} />}
-          {data.bypassed && <BypassWarning />}
+        {data?.hostname && <Hostname hostname={data.hostname} />}
+
+        <DataContainer className="bg-black">
+          {data && (
+            <>
+              <WarningTypeTitle type={data.type} />
+              {data.type === WarningType.ALLOWANCE && <AllowanceData data={data} />}
+              {data.type === WarningType.LISTING && <MarketplaceListingData data={data} />}
+              {data.type === WarningType.SUSPECTED_SCAM && <SuspectedScamData data={data} />}
+              {data.type === WarningType.HASH && <HashSignatureData data={data} />}
+              {data.bypassed && <BypassWarning />}
+            </>
+          )}
+
+          {/* Simulation block (if any) */}
+          {tenderlySummary && (
+            <div style={{ width: '100%' }}>
+              <SimulationCard data={tenderlySummary} className="max-w-none bg-neutral-900 border-neutral-800" />
+            </div>
+          )}
         </DataContainer>
-        <WarningControls bypassed={data.bypassed} requestId={data.requestId} />
-        <div />
+
+        <WarningControls bypassed={!!data?.bypassed} requestId={requestIdFromQuery as any} />
       </div>
     </Page>
   );

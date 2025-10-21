@@ -19,7 +19,7 @@ export const CHAIN_SELECT_MAINNETS = [
   ChainId.Base,
   ChainId.ArbitrumOne,
   ChainId.OPMainnet,
-  ChainId.PlasmaMainnet,
+  // ChainId.PlasmaMainnet,
   ChainId['AvalancheC-Chain'],
   ChainId.SonicMainnet,
   ChainId.Linea,
@@ -1889,17 +1889,17 @@ export const CHAINS = {
     deployedContracts: { ...MULTICALL },
     priceStrategy: undefined, // <$100k Liquidity
   }),
-  [ChainId.PlasmaMainnet]: new Chain({
-    type: SupportType.ETHERSCAN_COMPATIBLE,
-    chainId: ChainId.PlasmaMainnet,
-    name: 'Plasma',
-    logoUrl: '/assets/images/vendor/chains/plasma.svg',
-    nativeTokenCoingeckoId: 'plasma',
-    etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/mainnet/evm/9745/etherscan/api',
-    rpc: {
-      main: `https://plasma-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-    },
-  }),
+  // [ChainId.PlasmaMainnet]: new Chain({
+  //   type: SupportType.ETHERSCAN_COMPATIBLE,
+  //   chainId: ChainId.PlasmaMainnet,
+  //   name: 'Plasma',
+  //   logoUrl: '/assets/images/vendor/chains/plasma.svg',
+  //   nativeTokenCoingeckoId: 'plasma',
+  //   etherscanCompatibleApiUrl: 'https://api.routescan.io/v2/network/mainnet/evm/9745/etherscan/api',
+  //   rpc: {
+  //     main: `https://plasma-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
+  //   },
+  // }),
   [ChainId.PlumeMainnet]: new Chain({
     type: SupportType.BLOCKSCOUT,
     chainId: ChainId.PlumeMainnet,

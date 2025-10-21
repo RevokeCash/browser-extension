@@ -42,6 +42,7 @@ export interface TransactionMessageData extends CommonMessageData {
   type: RequestType.TRANSACTION;
   transaction: Transaction;
   chainId: number;
+  simulation?: TenderlyPreview | null;
 }
 
 export interface TypedSignatureMessageData extends CommonMessageData {
@@ -153,4 +154,11 @@ export interface TokenData {
   name?: string;
   symbol?: string;
   decimals?: bigint;
+}
+
+export interface TenderlyPreview {
+  ok: boolean;
+  url?: string | null;
+  error?: string | null;
+  gasUsed?: string | null;
 }

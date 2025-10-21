@@ -1,6 +1,6 @@
-import { Hash } from 'viem';
+import { getAddress, Hash, hexToBigInt, isAddress, isHex } from 'viem';
 import Browser from 'webextension-polyfill';
-import { AddressAllowList, HostnameAllowList, WarningType, warningSettingKeys } from './lib/constants';
+import { AddressAllowList, FEATURE_KEYS, HostnameAllowList, WarningType, warningSettingKeys } from './lib/constants';
 import { AggregateDecoder } from './lib/decoders/AggregateDecoder';
 import { ApproveDecoder } from './lib/decoders/transaction/ApproveDecoder';
 import { IncreaseAllowanceDecoder } from './lib/decoders/transaction/IncreaseAllowanceDecoder';
@@ -24,6 +24,42 @@ import { Message, MessageResponse, WarningData } from './lib/types';
 import { normaliseMessage } from './lib/utils/messages';
 import { getStorage } from './lib/utils/storage';
 import { track } from './lib/utils/analytics';
+import { getTenderlyConfig } from './tenderly/config';
+
+const inflightRequests = new Set<Hash>();
+const openPopupByKey = new Map<string, number>();
+
+const windowIdByRequestId = new Map<Hash, number>();
+
+function isMessageResponse(x: any): x is MessageResponse {
+  return x && typeof x.requestId === 'string' && (x.data === true || x.data === false);
+}
+
+type TxLike = { from?: string; to?: string | null; value?: any; nonce?: any; data?: string };
+const recentTxKeys = new Map<string, number>();
+const DEDUPE_MS = 7_000;
+function numLikeString(v: any) {
+  const n = numLike(v);
+  return n == null ? '' : String(n);
+}
+
+function txKey(chainId: number, tx: TxLike) {
+  const from = (tx.from || '').toLowerCase();
+  const to = (tx.to || '').toLowerCase();
+  const value = numLikeString(tx.value) || '0';
+  const nonce = numLikeString(tx.nonce) || '';
+  const sel = (tx.data || '0x').slice(0, 10); // 4-byte selector
+  return `${chainId}:${from}:${to}:${value}:${nonce}:${sel}`;
+}
+
+function shouldDedupe(chainId: number, tx: TxLike) {
+  const key = txKey(chainId, tx);
+  const now = Date.now();
+  for (const [k, until] of recentTxKeys) if (until <= now) recentTxKeys.delete(k);
+  const exists = recentTxKeys.has(key);
+  recentTxKeys.set(key, now + DEDUPE_MS);
+  return exists;
+}
 
 // Note that these messages will be periodically cleared due to the background service shutting down
 // after 5 minutes of inactivity (see Manifest v3 docs).
@@ -63,37 +99,136 @@ const setupRemoteConnection = async (remotePort: Browser.Runtime.Port) => {
 
 Browser.runtime.onConnect.addListener(setupRemoteConnection);
 
-Browser.runtime.onMessage.addListener((response: MessageResponse) => {
-  const responsePort = messagePorts[response.requestId];
+Browser.runtime.onMessage.addListener((maybeResponse: unknown) => {
+  if (!isMessageResponse(maybeResponse)) {
+    return;
+  }
+  const response = maybeResponse as MessageResponse;
 
+  const responsePort = messagePorts[response.requestId];
   track('Responded to request', { requestId: response.requestId, response: response.data });
 
-  if (response.data) {
-    approvedMessages.push(response.requestId);
-  }
+  if (response.data) approvedMessages.push(response.requestId);
 
   if (responsePort) {
     responsePort.postMessage(response);
     delete messagePorts[response.requestId];
-    return;
+  }
+
+  inflightRequests.delete(response.requestId);
+
+  const winId = windowIdByRequestId.get(response.requestId);
+  if (winId != null) {
+    windowIdByRequestId.delete(response.requestId);
+    try {
+      Browser.windows.remove(winId);
+    } catch {}
   }
 });
 
-const processMessage = async (message: Message, remotePort: Browser.Runtime.Port) => {
-  console.log('Processing message:', message);
-  const popupCreated = await decodeMessageAndCreatePopupIfNeeded(message);
+Browser.windows.onRemoved.addListener((id) => {
+  for (const [k, winId] of openPopupByKey) {
+    if (winId === id) openPopupByKey.delete(k);
+  }
+});
 
-  // For bypassed messages we have no response to return
-  if (message.data.bypassed) return;
+async function isSimulatorEnabledBG(): Promise<boolean | undefined> {
+  return getStorage('local', FEATURE_KEYS.SIMULATOR, true);
+}
 
-  // If no popup was created, we respond positively to indicate that the request should go through
-  if (!popupCreated) {
-    remotePort.postMessage({ requestId: message.requestId, data: true });
-    return;
+const numLike = (v: any): number | string | undefined => {
+  if (v == null) return undefined;
+  if (typeof v === 'bigint') {
+    const s = v.toString();
+    const n = Number(s);
+    return Number.isSafeInteger(n) ? n : s;
+  }
+  if (typeof v === 'number') return v;
+  if (typeof v === 'string') {
+    if (isHex(v)) {
+      const s = hexToBigInt(v as `0x${string}`).toString();
+      const n = Number(s);
+      return Number.isSafeInteger(n) ? n : s;
+    }
+    if (/^\d+$/.test(v)) {
+      const n = Number(v);
+      return Number.isSafeInteger(n) ? n : v;
+    }
+    try {
+      const s = BigInt(v).toString();
+      const n = Number(s);
+      return Number.isSafeInteger(n) ? n : s;
+    } catch {
+      return undefined;
+    }
+  }
+  try {
+    const s = BigInt(v).toString();
+    const n = Number(s);
+    return Number.isSafeInteger(n) ? n : s;
+  } catch {
+    return undefined;
+  }
+};
+
+export async function simulateWithTenderly(chainId: number, tx: any) {
+  const cfg = await getTenderlyConfig();
+  if (!cfg?.enabled || !cfg.account || !cfg.project || !cfg.accessKey) return null; // non-blocking
+
+  if (!isAddress(tx?.from)) return { ok: false, error: 'Invalid from address' };
+  const from = getAddress(tx.from);
+  const to = tx?.to ? (isAddress(tx.to) ? getAddress(tx.to) : null) : null;
+
+  const payload: any = {
+    network_id: String(chainId),
+    from,
+    to,
+    gas: numLike(tx?.gas),
+    gas_price: numLike(tx?.gasPrice),
+    max_fee_per_gas: numLike(tx?.maxFeePerGas),
+    max_priority_fee_per_gas: numLike(tx?.maxPriorityFeePerGas),
+    nonce: numLike(tx?.nonce),
+    value: numLike(tx?.value) ?? 0,
+    input: tx?.data ?? '0x',
+    simulation_type: 'quick',
+    save_if_fails: true,
+    save: true,
+  };
+  if (payload.max_fee_per_gas != null || payload.max_priority_fee_per_gas != null) {
+    delete payload.gas_price;
   }
 
-  // Store the remote port so the response can be sent back there
-  messagePorts[message.requestId] = remotePort;
+  const url = `https://api.tenderly.co/api/v1/account/${encodeURIComponent(cfg.account!)}/project/${encodeURIComponent(cfg.project!)}/simulate`;
+  const headers = { 'Content-Type': 'application/json', 'X-Access-Key': cfg.accessKey! };
+
+  try {
+    const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(payload) });
+    const json: any = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, error: json?.error || json?.message || res.statusText };
+
+    return json;
+  } catch (e: any) {
+    return { ok: false, error: e?.message || 'Simulation failed' };
+  }
+}
+
+const processMessage = async (message: Message, remotePort: Browser.Runtime.Port) => {
+  if (inflightRequests.has(message.requestId)) {
+    return;
+  }
+  inflightRequests.add(message.requestId);
+
+  try {
+    const popupCreated = await decodeMessageAndCreatePopupIfNeeded(message);
+    if (message.data.bypassed) return;
+
+    if (!popupCreated) {
+      remotePort.postMessage({ requestId: message.requestId, data: true });
+      return;
+    }
+    messagePorts[message.requestId] = remotePort;
+  } finally {
+  }
 };
 
 // Boolean result indicates whether a popup was created
@@ -103,20 +238,39 @@ const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<bo
   trackMessage(message);
 
   const warningData = messageDecoder.decode(message);
-  if (!warningData) return false;
+  let tenderlySummary: any = null;
 
-  const warningsTurnedOnForType = await getStorage('local', warningSettingKeys[warningData.type], true);
-  if (!warningsTurnedOnForType) return false;
+  const mdata = message.data as any;
+  if (mdata?.transaction && typeof mdata?.chainId === 'number') {
+    if (shouldDedupe(mdata.chainId, mdata.transaction)) return false;
 
-  const isHostnameAllowListed = HostnameAllowList[warningData.type].includes(warningData.hostname);
-  if (isHostnameAllowListed) return false;
+    // ✅ Only run Tenderly if simulator is enabled
+    const simulatorOn = await isSimulatorEnabledBG();
+    if (simulatorOn) {
+      tenderlySummary = await simulateWithTenderly(mdata.chainId, mdata.transaction);
+    }
+  }
 
-  const address = 'spender' in warningData ? warningData.spender : 'address' in warningData ? warningData.address : '';
-  const isAddressAllowListed = AddressAllowList[warningData.type].includes(address.toLowerCase());
-  if (isAddressAllowListed) return false;
+  if (!warningData && !tenderlySummary) return false;
 
-  createWarningPopup(warningData);
-  trackWarning(warningData);
+  if (warningData) {
+    const warningsTurnedOnForType = await getStorage('local', warningSettingKeys[warningData.type], true);
+    if (!warningsTurnedOnForType) return false;
+
+    const isHostnameAllowListed = HostnameAllowList[warningData.type].includes(warningData.hostname);
+    if (isHostnameAllowListed) return false;
+
+    const address =
+      'spender' in warningData ? warningData.spender : 'address' in warningData ? warningData.address : '';
+    const isAddressAllowListed = AddressAllowList[warningData.type].includes(address.toLowerCase());
+    if (isAddressAllowListed) return false;
+  }
+
+  const key =
+    mdata?.transaction && typeof mdata?.chainId === 'number' ? txKey(mdata.chainId, mdata.transaction) : undefined;
+
+  await createWarningPopup(message.requestId, warningData, tenderlySummary ?? null, key);
+  if (warningData) trackWarning(warningData);
 
   return true;
 };
@@ -142,17 +296,15 @@ const trackMessage = (message: Message) => {
   track('Message received', { message });
 };
 
-const calculatePopupPositions = (window: Browser.Windows.Window, warningData: WarningData) => {
-  const width = 520;
+const calculatePopupPositions = (window: Browser.Windows.Window, warningData?: WarningData) => {
+  const width = warningData ? 520 : 370;
   const height = calculatePopupHeight(warningData);
-
   const left = window.left! + Math.round((window.width! - width) * 0.5);
   const top = window.top! + Math.round((window.height! - height) * 0.2);
-
   return { width, height, left, top };
 };
 
-const calculatePopupHeight = (warningData: WarningData) => {
+const calculatePopupHeight = (warningData?: WarningData) => {
   // This is an estimate of the height of the frame around the popup, unfortunately we can't get the actual value (which is OS / browser dependent)
   const FRAME_HEIGHT = 28;
 
@@ -180,14 +332,14 @@ const calculatePopupHeight = (warningData: WarningData) => {
     MARGIN_HEIGHT +
     BORDER_HEIGHT +
     FOOTER_HEIGHT;
-  const bypassHeight = warningData.bypassed ? WARNING_HEIGHT + MARGIN_HEIGHT : 0;
+  const bypassHeight = warningData?.bypassed ? WARNING_HEIGHT + MARGIN_HEIGHT : 0;
 
-  if (warningData.type === WarningType.ALLOWANCE) {
+  if (warningData?.type === WarningType.ALLOWANCE) {
     const spenderHeight = LINE_HEIGHT;
     const assetsHeight = LINE_HEIGHT * warningData.assets.length + BORDER_HEIGHT * (warningData.assets.length - 1);
     const contentHeight = spenderHeight + DATA_SEPARATOR_HEIGHT + assetsHeight;
     return baseHeight + bypassHeight + contentHeight;
-  } else if (warningData.type === WarningType.LISTING) {
+  } else if (warningData?.type === WarningType.LISTING) {
     const offerHeight =
       LINE_HEIGHT * warningData.listing.offer.length + BORDER_HEIGHT * (warningData.listing.offer.length - 1);
     const considerationHeight =
@@ -195,31 +347,65 @@ const calculatePopupHeight = (warningData: WarningData) => {
       BORDER_HEIGHT * (warningData.listing.consideration.length - 1);
     const contentHeight = offerHeight + DATA_SEPARATOR_HEIGHT + considerationHeight;
     return baseHeight + bypassHeight + contentHeight;
-  } else if (warningData.type === WarningType.SUSPECTED_SCAM) {
+  } else if (warningData?.type === WarningType.SUSPECTED_SCAM) {
     return baseHeight + bypassHeight + LINE_HEIGHT;
-  } else if (warningData.type === WarningType.HASH) {
+  } else if (warningData?.type === WarningType.HASH) {
     return baseHeight + bypassHeight + LINE_HEIGHT + WARNING_HEIGHT + MARGIN_HEIGHT;
   }
 
   // Should not be reachable
   return baseHeight + bypassHeight + 2 * LINE_HEIGHT;
 };
+const createWarningPopup = async (
+  requestId: Hash,
+  warningData?: WarningData,
+  tenderlySummary?: any | null,
+  popupKey?: string,
+) => {
+  try {
+    const existingWinId = windowIdByRequestId.get(requestId);
+    if (existingWinId != null) {
+      try {
+        await Browser.windows.update(existingWinId, { focused: true, drawAttention: true });
+        return;
+      } catch {
+        windowIdByRequestId.delete(requestId);
+      }
+    }
 
-const createWarningPopup = async (warningData: WarningData) => {
-  // Add a slight delay to prevent weird window positioning
-  const delayPromise = new Promise((resolve) => setTimeout(resolve, 200));
-  const [currentWindow] = await Promise.all([Browser.windows.getCurrent(), delayPromise]);
-  const positions = calculatePopupPositions(currentWindow, warningData);
+    if (popupKey && openPopupByKey.has(popupKey)) {
+      const winId = openPopupByKey.get(popupKey)!;
+      try {
+        await Browser.windows.update(winId, { focused: true, drawAttention: true });
+        windowIdByRequestId.set(requestId, winId);
+        return;
+      } catch {
+        openPopupByKey.delete(popupKey);
+      }
+    }
 
-  const queryString = new URLSearchParams({ warningData: JSON.stringify(warningData) }).toString();
-  const popupWindow = await Browser.windows.create({
-    url: `confirm.html?${queryString}`,
-    type: 'popup',
-    focused: true,
-    ...positions,
-  });
+    const delayPromise = new Promise((resolve) => setTimeout(resolve, 200));
+    const [currentWindow] = await Promise.all([Browser.windows.getCurrent(), delayPromise]);
+    const positions = calculatePopupPositions(currentWindow, warningData);
 
-  // Specifying window position does not work on Firefox, so we have to reposition after creation (6 y/o bug -_-).
-  // Has no effect on Chrome, because the window position is already correct.
-  await Browser.windows.update(popupWindow.id!, positions);
+    const qs = new URLSearchParams({
+      requestId,
+      ...(warningData ? { warningData: JSON.stringify(warningData) } : {}),
+      ...(tenderlySummary ? { tenderlySummary: JSON.stringify(tenderlySummary) } : {}),
+    }).toString();
+
+    const url = chrome.runtime.getURL(`confirm.html?${qs}`);
+
+    const popupWindow = await Browser.windows.create({
+      url,
+      type: 'popup',
+      focused: true,
+      ...positions,
+    });
+
+    if (popupKey && popupWindow?.id != null) openPopupByKey.set(popupKey, popupWindow.id);
+    if (popupWindow?.id != null) windowIdByRequestId.set(requestId, popupWindow.id);
+  } catch (e) {
+    console.error('[bg] popup error', e);
+  }
 };
