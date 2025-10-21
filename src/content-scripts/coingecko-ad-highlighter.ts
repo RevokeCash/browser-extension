@@ -38,12 +38,12 @@ function ensureStyles() {
     }
     .rev-coingecko-revoke-badge {
       position: absolute !important;
-      top: 0 !important;
-      right: 45px !important;
+      bottom: 0 !important;
+      right: 0 !important;
       background: #fdb952 !important;
       color: #ffffff !important;
       border: none !important;
-      border-bottom-left-radius: 8px !important;
+      border-top-left-radius: 8px !important;
       border-bottom-right-radius: 8px !important;
       padding: 4px 10px !important;
       font-size: 11px !important;
@@ -55,7 +55,6 @@ function ensureStyles() {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.18) !important;
       pointer-events: none !important;
     }
   `;

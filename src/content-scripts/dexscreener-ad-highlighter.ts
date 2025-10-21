@@ -50,15 +50,14 @@ function ensureStyles() {
     }
     .rev-dexscreener-revoke-badge {
       position: absolute !important;
-      top: 0 !important;
-      right: 45px !important;
+      bottom: 12px !important;
+      right: 12px !important;
       background: #fdb952 !important;
       color: #ffffff !important;
       border: none !important;
-      border-bottom-left-radius: 8px !important;
-      border-bottom-right-radius: 8px !important;
-      padding: 4px 10px !important;
-      font-size: 11px !important;
+      border-radius: 3px !important;
+      padding: 6px 12px !important;
+      font-size: 12px !important;
       font-weight: 800 !important;
       line-height: 1 !important;
       letter-spacing: 0.2px !important;

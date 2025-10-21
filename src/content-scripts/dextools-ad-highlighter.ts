@@ -61,28 +61,24 @@ function ensureStyles() {
     }
     .rev-dextools-revoke-badge {
       position: absolute !important;
-      top: 0 !important;
-      right: 45px !important;
-      background: linear-gradient(135deg, #fdb952 0%, #ffcc80 100%) !important;
-      color: #000000 !important;
-      border: 2px solid rgba(255, 255, 255, 0.3) !important;
-      border-bottom-left-radius: 8px !important;
-      border-bottom-right-radius: 8px !important;
-      border-top-left-radius: 0 !important;
-      border-top-right-radius: 0 !important;
-      padding: 4px 12px !important;
+      bottom: 12px !important;
+      right: 12px !important;
+      background: #fdb952 !important;
+      color: #ffffff !important;
+      border: none !important;
+      border-radius: 3px !important;
+      padding: 6px 12px !important;
       font-size: 12px !important;
-      font-weight: 900 !important;
+      font-weight: 800 !important;
       line-height: 1 !important;
-      letter-spacing: 0.5px !important;
+      letter-spacing: 0.2px !important;
       text-transform: lowercase !important;
       z-index: 999999 !important;
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      box-shadow: 0 3px 10px rgba(253, 185, 82, 0.5), 0 0 20px rgba(253, 185, 82, 0.3) !important;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18) !important;
       pointer-events: none !important;
-      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3) !important;
     }
   `;
   s.textContent = cssText;
