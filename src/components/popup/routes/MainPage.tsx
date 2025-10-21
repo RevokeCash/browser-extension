@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import TopBar from '../ui/TopBar';
 import UpdateBanner from '../ui/UpdateBanner';
 import Tabs from '../ui/Tabs';
@@ -7,6 +7,8 @@ import FeatureCard from '../ui/FeatureCard';
 import SettingsPanel from '../ui/SettingsPanel';
 import FeeDetailsModal from '../ui/FeeDetailsModal';
 import ApprovalsPanel from '../ui/ApprovalsPanel';
+import pkg from '../../../../package.json';
+import ClaimConsentModal from '../ui/ClaimConsentModal';
 
 declare global {
   interface Window {
@@ -20,39 +22,30 @@ const FOOTER_SPACE_PX = 76;
 const MainPage = () => {
   const [activeTab, setActiveTab] = useState<'features' | 'approvals' | 'settings'>('features');
   const [feeOpen, setFeeOpen] = useState(false);
-  const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
 
   const openFee = () => setFeeOpen(true);
   const closeFee = () => setFeeOpen(false);
 
-  // Get connected wallet address
-  useEffect(() => {
-    const getConnectedAddress = async () => {
-      try {
-        if (typeof window !== 'undefined' && window.ethereum) {
-          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-          setConnectedAddress(accounts?.[0] || null);
-        }
-      } catch (error) {
-        console.warn('Failed to get connected wallet address:', error);
-      }
-    };
+  const [claimOpen, setClaimOpen] = useState(false); // <-- new
 
-    getConnectedAddress();
-  }, []);
-  const [domain, setDomain] = useState('');
+  // When user clicks "File claim" inside FeeDetailsModal
+  const startClaim = () => {
+    setFeeOpen(false);
+    setClaimOpen(true);
+  };
 
-  useEffect(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const url = new URL(tabs[0].url || '');
-      setDomain(url.hostname);
-    });
-  }, []);
+  // What to do after user confirms the checkboxes
+  const confirmClaim = () => {
+    setClaimOpen(false);
+    // TODO: route to your claim form page, or open another modal/screen:
+    // e.g., navigate('/claim/start') or open ClaimFormModal
+  };
 
   return (
     <div className="flex flex-col h-full min-h-0 bg-[#0B0B0B] text-[#EDEDED]">
       <TopBar />
-      <UpdateBanner />
+      <UpdateBanner versionId={`v${pkg.version}`} maxAgeDays={30} />
+
       <Tabs active={activeTab} onChange={setActiveTab} />
 
       <div className="px-3">
@@ -80,7 +73,8 @@ const MainPage = () => {
       )}
 
       {/* Modal */}
-      <FeeDetailsModal open={feeOpen} onClose={closeFee} onGotIt={closeFee} />
+      <FeeDetailsModal open={feeOpen} onClose={closeFee} onGotIt={closeFee} onFileClaim={startClaim} />
+      <ClaimConsentModal open={claimOpen} onClose={() => setClaimOpen(false)} onConfirm={confirmClaim} />
     </div>
   );
 };

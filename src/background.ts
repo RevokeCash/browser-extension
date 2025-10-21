@@ -1,6 +1,6 @@
 import { getAddress, Hash, hexToBigInt, isAddress, isHex } from 'viem';
 import Browser from 'webextension-polyfill';
-import { AddressAllowList, HostnameAllowList, WarningType, warningSettingKeys } from './lib/constants';
+import { AddressAllowList, FEATURE_KEYS, HostnameAllowList, WarningType, warningSettingKeys } from './lib/constants';
 import { AggregateDecoder } from './lib/decoders/AggregateDecoder';
 import { ApproveDecoder } from './lib/decoders/transaction/ApproveDecoder';
 import { IncreaseAllowanceDecoder } from './lib/decoders/transaction/IncreaseAllowanceDecoder';
@@ -132,6 +132,10 @@ Browser.windows.onRemoved.addListener((id) => {
   }
 });
 
+async function isSimulatorEnabledBG(): Promise<boolean | undefined> {
+  return getStorage('local', FEATURE_KEYS.SIMULATOR, true);
+}
+
 const numLike = (v: any): number | string | undefined => {
   if (v == null) return undefined;
   if (typeof v === 'bigint') {
@@ -238,10 +242,13 @@ const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<bo
 
   const mdata = message.data as any;
   if (mdata?.transaction && typeof mdata?.chainId === 'number') {
-    if (shouldDedupe(mdata.chainId, mdata.transaction)) {
-      return false;
+    if (shouldDedupe(mdata.chainId, mdata.transaction)) return false;
+
+    // ✅ Only run Tenderly if simulator is enabled
+    const simulatorOn = await isSimulatorEnabledBG();
+    if (simulatorOn) {
+      tenderlySummary = await simulateWithTenderly(mdata.chainId, mdata.transaction);
     }
-    tenderlySummary = await simulateWithTenderly(mdata.chainId, mdata.transaction);
   }
 
   if (!warningData && !tenderlySummary) return false;
