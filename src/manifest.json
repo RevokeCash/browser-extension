@@ -77,7 +77,7 @@
     },
     {
       "matches": ["*://twitter.com/*", "*://x.com/*"],
-      "js": ["js/content-scripts/twitter-op-detector.js"],
+      "js": ["js/content-scripts/twitter-op-detector.js", "js/content-scripts/ethos-score.js"],
       "all_frames": false,
       "run_at": "document_idle"
     }
@@ -111,5 +111,5 @@
   "permissions": ["storage", "windows"],
   "__firefox__permissions": ["<all_urls>", "storage", "tabs"],
 
-  "__chrome__host_permissions": ["<all_urls>", "https://api.tenderly.co/*"]
+  "__chrome__host_permissions": ["<all_urls>", "https://api.tenderly.co/*", "https://api.ethos.network/*"]
 }

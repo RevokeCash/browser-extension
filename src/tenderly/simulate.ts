@@ -6,7 +6,7 @@ function toDecimalHex(n: number | string) {
   if (/^0x/i.test(n)) return String(parseInt(n, 16));
   return String(n);
 }
-
+const log = (...args: any[]) => console.log('[Revoke][SIMULATE]', ...args);
 export async function simulateViaREST(cfg: TenderlyConfig, chainId: number, tx: TxParams): Promise<SimulationResult> {
   console.log('SIMULATE');
 

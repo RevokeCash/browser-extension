@@ -23,6 +23,7 @@ module.exports = {
     'content-scripts/dextools-ad-highlighter': path.join(srcDir, 'content-scripts', 'dextools-ad-highlighter.ts'),
     'content-scripts/twitter-op-detector': path.join(srcDir, 'content-scripts', 'twitter-op-detector.ts'),
     'content-scripts/antiphish': path.join(srcDir, 'content-scripts', 'antiphish.ts'),
+    'content-scripts/ethos-score': path.join(srcDir, 'content-scripts', 'ethos-score.ts'),
     'injected/proxy-injected-providers': path.join(srcDir, 'injected', 'proxy-injected-providers.tsx'),
   },
 
