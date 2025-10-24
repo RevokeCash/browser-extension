@@ -693,9 +693,87 @@ function setupNavigationObserver(): void {
   }
 }
 
-// Run when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
+// Check if the official Ethos browser extension is running
+function detectEthosExtension(): boolean {
+  // The Ethos extension adds these distinctive elements to the page
+  const ethosSelectors = [
+    '.credibility-badge-wrapper',
+    '.credibility-badge-container',
+    '.credibility-badge-point',
+    '[data-ethos-extension]',
+  ];
+
+  for (const selector of ethosSelectors) {
+    if (document.querySelector(selector)) {
+      console.log('[Ethos] Detected official Ethos extension via selector:', selector);
+      return true;
+    }
+  }
+
+  return false;
 }
+
+// Auto-disable feature if Ethos extension is detected (only once)
+async function checkAndAutoDisableIfNeeded(): Promise<boolean> {
+  return new Promise((resolve) => {
+    chrome.storage.local.get(['feature_ethos_score_enabled', 'ethos_auto_disable_checked'], (result) => {
+      const enabled = result.feature_ethos_score_enabled ?? true;
+      const alreadyChecked = result.ethos_auto_disable_checked ?? false;
+
+      // If we've already done the auto-disable check, respect the current setting
+      if (alreadyChecked) {
+        console.log('[Ethos] Auto-disable already checked previously. Current state:', enabled);
+        resolve(enabled);
+        return;
+      }
+
+      // First time checking - see if Ethos extension is present
+      const ethosExtensionDetected = detectEthosExtension();
+
+      if (ethosExtensionDetected) {
+        console.log('[Ethos] Official Ethos extension detected. Auto-disabling Ethos score feature.');
+        // Disable the feature and mark that we've done the auto-check
+        chrome.storage.local.set(
+          {
+            feature_ethos_score_enabled: false,
+            ethos_auto_disable_checked: true,
+          },
+          () => {
+            console.log('[Ethos] Feature auto-disabled. User can manually re-enable if desired.');
+            resolve(false);
+          },
+        );
+      } else {
+        // No Ethos extension detected, mark as checked and keep enabled
+        chrome.storage.local.set(
+          {
+            ethos_auto_disable_checked: true,
+          },
+          () => {
+            console.log('[Ethos] No Ethos extension detected. Feature remains enabled.');
+            resolve(enabled);
+          },
+        );
+      }
+    });
+  });
+}
+
+// Check feature flag and auto-disable logic before initializing
+(async () => {
+  // Wait a moment for the page to load and for other extensions to initialize
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const shouldEnable = await checkAndAutoDisableIfNeeded();
+
+  if (shouldEnable) {
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  } else {
+    console.log('[Ethos] Feature is disabled. Not initializing.');
+  }
+})();

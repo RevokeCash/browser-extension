@@ -35,6 +35,13 @@ const rows: Row[] = [
     defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.X_OP_DETECTOR],
   },
   {
+    id: 'ETHOS_SCORE',
+    title: 'Ethos Credibility Scores',
+    desc: 'Shows credibility scores on X profiles',
+    storageKey: FEATURE_KEYS.ETHOS_SCORE,
+    defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.ETHOS_SCORE],
+  },
+  {
     id: 'COVERAGE',
     title: 'Wallet Drain Coverage',
     desc: 'Drain coverage up to $30k',
@@ -61,7 +68,9 @@ export default function FeatureCard({ onFeeDetails }: { onFeeDetails?: () => voi
 
         <FeatureRowItem key="X_OP_DETECTOR" row={rows[2]} darkMode={darkMode} isLast={false} />
 
-        <FeatureRowItem key="COVERAGE" row={rows[3]} darkMode={darkMode} isLast={true} />
+        <FeatureRowItem key="ETHOS_SCORE" row={rows[3]} darkMode={darkMode} isLast={false} />
+
+        <FeatureRowItem key="COVERAGE" row={rows[4]} darkMode={darkMode} isLast={true} />
       </div>
     </div>
   );

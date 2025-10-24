@@ -62,6 +62,31 @@ function ensureStyles() {
   (document.head || document.documentElement).appendChild(s);
 }
 
+function isBuyButtonAd(element: Element): boolean {
+  // Check if this is a button ad that should not be highlighted
+
+  // Type 1: Small Buy button ads in tables (coin-row-ads)
+  const hasDataAction = element.querySelector('[data-action*="coin-row-ads"]');
+  const hasBuyText = element.textContent?.trim().toLowerCase().includes('buy');
+  const isSmallContainer = (element as HTMLElement).offsetHeight < 100;
+
+  if (hasDataAction && hasBuyText && isSmallContainer) {
+    return true;
+  }
+
+  // Type 2: Button group ads (Buy/Sell, Wallet, Earn Crypto buttons at top of coin pages)
+  // These have data-controller="button-ads" and contain sponsored dropdowns
+  const hasButtonAdsController = element.querySelector('[data-controller="button-ads"]');
+  const hasButtonText = element.querySelector('button[type="button"]');
+  const hasButtonGroupKeywords = element.textContent?.match(/buy\s*\/\s*sell|wallet|earn\s*crypto/i);
+
+  if (hasButtonAdsController && hasButtonText && hasButtonGroupKeywords) {
+    return true;
+  }
+
+  return false;
+}
+
 function addRevokeBadge(container: Element) {
   // Check if badge already exists
   if (container.querySelector('.rev-coingecko-revoke-badge')) return;
@@ -79,6 +104,12 @@ function highlightAds() {
   for (let i = 0; i < bannerAds.length; i++) {
     const banner = bannerAds[i];
     if (banner.classList.contains(PROCESSED_CLASS)) continue;
+
+    // Skip Buy button ads
+    if (isBuyButtonAd(banner)) {
+      banner.classList.add(PROCESSED_CLASS); // Mark as processed to avoid re-checking
+      continue;
+    }
 
     banner.classList.add(PROCESSED_CLASS);
     banner.classList.add(AD_CONTAINER_CLASS);
@@ -106,6 +137,12 @@ function highlightAds() {
       }
       parentElement = parentElement.parentElement;
       attempts++;
+    }
+
+    // Skip Buy button ads
+    if (isBuyButtonAd(adContainer)) {
+      adContainer.classList.add(PROCESSED_CLASS); // Mark as processed to avoid re-checking
+      continue;
     }
 
     adContainer.classList.add(PROCESSED_CLASS);
@@ -168,6 +205,12 @@ function highlightAds() {
       attempts++;
     }
 
+    // Skip Buy button ads
+    if (isBuyButtonAd(adContainer)) {
+      adContainer.classList.add(PROCESSED_CLASS); // Mark as processed to avoid re-checking
+      continue;
+    }
+
     adContainer.classList.add(PROCESSED_CLASS);
     adContainer.classList.add(AD_CONTAINER_CLASS);
     addRevokeBadge(adContainer);
@@ -182,6 +225,12 @@ function highlightAds() {
   for (let i = 0; i < stickyAds.length; i++) {
     const ad = stickyAds[i];
     if (ad.classList.contains(PROCESSED_CLASS)) continue;
+
+    // Skip Buy button ads
+    if (isBuyButtonAd(ad)) {
+      ad.classList.add(PROCESSED_CLASS); // Mark as processed to avoid re-checking
+      continue;
+    }
 
     ad.classList.add(PROCESSED_CLASS);
     ad.classList.add(AD_CONTAINER_CLASS);

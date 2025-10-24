@@ -308,6 +308,7 @@ export const FEATURE_KEYS = {
   DEXTOOLS_AD_WARN: 'feature_dextools_ad_warn_enabled',
   DEXSCREENER_AD_WARN: 'feature_dexscreener_ad_warn_enabled',
   X_OP_DETECTOR: 'feature_x_op_detector_enabled',
+  ETHOS_SCORE: 'feature_ethos_score_enabled',
   ADDRESS_GUARD: 'feature_address_guard_enabled',
   COVERAGE: 'feature_coverage_enabled',
 } as const;
@@ -321,6 +322,7 @@ export const FEATURE_DEFAULTS: Record<FeatureKey, boolean> = {
   [FEATURE_KEYS.DEXTOOLS_AD_WARN]: true,
   [FEATURE_KEYS.DEXSCREENER_AD_WARN]: true,
   [FEATURE_KEYS.X_OP_DETECTOR]: true,
+  [FEATURE_KEYS.ETHOS_SCORE]: true,
   [FEATURE_KEYS.ADDRESS_GUARD]: true,
   [FEATURE_KEYS.COVERAGE]: true,
 };
