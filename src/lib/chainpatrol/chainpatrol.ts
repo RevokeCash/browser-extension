@@ -1,6 +1,6 @@
 export type ChainPatrolStatus = 'SAFE' | 'BLOCKED' | 'UNKNOWN';
 
-type ChainPatrolResponse = {
+export type ChainPatrolResponse = {
   status?: string;
   verdict?: string;
   result?: { status?: string };
@@ -58,4 +58,30 @@ export async function checkUrlFull(url: string, apiKey: string): Promise<ChainPa
 
   const data = (await res.json()) as ChainPatrolResponse;
   return mapStatus(data);
+}
+
+export function toCaip2(chainId?: string | number, addr?: string) {
+  if (!addr) return '';
+  const c = Number(chainId);
+  const clean = addr.trim();
+  if (!/^0x[a-fA-F0-9]{40}$/.test(clean)) return '';
+  if (!Number.isFinite(c) || c <= 0) return '';
+  return `eip155:${c}:${clean}`;
+}
+
+export async function checkAsset(content: string, apiKey: string, signal?: AbortSignal): Promise<ChainPatrolResponse> {
+  if (!content) return { status: 'UNKNOWN' };
+
+  const r = await fetch('https://app.chainpatrol.io/api/v2/asset/check', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-API-KEY': apiKey,
+    },
+    body: JSON.stringify({ content }),
+    signal,
+  });
+
+  if (!r.ok) return { status: 'UNKNOWN' };
+  return (await r.json()) as ChainPatrolResponse;
 }
