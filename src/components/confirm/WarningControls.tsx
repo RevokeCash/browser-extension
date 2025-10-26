@@ -9,12 +9,66 @@ interface Props {
   bypassed: boolean;
 }
 
+function readQuery() {
+  try {
+    const p = new URLSearchParams(window.location.search);
+    const warningData = p.get('warningData') ? JSON.parse(p.get('warningData')!) : null;
+    const tenderlySummary = p.get('tenderlySummary') ? JSON.parse(p.get('tenderlySummary')!) : null;
+    return { warningData, tenderlySummary };
+  } catch {
+    return { warningData: null, tenderlySummary: null };
+  }
+}
+
 const WarningControls = ({ bypassed, requestId }: Props) => {
+  const { warningData, tenderlySummary } = React.useMemo(readQuery, []);
+
+  const logPopupEvent = async (approved: boolean) => {
+    try {
+      const userAddress: string | undefined =
+        warningData?.address ??
+        warningData?.spender ??
+        tenderlySummary?.transaction?.from ??
+        tenderlySummary?.from ??
+        undefined;
+
+      const simulationSummary = tenderlySummary
+        ? {
+            estimatedGas: tenderlySummary?.simulation?.gas ?? tenderlySummary?.gas ?? undefined,
+            changes: tenderlySummary?.balance_diff
+              ? Object.entries(tenderlySummary.balance_diff).map(([token, delta]: any) => ({
+                  token,
+                  delta: String(delta),
+                }))
+              : undefined,
+            risks: warningData?.type ? [String(warningData.type)] : undefined,
+          }
+        : undefined;
+
+      const metadata = {
+        url: warningData?.hostname ? `https://${warningData.hostname}` : undefined,
+        simulationSummary,
+        reason: approved ? undefined : 'User rejected in popup',
+      };
+
+      await Browser.runtime.sendMessage(undefined, {
+        __fs_event__: true,
+        kind: approved ? 'popupOK' : 'popupNOK',
+        userAddress,
+        metadata,
+      });
+    } catch {}
+  };
+
   const respond = async (data: boolean) => {
     try {
-      await Browser.runtime.sendMessage(undefined, { requestId, data });
+      await logPopupEvent(!!data);
     } finally {
-      window.close();
+      try {
+        await Browser.runtime.sendMessage(undefined, { requestId, data });
+      } finally {
+        window.close();
+      }
     }
   };
 

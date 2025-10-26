@@ -7,6 +7,31 @@ try {
   console.log('[Revoke][etherscan-poison] content script loaded:', location.hostname, location.href);
 } catch {}
 
+const __rev_sentPoisonLog = new Set<string>();
+
+function sendAddressPoisoningLog(flaggedAddress: string, allCandidates: string[]) {
+  try {
+    const key = __printSessionKey + '|' + flaggedAddress.toLowerCase();
+    if (__rev_sentPoisonLog.has(key)) return;
+    __rev_sentPoisonLog.add(key);
+
+    const pageAddr = getPrimaryAddressLower();
+    const userAddress = pageAddr || null;
+
+    chrome.runtime.sendMessage({
+      __fs_event__: true,
+      kind: 'addressPoisoning',
+      userAddress,
+      metadata: {
+        url: location.href,
+        flaggedAddress: flaggedAddress.toLowerCase(),
+        pageAddress: pageAddr,
+        candidates: Array.from(new Set(allCandidates)),
+      },
+    });
+  } catch {}
+}
+
 function getPrimaryAddressLower(): string | null {
   try {
     const m = location.pathname.match(/\/address\/(0x[0-9a-fA-F]{40})/);
@@ -378,6 +403,14 @@ function scanAddressPoisoning(root: ParentNode = document.body) {
       }
     }
     if (toFlag.size === 0) return;
+
+    try {
+      const allCandidates = uniqueAddresses;
+      toFlag.forEach((a) => {
+        console.log('[etherscan-poison] sending log', a);
+        sendAddressPoisoningLog(a, allCandidates);
+      });
+    } catch {}
 
     const matchesByNode = new Map<Text, TextOccurrence[]>();
     const elementMatches: ElementOccurrence[] = [];

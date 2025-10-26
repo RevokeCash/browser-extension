@@ -19,8 +19,6 @@ export function useAssetCheck(content?: string | null, apiKey?: string) {
     const t = setTimeout(async () => {
       try {
         const res = await checkAsset(value, apiKey, c.signal);
-        console.log('TESTING', res, value, apiKey, c.signal);
-
         setStatus(res.status ?? 'UNKNOWN');
         setLast(res);
       } catch {
