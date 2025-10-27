@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
+import Browser from 'webextension-polyfill';
 import Page from '../components/Page';
 import Error from '../components/confirm/Error';
 import Header from '../components/confirm/Header';
@@ -13,7 +14,7 @@ import HashSignatureData from '../components/confirm/warning-types/hash/HashSign
 import MarketplaceListingData from '../components/confirm/warning-types/listing/MarketplaceListingData';
 import SuspectedScamData from '../components/confirm/warning-types/suspected-scam/SuspectedScamData';
 import SimulationCard from '../components/confirm/tenderly/SimulationCard'; // <-- NEW
-import { WarningType } from '../lib/constants';
+import { WarningType, FEATURE_KEYS } from '../lib/constants';
 import { decodeWarningData } from '../lib/utils/decode';
 import '../styles.css';
 
@@ -26,6 +27,14 @@ const Confirm = () => {
   const tenderlySummary = tenderlySummaryParam ? JSON.parse(tenderlySummaryParam) : null;
 
   const requestIdFromQuery = params.get('requestId') || data?.requestId;
+
+  // Read slow mode setting from storage
+  const [slowMode, setSlowMode] = useState(null);
+  useEffect(() => {
+    Browser.storage.local.get(FEATURE_KEYS.SLOWMODE).then((result) => {
+      setSlowMode(result[FEATURE_KEYS.SLOWMODE] ?? false);
+    });
+  }, []);
 
   if (!data && !tenderlySummary) {
     return (
@@ -62,7 +71,12 @@ const Confirm = () => {
           )}
         </DataContainer>
 
-        <WarningControls bypassed={!!data?.bypassed} requestId={requestIdFromQuery as any} />
+        <WarningControls
+          bypassed={!!data?.bypassed}
+          requestId={requestIdFromQuery as any}
+          tenderlySummary={tenderlySummary}
+          slowMode={slowMode}
+        />
       </div>
     </Page>
   );

@@ -311,6 +311,7 @@ export const FEATURE_KEYS = {
   ETHOS_SCORE: 'feature_ethos_score_enabled',
   ADDRESS_GUARD: 'feature_address_guard_enabled',
   COVERAGE: 'feature_coverage_enabled',
+  SLOWMODE: 'feature_slowmode_enabled',
 } as const;
 
 export type FeatureKey = (typeof FEATURE_KEYS)[keyof typeof FEATURE_KEYS];
@@ -325,4 +326,5 @@ export const FEATURE_DEFAULTS: Record<FeatureKey, boolean> = {
   [FEATURE_KEYS.ETHOS_SCORE]: true,
   [FEATURE_KEYS.ADDRESS_GUARD]: true,
   [FEATURE_KEYS.COVERAGE]: true,
+  [FEATURE_KEYS.SLOWMODE]: false,
 };

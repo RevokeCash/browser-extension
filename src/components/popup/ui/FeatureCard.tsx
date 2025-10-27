@@ -48,6 +48,13 @@ const rows: Row[] = [
     storageKey: FEATURE_KEYS.COVERAGE,
     defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.COVERAGE],
   },
+  {
+    id: 'SLOWMODE',
+    title: 'Slow Mode',
+    desc: 'Adds intentional delay before confirming transactions',
+    storageKey: FEATURE_KEYS.SLOWMODE,
+    defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.SLOWMODE],
+  },
 ];
 
 export default function FeatureCard({ onFeeDetails }: { onFeeDetails?: () => void }) {
@@ -68,9 +75,17 @@ export default function FeatureCard({ onFeeDetails }: { onFeeDetails?: () => voi
 
         <FeatureRowItem key="X_OP_DETECTOR" row={rows[2]} darkMode={darkMode} isLast={false} />
 
+        <FeatureRowItem key="COVERAGE" row={rows[4]} darkMode={darkMode} isLast={true} />
+      </div>
+
+      <div className="px-3 pb-2 pt-6">
+        <div className="text-[11px] font-semibold tracking-wide uppercase text-neutral-400">Experimental Features</div>
+      </div>
+
+      <div>
         <FeatureRowItem key="ETHOS_SCORE" row={rows[3]} darkMode={darkMode} isLast={false} />
 
-        <FeatureRowItem key="COVERAGE" row={rows[4]} darkMode={darkMode} isLast={true} />
+        <FeatureRowItem key="SLOWMODE" row={rows[5]} darkMode={darkMode} isLast={true} />
       </div>
     </div>
   );

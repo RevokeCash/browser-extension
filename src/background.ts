@@ -47,9 +47,9 @@ function txKey(chainId: number, tx: TxLike) {
   const from = (tx.from || '').toLowerCase();
   const to = (tx.to || '').toLowerCase();
   const value = numLikeString(tx.value) || '0';
-  const nonce = numLikeString(tx.nonce) || '';
+  // Don't include nonce in key - dapps often increment it on retry
   const sel = (tx.data || '0x').slice(0, 10); // 4-byte selector
-  return `${chainId}:${from}:${to}:${value}:${nonce}:${sel}`;
+  return `${chainId}:${from}:${to}:${value}:${sel}`;
 }
 
 function shouldDedupe(chainId: number, tx: TxLike) {
@@ -120,9 +120,12 @@ Browser.runtime.onMessage.addListener((maybeResponse: unknown) => {
   const winId = windowIdByRequestId.get(response.requestId);
   if (winId != null) {
     windowIdByRequestId.delete(response.requestId);
-    try {
-      Browser.windows.remove(winId);
-    } catch {}
+    // Small delay to ensure message is fully processed before closing window
+    setTimeout(() => {
+      try {
+        Browser.windows.remove(winId);
+      } catch {}
+    }, 250);
   }
 });
 
@@ -296,9 +299,13 @@ const trackMessage = (message: Message) => {
   track('Message received', { message });
 };
 
-const calculatePopupPositions = (window: Browser.Windows.Window, warningData?: WarningData) => {
-  const width = warningData ? 520 : 370;
-  const height = calculatePopupHeight(warningData);
+const calculatePopupPositions = (
+  window: Browser.Windows.Window,
+  warningData?: WarningData,
+  slowMode: boolean = false,
+) => {
+  const width = warningData && slowMode ? 750 : slowMode ? 570 : 370;
+  const height = calculatePopupHeight(warningData) + (slowMode ? 250 : 0);
   const left = window.left! + Math.round((window.width! - width) * 0.5);
   const top = window.top! + Math.round((window.height! - height) * 0.2);
   return { width, height, left, top };
@@ -385,8 +392,13 @@ const createWarningPopup = async (
     }
 
     const delayPromise = new Promise((resolve) => setTimeout(resolve, 200));
-    const [currentWindow] = await Promise.all([Browser.windows.getCurrent(), delayPromise]);
-    const positions = calculatePopupPositions(currentWindow, warningData);
+    const [currentWindow, storageResult] = await Promise.all([
+      Browser.windows.getCurrent(),
+      Browser.storage.local.get(FEATURE_KEYS.SLOWMODE),
+      delayPromise,
+    ]);
+    const slowMode = storageResult[FEATURE_KEYS.SLOWMODE] ?? false;
+    const positions = calculatePopupPositions(currentWindow, warningData, slowMode);
 
     const qs = new URLSearchParams({
       requestId,
