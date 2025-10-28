@@ -78,6 +78,7 @@ async function addFeeToTx(
         gas: gasBumped,
         data: res.data,
       };
+
       return { ...request, params: [modifiedTx, ...(request.params?.slice(1) ?? [])] };
     } else {
       const sim = await simulate(ethereumProvider, { ...tx, data: res.data });

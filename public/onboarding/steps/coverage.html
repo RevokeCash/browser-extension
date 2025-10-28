@@ -1,0 +1,126 @@
+<!-- <link rel="stylesheet" href="./coverage.css" /> -->
+
+<section class="step" data-step="coverage">
+  <div class="onboarding-card">
+    <div class="card-header">
+      <h1>Wallet Drain Coverage</h1>
+      <p>Get your money back if our warnings miss these scams</p>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar" style="width: 70%"></div>
+    </div>
+
+    <div class="card-content">
+      <div class="panel-left">
+        <div class="section-label">WHAT YOU'RE COVERED FOR</div>
+
+        <div class="coverage-item" id="coverage-item-1">
+          <div class="coverage-number">1</div>
+          <div class="coverage-text">
+            <div class="coverage-title">MALICIOUS CONTRACT CALLS</div>
+            <div class="coverage-desc">Drainer contracts that steal your assets</div>
+            <div class="coverage-example">
+              <span class="example-label">Malicious Contract Call</span>
+              <span class="contract-address">0x3f8a...92d1</span>
+            </div>
+          </div>
+          <div class="coverage-badge">COVERED</div>
+        </div>
+
+        <div class="coverage-item" id="coverage-item-2">
+          <div class="coverage-number">2</div>
+          <div class="coverage-text">
+            <div class="coverage-title">ADDRESS POISONING</div>
+            <div class="coverage-desc">Scammers flood your history with lookalikes</div>
+            <div class="coverage-example">
+              <div class="address-comparison">
+                <span class="real-label">REAL</span>
+                <span class="real-address">0x9c5b...3a4<span style="color: #00ff88">f</span></span>
+              </div>
+              <div class="address-comparison">
+                <span class="fake-label">FAKE</span>
+                <span class="fake-address">0x9c5b...3a4<span style="color: #ff5252">e</span></span>
+              </div>
+            </div>
+          </div>
+          <div class="coverage-badge">COVERED</div>
+        </div>
+
+        <div class="coverage-item" id="coverage-item-3">
+          <div class="coverage-number">3</div>
+          <div class="coverage-text">
+            <div class="coverage-title">PERMIT SIGNATURE ATTACKS</div>
+            <div class="coverage-desc">One signature gives unlimited spending power</div>
+            <div class="coverage-example">
+              <div class="permit-warning">
+                <span class="infinity-icon">∞</span>
+                <div>
+                  <div class="permit-title">Unlimited Spending Approval</div>
+                  <div class="permit-desc">Full wallet access granted</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="coverage-badge">COVERED</div>
+        </div>
+      </div>
+
+      <div class="panel-right">
+        <div class="panel-right-content">
+          <div class="coverage-amount-section">
+            <div class="attack-indicator" id="attack-indicator">UNDER ATTACK</div>
+            <div class="coverage-amount" id="coverage-amount">$30,000</div>
+            <div class="coverage-subtitle" id="coverage-subtitle">MAX COVERAGE PER INCIDENT</div>
+          </div>
+
+          <div class="info-block">
+            <div class="info-label danger">THE RISK</div>
+            <div class="info-title">Even with security tools, sophisticated attacks can slip through.</div>
+            <div class="info-text">New exploits emerge daily. Zero-days exist. No security is perfect.</div>
+          </div>
+
+          <div class="info-block">
+            <div class="info-label safe">YOUR SAFETY NET</div>
+            <div class="info-title">If we fail to catch it, we'll make it right.</div>
+            <div class="info-text">
+              File a claim. We will hand review each claim. Up to $30,000 reimbursement per wallet drain. 0.8% per
+              transaction fee when coverage is turned on.
+              <button
+                onclick="showPayoutsModal()"
+                style="
+                  background: none;
+                  border: none;
+                  color: var(--accent-green);
+                  text-decoration: underline;
+                  font-weight: 600;
+                  font-size: inherit;
+                  cursor: pointer;
+                  padding: 0;
+                  display: inline;
+                "
+              >
+                See past payouts →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="toggle-wrapper">
+          <span class="toggle-label">Enable Coverage</span>
+          <button class="toggle" data-ob-toggle="feature_coverage_enabled">
+            <div class="toggle-knob"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button class="btn btn-ghost" data-ob-action="back">Back</button>
+      <div class="footer-group">
+        <button class="btn btn-ghost" data-ob-action="skip">Skip</button>
+        <button class="btn btn-primary" data-ob-action="next">Next</button>
+      </div>
+    </div>
+  </div>
+</section>

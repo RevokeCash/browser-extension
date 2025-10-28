@@ -5,6 +5,8 @@ export const TENDERLY_ACCOUNT = process.env.TENDERLY_ACCOUNT;
 export const TENDERLY_PROJECT = process.env.TENDERLY_PROJECT;
 export const TENDERLY_ACCESS_KEY = process.env.TENDERLY_ACCESS_KEY;
 
+export const ENABLE_LOG_SIMULATIONS = false;
+
 export const Urls = {
   REVOKE_CASH: 'https://revoke.cash',
   DISCORD: 'https://discord.gg/revoke-cash',

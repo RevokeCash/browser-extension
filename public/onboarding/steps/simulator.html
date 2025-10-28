@@ -1,0 +1,111 @@
+<section class="step" data-step="simulator">
+  <div class="onboarding-card">
+    <div class="card-header">
+      <h1>Transaction Simulator</h1>
+      <p>See what happens before you sign. Know exactly what leaves and enters your wallet.</p>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar" style="width: 28%"></div>
+    </div>
+
+    <div class="card-content">
+      <div class="panel-left">
+        <div class="sim-phone" id="sim-phone">
+          <div class="sim-phone-header">
+            <div class="sim-site-info">
+              <div class="sim-site-icon">r</div>
+              <span class="sim-site-name" id="sim-site-name">Uniswap</span>
+            </div>
+          </div>
+
+          <div class="sim-phone-body">
+            <div class="sim-preview" id="sim-preview">
+              <div class="sim-preview-title">WHAT WILL HAPPEN</div>
+
+              <div class="sim-flow-item">
+                <span class="sim-flow-label">You send</span>
+                <div class="sim-flow-value">
+                  <span class="sim-amount out" id="sim-send-amount">-1.5</span>
+                  <span class="sim-token" id="sim-send-token">ETH</span>
+                </div>
+              </div>
+
+              <div class="sim-flow-item">
+                <span class="sim-flow-label">You receive</span>
+                <div class="sim-flow-value">
+                  <span class="sim-amount in" id="sim-recv-amount">+3,847</span>
+                  <span class="sim-token" id="sim-recv-token">USDC</span>
+                </div>
+              </div>
+
+              <div class="sim-flow-item" id="sim-network-fee">
+                <span class="sim-flow-label">Network fee</span>
+                <div class="sim-flow-value">
+                  <span class="sim-flow-label" id="sim-fee">~$8.42</span>
+                </div>
+              </div>
+
+              <!-- Critical Risk Warning -->
+              <div class="sim-critical-warning" id="sim-critical-warning">
+                <div class="sim-critical-header">
+                  <div class="sim-critical-icon">!</div>
+                  <div class="sim-critical-title">CRITICAL RISK</div>
+                </div>
+                <div class="sim-critical-desc">This contract is flagged as malicious.</div>
+              </div>
+            </div>
+
+            <div class="sim-actions">
+              <button class="sim-btn reject" id="sim-reject-btn">REJECT</button>
+              <button class="sim-btn confirm" id="sim-confirm-btn">CONFIRM</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- scenario dots -->
+        <div class="sim-dots" style="display: flex; gap: 8px; justify-content: center; margin-top: 24px">
+          <span class="sim-dot" data-index="0"></span>
+          <span class="sim-dot" data-index="1"></span>
+          <span class="sim-dot" data-index="2"></span>
+        </div>
+      </div>
+
+      <div class="panel-right">
+        <div class="panel-right-content">
+          <div class="info-block">
+            <div class="info-label danger">THE ATTACK</div>
+            <div class="info-title">Scammers count on you moving fast</div>
+            <div class="info-text">
+              Many wallets abstract transaction details or use confusing interfaces. Attackers exploit this by hiding
+              malicious actions behind innocent-looking signatures.
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="info-label safe">YOUR SHIELD</div>
+            <div class="info-title">See Before You Sign</div>
+            <div class="info-text">
+              Every transaction is simulated in advance, telling you exactly what will happen. We cross-reference
+              against updated threat intelligence databases to warn you of malicious contracts and known scam addresses.
+            </div>
+          </div>
+        </div>
+
+        <div class="toggle-wrapper">
+          <span class="toggle-label">Enable Simulator</span>
+          <button class="toggle" data-ob-toggle="feature_simulator_enabled">
+            <div class="toggle-knob"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button class="btn btn-ghost" data-ob-action="back">Back</button>
+      <div class="footer-group">
+        <button class="btn btn-ghost" data-ob-action="skip">Skip</button>
+        <button class="btn btn-primary" data-ob-action="next">Next</button>
+      </div>
+    </div>
+  </div>
+</section>

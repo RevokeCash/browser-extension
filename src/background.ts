@@ -1,6 +1,13 @@
 import { getAddress, Hash, hexToBigInt, isAddress, isHex } from 'viem';
 import Browser from 'webextension-polyfill';
-import { AddressAllowList, FEATURE_KEYS, HostnameAllowList, WarningType, warningSettingKeys } from './lib/constants';
+import {
+  AddressAllowList,
+  ENABLE_LOG_SIMULATIONS,
+  FEATURE_KEYS,
+  HostnameAllowList,
+  WarningType,
+  warningSettingKeys,
+} from './lib/constants';
 import { AggregateDecoder } from './lib/decoders/AggregateDecoder';
 import { ApproveDecoder } from './lib/decoders/transaction/ApproveDecoder';
 import { IncreaseAllowanceDecoder } from './lib/decoders/transaction/IncreaseAllowanceDecoder';
@@ -161,6 +168,7 @@ Browser.runtime.onMessage.addListener((msg: any) => {
 });
 
 Browser.runtime.onMessage.addListener((msg: any) => {
+  console.log('TEST', msg);
   if (msg?.__fs_event__ === true && msg.kind === 'swapFeeTaken') {
     const { userAddress, metadata } = msg as {
       userAddress: `0x${string}`;
@@ -317,7 +325,7 @@ const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<bo
       tenderlySummary = await simulateWithTenderly(mdata.chainId, mdata.transaction);
     }
     const ua = mdata.transaction.from as `0x${string}` | undefined;
-    if (ua) {
+    if (ua && ENABLE_LOG_SIMULATIONS) {
       const selector = (mdata.transaction.data || '0x').slice(0, 10);
       const simMeta = {
         url: warningData?.hostname ? `https://${warningData.hostname}` : undefined,
@@ -501,3 +509,54 @@ const createWarningPopup = async (
     console.error('[bg] popup error', e);
   }
 };
+
+const ONBOARDING_PATH = 'onboarding/index.html';
+const ONBOARDING_URL = chrome.runtime.getURL(ONBOARDING_PATH);
+
+const OB_KEYS = {
+  hasOnboarded: 'ob_hasOnboarded',
+  dismissed: 'ob_dismissed',
+  lastVersion: 'ob_lastVersion',
+} as const;
+
+const parseVer = (v?: string) => (v ?? '0.0.0').split('.').map((n) => parseInt(n || '0', 10));
+const isMajorBump = (prev?: string, curr?: string) => parseVer(curr)[0] > parseVer(prev)[0];
+
+async function openOnboardingTab(active = true, extraQS?: Record<string, string>) {
+  const url = extraQS ? `${ONBOARDING_URL}?${new URLSearchParams(extraQS).toString()}` : ONBOARDING_URL;
+
+  await Browser.tabs.create({ url, active });
+}
+
+Browser.runtime.onInstalled.addListener(async ({ reason, previousVersion }) => {
+  const thisVersion = chrome.runtime.getManifest().version;
+
+  const [hasOnboarded, dismissed] = await Promise.all([
+    getStorage('local', OB_KEYS.hasOnboarded, false),
+    getStorage('local', OB_KEYS.dismissed, false),
+  ]);
+
+  if (reason === 'install') {
+    await Browser.storage.local.set({
+      [OB_KEYS.hasOnboarded]: false,
+      [OB_KEYS.dismissed]: false,
+      [OB_KEYS.lastVersion]: thisVersion,
+    });
+    await openOnboardingTab(true, { v: thisVersion, reason: 'install' });
+    return;
+  }
+
+  if (reason === 'update') {
+    const show = isMajorBump(previousVersion, thisVersion) && !dismissed;
+
+    await Browser.storage.local.set({ [OB_KEYS.lastVersion]: thisVersion });
+
+    if (show) {
+      await openOnboardingTab(false, { v: thisVersion, reason: 'major-update' });
+    }
+  }
+});
+
+Browser.action.onClicked.addListener(async () => {
+  await openOnboardingTab(true, { reason: 'manual' });
+});
