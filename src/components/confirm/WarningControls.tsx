@@ -27,6 +27,27 @@ function readQuery() {
 
 const WarningControls = ({ bypassed, requestId, slowMode = false }: Props) => {
   const { warningData, tenderlySummary } = React.useMemo(readQuery, []);
+  const [hasConfirmed, setHasConfirmed] = useState(false);
+
+  // Persist confirmation to survive remounts triggered by wallet popup focus changes
+  const confirmedKey = React.useMemo(() => `slowmode_confirmed:${String(requestId ?? '')}`, [requestId]);
+  const CONFIRM_TTL_MS = 3_000; // 3 seconds
+  const [confirmedPersisted, setConfirmedPersisted] = useState<boolean>(() => {
+    try {
+      const raw = sessionStorage.getItem(confirmedKey);
+      if (!raw) return false;
+      const ts = Number(raw);
+      if (!isFinite(ts)) {
+        sessionStorage.removeItem(confirmedKey);
+        return false;
+      }
+      const fresh = Date.now() - ts <= CONFIRM_TTL_MS;
+      if (!fresh) sessionStorage.removeItem(confirmedKey);
+      return fresh;
+    } catch {
+      return false;
+    }
+  });
 
   const logPopupEvent = async (approved: boolean) => {
     try {
@@ -77,12 +98,19 @@ const WarningControls = ({ bypassed, requestId, slowMode = false }: Props) => {
     }
   };
 
-  const confirm = () => respond(true);
+  const confirm = () => {
+    setHasConfirmed(true);
+    try {
+      sessionStorage.setItem(confirmedKey, String(Date.now()));
+      setConfirmedPersisted(true);
+    } catch {}
+    return respond(true);
+  };
   const reject = () => respond(false);
   const dismiss = () => window.close();
 
   // Show slow mode flow if enabled and we have simulation data
-  const showSlowModeFlow = slowMode && tenderlySummary && !bypassed;
+  const showSlowModeFlow = slowMode && tenderlySummary && !bypassed && !hasConfirmed && !confirmedPersisted;
 
   if (showSlowModeFlow) {
     return <SlowModeFlow data={tenderlySummary} onConfirm={confirm} onReject={reject} />;

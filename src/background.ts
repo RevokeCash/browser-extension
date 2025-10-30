@@ -2,12 +2,15 @@ import { getAddress, Hash, hexToBigInt, isAddress, isHex } from 'viem';
 import Browser from 'webextension-polyfill';
 import {
   AddressAllowList,
+  CHAINPATROL_API_KEY,
   ENABLE_LOG_SIMULATIONS,
   FEATURE_KEYS,
   HostnameAllowList,
+  SIMULATOR_VISITED_DAPPS,
   WarningType,
   warningSettingKeys,
 } from './lib/constants';
+import { checkAsset, toCaip2 } from './lib/chainpatrol/chainpatrol';
 import { AggregateDecoder } from './lib/decoders/AggregateDecoder';
 import { ApproveDecoder } from './lib/decoders/transaction/ApproveDecoder';
 import { IncreaseAllowanceDecoder } from './lib/decoders/transaction/IncreaseAllowanceDecoder';
@@ -52,7 +55,7 @@ function isMessageResponse(x: any): x is MessageResponse {
 
 type TxLike = { from?: string; to?: string | null; value?: any; nonce?: any; data?: string };
 const recentTxKeys = new Map<string, number>();
-const DEDUPE_MS = 7_000;
+const DEDUPE_MS = 5_000;
 function numLikeString(v: any) {
   const n = numLike(v);
   return n == null ? '' : String(n);
@@ -117,6 +120,9 @@ Browser.runtime.onStartup.addListener(() => initLoggingAlarms());
 
 Browser.runtime.onConnect.addListener(setupRemoteConnection);
 
+// Store hostname by requestId for marking as visited after confirmation
+const hostnameByRequestId = new Map<Hash, string>();
+
 Browser.runtime.onMessage.addListener((maybeResponse: unknown) => {
   if (!isMessageResponse(maybeResponse)) {
     return;
@@ -126,7 +132,18 @@ Browser.runtime.onMessage.addListener((maybeResponse: unknown) => {
   const responsePort = messagePorts[response.requestId];
   track('Responded to request', { requestId: response.requestId, response: response.data });
 
-  if (response.data) approvedMessages.push(response.requestId);
+  if (response.data) {
+    approvedMessages.push(response.requestId);
+
+    // Mark dapp as visited when user confirms
+    const hostname = hostnameByRequestId.get(response.requestId);
+    if (hostname) {
+      markDappAsVisitedBG(hostname).catch(() => {});
+    }
+  }
+
+  // Clean up hostname map regardless of confirmation or rejection
+  hostnameByRequestId.delete(response.requestId);
 
   try {
     const uaGuess = undefined as any;
@@ -212,6 +229,70 @@ Browser.windows.onRemoved.addListener((id) => {
 
 async function isSimulatorEnabledBG(): Promise<boolean | undefined> {
   return getStorage('local', FEATURE_KEYS.SIMULATOR, true);
+}
+
+async function shouldShowEveryTransactionBG(): Promise<boolean | undefined> {
+  return getStorage('local', FEATURE_KEYS.SIMULATOR_SHOW_EVERY_TX, false);
+}
+
+async function hasVisitedDappBG(hostname: string): Promise<boolean> {
+  try {
+    const result = await Browser.storage.local.get(SIMULATOR_VISITED_DAPPS);
+    const visitedDapps = (result[SIMULATOR_VISITED_DAPPS] || {}) as Record<string, boolean>;
+    return !!visitedDapps[hostname];
+  } catch {
+    return false;
+  }
+}
+
+async function markDappAsVisitedBG(hostname: string): Promise<void> {
+  try {
+    const result = await Browser.storage.local.get(SIMULATOR_VISITED_DAPPS);
+    const visitedDapps = (result[SIMULATOR_VISITED_DAPPS] || {}) as Record<string, boolean>;
+    visitedDapps[hostname] = true;
+    await Browser.storage.local.set({ [SIMULATOR_VISITED_DAPPS]: visitedDapps });
+  } catch {}
+}
+
+async function hasMaliciousOrWarningInSummary(tenderlySummary: any, chainId?: number): Promise<boolean> {
+  if (!tenderlySummary) return false;
+
+  // Check if transaction failed
+  if (tenderlySummary?.transaction?.status === false) return true;
+
+  // Check for malicious assets using ChainPatrol
+  if (CHAINPATROL_API_KEY && chainId) {
+    const assetChanges = tenderlySummary?.transaction?.transaction_info?.asset_changes || [];
+    const userAddress = tenderlySummary?.transaction?.from?.toLowerCase();
+
+    for (const change of assetChanges) {
+      // Check tokens being received (incoming transfers to user)
+      const isReceiving = change?.to?.toLowerCase() === userAddress;
+      const tokenAddress = change?.token_info?.contract_address;
+
+      if (isReceiving && tokenAddress) {
+        try {
+          const caip = toCaip2(chainId, tokenAddress);
+          if (caip) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+
+            const result = await checkAsset(caip, CHAINPATROL_API_KEY, controller.signal);
+            clearTimeout(timeoutId);
+
+            const status = result?.status?.toUpperCase() || '';
+            if (status === 'BLOCKED') {
+              return true; // Malicious token detected!
+            }
+          }
+        } catch (error) {
+          // If ChainPatrol check fails/times out, continue without blocking
+        }
+      }
+    }
+  }
+
+  return false;
 }
 
 const numLike = (v: any): number | string | undefined => {
@@ -362,11 +443,34 @@ const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<bo
 
     const isHostnameAllowListed = HostnameAllowList[warningData.type].includes(warningData.hostname);
     if (isHostnameAllowListed) return false;
-
     const address =
       'spender' in warningData ? warningData.spender : 'address' in warningData ? warningData.address : '';
     const isAddressAllowListed = AddressAllowList[warningData.type].includes(address.toLowerCase());
     if (isAddressAllowListed) return false;
+  }
+
+  // Extract hostname for tracking visits
+  const hostname = warningData?.hostname || (mdata as any)?.hostname || '';
+  // Check simulator mode for tenderly popups (when there's no warningData)
+  if (!warningData && tenderlySummary) {
+    const showEveryTx = await shouldShowEveryTransactionBG();
+
+    // If "show every transaction" is OFF (meaning "once per dapp" mode)
+    if (!showEveryTx) {
+      if (hostname) {
+        const hasVisited = await hasVisitedDappBG(hostname);
+        const hasWarnings = await hasMaliciousOrWarningInSummary(tenderlySummary, mdata?.chainId);
+        // If already visited and no warnings, skip popup
+        if (hasVisited && !hasWarnings) {
+          return false;
+        }
+      }
+    }
+  }
+
+  // Store hostname for marking as visited after confirmation
+  if (hostname && tenderlySummary) {
+    hostnameByRequestId.set(message.requestId, hostname);
   }
 
   const key =

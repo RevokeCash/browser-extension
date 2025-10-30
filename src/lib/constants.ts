@@ -305,6 +305,7 @@ export const COINGECKO_API_KEY = process.env.COINGECKO_API_KEY ?? process.env.NE
 export const COINGECKO_API_BASE_URL = 'https://pro-api.coingecko.com/api/v3';
 export const FEATURE_KEYS = {
   SIMULATOR: 'feature_simulator_enabled',
+  SIMULATOR_SHOW_EVERY_TX: 'feature_simulator_show_every_tx',
   GOOGLE_AD_WARN: 'feature_google_ad_warn_enabled',
   COINGECKO_AD_WARN: 'feature_coingecko_ad_warn_enabled',
   DEXTOOLS_AD_WARN: 'feature_dextools_ad_warn_enabled',
@@ -316,10 +317,13 @@ export const FEATURE_KEYS = {
   SLOWMODE: 'feature_slowmode_enabled',
 } as const;
 
+export const SIMULATOR_VISITED_DAPPS = 'simulator_visited_dapps' as const;
+
 export type FeatureKey = (typeof FEATURE_KEYS)[keyof typeof FEATURE_KEYS];
 
 export const FEATURE_DEFAULTS: Record<FeatureKey, boolean> = {
   [FEATURE_KEYS.SIMULATOR]: true,
+  [FEATURE_KEYS.SIMULATOR_SHOW_EVERY_TX]: false,
   [FEATURE_KEYS.GOOGLE_AD_WARN]: true,
   [FEATURE_KEYS.COINGECKO_AD_WARN]: true,
   [FEATURE_KEYS.DEXTOOLS_AD_WARN]: true,
