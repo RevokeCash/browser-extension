@@ -21,6 +21,10 @@ type ChainPatrolResponse = {
 const BYPASS_KEY_PREFIX = 'cp_bypass::';
 const BYPASS_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
+// Track recently visited malicious sites to avoid repeated redirects for a short window
+const VISITED_KEY_PREFIX = 'cp_recent::';
+const VISITED_TTL_MS = 1 * 1000 * 60 * 5; // 5 minutes
+
 function getBypassKey(url: string) {
   try {
     const u = new URL(url);
@@ -61,6 +65,41 @@ function setBypassed(url: string, mode: BypassMode) {
       const exp = Date.now() + BYPASS_TTL_MS;
       localStorage.setItem(key, JSON.stringify({ exp }));
     }
+  } catch {}
+}
+
+function getVisitedKey(url: string) {
+  try {
+    const u = new URL(url);
+    return `${VISITED_KEY_PREFIX}${u.hostname}`;
+  } catch {
+    return `${VISITED_KEY_PREFIX}${location.hostname}`;
+  }
+}
+
+function isRecentlyVisited(url: string): boolean {
+  try {
+    const key = getVisitedKey(url);
+    const raw = localStorage.getItem(key);
+    if (!raw) return false;
+    try {
+      const obj = JSON.parse(raw);
+      if (obj && typeof obj.exp === 'number') {
+        if (Date.now() < obj.exp) return true;
+        localStorage.removeItem(key);
+      }
+    } catch {}
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+function markRecentlyVisited(url: string) {
+  try {
+    const key = getVisitedKey(url);
+    const exp = Date.now() + VISITED_TTL_MS;
+    localStorage.setItem(key, JSON.stringify({ exp }));
   } catch {}
 }
 
@@ -400,8 +439,99 @@ function renderBlockOverlay(url: string, result: ChainPatrolResponse) {
   }
 }
 
+function renderSkipNotice(url: string) {
+  try {
+    const existing = document.getElementById('cp-antiphish-recent-toast');
+    if (existing) return;
+
+    const root = document.createElement('div');
+    root.id = 'cp-antiphish-recent-toast';
+    root.style.position = 'fixed';
+    root.style.top = '16px';
+    root.style.right = '16px';
+    root.style.zIndex = '2147483647';
+    root.style.background = '#0f0f12';
+    root.style.border = '1px solid #2a2a2e';
+    root.style.color = '#fff';
+    root.style.borderRadius = '12px';
+    root.style.boxShadow = '0 12px 40px rgba(0,0,0,0.45)';
+    root.style.padding = '14px 16px 14px 14px';
+    root.style.display = 'flex';
+    root.style.alignItems = 'flex-start';
+    root.style.gap = '12px';
+    root.style.maxWidth = '420px';
+
+    const icon = document.createElement('div');
+    icon.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 3.5l9 16.5H3L12 3.5z" stroke="#ffb020" stroke-width="1.5" fill="#231a00"/>
+  <rect x="11" y="9" width="2" height="6" rx="1" fill="#ffb020"/>
+  <circle cx="12" cy="17.5" r="1" fill="#ffb020"/>
+</svg>`;
+
+    const content = document.createElement('div');
+    content.style.flex = '1 1 auto';
+    content.style.minWidth = '0';
+    const title = document.createElement('div');
+    title.textContent = 'Malicious site detected';
+    title.style.fontWeight = '800';
+    title.style.fontSize = '14px';
+    title.style.lineHeight = '1.2';
+
+    const msg = document.createElement('div');
+    msg.style.marginTop = '4px';
+    msg.style.fontSize = '12px';
+    msg.style.color = '#d6d6d6';
+    msg.textContent = "Not blocked: you've been shown a warning recently.";
+
+    const urlLine = document.createElement('div');
+    urlLine.style.marginTop = '4px';
+    urlLine.style.fontSize = '11px';
+    urlLine.style.color = '#a6a6a8';
+    urlLine.style.whiteSpace = 'nowrap';
+    urlLine.style.overflow = 'hidden';
+    urlLine.style.textOverflow = 'ellipsis';
+    urlLine.textContent = url;
+
+    const closeBtn = document.createElement('button');
+    closeBtn.setAttribute('aria-label', 'Dismiss');
+    closeBtn.title = 'Dismiss';
+    closeBtn.style.border = 'none';
+    closeBtn.style.background = 'transparent';
+    closeBtn.style.color = '#c9c9c9';
+    closeBtn.style.cursor = 'pointer';
+    closeBtn.style.padding = '4px';
+    closeBtn.style.marginLeft = '6px';
+    closeBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M6 6l12 12M18 6L6 18" stroke="#c9c9c9" stroke-width="2" stroke-linecap="round"/>
+</svg>`;
+    closeBtn.onclick = () => root.remove();
+
+    content.appendChild(title);
+    content.appendChild(msg);
+    content.appendChild(urlLine);
+
+    root.appendChild(icon);
+    root.appendChild(content);
+    root.appendChild(closeBtn);
+
+    (document.body || document.documentElement).appendChild(root);
+  } catch {}
+}
+
 (async function main() {
   try {
+    // Only handle in top-level browsing context; skip if inside iframes
+    if (window.top !== window.self) return;
+
+    // Avoid redirect loop on Fairside warning domain itself
+    try {
+      const host = location.hostname.toLowerCase();
+      const path = location.pathname.toLowerCase();
+      const isFairside = host.endsWith('fairside.io');
+      const isFairsideWarning = isFairside && path.includes('/warning');
+      if (isFairsideWarning) return;
+    } catch {}
+
     let url = location.href;
     const recovered = extractOriginalFromMetaMaskWarning(url);
     if (recovered) {
@@ -421,7 +551,23 @@ function renderBlockOverlay(url: string, result: ChainPatrolResponse) {
     } catch {}
     const status = result && extractStatus(result);
     if (status === 'BLOCKED') {
-      renderBlockOverlay(url, result!);
+      // If we recently redirected for this hostname, do not redirect again; show a toast instead
+      if (isRecentlyVisited(url)) {
+        renderSkipNotice(url);
+        return;
+      }
+
+      // Commented out overlay popup and redirecting to Fairside warning page instead
+      // renderBlockOverlay(url, result!);
+      try {
+        markRecentlyVisited(url);
+        const target = `https://fairside.io/warning?url=${encodeURIComponent(url)}`;
+        // Use top-level navigation and replace history so Back doesn't return to malicious site
+        window.location.replace(target);
+      } catch {
+        // Fallback
+        (location as any).href = `https://fairside.io/warning?url=${encodeURIComponent(url)}`;
+      }
     }
   } catch (e) {
     log('runtime error', e);

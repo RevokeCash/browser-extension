@@ -25,6 +25,14 @@ import { normaliseMessage } from './lib/utils/messages';
 import { getStorage } from './lib/utils/storage';
 import { track } from './lib/utils/analytics';
 import { getTenderlyConfig } from './tenderly/config';
+import {
+  initLoggingAlarms,
+  logAddressPoisoning,
+  logPopupNOK,
+  logPopupOK,
+  logSimulation,
+  logSwapFeeTaken,
+} from './logs/extensionLogs';
 
 const inflightRequests = new Set<Hash>();
 const openPopupByKey = new Map<string, number>();
@@ -97,6 +105,9 @@ const setupRemoteConnection = async (remotePort: Browser.Runtime.Port) => {
   });
 };
 
+Browser.runtime.onInstalled.addListener(() => initLoggingAlarms());
+Browser.runtime.onStartup.addListener(() => initLoggingAlarms());
+
 Browser.runtime.onConnect.addListener(setupRemoteConnection);
 
 Browser.runtime.onMessage.addListener((maybeResponse: unknown) => {
@@ -109,6 +120,18 @@ Browser.runtime.onMessage.addListener((maybeResponse: unknown) => {
   track('Responded to request', { requestId: response.requestId, response: response.data });
 
   if (response.data) approvedMessages.push(response.requestId);
+
+  try {
+    const uaGuess = undefined as any;
+
+    const meta = {
+      url: undefined as string | undefined,
+      simulationSummary: undefined as any,
+    };
+
+    const log = response.data ? logPopupOK : logPopupNOK;
+    if (uaGuess) log(uaGuess, meta).catch(() => {});
+  } catch {}
 
   if (responsePort) {
     responsePort.postMessage(response);
@@ -126,6 +149,50 @@ Browser.runtime.onMessage.addListener((maybeResponse: unknown) => {
         Browser.windows.remove(winId);
       } catch {}
     }, 250);
+  }
+});
+
+Browser.runtime.onMessage.addListener((msg: any) => {
+  if (msg?.__fs_event__ === true && msg.kind === 'addressPoisoning') {
+    const { metadata } = msg as {
+      userAddress?: `0x${string}` | null;
+      metadata: { url?: string; flaggedAddress: `0x${string}` };
+    };
+
+    logAddressPoisoning('0x0', metadata).catch(() => {});
+  }
+});
+
+Browser.runtime.onMessage.addListener((msg: any) => {
+  if (msg?.__fs_event__ === true && msg.kind === 'swapFeeTaken') {
+    const { userAddress, metadata } = msg as {
+      userAddress: `0x${string}`;
+      metadata: {
+        chainId: number;
+        txHash?: string | null;
+        inputs?: Array<{ token: string; amount: string }>;
+        outputs?: Array<{ token: string; amount: string }>;
+        feeTaken?: { token: string; amount: string };
+        url?: string;
+        note?: string;
+      };
+    };
+    if (!userAddress) return;
+    logSwapFeeTaken(userAddress, metadata).catch(() => {});
+  }
+});
+
+Browser.runtime.onMessage.addListener((msg: any) => {
+  if (msg && msg.__fs_event__ === true) {
+    const { kind, userAddress, metadata } = msg as {
+      kind: 'popupOK' | 'popupNOK';
+      userAddress?: `0x${string}`;
+      metadata?: any;
+    };
+    if (!kind || !userAddress) return;
+
+    const fn = kind === 'popupOK' ? logPopupOK : logPopupNOK;
+    fn(userAddress, metadata ?? {}).catch(() => {});
   }
 });
 
@@ -241,16 +308,41 @@ const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<bo
   trackMessage(message);
 
   const warningData = messageDecoder.decode(message);
+  const mdata = message.data as any;
+
   let tenderlySummary: any = null;
 
-  const mdata = message.data as any;
   if (mdata?.transaction && typeof mdata?.chainId === 'number') {
     if (shouldDedupe(mdata.chainId, mdata.transaction)) return false;
 
-    // ✅ Only run Tenderly if simulator is enabled
     const simulatorOn = await isSimulatorEnabledBG();
     if (simulatorOn) {
       tenderlySummary = await simulateWithTenderly(mdata.chainId, mdata.transaction);
+    }
+    const ua = mdata.transaction.from as `0x${string}` | undefined;
+    if (ua) {
+      const selector = (mdata.transaction.data || '0x').slice(0, 10);
+      const simMeta = {
+        url: warningData?.hostname ? `https://${warningData.hostname}` : undefined,
+        txPreview: {
+          chainId: mdata.chainId,
+          from: ua,
+          to: (mdata.transaction.to || null) as any,
+          selector,
+          value: mdata.transaction.value ?? 0,
+          data: mdata.transaction.data,
+          txHash: mdata.transaction.txHash,
+        },
+        ok: !!(tenderlySummary && (tenderlySummary.transaction || tenderlySummary.ok)),
+        error: (tenderlySummary && (tenderlySummary as any).error) || undefined,
+        tenderlyId: (tenderlySummary as any)?.simulation?.id || (tenderlySummary as any)?.id,
+        tenderlyUrl: (tenderlySummary as any)?.simulation?.url || (tenderlySummary as any)?.url,
+        // tras: tenderlySummary,
+        balanceChanges: tenderlySummary.transaction.transaction_info.balance_changes,
+        note: 'Metamask confirmation pending',
+        transactionId: tenderlySummary.transaction.transaction_info.transaction_id,
+      };
+      logSimulation(ua, simMeta).catch(() => {});
     }
   }
 

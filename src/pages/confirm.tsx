@@ -71,12 +71,7 @@ const Confirm = () => {
           )}
         </DataContainer>
 
-        <WarningControls
-          bypassed={!!data?.bypassed}
-          requestId={requestIdFromQuery as any}
-          tenderlySummary={tenderlySummary}
-          slowMode={slowMode}
-        />
+        <WarningControls bypassed={!!data?.bypassed} requestId={requestIdFromQuery as any} slowMode={slowMode} />
       </div>
     </Page>
   );

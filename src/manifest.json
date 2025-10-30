@@ -108,8 +108,14 @@
     "__firefox__scripts": ["js/background.js"]
   },
 
-  "permissions": ["storage", "windows"],
+  "permissions": ["storage", "windows", "alarms"],
   "__firefox__permissions": ["<all_urls>", "storage", "tabs"],
 
-  "__chrome__host_permissions": ["<all_urls>", "https://api.tenderly.co/*", "https://api.ethos.network/*"]
+  "__chrome__host_permissions": [
+    "<all_urls>",
+    "https://api.tenderly.co/*",
+    "https://api.ethos.network/*",
+    "https://api.test.fairside.dev/*",
+    "https://api.fairside.io/*"
+  ]
 }

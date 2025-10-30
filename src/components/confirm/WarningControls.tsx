@@ -3,6 +3,9 @@ import { Hash } from 'viem';
 import Browser from 'webextension-polyfill';
 import MenuItem from '../common/MenuItem';
 import Title from '../common/Title';
+import { useAssetCheck } from '../../lib/chainpatrol/useAssetCheck';
+import { CHAINPATROL_API_KEY } from '../../lib/constants';
+import { toCaip2 } from '../../lib/chainpatrol/chainpatrol';
 
 interface Props {
   requestId: Hash;
@@ -11,15 +14,66 @@ interface Props {
   slowMode?: any;
 }
 
-const WarningControls = ({ bypassed, requestId, tenderlySummary, slowMode = false }: Props) => {
+function readQuery() {
+  try {
+    const p = new URLSearchParams(window.location.search);
+    const warningData = p.get('warningData') ? JSON.parse(p.get('warningData')!) : null;
+    const tenderlySummary = p.get('tenderlySummary') ? JSON.parse(p.get('tenderlySummary')!) : null;
+    return { warningData, tenderlySummary };
+  } catch {
+    return { warningData: null, tenderlySummary: null };
+  }
+}
+
+const WarningControls = ({ bypassed, requestId, slowMode = false }: Props) => {
+  const { warningData, tenderlySummary } = React.useMemo(readQuery, []);
+
+  const logPopupEvent = async (approved: boolean) => {
+    try {
+      const userAddress: string | undefined =
+        warningData?.address ??
+        warningData?.spender ??
+        tenderlySummary?.transaction?.from ??
+        tenderlySummary?.from ??
+        undefined;
+
+      const simulationSummary = tenderlySummary
+        ? {
+            estimatedGas: tenderlySummary?.simulation?.gas ?? tenderlySummary?.gas ?? undefined,
+            changes: tenderlySummary?.balance_diff
+              ? Object.entries(tenderlySummary.balance_diff).map(([token, delta]: any) => ({
+                  token,
+                  delta: String(delta),
+                }))
+              : undefined,
+            risks: warningData?.type ? [String(warningData.type)] : undefined,
+          }
+        : undefined;
+
+      const metadata = {
+        url: warningData?.hostname ? `https://${warningData.hostname}` : undefined,
+        simulationSummary,
+        reason: approved ? undefined : 'User rejected in popup',
+      };
+
+      await Browser.runtime.sendMessage(undefined, {
+        __fs_event__: true,
+        kind: approved ? 'popupOK' : 'popupNOK',
+        userAddress,
+        metadata,
+      });
+    } catch {}
+  };
+
   const respond = async (data: boolean) => {
     try {
-      // Send message - background will close the window
-      await Browser.runtime.sendMessage(undefined, { requestId, data });
-    } catch (err) {
-      console.error('Failed to send response:', err);
-      // Only close on error to prevent stuck window
-      window.close();
+      await logPopupEvent(!!data);
+    } finally {
+      try {
+        await Browser.runtime.sendMessage(undefined, { requestId, data });
+      } finally {
+        window.close();
+      }
     }
   };
 
@@ -94,6 +148,21 @@ const NATIVE_META: Record<string, { symbol: string; decimals: number; logo: stri
   },
   '42161': { symbol: 'ETH', decimals: 18, logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png' },
   '8453': { symbol: 'ETH', decimals: 18, logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png' },
+};
+
+const EXPLORER_BASE: Record<string, string> = {
+  '1': 'https://etherscan.io',
+  '10': 'https://optimistic.etherscan.io',
+  '56': 'https://bscscan.com',
+  '137': 'https://polygonscan.com',
+  '42161': 'https://arbiscan.io',
+  '8453': 'https://basescan.org',
+};
+
+const getExplorerUrl = (networkId: string | number | undefined, address?: string | null) => {
+  if (!address || !networkId) return undefined;
+  const base = EXPLORER_BASE[String(networkId)];
+  return base ? `${base}/address/${address}` : undefined;
 };
 
 const toDecString = (v: any) => {
@@ -200,6 +269,30 @@ const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
   const receiveFrom = erc20Receive?.from || nftReceive?.from;
   const receivingNothing = !erc20Receive && !nftReceive;
   const sendingNothing = nativeSend === '0';
+
+  // Extract asset contract for checking
+  const assetContract = erc20Receive?.token_info?.contract_address || nftReceive?.token_info?.contract_address;
+  const chainId = tx?.network_id;
+  const caipAsset = assetContract ? toCaip2(chainId, assetContract) : '';
+  const assetCheck = useAssetCheck(caipAsset, CHAINPATROL_API_KEY ?? '');
+
+  const isBlocked = (s?: string) => (s || '').toUpperCase() === 'BLOCKED';
+  const showMaliciousWarning = isBlocked(assetCheck.status);
+
+  const CPBadge: React.FC<{ status?: string; reason?: string }> = ({ status, reason }) => {
+    const base = 'text-[10px] px-2 py-[2px] rounded-full border';
+    if (status === 'LOADING')
+      return <span className={`${base} border-neutral-700 bg-[#1A1A1A] text-neutral-300`}>Checking…</span>;
+    if (status === 'BLOCKED')
+      return (
+        <span className={`${base} border-rose-800/40 bg-[#2F0F0F] text-[#F87171]`}>
+          ● Malicious{reason ? ` (${reason})` : ''}
+        </span>
+      );
+    if (status === 'ALLOWED' || status === 'SAFE')
+      return <span className={`${base} border-emerald-800/40 bg-[#0F2F22] text-[#6EE7B7]`}>● Safe</span>;
+    return <span className={`${base} border-neutral-700 bg-[#1A1A1A] text-neutral-300`}>● Unknown</span>;
+  };
 
   const HOLD_DELAY = 1750; // 1.5 seconds
 
@@ -353,6 +446,27 @@ const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
                       )}
                     </>
                   ) : null}
+                </div>
+              </div>
+            )}
+
+            {/* Token Status */}
+            {step >= 1 && showMaliciousWarning && assetContract && (
+              <div className="transition-all duration-700 ease-in-out">
+                <div className="mt-3 pt-3 border-t border-neutral-800">
+                  <div className="flex items-center gap-2 text-xs text-neutral-300">
+                    <span>Token status:</span>
+                    <a
+                      href={getExplorerUrl(chainId, assetContract)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline hover:no-underline"
+                      title={assetContract}
+                    >
+                      {shortAddr(assetContract)}
+                    </a>
+                    <CPBadge status={assetCheck.status} reason={assetCheck.details?.reason} />
+                  </div>
                 </div>
               </div>
             )}
