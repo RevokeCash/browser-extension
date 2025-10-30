@@ -56,6 +56,7 @@ function isMessageResponse(x: any): x is MessageResponse {
 type TxLike = { from?: string; to?: string | null; value?: any; nonce?: any; data?: string };
 const recentTxKeys = new Map<string, number>();
 const DEDUPE_MS = 5_000;
+const DEDUPE_MS_SLOWMODE = 12_000;
 function numLikeString(v: any) {
   const n = numLike(v);
   return n == null ? '' : String(n);
@@ -70,12 +71,17 @@ function txKey(chainId: number, tx: TxLike) {
   return `${chainId}:${from}:${to}:${value}:${sel}`;
 }
 
-function shouldDedupe(chainId: number, tx: TxLike) {
+async function shouldDedupe(chainId: number, tx: TxLike) {
   const key = txKey(chainId, tx);
   const now = Date.now();
   for (const [k, until] of recentTxKeys) if (until <= now) recentTxKeys.delete(k);
   const exists = recentTxKeys.has(key);
-  recentTxKeys.set(key, now + DEDUPE_MS);
+
+  // Use longer dedupe time if slowmode is enabled
+  const slowMode = await getStorage('local', FEATURE_KEYS.SLOWMODE, false);
+  const dedupeTime = slowMode ? DEDUPE_MS_SLOWMODE : DEDUPE_MS;
+
+  recentTxKeys.set(key, now + dedupeTime);
   return exists;
 }
 
@@ -402,7 +408,7 @@ const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<bo
   let tenderlySummary: any = null;
 
   if (mdata?.transaction && typeof mdata?.chainId === 'number') {
-    if (shouldDedupe(mdata.chainId, mdata.transaction)) return false;
+    if (await shouldDedupe(mdata.chainId, mdata.transaction)) return false;
 
     const simulatorOn = await isSimulatorEnabledBG();
     if (simulatorOn) {
