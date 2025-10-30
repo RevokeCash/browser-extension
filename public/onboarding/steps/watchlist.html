@@ -1,0 +1,111 @@
+<section class="step" data-step="watchlist">
+  <div class="onboarding-card">
+    <div class="card-header">
+      <h1>Wallet Watchlist</h1>
+      <p>
+        Add wallets to your watchlist and name them. Monitor approvals. Get exploit alerts. With revoking just a click
+        away.
+      </p>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar" style="width: 14%"></div>
+    </div>
+
+    <div class="card-content">
+      <div class="panel-left">
+        <div class="watchlist-header-row">
+          <div class="approvals-block">APPROVALS</div>
+          <button class="manage-wallets-block">Manage Wallets</button>
+        </div>
+
+        <div class="wallet-nav">
+          <div class="wallet-arrow">◄</div>
+          <div class="wallet-selector-dropdown">
+            <span class="wallet-name-dropdown">Trading</span>
+            <span class="dropdown-chevron">›</span>
+          </div>
+          <div class="wallet-arrow">►</div>
+          <span class="wallet-nav-divider">·</span>
+          <span class="wallet-indicator-nav">Wallet 1 of 2</span>
+        </div>
+
+        <div class="wallet-card">
+          <div class="wallet-title-row">
+            <span class="wallet-title-name">Trading</span>
+            <span class="wallet-title-divider">|</span>
+            <span class="wallet-title-address">0x68b3...2d8f</span>
+          </div>
+          <div class="wallet-approval-count">3 open approvals</div>
+
+          <div class="approval-table">
+            <div class="approval-headers">
+              <div>TOKEN</div>
+              <div>SPENDER</div>
+              <div style="text-align: right">ALLOWANCE</div>
+            </div>
+            <div class="approval-row">
+              <div class="approval-token">USDC</div>
+              <div class="approval-spender">Uniswap Router</div>
+              <div class="approval-allowance">Unlimited</div>
+            </div>
+            <div class="approval-row">
+              <div class="approval-token">WETH</div>
+              <div class="approval-spender">OpenSea</div>
+              <div class="approval-allowance">10.5</div>
+            </div>
+            <div class="approval-row">
+              <div class="approval-token">DAI</div>
+              <div class="approval-spender">1inch Router</div>
+              <div class="approval-allowance">25000</div>
+            </div>
+          </div>
+
+          <button class="revoke-button">
+            <span>Open Website to Revoke</span>
+            <span>→</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panel-right">
+        <div class="info-block">
+          <div class="info-label danger">THE RISK</div>
+          <div class="info-title">Open approvals can drain wallets.</div>
+          <div class="info-text">
+            Compromised protocols can use your existing token permissions. Old marketplace approvals are common attack
+            vectors.
+          </div>
+        </div>
+
+        <!-- Your Watchlist -->
+        <div class="info-block reveal" id="wl-your-block">
+          <div class="info-label safe">YOUR WATCHLIST</div>
+          <div class="info-title">Track 5 wallets. Get alerts. Revoke fast.</div>
+          <div class="info-text">Monitor all your approvals in one place with one-click revoking.</div>
+        </div>
+
+        <!-- Live Alerts -->
+        <div class="info-block reveal" id="wl-alerts">
+          <div class="alerts-label">LIVE ALERTS FROM REVOKE</div>
+          <div class="info-title">When exploits happen, we check if you're affected and notify you directly.</div>
+          <div class="alert-card">
+            <div class="alert-content">
+              <div class="alert-message">Blur marketplace showing unusual activity</div>
+              <div class="alert-detail"><span class="tokens-at-risk">3 tokens exposed</span> from Trading wallet</div>
+            </div>
+            <button class="alert-action" data-ob-action="next">Review Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button class="btn btn-ghost" data-ob-action="back">Back</button>
+      <div class="footer-group">
+        <button class="btn btn-ghost" data-ob-action="skip">Skip</button>
+        <button class="btn btn-primary" data-ob-action="next">Next</button>
+      </div>
+    </div>
+  </div>
+</section>

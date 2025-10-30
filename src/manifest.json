@@ -91,7 +91,8 @@
         "confirm.html",
         "js/pages/confirm.js",
         "js/vendor.js",
-        "assets/*"
+        "assets/*",
+        "onboarding/feature-toggle-bindings.js"
       ]
     }
   ],
