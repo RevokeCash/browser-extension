@@ -524,8 +524,8 @@ const calculatePopupPositions = (
   warningData?: WarningData,
   slowMode: boolean = false,
 ) => {
-  const width = warningData && slowMode ? 750 : slowMode ? 570 : 370;
-  const height = calculatePopupHeight(warningData) + (slowMode ? 250 : 0);
+  const width = warningData && slowMode ? 750 : slowMode ? 570 : 400;
+  const height = calculatePopupHeight(warningData) + (slowMode ? 250 : 70);
   const left = window.left! + Math.round((window.width! - width) * 0.5);
   const top = window.top! + Math.round((window.height! - height) * 0.2);
   return { width, height, left, top };

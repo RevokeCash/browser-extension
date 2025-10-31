@@ -79,6 +79,24 @@ const compact = (x: string) => {
   const trimmed = f.slice(0, 6).replace(/0+$/, '');
   return trimmed ? `${i}.${trimmed}` : i;
 };
+function abbreviateLargeDecimal(x: string): string {
+  if (!x || /<\s*/.test(x)) return x;
+  const s = String(x).replace(/,/g, '');
+  if (!/^\d+(?:\.\d+)?$/.test(s)) return x;
+  const [intRaw, fracRaw = ''] = s.split('.');
+  const int = intRaw.replace(/^0+/, '') || '0';
+  const len = int.length;
+  if (len < 7) return x; // < 1,000,000
+  const UNITS = ['', 'K', 'M', 'B', 'T', 'Q'];
+  const idx = Math.min(Math.floor((len - 1) / 3), UNITS.length - 1);
+  const unit = UNITS[idx];
+  const baseDigits = len - idx * 3;
+  const leading = int.slice(0, baseDigits);
+  const rest = (int.slice(baseDigits) + fracRaw).replace(/[^0-9]/g, '');
+  const dec = rest[0] || '0';
+  const decimal = dec === '0' ? '' : `.${dec}`;
+  return `${leading}${decimal}${unit}`;
+}
 function prettyWithFloor(x: string, floorDp = 6) {
   const n = Number(x);
   if (!isFinite(n) || n === 0) return '0';
@@ -257,15 +275,50 @@ export default function EstimatedChangesFromTenderly({
     return <span className={`${base} border-neutral-700 bg-[#1A1A1A] text-neutral-300`}>● Unknown</span>;
   };
 
+  // Build a single warning message that combines everything
+  const warningParts: string[] = [];
+  if (assetContract && isBlocked(assetCheck.status)) {
+    const prefix = primaryStandard === 'ERC20' ? 'Token' : 'Collection';
+    warningParts.push(`${prefix}: ${shortAddr(assetContract)}`);
+  }
+  if (txTarget && isBlocked(txTargetCheck.status)) {
+    warningParts.push(`Target: ${shortAddr(txTarget)}`);
+  }
+  if (counterparty && isBlocked(counterpartyCheck.status)) {
+    const label = erc20Receive || nftReceive ? 'Sender' : 'Recipient';
+    warningParts.push(`${label}: ${shortAddr(counterparty)}`);
+  }
+  const warningMessage = warningParts.length > 0 ? warningParts.join(' • ') : 'Malicious';
+
   return (
     <div className="w-full text-white space-y-3 py-3">
+      {/* Compact professional single-line warning banner */}
+      {showWarnings && (
+        <div className="px-4">
+          <div className="rounded-md px-3 py-2 border border-rose-800/60 bg-[#2A0E0E] flex items-center gap-2">
+            <svg className="w-4 h-4 text-rose-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+            <div className="flex-1 min-w-0">
+              <div className="text-[13px] font-semibold text-rose-200 tracking-wide">Malicious token detected</div>
+              <div className="text-[11px] font-mono text-rose-300/90 truncate">{warningMessage}</div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* You Send Section */}
       <div className="px-4">
         <div className="text-xs text-neutral-500 mb-2">You send</div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="text-2xl font-semibold text-white" title={nativeSendPretty}>
-              {nativeSend === '0' ? '0' : nativeSendPretty} {chain.symbol}
+              {nativeSend === '0' ? '0' : abbreviateLargeDecimal(nativeSendPretty)} {chain.symbol}
             </div>
           </div>
           <TokenIcon url={chain.logo} emoji={chain.emoji} alt={chain.symbol} size={40} />
@@ -316,7 +369,7 @@ export default function EstimatedChangesFromTenderly({
                     const amt = erc20Receive.raw_amount
                       ? formatUnits(erc20Receive.raw_amount, dec)
                       : erc20Receive.amount || '0';
-                    return compact(amt);
+                    return abbreviateLargeDecimal(compact(amt));
                   })()}{' '}
                   {(erc20Receive.token_info?.symbol || 'TOKEN').toUpperCase()}
                 </div>
@@ -341,76 +394,7 @@ export default function EstimatedChangesFromTenderly({
         )}
       </div>
 
-      {/* Warnings Section */}
-      {showWarnings && (
-        <div className="px-4 pt-2">
-          <div className="bg-rose-950/30 rounded-lg p-3 border border-rose-800/30">
-            <div className="flex items-start gap-2">
-              <svg
-                className="w-4 h-4 text-rose-400 mt-0.5 shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                />
-              </svg>
-              <div className="flex-1 space-y-1.5">
-                <div className="text-xs font-semibold text-rose-300">Security Warning</div>
-                {assetContract && isBlocked(assetCheck.status) && (
-                  <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-rose-300/80">
-                    <span>{primaryStandard === 'ERC20' ? 'Token:' : 'Collection:'}</span>
-                    <a
-                      href={getExplorerUrl(tx?.network_id, assetContract)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="underline hover:no-underline"
-                      title={assetContract}
-                    >
-                      {shortAddr(assetContract)}
-                    </a>
-                    <CPBadge status={assetCheck.status} reason={assetCheck.details?.reason} />
-                  </div>
-                )}
-                {txTarget && isBlocked(txTargetCheck.status) && (
-                  <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-rose-300/80">
-                    <span>Target:</span>
-                    <a
-                      href={getExplorerUrl(tx?.network_id, txTarget)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="underline hover:no-underline"
-                      title={txTarget}
-                    >
-                      {shortAddr(txTarget)}
-                    </a>
-                    <CPBadge status={txTargetCheck.status} reason={txTargetCheck.details?.reason} />
-                  </div>
-                )}
-                {counterparty && isBlocked(counterpartyCheck.status) && (
-                  <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-rose-300/80">
-                    <span>{erc20Receive || nftReceive ? 'Sender:' : 'Recipient:'}</span>
-                    <a
-                      href={getExplorerUrl(tx?.network_id, counterparty)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="underline hover:no-underline"
-                      title={counterparty}
-                    >
-                      {shortAddr(counterparty)}
-                    </a>
-                    <CPBadge status={counterpartyCheck.status} reason={counterpartyCheck.details?.reason} />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Former warnings block removed; compact banner shown at top */}
     </div>
   );
 }

@@ -8,7 +8,7 @@ const Page: React.FC<Props> = ({ children }) => {
   return (
     <div
       className="
-        w-[360px] 
+        w-[400px] 
         bg-[#0B0B0B] text-[#EDEDED]
         overflow-hidden rounded-[12px]
       "
