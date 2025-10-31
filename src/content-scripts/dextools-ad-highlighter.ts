@@ -61,8 +61,14 @@ function ensureStyles() {
     }
     .rev-dextools-revoke-badge {
       position: absolute !important;
-      bottom: 12px !important;
-      right: 12px !important;
+      /* Force bottom-right placement regardless of container rules */
+      inset: auto !important;
+      top: auto !important;
+      left: auto !important;
+      bottom: 0px !important;
+      right: 0px !important;
+      transform: none !important;
+      align-self: auto !important;
       background: #fdb952 !important;
       color: #ffffff !important;
       border: none !important;
