@@ -1,0 +1,176 @@
+/* Address Poisoning Screen */
+.etherscan-header {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 24px;
+}
+
+.tx-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius-xs);
+  font-family: 'SF Mono', 'Monaco', monospace;
+  font-size: var(--font-mono);
+  position: relative;
+  opacity: 0;
+  animation: slowFadeUp 1.5s ease forwards;
+  transition: all 1.5s ease;
+}
+
+.tx-item.poison {
+  border-color: rgba(255, 82, 82, 0.3);
+  background: rgba(255, 82, 82, 0.05);
+}
+
+.tx-label {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: var(--font-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 9px;
+}
+
+.tx-label.scammer {
+  background: rgba(255, 82, 82, 0.2);
+  color: #ff5252;
+}
+
+.tx-label.received {
+  background: rgba(0, 217, 126, 0.15);
+  color: var(--accent-green);
+}
+
+.tx-label.you-send {
+  background: rgba(74, 158, 255, 0.15);
+  color: var(--accent-blue);
+}
+
+.tx-hash {
+  flex: 1;
+  color: #8b8b8b;
+}
+
+.tx-amount {
+  color: white;
+  font-weight: 600;
+}
+
+.tx-amount.poison-amount {
+  color: white;
+  opacity: 1;
+}
+
+.poison-badge {
+  padding: 2px 8px;
+  background: rgba(255, 82, 82, 0.2);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+  border-radius: 4px;
+  color: #ff5252;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Address poisoning - highlighted characters */
+.tx-hash .char-diff {
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+  padding: 0 4px;
+  margin: 0 1px;
+  transition: all 1.5s ease;
+  border-radius: 3px;
+}
+
+/* Green highlight for legitimate addresses */
+.tx-item:not(.poison) .tx-hash .char-diff {
+  color: var(--accent-green-bright);
+}
+
+.tx-item:not(.poison) .tx-hash .char-diff.show-circle {
+  background: rgba(0, 217, 126, 0.1);
+}
+
+/* Red highlight for poison addresses */
+.tx-item.poison .tx-hash .char-diff {
+  color: var(--accent-red);
+}
+
+.tx-item.poison .tx-hash .char-diff.show-circle {
+  background: rgba(255, 82, 82, 0.1);
+}
+
+/* Circular outline around different characters */
+.tx-hash .char-diff::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  opacity: 0;
+  transition:
+    opacity 0.8s ease,
+    transform 0.3s ease;
+  pointer-events: none;
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Green circle for legitimate addresses */
+.tx-item:not(.poison) .tx-hash .char-diff::after {
+  border-color: var(--accent-green-bright);
+  box-shadow: 0 0 10px rgba(0, 217, 126, 0.3);
+}
+
+/* Red circle for poison addresses */
+.tx-item.poison .tx-hash .char-diff::after {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 10px rgba(255, 82, 82, 0.3);
+}
+
+/* Show circles when protection is active - delayed to appear last */
+.tx-hash .char-diff.show-circle::after {
+  opacity: 0;
+  animation:
+    delayedCircleAppear 0.8s ease forwards,
+    pulseCircle 2s ease-in-out infinite;
+  animation-delay: 0s, 0.8s;
+}
+
+/* POISON badge visibility + row pulse */
+[data-step='address-poisoning'] .poison-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: #f14b4b;
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-left: 8px;
+
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.25s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+[data-step='address-poisoning'] .poison-badge.show {
+  opacity: 1;
+  transform: none;
+}

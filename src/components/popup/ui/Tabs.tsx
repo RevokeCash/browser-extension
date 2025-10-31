@@ -35,8 +35,8 @@ export default function Tabs({
   return (
     <div className="px-3 mt-2 border-b border-[#212121]">
       <div className="flex w-full">
-        <Tab id="features" label="Features" />
         <Tab id="approvals" label="Approvals" />
+        <Tab id="features" label="Features" />
         {/* <Tab id="settings" label="Settings" /> */}
       </div>
     </div>

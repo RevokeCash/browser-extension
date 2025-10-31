@@ -1,0 +1,898 @@
+/* ==========================================
+           HARMONIZED DESIGN SYSTEM TOKENS
+           ========================================== */
+:root {
+  /* Layout & Container */
+  --max-width: 900px;
+  --card-padding: 0;
+  --header-padding: 28px 32px;
+  --panel-padding-left: 24px;
+  --panel-padding-right: 32px;
+  --footer-padding: 20px 32px;
+
+  /* Typography */
+  --font-h1: 28px;
+  --font-h1-weight: 700;
+  --font-h1-spacing: -0.02em;
+  --font-desc: 15px;
+  --font-desc-line: 1.5;
+  --font-label: 11px;
+  --font-label-weight: 700;
+  --font-label-spacing: 0.08em;
+  --font-body: 14px;
+  --font-body-line: 1.6;
+  --font-info-title: 18px;
+  --font-small: 13px;
+  --font-tiny: 12px;
+  --font-mono: 13px;
+
+  /* Spacing */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 40px;
+  --space-2xl: 48px;
+
+  /* Colors */
+  --bg-primary: #0a0a0a;
+  --bg-card: #131313;
+  --bg-panel: #0f0f0f;
+  --bg-panel-right: rgba(255, 255, 255, 0.02);
+  --border-primary: rgba(255, 255, 255, 0.06);
+  --border-secondary: rgba(255, 255, 255, 0.08);
+  --text-primary: #ffffff;
+  --text-secondary: #8b8b8b;
+  --text-muted: #666666;
+
+  /* Brand Colors */
+  --accent-orange: #fdb951;
+  --accent-orange-dark: #e5a447;
+  --accent-green: #00d97e;
+  --accent-green-bright: #22c55e;
+  --accent-red: #ff5252;
+  --accent-red-dark: #ef4444;
+  --accent-blue: #4a9eff;
+
+  /* Components */
+  --toggle-width: 56px;
+  --toggle-height: 28px;
+  --toggle-knob: 22px;
+  --toggle-knob-offset: 3px;
+  --progress-height: 4px;
+  --border-radius: 16px;
+  --border-radius-sm: 12px;
+  --border-radius-xs: 8px;
+
+  /* Grid */
+  --grid-ratio: 1.2fr 1fr;
+
+  /* Animation */
+  --anim-fast: 0.3s;
+  --anim-normal: 0.6s;
+  --anim-slow: 0.9s;
+}
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.screen-btn.active {
+  background: var(--accent-orange);
+  color: #000;
+  border-color: var(--accent-orange);
+}
+
+/* Card Container */
+.onboarding-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  height: 720px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.card-header {
+  padding: var(--header-padding);
+  position: relative;
+  min-height: 108px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-header::after {
+  content: '';
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 0;
+  height: 1px;
+  background: var(--border-primary);
+}
+
+.card-header h1 {
+  font-size: var(--font-h1);
+  font-weight: var(--font-h1-weight);
+  letter-spacing: var(--font-h1-spacing);
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.card-header p {
+  font-size: var(--font-desc);
+  line-height: var(--font-desc-line);
+  color: var(--text-secondary);
+}
+
+/* Content Grid */
+.card-content {
+  display: grid;
+  grid-template-columns: var(--grid-ratio);
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+
+.card-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(1.2fr / 2.2 * 100%);
+  width: 1px;
+  background: linear-gradient(180deg, var(--border-primary), rgba(255, 255, 255, 0.02) 40%, var(--border-primary));
+  opacity: 0.7;
+}
+
+/* Left Panel */
+.panel-left {
+  padding: 20px;
+  background: var(--bg-panel);
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.panel-left::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* Right Panel */
+.panel-right {
+  padding: var(--panel-padding-right);
+  padding-bottom: 100px;
+  background: var(--bg-panel-right);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.panel-right-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 16px;
+}
+
+.panel-right-content::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* Info Blocks with animation delays */
+.info-block {
+  margin-bottom: 0;
+  opacity: 0;
+  animation: slowFadeUp 1.5s ease forwards;
+}
+
+.info-block:nth-child(1) {
+  animation-delay: 0.1s; /* THE ATTACK section appears first */
+}
+
+.info-block:nth-child(2) {
+  animation-delay: 0.3s; /* YOUR PROTECTION section - appears with scammer labels */
+}
+
+.info-block:nth-child(3) {
+  animation-delay: 0.6s; /* YOUR PROTECTION section - appears with scammer labels */
+}
+
+/* Simulator screen - all elements appear together */
+#simulator .info-block:nth-child(1) {
+  animation-delay: 0.4s;
+}
+
+#simulator .info-block:nth-child(2) {
+  animation-delay: 3s; /* YOUR SHIELD appears with the critical risk warning */
+}
+
+#simulator .toggle-wrapper {
+  opacity: 1;
+}
+
+/* Transaction animation delays - appear after THE ATTACK */
+/* First two children are header and label, so tx-items start at child 3 */
+
+.info-label {
+  font-size: 10px;
+  font-weight: var(--font-label-weight);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.info-label.danger {
+  color: #ff5252;
+}
+
+.info-label.safe {
+  color: #00d97e;
+}
+
+.info-label.warning {
+  color: var(--accent-orange);
+}
+
+.info-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 1.3;
+  color: var(--text-primary);
+  letter-spacing: normal;
+}
+
+.info-text {
+  font-size: var(--font-body);
+  line-height: 1.5;
+  color: #8b8b8b;
+}
+
+/* Toggle Component */
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--border-radius-sm);
+  position: absolute;
+  bottom: 32px;
+  left: 32px;
+  right: 32px;
+}
+
+.toggle-label {
+  font-size: var(--font-body);
+  font-weight: 500;
+}
+
+.toggle {
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  background: var(--accent-orange);
+  border-radius: 14px;
+  position: relative;
+  cursor: pointer;
+  transition: background var(--anim-fast) ease;
+  border: none;
+}
+
+.toggle-knob {
+  position: absolute;
+  width: var(--toggle-knob);
+  height: var(--toggle-knob);
+  background: white;
+  border-radius: 50%;
+  top: var(--toggle-knob-offset);
+  right: var(--toggle-knob-offset);
+  transition: all var(--anim-fast) ease;
+}
+
+.toggle.off {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.toggle.off .toggle-knob {
+  right: calc(var(--toggle-width) - var(--toggle-knob) - var(--toggle-knob-offset));
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Progress Bar */
+.progress-container {
+  height: var(--progress-height);
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--accent-orange);
+  width: 0;
+  transition: width var(--anim-normal) ease;
+}
+
+/* Footer */
+.card-footer {
+  padding: var(--footer-padding);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  height: 68px;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border-primary);
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-body);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--anim-fast) ease;
+  border: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-primary);
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.btn-primary {
+  background: var(--accent-orange);
+  color: #000;
+}
+
+.btn-primary:hover {
+  background: var(--accent-orange-dark);
+}
+
+.footer-group {
+  display: flex;
+  gap: 12px;
+}
+
+/* Watchlist Specific */
+#watchlist .panel-right {
+  padding-bottom: 32px;
+  gap: 12px;
+  height: 100%;
+}
+
+#watchlist .info-block {
+  margin-bottom: 0;
+}
+
+/* Watchlist animation sequence - matches elegance of other screens */
+#watchlist .info-block:nth-child(1) {
+  animation-delay: 0.4s; /* THE RISK appears first */
+}
+
+#watchlist .info-block:nth-child(2) {
+  animation-delay: 2.1s; /* YOUR WATCHLIST appears after seeing approvals */
+}
+
+#watchlist .panel-right {
+  padding-bottom: 32px;
+  gap: 12px;
+  height: 100%;
+}
+
+#watchlist .panel-left {
+  padding: 28px 20px 20px 32px;
+}
+
+/* Coverage Screen Specific */
+#coverage .panel-right-content .info-block:nth-child(2) {
+  animation: slowFadeUp 1s ease forwards;
+  animation-delay: 0.4s; /* THE RISK appears immediately */
+}
+
+#coverage .panel-right-content .info-block:nth-child(3) {
+  /* YOUR SAFETY NET - controlled by JavaScript, no CSS animation */
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes pulseWarning {
+  0% {
+    transform: scale(0.98);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.sim-btn.danger {
+  background: var(--accent-red);
+  color: white;
+  border: none;
+}
+
+.sim-btn.danger:hover {
+  background: #ff3333;
+}
+
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+@keyframes slowFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes delayedCircleAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes pulseCircle {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.payouts-modal-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.payouts-modal-overlay.active .payouts-modal {
+  transform: scale(1);
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes phoneIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.screen.active {
+  display: block;
+}
+
+/* ==========================================================
+   Universal onboarding layout — consistent sizing for all steps
+   ========================================================== */
+
+.step .onboarding-card {
+  width: 100%;
+  max-width: 960px; /* same as landing width */
+  margin: 0 auto;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 600px; /* consistent height across steps */
+}
+
+.step .card-header {
+  padding: 32px 40px 16px;
+}
+
+.step .card-content {
+  flex: 1; /* expand evenly */
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 24px 40px;
+}
+
+.step .card-footer {
+  padding: 24px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Consistent vertical rhythm for both sides of card content */
+.step .panel-left,
+.step .panel-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Prevent narrow columns from squishing text */
+@media (min-width: 1200px) {
+  .step .panel-left {
+    flex: 1.1;
+  }
+  .step .panel-right {
+    flex: 0.9;
+  }
+}
+
+@keyframes simPulse {
+  0%,
+  100% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1.6);
+  }
+}
+
+/* Make right side a column and keep toggle at the very bottom */
+[data-step='address-poisoning'] .card-content {
+  align-items: stretch;
+}
+
+[data-step='address-poisoning'] .panel-right {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* Let the text area take the space and add breathing room above toggle */
+[data-step='address-poisoning'] .panel-right .panel-right-content {
+  flex: 1 1 auto;
+  padding-bottom: 16px; /* prevents the last line from being crowded */
+}
+
+/* Pin the toggle to the bottom and add separation */
+[data-step='address-poisoning'] .toggle-wrapper {
+  margin-top: auto; /* pushes it to the bottom of the column */
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08); /* or a light divider in your theme */
+}
+
+/* If small screens are still tight, enable scrolling on the right side only */
+@media (max-height: 760px) {
+  [data-step='address-poisoning'] .panel-right {
+    overflow-y: auto;
+  }
+  [data-step='address-poisoning'] .panel-right .panel-right-content {
+    padding-bottom: 24px; /* extra safety when scrolling */
+  }
+}
+
+/* make the right column a proper flex column */
+[data-step='address-poisoning'] .card-content {
+  align-items: stretch;
+}
+
+[data-step='address-poisoning'] .panel-right {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* let the text area occupy space, add extra bottom padding */
+[data-step='address-poisoning'] .panel-right .panel-right-content {
+  flex: 1 1 auto;
+  padding-bottom: 28px; /* increase if still tight: 32–40px */
+}
+
+/* pin the toggle at the bottom and separate with a divider */
+[data-step='address-poisoning'] .toggle-wrapper {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08); /* adjust for your theme */
+}
+
+/* if the whole card is still short on some screens, bump its min-height */
+[data-step='address-poisoning'] .onboarding-card {
+  min-height: 700px; /* tune to match landing step height */
+}
+
+@keyframes apPulse {
+  0% {
+    background: rgba(241, 75, 75, 0.1);
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+/* Hover lift */
+
+[data-step='google-ads'].show .card-content {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes adEnter {
+  0% {
+    opacity: 0;
+    transform: none;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Unified entrance: reveal whole step together */
+[data-step='coverage'] .card-content {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+
+[data-step='coverage'].show .card-content {
+  opacity: 1;
+  transform: none;
+}
+
+/* Make the left header visible on dark theme */
+[data-step='coverage'] .section-label {
+  margin-bottom: 16px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.7); /* was #666 (too dark) */
+}
+
+/* Coverage items—clear, legible blocks */
+[data-step='coverage'] .coverage-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0e0e0f;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+/* Right panel: make sure long text is never cut; pin toggle at bottom */
+[data-step='coverage'] .panel-right {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+[data-step='coverage'] .panel-right .panel-right-content {
+  flex: 1 1 auto;
+  padding-bottom: 32px; /* breathing room for last line */
+}
+
+[data-step='coverage'] .toggle-wrapper {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* If small screens are tight, allow left side to scroll independently */
+@media (max-height: 760px) {
+  [data-step='coverage'] .panel-left {
+    overflow: auto;
+    max-height: 420px;
+  }
+}
+
+/* Fade-in for the whole step */
+[data-step='coverage'] .card-content {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+[data-step='coverage'].show .card-content {
+  opacity: 1;
+  transform: none;
+}
+
+/* Ensure left panel text is readable on dark */
+[data-step='coverage'] .panel-left {
+  color: #fff; /* base text in left panel */
+}
+
+/* The small header above the items */
+[data-step='coverage'] .section-label {
+  margin-bottom: 16px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.75) !important; /* override any inline */
+}
+
+/* Right column layout and the $30,000 color */
+[data-step='coverage'] .panel-right {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+[data-step='coverage'] .panel-right .panel-right-content {
+  flex: 1 1 auto;
+  padding-bottom: 32px;
+}
+
+[data-step='coverage'] .toggle-wrapper {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- Generic toggle styles used across steps ---------- */
+
+:root {
+  --toggle-off-bg: #3f3f46; /* zinc-700 */
+  --toggle-on-bg: #f6b74a; /* your yellow */
+  --toggle-knob: #ffffff;
+}
+
+.toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--toggle-off-bg);
+  box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0.15);
+  transition:
+    background 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
+  outline: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.toggle:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+.toggle .toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--toggle-knob);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  transform: translateX(0);
+  transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+/* ON state */
+.toggle.on {
+  background: var(--toggle-on-bg);
+}
+
+.toggle.on .toggle-knob {
+  transform: translateX(20px);
+}
+
+/* Optional micro-press feedback */
+.toggle:active .toggle-knob {
+  transform: translateX(0) scale(0.96);
+}
+
+.toggle.on:active .toggle-knob {
+  transform: translateX(20px) scale(0.96);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .toggle,
+  .toggle .toggle-knob {
+    transition: none !important;
+  }
+}

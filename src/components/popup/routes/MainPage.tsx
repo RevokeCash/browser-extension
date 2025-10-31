@@ -20,7 +20,7 @@ declare global {
 const FOOTER_SPACE_PX = 76;
 
 const MainPage = () => {
-  const [activeTab, setActiveTab] = useState<'features' | 'approvals' | 'settings'>('features');
+  const [activeTab, setActiveTab] = useState<'features' | 'approvals' | 'settings'>('approvals');
   const [feeOpen, setFeeOpen] = useState(false);
 
   const openFee = () => setFeeOpen(true);

@@ -1,0 +1,358 @@
+#watchlist .watchlist-header-row {
+  opacity: 0;
+  animation: slowFadeUp 1s ease forwards;
+  animation-delay: 1.2s; /* Header appears after THE RISK */
+}
+
+#watchlist .wallet-nav {
+  opacity: 0;
+  animation: slowFadeUp 1s ease forwards;
+  animation-delay: 1.3s; /* Nav follows */
+}
+
+#watchlist .wallet-title-row,
+#watchlist .wallet-approval-count {
+  opacity: 0;
+  animation: slowFadeUp 1s ease forwards;
+  animation-delay: 1.4s; /* Wallet title appears */
+}
+
+#watchlist .approval-headers {
+  opacity: 0;
+  animation: slowFadeUp 1s ease forwards;
+  animation-delay: 1.5s;
+}
+
+/* Approval rows cascade in like transactions */
+#watchlist .approval-row:nth-child(2) {
+  animation-delay: 1.6s;
+}
+
+#watchlist .approval-row:nth-child(3) {
+  animation-delay: 1.7s;
+}
+
+#watchlist .approval-row:nth-child(4) {
+  animation-delay: 1.8s;
+}
+
+#watchlist .revoke-button {
+  opacity: 0;
+  animation: slowFadeUp 1s ease forwards;
+  animation-delay: 1.9s;
+}
+
+.alerts-label {
+  font-size: var(--font-label);
+  font-weight: var(--font-label-weight);
+  text-transform: uppercase;
+  letter-spacing: var(--font-label-spacing);
+  color: var(--accent-orange);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.alerts-label::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--accent-orange);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+
+.alert-card {
+  background: rgba(255, 82, 82, 0.05);
+  border: 1px solid rgba(255, 82, 82, 0.2);
+  border-radius: var(--border-radius-sm);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.alert-content {
+  flex: 1;
+}
+
+.alert-message {
+  font-size: var(--font-body);
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.alert-detail {
+  font-size: var(--font-small);
+  color: var(--text-secondary);
+}
+
+.tokens-at-risk {
+  color: var(--accent-red);
+  font-weight: 600;
+}
+
+.alert-action {
+  padding: 8px 14px;
+  background: rgba(255, 82, 82, 0.1);
+  color: var(--accent-red);
+  border: 1px solid var(--accent-red);
+  border-radius: var(--border-radius-xs);
+  font-size: var(--font-small);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--anim-fast) ease;
+  white-space: nowrap;
+}
+
+.alert-action:hover {
+  background: var(--accent-red);
+  color: #fff;
+}
+
+/* Wallet Navigation */
+.wallet-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--border-radius-sm);
+}
+
+/* Watchlist Styles */
+.watchlist-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.approvals-block {
+  flex: 0 0 auto;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--border-radius-xs);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.manage-wallets-block {
+  flex: 0 0 auto;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--border-radius-xs);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--anim-fast) ease;
+}
+
+.manage-wallets-block:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-secondary);
+  color: var(--text-primary);
+}
+
+.wallet-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.wallet-arrow {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--border-radius-xs);
+  cursor: pointer;
+  transition: all var(--anim-fast) ease;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.wallet-arrow:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-secondary);
+  color: var(--text-primary);
+}
+
+.wallet-selector-dropdown {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--border-radius-xs);
+  cursor: pointer;
+  transition: all var(--anim-fast) ease;
+  min-width: 140px;
+}
+
+.wallet-selector-dropdown:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-secondary);
+}
+
+.wallet-name-dropdown {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.dropdown-chevron {
+  font-size: 18px;
+  color: var(--text-secondary);
+  transform: rotate(90deg);
+  transition: transform var(--anim-fast) ease;
+}
+
+.wallet-selector-dropdown:hover .dropdown-chevron {
+  color: var(--text-primary);
+}
+
+.wallet-nav-divider {
+  color: var(--text-muted);
+  font-size: 16px;
+  margin: 0 4px;
+}
+
+.wallet-indicator-nav {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.wallet-card {
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius-sm);
+}
+
+.wallet-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.wallet-title-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.wallet-title-divider {
+  color: var(--text-muted);
+  font-size: 18px;
+}
+
+.wallet-title-address {
+  font-family: 'SF Mono', monospace;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.wallet-approval-count {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.approval-table {
+  margin-bottom: 20px;
+}
+
+.approval-headers {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-primary);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.approval-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  font-size: var(--font-body);
+  opacity: 0;
+  animation: slideUp var(--anim-fast) ease forwards;
+}
+
+.approval-row:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.approval-row:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.approval-row:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.approval-token {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.approval-spender {
+  color: var(--text-secondary);
+}
+
+.approval-allowance {
+  text-align: right;
+  color: var(--accent-orange);
+  font-weight: 600;
+}
+
+.revoke-button {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent-orange);
+  color: #000;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-body);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--anim-fast) ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 0;
+}
+
+.revoke-button:hover {
+  background: var(--accent-orange-dark);
+  transform: translateY(-1px);
+}

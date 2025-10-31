@@ -1,0 +1,104 @@
+/* Google Ads Screen */
+
+.ad-label {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 2px 6px;
+  background: rgba(253, 185, 81, 0.16);
+  border: 1px solid rgba(253, 185, 81, 0.28);
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-orange);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.search-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4a9eff;
+  margin-bottom: 4px;
+}
+
+.search-domain {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.search-desc {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+/* Base result style */
+[data-step='google-ads'] .search-result {
+  display: block;
+  background: #0e0e0f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+/* Organic (safe) result */
+[data-step='google-ads'] .search-result:not(.ad) {
+  opacity: 1;
+  background: #111315;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Sponsored ad (normal) — dim and subtle border */
+[data-step='google-ads'] .search-result.ad {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Sponsored + malicious ad — red warning border & glow */
+[data-step='google-ads'] .search-result.ad.malicious {
+  border-color: rgba(255, 80, 80, 0.65);
+  box-shadow: 0 0 8px rgba(255, 80, 80, 0.25);
+  background: rgba(255, 50, 50, 0.06);
+}
+
+/* Ad label */
+[data-step='google-ads'] .ad-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #111;
+  background: #ffd36b;
+  padding: 1px 6px;
+  border-radius: 999px;
+  margin-bottom: 6px;
+}
+
+/* Text colors */
+[data-step='google-ads'] .search-title {
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+[data-step='google-ads'] .search-domain {
+  color: #9ad2ff;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+[data-step='google-ads'] .search-desc {
+  color: #cfd3d7;
+  font-size: 13px;
+}
+
+/* --- ad-by-ad entrance animation --- */
+
+[data-step='google-ads'].show .search-result {
+  animation: adEnter 2s;
+}

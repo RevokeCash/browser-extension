@@ -1,0 +1,262 @@
+#simulator .sim-phone {
+  opacity: 0;
+  animation: slowFadeUp 1s ease forwards;
+  animation-delay: 0.6s; /* Phone appears shortly after THE ATTACK */
+}
+
+/* All simulation elements appear together with phone */
+#simulator .sim-preview-title,
+#simulator .sim-flow-item,
+#simulator .sim-critical-warning,
+#simulator .sim-actions {
+  /* No separate animations - all appear with phone */
+}
+
+/* Transaction Simulator Screen */
+.sim-phone {
+  width: 320px;
+  background: #111;
+  border: 2px solid #1a1a1a;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  animation: phoneIn var(--anim-slow) ease forwards;
+}
+
+.sim-phone-header {
+  background: linear-gradient(135deg, #0f0f0f, #141414);
+  padding: 14px 18px;
+  border-bottom: 1px solid #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sim-site-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sim-site-icon {
+  width: 24px;
+  height: 24px;
+  background: var(--accent-orange);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: #000;
+  text-transform: lowercase;
+}
+
+.sim-site-name {
+  font-size: var(--font-small);
+  font-weight: 600;
+}
+
+.sim-phone-body {
+  padding: 20px;
+  min-height: 360px;
+}
+
+.sim-preview {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius-sm);
+  padding: 16px;
+  transition: all 0.3s ease;
+  opacity: 1;
+}
+
+.sim-preview-title {
+  font-size: var(--font-label);
+  font-weight: var(--font-label-weight);
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: var(--font-label-spacing);
+  margin-bottom: 20px;
+}
+
+.sim-flow-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.sim-flow-item:last-child {
+  border-bottom: none;
+}
+
+.sim-flow-label {
+  font-size: var(--font-small);
+  color: var(--text-secondary);
+}
+
+.sim-flow-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sim-amount {
+  font-family: 'SF Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sim-amount.out {
+  color: #ff4444;
+}
+
+.sim-amount.in {
+  color: #00ff88;
+}
+
+.sim-token {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: var(--font-tiny);
+  font-weight: 700;
+}
+
+.sim-token.fake {
+  background: rgba(255, 82, 82, 0.1);
+  color: var(--accent-red);
+  border: 1px solid rgba(255, 82, 82, 0.2);
+}
+
+.sim-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Critical Risk Warning */
+.sim-critical-warning {
+  background: rgba(255, 82, 82, 0.1);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+  border-radius: var(--border-radius-sm);
+  padding: 12px;
+  margin: 16px 0 12px 0;
+  display: none;
+}
+
+.sim-critical-warning.show {
+  display: block;
+  animation: pulseWarning 0.5s ease;
+}
+
+.sim-critical-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.sim-critical-icon {
+  width: 20px;
+  height: 20px;
+  background: var(--accent-red);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.sim-critical-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-red);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+.sim-critical-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+.sim-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: var(--border-radius-xs);
+  font-weight: 700;
+  font-size: var(--font-small);
+  cursor: pointer;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all var(--anim-fast) ease;
+}
+
+.sim-btn.reject {
+  background: transparent;
+  border: 1px solid var(--border-primary);
+  color: var(--text-secondary);
+}
+
+.sim-btn.reject:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-secondary);
+  color: var(--text-primary);
+}
+
+.sim-btn.confirm {
+  background: var(--accent-orange);
+  color: #111;
+}
+
+.sim-btn.confirm:hover {
+  background: var(--accent-orange-dark);
+}
+
+/* smooth preview fade */
+#sim-preview {
+  transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+#sim-preview.enter {
+  opacity: 0.001;
+}
+
+#sim-preview.enter.show {
+  opacity: 1;
+}
+
+/* dots (always circles) */
+.sim-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.sim-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+
+.sim-dot.active {
+  background: var(--accent-orange, #ffb84d);
+  transform: scale(1.4);
+  animation: simPulse 3s ease-in-out infinite;
+}
