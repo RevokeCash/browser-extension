@@ -97,30 +97,6 @@ export default function SimulatorExpandable({ darkMode }: { darkMode: boolean })
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              role="switch"
-              aria-checked={!!enabled}
-              aria-label="Transaction Simulator"
-              onClick={onSwitchClick}
-              onKeyDown={onSwitchKeyDown}
-              className="relative inline-flex items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 flex-shrink-0"
-              style={{
-                width: 44,
-                height: 24,
-                background: enabled ? YELLOW : '#3F3F46',
-                boxShadow: darkMode ? 'none' : undefined,
-              }}
-            >
-              <span
-                className="absolute top-[3px] left-[3px] h-[18px] w-[18px] rounded-full transition-transform shadow"
-                style={{
-                  background: '#FFFFFF',
-                  transform: enabled ? 'translateX(20px)' : 'translateX(0px)',
-                }}
-              />
-            </button>
-
             {enabled && (
               <button
                 type="button"
@@ -149,6 +125,30 @@ export default function SimulatorExpandable({ darkMode }: { darkMode: boolean })
                 </svg>
               </button>
             )}
+
+            <button
+              type="button"
+              role="switch"
+              aria-checked={!!enabled}
+              aria-label="Transaction Simulator"
+              onClick={onSwitchClick}
+              onKeyDown={onSwitchKeyDown}
+              className="relative inline-flex items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 flex-shrink-0"
+              style={{
+                width: 44,
+                height: 24,
+                background: enabled ? YELLOW : '#3F3F46',
+                boxShadow: darkMode ? 'none' : undefined,
+              }}
+            >
+              <span
+                className="absolute top-[3px] left-[3px] h-[18px] w-[18px] rounded-full transition-transform shadow"
+                style={{
+                  background: '#FFFFFF',
+                  transform: enabled ? 'translateX(20px)' : 'translateX(0px)',
+                }}
+              />
+            </button>
           </div>
         </div>
 

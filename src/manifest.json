@@ -36,6 +36,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
+      "exclude_matches": ["*://meet.google.com/*"],
       "js": [
         "js/content-scripts/inject-scripts.js",
         "js/content-scripts/window-ethereum-messages.js",

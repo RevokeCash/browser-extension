@@ -77,9 +77,6 @@ export default function FeatureCard({ onFeeDetails }: { onFeeDetails?: () => voi
         <AdWarningsExpandable darkMode={darkMode} />
 
         <FeatureRowItem key="ADDRESS_GUARD" row={rows[0]} darkMode={darkMode} isLast={false} />
-
-        <FeatureRowItem key="X_OP_DETECTOR" row={rows[1]} darkMode={darkMode} isLast={false} />
-
         <FeatureRowItem key="COVERAGE" row={rows[3]} darkMode={darkMode} isLast={true} />
       </div>
 
@@ -88,6 +85,8 @@ export default function FeatureCard({ onFeeDetails }: { onFeeDetails?: () => voi
       </div>
 
       <div>
+        <FeatureRowItem key="X_OP_DETECTOR" row={rows[1]} darkMode={darkMode} isLast={false} />
+
         <FeatureRowItem key="ETHOS_SCORE" row={rows[2]} darkMode={darkMode} isLast={false} />
 
         <FeatureRowItem key="SLOWMODE" row={rows[4]} darkMode={darkMode} isLast={true} />

@@ -59,6 +59,49 @@ export default function AdWarningsExpandable({ darkMode }: { darkMode: boolean }
   const [expanded, setExpanded] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
 
+  // Child toggles' values
+  const [google, setGoogle] = useBrowserStorage<boolean>(
+    'local',
+    FEATURE_KEYS.GOOGLE_AD_WARN,
+    FEATURE_DEFAULTS[FEATURE_KEYS.GOOGLE_AD_WARN],
+  );
+  const [coingecko, setCoingecko] = useBrowserStorage<boolean>(
+    'local',
+    FEATURE_KEYS.COINGECKO_AD_WARN,
+    FEATURE_DEFAULTS[FEATURE_KEYS.COINGECKO_AD_WARN],
+  );
+  const [dextools, setDextools] = useBrowserStorage<boolean>(
+    'local',
+    FEATURE_KEYS.DEXTOOLS_AD_WARN,
+    FEATURE_DEFAULTS[FEATURE_KEYS.DEXTOOLS_AD_WARN],
+  );
+  const [dexscreener, setDexscreener] = useBrowserStorage<boolean>(
+    'local',
+    FEATURE_KEYS.DEXSCREENER_AD_WARN,
+    FEATURE_DEFAULTS[FEATURE_KEYS.DEXSCREENER_AD_WARN],
+  );
+
+  if (google === undefined || coingecko === undefined || dextools === undefined || dexscreener === undefined)
+    return null;
+
+  const enabled = !!(google || coingecko || dextools || dexscreener);
+
+  const setAll = (next: boolean) => {
+    setGoogle(next);
+    setCoingecko(next);
+    setDextools(next);
+    setDexscreener(next);
+  };
+
+  const onSwitchClick = () => setAll(!enabled);
+
+  const onSwitchKeyDown: React.KeyboardEventHandler<HTMLButtonElement> = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setAll(!enabled);
+    }
+  };
+
   return (
     <>
       <div className="py-3 px-3">
@@ -83,32 +126,58 @@ export default function AdWarningsExpandable({ darkMode }: { darkMode: boolean }
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setExpanded(!expanded)}
-            className="text-neutral-400 hover:text-neutral-200 transition-colors p-1 flex-shrink-0"
-            aria-label="Expand ad warnings options"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setExpanded(!expanded)}
+              className="text-neutral-400 hover:text-neutral-200 transition-colors p-1 flex-shrink-0"
+              aria-label="Expand ad warnings options"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{
+                  transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s',
+                }}
+              >
+                <path
+                  d="M5 7.5L10 12.5L15 7.5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              role="switch"
+              aria-checked={!!enabled}
+              aria-label="Ad Warnings"
+              onClick={onSwitchClick}
+              onKeyDown={onSwitchKeyDown}
+              className="relative inline-flex items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 flex-shrink-0"
               style={{
-                transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
-                transition: 'transform 0.2s',
+                width: 44,
+                height: 24,
+                background: enabled ? YELLOW : '#3F3F46',
+                boxShadow: darkMode ? 'none' : undefined,
               }}
             >
-              <path
-                d="M5 7.5L10 12.5L15 7.5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              <span
+                className="absolute top-[3px] left-[3px] h-[18px] w-[18px] rounded-full transition-transform shadow"
+                style={{
+                  background: '#FFFFFF',
+                  transform: enabled ? 'translateX(20px)' : 'translateX(0px)',
+                }}
               />
-            </svg>
-          </button>
+            </button>
+          </div>
         </div>
 
         {expanded && (
