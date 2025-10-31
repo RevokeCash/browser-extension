@@ -241,6 +241,10 @@ async function shouldShowEveryTransactionBG(): Promise<boolean | undefined> {
   return getStorage('local', FEATURE_KEYS.SIMULATOR_SHOW_EVERY_TX, false);
 }
 
+async function shouldShowOnlyOnWarningsBG(): Promise<boolean | undefined> {
+  return getStorage('local', FEATURE_KEYS.SIMULATOR_WARNINGS_ONLY, false);
+}
+
 async function hasVisitedDappBG(hostname: string): Promise<boolean> {
   try {
     const result = await Browser.storage.local.get(SIMULATOR_VISITED_DAPPS);
@@ -459,17 +463,23 @@ const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<bo
   const hostname = warningData?.hostname || (mdata as any)?.hostname || '';
   // Check simulator mode for tenderly popups (when there's no warningData)
   if (!warningData && tenderlySummary) {
-    const showEveryTx = await shouldShowEveryTransactionBG();
+    const [showEveryTx, warningsOnly] = await Promise.all([
+      shouldShowEveryTransactionBG(),
+      shouldShowOnlyOnWarningsBG(),
+    ]);
 
-    // If "show every transaction" is OFF (meaning "once per dapp" mode)
-    if (!showEveryTx) {
+    if (showEveryTx) {
+      // Always show
+    } else if (warningsOnly) {
+      // Only show if there are warnings
+      const hasWarnings = await hasMaliciousOrWarningInSummary(tenderlySummary, mdata?.chainId);
+      if (!hasWarnings) return false;
+    } else {
+      // First time + on warnings
       if (hostname) {
         const hasVisited = await hasVisitedDappBG(hostname);
         const hasWarnings = await hasMaliciousOrWarningInSummary(tenderlySummary, mdata?.chainId);
-        // If already visited and no warnings, skip popup
-        if (hasVisited && !hasWarnings) {
-          return false;
-        }
+        if (hasVisited && !hasWarnings) return false;
       }
     }
   }

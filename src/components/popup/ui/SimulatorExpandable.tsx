@@ -57,8 +57,13 @@ export default function SimulatorExpandable({ darkMode }: { darkMode: boolean })
     FEATURE_KEYS.SIMULATOR_SHOW_EVERY_TX,
     FEATURE_DEFAULTS[FEATURE_KEYS.SIMULATOR_SHOW_EVERY_TX],
   );
+  const [warningsOnly, setWarningsOnly] = useBrowserStorage<boolean>(
+    'local',
+    FEATURE_KEYS.SIMULATOR_WARNINGS_ONLY,
+    FEATURE_DEFAULTS[FEATURE_KEYS.SIMULATOR_WARNINGS_ONLY],
+  );
 
-  if (showEveryTx === undefined || enabled === undefined) return null;
+  if (showEveryTx === undefined || warningsOnly === undefined || enabled === undefined) return null;
 
   const onSwitchClick = () => setEnabled(!enabled);
 
@@ -154,17 +159,33 @@ export default function SimulatorExpandable({ darkMode }: { darkMode: boolean })
             </div>
             <SimulatorModeOption
               id="once-per-dapp"
-              title="Once per dApp (Recommended)"
-              description="Show summary once per dApp. Only show again if malicious address detected."
-              isSelected={!showEveryTx}
-              onSelect={() => setShowEveryTx(false)}
+              title="First time + on warnings (Recommended)"
+              description="Show summary first time you use a dApp, and again if warnings are detected."
+              isSelected={!showEveryTx && !warningsOnly}
+              onSelect={() => {
+                setShowEveryTx(false);
+                setWarningsOnly(false);
+              }}
+            />
+            <SimulatorModeOption
+              id="warnings-only"
+              title="Only on warnings"
+              description="Only show if we detect a problem. Never show on first use."
+              isSelected={!showEveryTx && !!warningsOnly}
+              onSelect={() => {
+                setShowEveryTx(false);
+                setWarningsOnly(true);
+              }}
             />
             <SimulatorModeOption
               id="every-transaction"
               title="Show Every Transaction"
               description="Always show simulation popup for every transaction."
-              isSelected={showEveryTx}
-              onSelect={() => setShowEveryTx(true)}
+              isSelected={!!showEveryTx}
+              onSelect={() => {
+                setShowEveryTx(true);
+                setWarningsOnly(false);
+              }}
             />
           </div>
         )}
@@ -197,8 +218,12 @@ export default function SimulatorExpandable({ darkMode }: { darkMode: boolean })
               token transfers, approvals, and potential security risks.
               <span className="block mt-3 font-semibold text-neutral-100">Display Modes:</span>
               <span className="block mt-2">
-                <span className="font-semibold text-neutral-100">Once per dApp:</span> Shows the summary the first time
-                you use a dApp. After that, it only appears if a malicious address is detected.
+                <span className="font-semibold text-neutral-100">First time + on warnings:</span> Shows the summary the
+                first time you use a dApp. After that, it only appears if a warning is detected.
+              </span>
+              <span className="block mt-2">
+                <span className="font-semibold text-neutral-100">Only on warnings:</span> Only displays when a warning
+                is detected.
               </span>
               <span className="block mt-2">
                 <span className="font-semibold text-neutral-100">Show Every Transaction:</span> Always displays the
