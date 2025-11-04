@@ -185,15 +185,20 @@ async function bindFeatureToggle(scope, key) {
   const btn = scope.querySelector(`[data-ob-toggle="${key}"]`);
   if (!btn) return;
 
-  const data = await storage.get(key);
-  let enabled = !!data[key];
+  const data = await storage.get([key]);
+  let enabled = data[key];
+
+  if (typeof enabled === 'undefined') {
+    enabled = true; // default ON
+    await storage.set({ [key]: true }); // persist it
+  }
+
   btn.classList.toggle('on', enabled);
 
   btn.addEventListener('click', async () => {
     const next = !btn.classList.contains('on');
     btn.classList.toggle('on', next);
     await storage.set({ [key]: next });
-    enabled = next;
   });
 }
 
