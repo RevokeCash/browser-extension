@@ -174,3 +174,105 @@
   opacity: 1;
   transform: none;
 }
+
+[data-step='address-poisoning'].sequence-v2 {
+  --attack-dur: 0.85s;
+  --gap-1: 0.25s; /* wait after ATTACK before left panel */
+  --left-dur: 0.6s; /* header / label timing */
+  --row-stagger: 0.1s;
+  --gap-2: 0.4s; /* wait before YOUR PROTECTION */
+  --protect-dur: 0.6s;
+}
+
+/* 0) Neutralize legacy animations just for this step */
+[data-step='address-poisoning'].sequence-v2 .panel-right .info-block,
+[data-step='address-poisoning'].sequence-v2 .etherscan-header,
+[data-step='address-poisoning'].sequence-v2 .section-label,
+[data-step='address-poisoning'].sequence-v2 .tx-item {
+  opacity: 0;
+  animation: none;
+  transform: none;
+}
+
+/* Optional: prevent flash before we start */
+[data-step='address-poisoning'].sequence-v2:not(.ready) .panel-right .info-block,
+[data-step='address-poisoning'].sequence-v2:not(.ready) .etherscan-header,
+[data-step='address-poisoning'].sequence-v2:not(.ready) .section-label,
+[data-step='address-poisoning'].sequence-v2:not(.ready) .tx-item {
+  visibility: hidden;
+}
+[data-step='address-poisoning'].sequence-v2.ready .panel-right .info-block,
+[data-step='address-poisoning'].sequence-v2.ready .etherscan-header,
+[data-step='address-poisoning'].sequence-v2.ready .section-label,
+[data-step='address-poisoning'].sequence-v2.ready .tx-item {
+  visibility: visible;
+}
+
+/* 1) THE ATTACK (first right info-block) */
+[data-step='address-poisoning'].sequence-v2.ready .panel-right .panel-right-content .info-block:nth-child(1) {
+  animation: apRise var(--attack-dur) ease-out forwards;
+}
+
+/* 2) ETHERSCAN: header + label */
+[data-step='address-poisoning'].sequence-v2.ready .etherscan-header {
+  animation: apRise var(--left-dur) cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--attack-dur) + var(--gap-1)) forwards;
+}
+[data-step='address-poisoning'].sequence-v2.ready .section-label {
+  animation: apRise var(--left-dur) cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--attack-dur) + var(--gap-1) + 0.08s)
+    forwards;
+}
+
+/* 2b) ETHERSCAN rows cascade */
+[data-step='address-poisoning'].sequence-v2.ready .tx-item {
+  animation: apRise 0.5s ease forwards;
+}
+[data-step='address-poisoning'].sequence-v2.ready .tx-item:nth-of-type(3) {
+  /* first tx after label */
+  animation-delay: calc(var(--attack-dur) + var(--gap-1) + 0.16s);
+}
+[data-step='address-poisoning'].sequence-v2.ready .tx-item:nth-of-type(4) {
+  animation-delay: calc(var(--attack-dur) + var(--gap-1) + 0.16s + var(--row-stagger) * 1);
+}
+[data-step='address-poisoning'].sequence-v2.ready .tx-item:nth-of-type(5) {
+  animation-delay: calc(var(--attack-dur) + var(--gap-1) + 0.16s + var(--row-stagger) * 2);
+}
+[data-step='address-poisoning'].sequence-v2.ready .tx-item:nth-of-type(6) {
+  animation-delay: calc(var(--attack-dur) + var(--gap-1) + 0.16s + var(--row-stagger) * 3);
+}
+[data-step='address-poisoning'].sequence-v2.ready .tx-item:nth-of-type(7) {
+  animation-delay: calc(var(--attack-dur) + var(--gap-1) + 0.16s + var(--row-stagger) * 4);
+}
+[data-step='address-poisoning'].sequence-v2.ready .tx-item:nth-of-type(8) {
+  animation-delay: calc(var(--attack-dur) + var(--gap-1) + 0.16s + var(--row-stagger) * 5);
+}
+
+/* 3) YOUR PROTECTION (second right info-block) */
+[data-step='address-poisoning'].sequence-v2.ready .panel-right .panel-right-content .info-block:nth-child(2) {
+  animation: apRise var(--protect-dur) ease-out /* after header+label + all row staggers */
+    calc(var(--attack-dur) + var(--gap-1) + var(--left-dur) + var(--row-stagger) * 5 + var(--gap-2)) forwards;
+}
+
+/* Keyframes */
+@keyframes apRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: saturate(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: saturate(1);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-step='address-poisoning'].sequence-v2 * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    visibility: visible !important;
+  }
+}

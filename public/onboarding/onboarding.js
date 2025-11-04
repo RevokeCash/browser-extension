@@ -49,6 +49,36 @@ async function finish(dontShow) {
   window.close();
 }
 
+async function openExtension() {
+  const url = chrome.runtime.getURL('popup.html');
+
+  try {
+    if (chrome.action?.openPopup) {
+      await chrome.action.openPopup();
+      return;
+    }
+  } catch (_) {}
+}
+
+function animateCoverageAmount(el, from, to, duration) {
+  const start = performance.now();
+
+  function frame(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const value = Math.floor(from + (to - from) * progress);
+    el.textContent = '$' + value.toLocaleString();
+
+    // color lerp: red (255,82,82) → green (0,255,136)
+    const r = Math.round(255 - 255 * progress);
+    const g = Math.round(82 + (255 - 82) * progress);
+    const b = Math.round(82 + (136 - 82) * progress);
+    el.style.color = `rgb(${r},${g},${b})`;
+
+    if (progress < 1) requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
+}
 function extractTargetFromOnclick(el) {
   const oc = el.getAttribute('onclick') || '';
   const m = oc.match(/showScreen\(['"]([^'"]+)['"]\)/);
@@ -74,6 +104,8 @@ function bindDelegatedHandlersOnce() {
     const action = t.getAttribute('data-ob-action');
     if (action === 'next') return next();
     if (action === 'back') return back();
+    if (action === 'open-extension') return openExtension();
+
     if (action === 'skip' || action === 'done') {
       const dontShow = root.querySelector('#ob-dont-show-again')?.checked;
       return finish(dontShow);
@@ -88,17 +120,46 @@ window.onScreenChange = (id) => {
   root.querySelectorAll('.progress-bar').forEach((bar) => (bar.style.width = pct + '%'));
 
   if (id === 'watchlist') {
-    const rootStep = document.querySelector('[data-step="watchlist"]');
-    const yourBlock = rootStep?.querySelector('#wl-your-block');
-    const alerts = rootStep?.querySelector('#wl-alerts');
-    [yourBlock, alerts].forEach((el) => el?.classList.remove('show'));
-    const revealNextPaint = (el) => {
-      if (!el) return;
-      el.getBoundingClientRect();
-      requestAnimationFrame(() => el.classList.add('show'));
-    };
-    revealNextPaint(yourBlock);
-    setTimeout(() => alerts?.classList.add('show'), 100);
+    const step = document.querySelector('[data-step="watchlist"]');
+    if (!step) return;
+    step.classList.add('sequence-v2');
+    step.classList.remove('ready'); // reset if revisiting
+    step.getBoundingClientRect(); // reflow
+    requestAnimationFrame(() => step.classList.add('ready'));
+  }
+
+  if (id === 'simulator') {
+    const step = document.querySelector('[data-step="simulator"]');
+    if (!step) return;
+    step.classList.add('sequence-v2');
+    step.classList.remove('ready');
+    step.getBoundingClientRect();
+    requestAnimationFrame(() => step.classList.add('ready'));
+  }
+
+  if (id === 'address-poisoning') {
+    const step = document.querySelector('[data-step="address-poisoning"]');
+    if (!step) return;
+    step.classList.add('sequence-v2');
+    step.classList.remove('ready');
+    step.getBoundingClientRect();
+    requestAnimationFrame(() => step.classList.add('ready'));
+  }
+  if (id === 'google-ads') {
+    const step = document.querySelector('[data-step="google-ads"]');
+    if (!step) return;
+    step.classList.add('sequence-v2');
+    step.classList.remove('ready');
+    step.getBoundingClientRect();
+    requestAnimationFrame(() => step.classList.add('ready'));
+  }
+  if (id === 'coverage') {
+    const step = document.querySelector('[data-step="coverage"]');
+    if (!step) return;
+    step.classList.add('sequence-v2');
+    step.classList.remove('ready');
+    step.getBoundingClientRect();
+    requestAnimationFrame(() => step.classList.add('ready'));
   }
 };
 
@@ -175,30 +236,66 @@ const stepInits = {
       idx = i;
       dots.forEach((d, j) => d.classList.toggle('active', j === i));
 
+      const previewCard = preview; // #sim-preview
+      const siteIcon = scope.querySelector('.sim-site-icon');
+      const siteName = el.site;
+
+      const flowItems = Array.from(scope.querySelectorAll('.sim-flow-item'));
+      const labelSend = flowItems[0].querySelector('.sim-flow-label');
+      const labelSecond = flowItems[1].querySelector('.sim-flow-label');
+      const amtSend = el.sendAmt;
+      const tokSend = el.sendTok;
+      const amtRecv = el.recvAmt;
+      const tokRecv = el.recvTok;
+
+      previewCard.classList.remove('critical');
+      el.critical.style.display = 'none';
+      el.critical.classList.remove('show');
+      labelSend.textContent = 'You send';
+      labelSecond.textContent = 'You receive';
+      amtSend.classList.remove('in');
+      amtSend.classList.add('out');
+      amtRecv.classList.remove('out');
+      amtRecv.classList.add('in');
+      tokSend.classList.remove('fake');
+      tokRecv.classList.remove('fake');
+      siteIcon.textContent = 'r';
+      siteName.textContent = 'Uniswap';
+      const confirmBtn = scope.querySelector('#sim-confirm-btn');
+      confirmBtn.classList.remove('danger');
+      confirmBtn.textContent = 'CONFIRM';
+
       if (i === 0) {
-        el.site.textContent = 'Uniswap';
-        el.sendAmt.textContent = '-1.5';
-        el.sendTok.textContent = 'ETH';
-        el.recvAmt.textContent = '+3,847';
-        el.recvTok.textContent = 'USDC';
+        amtSend.textContent = '-1.5';
+        tokSend.textContent = 'ETH';
+        amtRecv.textContent = '+3,847';
+        tokRecv.textContent = 'USDC';
         el.fee.textContent = '~$8.42';
-        el.critical.style.display = 'none';
       } else if (i === 1) {
-        el.site.textContent = 'Uniswap';
-        el.sendAmt.textContent = '-1.5';
-        el.sendTok.textContent = 'ETH';
-        el.recvAmt.textContent = '+3,846';
-        el.recvTok.textContent = 'USDC';
+        amtSend.textContent = '-1.5';
+        tokSend.textContent = 'ETH';
+        amtRecv.textContent = '+3,846';
+        tokRecv.textContent = 'USDC';
         el.fee.textContent = '~$58.10';
-        el.critical.style.display = 'none';
       } else {
-        el.site.textContent = 'SketchySwap';
-        el.sendAmt.textContent = '-1.5';
-        el.sendTok.textContent = 'ETH';
-        el.recvAmt.textContent = '+0';
-        el.recvTok.textContent = 'USDC';
+        labelSecond.textContent = 'You send';
+        amtSend.textContent = '-2.8';
+        tokSend.textContent = 'WETH';
+        amtRecv.textContent = '-8,450';
+        tokRecv.textContent = 'MOG';
+
+        amtRecv.classList.remove('in');
+        amtRecv.classList.add('out');
+        tokRecv.classList.add('fake');
+
+        previewCard.classList.add('critical');
+        // el.critical.style.display = '';
+        requestAnimationFrame(() => el.critical.classList.add('show'));
+
+        confirmBtn.classList.add('danger');
+        confirmBtn.textContent = 'PROCEED ANYWAY';
+
         el.fee.textContent = '~$9.10';
-        el.critical.style.display = '';
       }
 
       animatePreview();
@@ -262,5 +359,18 @@ const stepInits = {
 
   coverage: async () => {
     await initStepWithToggle('coverage', FEATURE_KEYS.COVERAGE);
+
+    const scope = root.querySelector('[data-step="coverage"]');
+    if (!scope) return;
+
+    const amountEl = scope.querySelector('#coverage-amount');
+    if (!amountEl) return;
+
+    amountEl.textContent = '$0';
+    amountEl.style.color = '#ff5252';
+
+    setTimeout(() => {
+      animateCoverageAmount(amountEl, 0, 30000, 1800);
+    }, 2300);
   },
 };

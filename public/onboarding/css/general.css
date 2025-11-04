@@ -6,8 +6,8 @@
   --max-width: 900px;
   --card-padding: 0;
   --header-padding: 28px 32px;
-  --panel-padding-left: 24px;
-  --panel-padding-right: 32px;
+  --panel-padding-left: 18px;
+  --panel-padding-right: 18px;
   --footer-padding: 20px 32px;
 
   /* Typography */
@@ -205,34 +205,6 @@ body {
 .panel-right-content::-webkit-scrollbar {
   width: 0px;
   background: transparent;
-}
-
-/* Info Blocks with animation delays */
-.info-block {
-  margin-bottom: 0;
-  opacity: 0;
-  animation: slowFadeUp 1.5s ease forwards;
-}
-
-.info-block:nth-child(1) {
-  animation-delay: 0.1s; /* THE ATTACK section appears first */
-}
-
-.info-block:nth-child(2) {
-  animation-delay: 0.3s; /* YOUR PROTECTION section - appears with scammer labels */
-}
-
-.info-block:nth-child(3) {
-  animation-delay: 0.6s; /* YOUR PROTECTION section - appears with scammer labels */
-}
-
-/* Simulator screen - all elements appear together */
-#simulator .info-block:nth-child(1) {
-  animation-delay: 0.4s;
-}
-
-#simulator .info-block:nth-child(2) {
-  animation-delay: 3s; /* YOUR SHIELD appears with the critical risk warning */
 }
 
 #simulator .toggle-wrapper {

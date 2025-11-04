@@ -386,3 +386,78 @@
   padding: 2px 8px;
   border-radius: 999px;
 }
+
+[data-step='coverage'].sequence-v2 {
+  --risk-dur: 0.85s;
+  --gap-1: 0.25s; /* pause after RISK */
+  --item-dur: 0.55s;
+  --row-stagger: 0.12s;
+  --gap-2: 0.4s; /* pause before SAFETY NET */
+  --protect-dur: 0.6s;
+}
+
+/* Neutralize before animation */
+[data-step='coverage'].sequence-v2 .panel-right .info-block,
+[data-step='coverage'].sequence-v2 .coverage-item {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: none;
+  filter: none;
+  visibility: hidden; /* make them actually invisible */
+}
+
+/* When .ready is added, allow animations to play */
+[data-step='coverage'].sequence-v2.ready .panel-right .info-block,
+[data-step='coverage'].sequence-v2.ready .coverage-item {
+  visibility: visible;
+}
+
+/* 1) THE RISK block (first info-block on the right) */
+[data-step='coverage'].sequence-v2.ready .panel-right .panel-right-content .info-block:nth-child(2) {
+  animation: covRise var(--risk-dur) ease-out forwards;
+}
+
+/* 2) LEFT items (staggered) — target by id so other divs don't offset the index */
+[data-step='coverage'].sequence-v2.ready #coverage-item-1 {
+  animation: covRise var(--item-dur) cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--risk-dur) + var(--gap-1)) forwards;
+}
+[data-step='coverage'].sequence-v2.ready #coverage-item-2 {
+  animation: covRise var(--item-dur) cubic-bezier(0.22, 0.61, 0.36, 1)
+    calc(var(--risk-dur) + var(--gap-1) + var(--row-stagger) * 1) forwards;
+}
+[data-step='coverage'].sequence-v2.ready #coverage-item-3 {
+  animation: covRise var(--item-dur) cubic-bezier(0.22, 0.61, 0.36, 1)
+    calc(var(--risk-dur) + var(--gap-1) + var(--row-stagger) * 2) forwards;
+}
+
+/* 3) YOUR SAFETY NET block (second info-block on right) */
+[data-step='coverage'].sequence-v2.ready .panel-right .panel-right-content .info-block:nth-child(3) {
+  animation: covRise var(--protect-dur) ease-out
+    calc(var(--risk-dur) + var(--gap-1) + var(--row-stagger) * 2 + var(--item-dur) + var(--gap-2)) forwards;
+}
+
+/* Keyframes */
+@keyframes covRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: saturate(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: saturate(1);
+  }
+}
+
+/* default look when not animating */
+[data-step='coverage'] .coverage-item {
+  opacity: 0.8;
+  transition: opacity 0.4s ease;
+}
+[data-step='coverage'] .coverage-item:hover {
+  opacity: 1;
+}
+[data-step='coverage'].sequence-v2.ready #coverage-item-1 {
+  animation-delay: calc(var(--risk-dur) + var(--gap-1) + 0.15s);
+}

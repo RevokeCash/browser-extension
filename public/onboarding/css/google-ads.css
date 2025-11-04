@@ -102,3 +102,94 @@
 [data-step='google-ads'].show .search-result {
   animation: adEnter 2s;
 }
+
+[data-step='google-ads'].sequence-v2 {
+  --trap-dur: 0.85s;
+  --gap-1: 0.25s; /* pause after TRAP */
+  --results-dur: 0.55s;
+  --row-stagger: 0.12s;
+  --gap-2: 0.4s; /* pause before PROTECTION */
+  --protect-dur: 0.6s;
+}
+
+/* 0) Neutralize ONLY what we re-animate (no !important) */
+[data-step='google-ads'].sequence-v2 .panel-right .info-block,
+[data-step='google-ads'].sequence-v2 .search-result {
+  opacity: 0;
+  animation: none;
+  transform: translateY(8px);
+  filter: none;
+}
+
+/* prevent flash before kickoff */
+[data-step='google-ads'].sequence-v2:not(.ready) .panel-right .info-block,
+[data-step='google-ads'].sequence-v2:not(.ready) .search-result {
+  visibility: hidden;
+}
+[data-step='google-ads'].sequence-v2.ready .panel-right .info-block,
+[data-step='google-ads'].sequence-v2.ready .search-result {
+  visibility: visible;
+}
+
+/* 1) THE TRAP (first right info-block) */
+[data-step='google-ads'].sequence-v2.ready .panel-right .panel-right-content .info-block:nth-child(1) {
+  animation: gaRise var(--trap-dur) ease-out forwards;
+}
+
+/* 2) Left search results: staggered entrance */
+[data-step='google-ads'].sequence-v2.ready .panel-left .search-result {
+  animation: gaRise var(--results-dur) cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+[data-step='google-ads'].sequence-v2.ready .panel-left .search-result:nth-of-type(1) {
+  animation-delay: calc(var(--trap-dur) + var(--gap-1));
+}
+[data-step='google-ads'].sequence-v2.ready .panel-left .search-result:nth-of-type(2) {
+  animation-delay: calc(var(--trap-dur) + var(--gap-1) + var(--row-stagger) * 1);
+}
+[data-step='google-ads'].sequence-v2.ready .panel-left .search-result:nth-of-type(3) {
+  animation-delay: calc(var(--trap-dur) + var(--gap-1) + var(--row-stagger) * 2);
+}
+
+/* 2b) Show the AD pill a beat after each card appears */
+[data-step='google-ads'].sequence-v2 .search-result {
+  position: relative;
+}
+[data-step='google-ads'].sequence-v2 .search-result .ad-label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+[data-step='google-ads'].sequence-v2.ready .panel-left .search-result:nth-of-type(1) .ad-label {
+  transition-delay: calc(var(--trap-dur) + var(--gap-1) + 0.15s);
+}
+[data-step='google-ads'].sequence-v2.ready .panel-left .search-result:nth-of-type(2) .ad-label {
+  transition-delay: calc(var(--trap-dur) + var(--gap-1) + var(--row-stagger) * 1 + 0.15s);
+}
+[data-step='google-ads'].sequence-v2.ready .panel-left .search-result:nth-of-type(3) .ad-label {
+  transition-delay: calc(var(--trap-dur) + var(--gap-1) + var(--row-stagger) * 2 + 0.15s);
+}
+[data-step='google-ads'].sequence-v2.ready .panel-left .search-result .ad-label {
+  opacity: 1;
+}
+
+/* 3) YOUR PROTECTION (second right info-block) */
+[data-step='google-ads'].sequence-v2.ready .panel-right .panel-right-content .info-block:nth-child(2) {
+  animation: gaRise var(--protect-dur) ease-out
+    calc(var(--trap-dur) + var(--gap-1) + var(--row-stagger) * 2 + var(--results-dur) + var(--gap-2)) forwards;
+}
+
+/* Keyframes */
+@keyframes gaRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: saturate(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: saturate(1);
+  }
+}

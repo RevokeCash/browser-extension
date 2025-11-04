@@ -260,3 +260,105 @@
   transform: scale(1.4);
   animation: simPulse 3s ease-in-out infinite;
 }
+
+[data-step='simulator'].sequence-v2 {
+  --attack-dur: 0.85s;
+  --gap-1: 0.35s; /* pause after ATTACK */
+  --left-dur: 0.65s; /* phone in */
+  --gap-2: 0.45s; /* pause before SHIELD */
+  --shield-dur: 0.6s;
+}
+
+/* 0) Neutralize legacy animations on this step only */
+[data-step='simulator'].sequence-v2 .panel-right .info-block,
+[data-step='simulator'].sequence-v2 #sim-phone {
+  opacity: 0;
+  animation: none; /* cancel previous slowFadeUp/phoneIn */
+  transform: none;
+}
+
+/* (If you kept your original #simulator rules, this ensures our block wins) */
+[data-step='simulator'].sequence-v2 #sim-phone {
+  transform: translateY(20px) scale(0.96);
+}
+
+/* 1) THE ATTACK (first info-block on the right) plays immediately */
+[data-step='simulator'].sequence-v2 .panel-right .panel-right-content .info-block:nth-child(1) {
+  animation: simRise var(--attack-dur) ease-out forwards;
+}
+
+/* 2) LEFT PANEL (phone) after a short pause */
+[data-step='simulator'].sequence-v2 #sim-phone {
+  animation: phoneIn var(--left-dur) cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--attack-dur) + var(--gap-1)) forwards;
+}
+
+/* 3) YOUR SHIELD (second info-block) last */
+[data-step='simulator'].sequence-v2 .panel-right .panel-right-content .info-block:nth-child(2) {
+  animation: simRise var(--shield-dur) ease-out calc(var(--attack-dur) + var(--gap-1) + var(--left-dur) + var(--gap-2))
+    forwards;
+}
+
+/* Critical styling for the phone preview */
+.sim-preview.critical {
+  background: rgba(255, 82, 82, 0.06);
+  border-color: rgba(255, 82, 82, 0.28);
+  box-shadow: 0 0 0 1px rgba(255, 82, 82, 0.12) inset;
+}
+
+.sim-preview.critical .sim-preview-title {
+  color: rgba(255, 82, 82, 0.8);
+}
+
+/* In critical mode, both apply(i) {amounts look like outflows */
+.sim-preview.critical .sim-amount {
+  color: #ff5252;
+}
+.sim-preview.critical .sim-token.fake {
+  background: rgba(255, 82, 82, 0.12);
+  color: #ff6666;
+  border: 1px solid rgba(255, 82, 82, 0.25);
+}
+
+/* Danger CTA */
+.sim-btn.danger {
+  background: var(--accent-red);
+  color: #fff;
+  border: none;
+}
+.sim-btn.danger:hover {
+  background: #ff3333;
+}
+
+/* Keyframes (reuse names to keep bundle light) */
+@keyframes simRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: saturate(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: saturate(1);
+  }
+}
+@keyframes phoneIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-step='simulator'].sequence-v2 * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

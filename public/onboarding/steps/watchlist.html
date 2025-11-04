@@ -1,4 +1,4 @@
-<section class="step" data-step="watchlist">
+<section class="step sequence-v2" data-step="watchlist" id="watchlist">
   <div class="onboarding-card">
     <div class="card-header">
       <h1>Wallet Watchlist</h1>
@@ -13,6 +13,7 @@
     </div>
 
     <div class="card-content">
+      <!-- LEFT PANEL -->
       <div class="panel-left">
         <div class="watchlist-header-row">
           <div class="approvals-block">APPROVALS</div>
@@ -68,6 +69,7 @@
         </div>
       </div>
 
+      <!-- RIGHT PANEL -->
       <div class="panel-right">
         <div class="info-block">
           <div class="info-label danger">THE RISK</div>
@@ -86,7 +88,7 @@
         </div>
 
         <!-- Live Alerts -->
-        <div class="info-block reveal" id="wl-alerts">
+        <div class="info-block reveal">
           <div class="alerts-label">LIVE ALERTS FROM REVOKE</div>
           <div class="info-title">When exploits happen, we check if you're affected and notify you directly.</div>
           <div class="alert-card">
@@ -103,7 +105,6 @@
     <div class="card-footer">
       <button class="btn btn-ghost" data-ob-action="back">Back</button>
       <div class="footer-group">
-        <!-- <button class="btn btn-ghost" data-ob-action="skip">Skip</button> -->
         <button class="btn btn-primary" data-ob-action="next">Next</button>
       </div>
     </div>
