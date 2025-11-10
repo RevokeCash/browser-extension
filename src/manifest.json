@@ -83,6 +83,9 @@
       "run_at": "document_idle"
     }
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' https://platform.twitter.com https://cdn.syndication.twimg.com; object-src 'self'; connect-src 'self' https://cdn.syndication.twimg.com https://api.twitter.com; img-src 'self' data: https://pbs.twimg.com https://abs.twimg.com; style-src 'self' 'unsafe-inline' https://platform.twitter.com; frame-src 'self' https://platform.twitter.com https://syndication.twitter.com"
+  },
 
   "web_accessible_resources": [
     {
@@ -93,7 +96,9 @@
         "js/pages/confirm.js",
         "js/vendor.js",
         "assets/*",
-        "onboarding/feature-toggle-bindings.js"
+        "onboarding/feature-toggle-bindings.js",
+        "public/images/*",
+        "images/*"
       ]
     }
   ],
@@ -102,7 +107,9 @@
     "confirm.html",
     "js/pages/confirm.js",
     "js/vendor.js",
-    "assets/*"
+    "assets/*",
+    "public/images/*",
+    "images/*"
   ],
 
   "background": {

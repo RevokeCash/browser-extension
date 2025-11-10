@@ -193,3 +193,51 @@
     filter: saturate(1);
   }
 }
+
+/* --- Phase-controlled malicious styling --- */
+/* 1) Initially keep malicious ads neutral (same as normal .ad) */
+[data-step='google-ads'] .search-result.ad.malicious {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+  background: #0e0e0f;
+  transition:
+    border-color 300ms ease,
+    box-shadow 300ms ease,
+    background-color 300ms ease;
+}
+
+/* 2) When phase 3 starts, flip them to red */
+[data-step='google-ads'].phase-3 .search-result.ad.malicious {
+  border-color: rgba(255, 80, 80, 0.65);
+  box-shadow: 0 0 8px rgba(255, 80, 80, 0.25);
+  background: rgba(255, 50, 50, 0.06);
+}
+
+/* --- UNIFY INITIAL AD LOOK + SUPPRESS EARLY BADGE --- */
+
+/* 1) NEVER show the AD pill before phase-3 (override section 2b) */
+[data-step='google-ads'] .search-result .ad-label {
+  opacity: 0; /* default hidden */
+  transition: opacity 0.25s ease;
+}
+
+/* If "ready" has already set badges to 1, force them back off until phase-3 */
+[data-step='google-ads'].sequence-v2.ready:not(.phase-3) .panel-left .search-result .ad-label {
+  opacity: 0 !important;
+  transition-delay: 0s !important; /* kill the stagger */
+}
+
+/* --- PHASE 3: REVEAL BADGES ON ALL ADS + TURN MALICIOUS RED --- */
+
+/* a) show AD badge on ALL ads at the exact phase-3 moment */
+[data-step='google-ads'].sequence-v2.phase-3 .panel-left .search-result.ad .ad-label {
+  opacity: 1;
+  transition-delay: 0s;
+}
+
+/* b) only malicious ads flip red in phase-3 */
+[data-step='google-ads'].phase-3 .search-result.ad.malicious {
+  border-color: rgba(255, 80, 80, 0.65);
+  box-shadow: 0 0 8px rgba(255, 80, 80, 0.25);
+  background: rgba(255, 50, 50, 0.06);
+}

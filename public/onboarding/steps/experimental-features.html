@@ -1,0 +1,248 @@
+<!-- /onboarding/steps/experimental-features.html -->
+<section class="step" data-step="experimental-features">
+  <div class="onboarding-card">
+    <div class="card-header">
+      <h1>
+        Experimental Features Lab
+        <span class="badge-beta">BETA</span>
+      </h1>
+      <p>Community-driven features we’re testing to make your crypto life better and safer.</p>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar"></div>
+      <div class="progress-text" data-ob-progress>—</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-nav ef-tabs" role="tablist" aria-label="Experimental features">
+      <button class="screen-btn ef-tab active" role="tab" aria-selected="true" data-index="0">OP Detection</button>
+      <button class="screen-btn ef-tab" role="tab" aria-selected="false" data-index="1">Ethos Score</button>
+      <button class="screen-btn ef-tab" role="tab" aria-selected="false" data-index="2">Hold to Confirm</button>
+      <button class="screen-btn ef-tab" role="tab" aria-selected="false" data-index="3">PumpFun Guard</button>
+    </div>
+
+    <div class="card-content">
+      <!-- SCREEN 0: OP detection -->
+      <div class="feature-screen active" data-screen="0">
+        <div class="panel-left">
+          <div class="ef-twitter">
+            <div class="ef-tw-header">
+              <div class="ef-x-logo">𝕏</div>
+              <div class="ef-tw-title">X (formerly Twitter)</div>
+            </div>
+
+            <div class="ef-tweet">
+              <div class="ef-avatar"></div>
+              <div class="ef-tweet-body">
+                <div class="ef-name">
+                  Vitalik.eth
+                  <span class="ef-badge ef-badge-op">OP</span>
+                </div>
+                <div class="ef-handle">@VitalikButerin</div>
+                <div class="ef-text">
+                  Excited to announce our new L2 scaling solution! Check out the details on our official site.
+                </div>
+              </div>
+            </div>
+
+            <div class="ef-tweet">
+              <div class="ef-avatar alt"></div>
+              <div class="ef-tweet-body">
+                <div class="ef-name">
+                  VitaIik.eth
+                  <span class="ef-badge ef-badge-nop">NOT OP</span>
+                </div>
+                <div class="ef-handle">@VitalikButcrin</div>
+                <div class="ef-text">Don’t miss the airdrop! Connect wallet: [scam-link]</div>
+              </div>
+              <div class="ef-scam">⚠ Scam</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-right">
+          <div class="panel-right-content">
+            <div class="info-block">
+              <div class="info-label danger">THE IMPERSONATION</div>
+              <div class="info-title">Scammers reply as fake OP accounts</div>
+              <div class="info-desc">
+                Imposters create lookalike accounts and flood popular threads with malicious links, exploiting trust in
+                the original poster.
+              </div>
+            </div>
+
+            <div class="info-block">
+              <div class="info-label success">YOUR PROTECTION</div>
+              <div class="info-title">Visual badges expose imposters</div>
+              <div class="info-desc">
+                Green “OP” badges mark the original poster. Red “NOT OP” badges reveal fakes, even with Unicode tricks.
+              </div>
+            </div>
+
+            <div class="toggle-wrapper">
+              <span class="toggle-label">Enable Guard</span>
+              <button class="toggle" data-ob-toggle="feature_x_op_detector_enabled">
+                <div class="toggle-knob"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 1: Ethos Score -->
+      <div class="feature-screen" data-screen="1">
+        <!-- Replace the Ethos left panel with this -->
+        <div class="panel-left">
+          <div class="ef-ethos-avatars">
+            <figure class="ethos-card high">
+              <img src="/images/goodethosdark.png" alt="High ethos profile" />
+            </figure>
+
+            <!-- <figure class="ethos-card mid">
+      <img src="/images/neutralethosdark.png" alt="Medium ethos profile" />
+      
+    </figure> -->
+
+            <figure class="ethos-card low">
+              <img src="/images/badethosdark.png" alt="Low ethos profile" />
+            </figure>
+          </div>
+        </div>
+
+        <div class="panel-right">
+          <div class="panel-right-content">
+            <div class="info-block">
+              <div class="info-label danger">THE UNKNOWN</div>
+              <div class="info-title">Who can you trust on X?</div>
+              <div class="info-desc">
+                Without reputation context, it’s hard to know if an account is credible or a serial scammer.
+              </div>
+            </div>
+
+            <div class="info-block">
+              <div class="info-label success">YOUR PROTECTION</div>
+              <div class="info-title">On-chain reputation scores</div>
+              <div class="info-desc">
+                <strong>High (1500+):</strong> Verified, trusted<br />
+                <strong>Medium (500–1499):</strong> Building reputation<br />
+                <strong>Low (0–499):</strong> New or flagged
+              </div>
+            </div>
+            <div class="toggle-wrapper">
+              <span class="toggle-label">Enable Guard</span>
+              <button class="toggle" data-ob-toggle="feature_ethos_score_enabled">
+                <div class="toggle-knob"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 2: Hold to Confirm -->
+      <div class="feature-screen" data-screen="2">
+        <div class="panel-left">
+          <div class="ef-hold">
+            <div class="ef-app-card">
+              <div class="ef-app-icon">🦄</div>
+              <div class="ef-app-name">Unknown DeFi App</div>
+              <div class="ef-app-url">defi-app.xyz</div>
+
+              <button class="ef-hold-btn" data-hold="3">
+                <span class="ef-hold-text">Hold for 3 seconds to confirm</span>
+                <div class="ef-hold-progress"></div>
+              </button>
+
+              <div class="ef-note">⚠ First time connecting to this app. Verify the URL before proceeding.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-right">
+          <div class="panel-right-content">
+            <div class="info-block">
+              <div class="info-label danger">THE MISCLICK</div>
+              <div class="info-title">One wrong click drains your wallet</div>
+              <div class="info-desc">
+                Phishing sites trick you into quick approvals. By the time you realize, it’s too late.
+              </div>
+            </div>
+
+            <div class="info-block">
+              <div class="info-label success">YOUR PROTECTION</div>
+              <div class="info-title">3-second hold requirement</div>
+              <div class="info-desc">
+                On first connection to unwhitelisted sites. Trusted platforms skip this entirely.
+              </div>
+            </div>
+
+            <div class="toggle-wrapper">
+              <span class="toggle-label">Enable Guard</span>
+              <button class="toggle" data-ob-toggle="feature_address_guard_enabled">
+                <div class="toggle-knob"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 3: PumpFun Guard -->
+      <div class="feature-screen" data-screen="3">
+        <div class="panel-left">
+          <div class="ef-pumpfun">
+            <div class="ef-pf-header">
+              <div class="ef-pf-title">pump.fun</div>
+              <div class="ef-pf-sub">Educational warnings on platform</div>
+            </div>
+
+            <div class="ef-warning">
+              <div class="ef-w-title">Trending Can Be Faked</div>
+              <div class="ef-w-desc">Bots use 0.01 SOL buys to game “trending”.</div>
+            </div>
+            <div class="ef-warning">
+              <div class="ef-w-title">Volume Often Misleading</div>
+              <div class="ef-w-desc">Self-trading between wallets is common.</div>
+            </div>
+            <div class="ef-warning">
+              <div class="ef-w-title">Check Holder Distribution</div>
+              <div class="ef-w-desc">One person often controls many wallets.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-right">
+          <div class="panel-right-content">
+            <div class="info-block">
+              <div class="info-label danger">THE MANIPULATION</div>
+              <div class="info-title">PumpFun is gamed constantly</div>
+              <div class="info-desc">
+                Bots fake trending, wash-trade volume, and bundle wallets. First-time users don’t know the tricks.
+              </div>
+            </div>
+            <div class="info-block">
+              <div class="info-label success">YOUR PROTECTION</div>
+              <div class="info-title">Educational warning overlays</div>
+              <div class="info-desc">
+                We show warnings about scams: fake trending, wash trading, bundled wallets, unverified socials...
+              </div>
+            </div>
+
+            <div class="toggle-wrapper">
+              <span class="toggle-label">Enable Guard</span>
+              <button class="toggle" data-ob-toggle="feature_address_guard_pump_fun">
+                <div class="toggle-knob"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button class="btn btn-ghost" data-ob-action="back">Back</button>
+      <div class="footer-group">
+        <button class="btn btn-primary" data-ob-action="next">Next</button>
+      </div>
+    </div>
+  </div>
+</section>

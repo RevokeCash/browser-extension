@@ -94,7 +94,7 @@
 }
 
 .alert-action {
-  padding: 8px 14px;
+  padding: 4px 7px;
   background: rgba(255, 82, 82, 0.1);
   color: var(--accent-red);
   border: 1px solid var(--accent-red);

@@ -1,0 +1,721 @@
+/* /onboarding/css/experimental-features.css */
+
+/* Layout */
+.card-content {
+  padding: 24px;
+}
+.feature-screen {
+  display: none;
+}
+.feature-screen.active {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+@media (max-width: 960px) {
+  .feature-screen.active {
+    display: block;
+  }
+}
+
+/* Header bits */
+.badge-beta {
+  font-size: 11px;
+  background: rgba(253, 185, 81, 0.15);
+  color: var(--accent-orange);
+  padding: 3px 8px;
+  border-radius: 12px;
+  margin-left: 8px;
+  font-weight: 700;
+}
+
+/* Tabs — pill look like screenshots */
+.ef-tabs {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-primary);
+  border-bottom: 1px solid var(--border-primary);
+  background: var(--bg-card);
+}
+.ef-tab {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-primary);
+  color: var(--text-secondary);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition:
+    transform 0.12s ease,
+    background 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease,
+    box-shadow 0.12s ease;
+}
+.ef-tab:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--border-secondary);
+}
+.ef-tab.active {
+  background: var(--accent-orange);
+  border-color: var(--accent-orange);
+  color: #1b1200;
+  box-shadow: 0 6px 14px rgba(253, 185, 81, 0.25);
+}
+
+/* Right side content styles to match existing screens */
+.panel-right-content {
+  display: grid;
+  gap: 20px;
+}
+.info-block {
+  background: var(--bg-elev-1, rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--border-radius);
+  padding: 16px 18px;
+}
+.info-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.info-label.success {
+  color: var(--accent-green);
+}
+.info-label.danger {
+  color: var(--accent-red);
+}
+.info-desc {
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* Toggle — orange ON like screenshots (supports ::after or child .toggle-knob) */
+/* .toggle[role="switch"]{
+  inline-size: 52px; block-size: 30px; border-radius: 999px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.18);
+  position: relative; display: inline-flex; align-items: center;
+  padding: 3px; cursor: pointer; outline: none;
+}
+.toggle[role="switch"]::after{
+  content:""; inline-size:24px; block-size:24px; border-radius:50%; background:#fff;
+  transform: translateX(0); transition: transform 160ms ease, background 160ms ease;
+} */
+/* .toggle .toggle-knob{ inline-size:24px; block-size:24px; border-radius:50%; background:#fff; transform: translateX(0); transition: transform 160ms ease; }
+.toggle.on{ background: rgba(253,185,81,.4); border-color: rgba(253,185,81,.9); }
+.toggle.on::after{ transform: translateX(22px); }
+.toggle.on .toggle-knob{ transform: translateX(22px); }
+.toggle:focus-visible{ box-shadow: 0 0 0 3px rgba(253,185,81,.35); }
+.toggle-container{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.toggle-label{ font-weight: 700; } */
+
+/* Left mocks */
+.ef-twitter {
+  width: 100%;
+  max-width: 420px;
+  background: #0b0b0b;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+.ef-tw-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.ef-x-logo {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  color: #4a9eff;
+}
+.ef-tw-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ddd;
+}
+.ef-tweet {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+}
+.ef-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6aa0ff, #a58bff);
+}
+.ef-avatar.alt {
+  background: linear-gradient(135deg, #ff544f, #ff8a80);
+}
+.ef-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+.ef-handle {
+  font-size: 12px;
+  color: #9aa3ad;
+}
+.ef-text {
+  font-size: 13px;
+  color: #e7e7e7;
+  margin-top: 4px;
+  line-height: 1.45;
+}
+.ef-badge {
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: 800;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+.ef-badge-op {
+  background: rgba(0, 217, 126, 0.18);
+  border: 1px solid rgba(0, 217, 126, 0.35);
+  color: #00d97e;
+}
+.ef-badge-nop {
+  background: rgba(255, 82, 82, 0.18);
+  border: 1px solid rgba(255, 82, 82, 0.35);
+  color: #ff5252;
+}
+.ef-scam {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(255, 82, 82, 0.14);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+  color: #ff6b6b;
+}
+
+.ef-ethos {
+  width: 100%;
+  max-width: 420px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.ef-ethos-item {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+.ef-ethos-chip {
+  min-width: 110px;
+  padding: 20px 14px;
+  border-radius: 16px;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 20px;
+  color: #fff;
+}
+.ef-ethos-chip.low {
+  box-shadow: inset 0 0 0 2px rgba(255, 82, 82, 0.35);
+  color: #ff6b6b;
+}
+.ef-ethos-chip.mid {
+  box-shadow: inset 0 0 0 2px rgba(253, 185, 81, 0.35);
+  color: var(--accent-orange);
+}
+.ef-ethos-chip.high {
+  box-shadow: inset 0 0 0 2px rgba(0, 217, 126, 0.35);
+  color: #00d97e;
+}
+.ef-ethos-caption {
+  font-size: 11px;
+  color: #9aa3ad;
+  letter-spacing: 0.08em;
+}
+
+.ef-hold {
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+.ef-app-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
+}
+.ef-app-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 12px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  font-size: 28px;
+}
+.ef-app-name {
+  font-size: 18px;
+  font-weight: 800;
+}
+.ef-app-url {
+  font-size: 12px;
+  color: #9aa3ad;
+  margin-bottom: 16px;
+}
+.ef-hold-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 900;
+  background: rgba(253, 185, 81, 0.08);
+  border: 2px solid var(--accent-orange);
+  color: var(--accent-orange);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.ef-hold-btn.confirmed {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  color: #0b0b0b;
+}
+.ef-hold-progress {
+  position: absolute;
+  inset: 0 auto 0 0;
+  height: 100%;
+  width: 0;
+  background: var(--accent-orange);
+  opacity: 0.2;
+}
+.ef-note {
+  margin-top: 12px;
+  padding: 10px;
+  font-size: 12px;
+  color: #4a9eff;
+  background: rgba(74, 158, 255, 0.06);
+  border: 1px solid rgba(74, 158, 255, 0.18);
+  border-radius: 10px;
+}
+
+.ef-pumpfun {
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0a0f1c;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
+}
+.ef-pf-header {
+  padding: 16px;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.ef-pf-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: #22d3ee;
+}
+.ef-pf-sub {
+  font-size: 11px;
+  color: #9aa3ad;
+}
+.ef-warning {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+.ef-w-title {
+  font-size: 13px;
+  font-weight: 900;
+  color: #ff6b6b;
+  margin-bottom: 4px;
+}
+.ef-w-desc {
+  font-size: 12px;
+  color: #9aa3ad;
+}
+
+/* ---------- Experimental Features: sequence-v2 like other steps ---------- */
+[data-step='experimental-features'] .feature-screen.sequence-v2 {
+  --trap-dur: 0.85s; /* right #1 */
+  --gap-1: 0.25s; /* pause before left */
+  --left-dur: 0.6s; /* left mock */
+  --gap-2: 0.4s; /* pause before right #2 */
+  --protect-dur: 0.6s; /* right #2 / toggle */
+}
+
+/* Neutralize only what we re-animate */
+[data-step='experimental-features'] .feature-screen.sequence-v2 .panel-right .info-block,
+[data-step='experimental-features'] .feature-screen.sequence-v2 .toggle-wrapper,
+[data-step='experimental-features'] .feature-screen.sequence-v2 .panel-left > * {
+  opacity: 0;
+  transform: translateY(8px);
+  filter: none;
+  animation: none;
+}
+
+/* Prevent flash before kickoff */
+[data-step='experimental-features'] .feature-screen.sequence-v2:not(.ready) .panel-right .info-block,
+[data-step='experimental-features'] .feature-screen.sequence-v2:not(.ready) .toggle-wrapper,
+[data-step='experimental-features'] .feature-screen.sequence-v2:not(.ready) .panel-left > * {
+  visibility: hidden;
+}
+[data-step='experimental-features'] .feature-screen.sequence-v2.ready .panel-right .info-block,
+[data-step='experimental-features'] .feature-screen.sequence-v2.ready .toggle-wrapper,
+[data-step='experimental-features'] .feature-screen.sequence-v2.ready .panel-left > * {
+  visibility: visible;
+}
+
+/* 1) THE PROBLEM — first right info-block */
+[data-step='experimental-features']
+  .feature-screen.sequence-v2.ready
+  .panel-right
+  .panel-right-content
+  .info-block:nth-of-type(1) {
+  animation: efRise var(--trap-dur) ease-out forwards;
+}
+
+/* 2) LEFT mock / content (animate the first child; most screens have a single main child) */
+[data-step='experimental-features'] .feature-screen.sequence-v2.ready .panel-left > *:first-child {
+  animation: efRise var(--left-dur) cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--trap-dur) + var(--gap-1)) forwards;
+}
+
+/* 3) YOUR PROTECTION — second right info-block */
+[data-step='experimental-features']
+  .feature-screen.sequence-v2.ready
+  .panel-right
+  .panel-right-content
+  .info-block:nth-of-type(2) {
+  animation: efRise var(--protect-dur) ease-out calc(var(--trap-dur) + var(--gap-1) + var(--left-dur) + var(--gap-2))
+    forwards;
+}
+
+/* 4) Toggle appears with the protection card */
+[data-step='experimental-features'] .feature-screen.sequence-v2.ready .panel-right .toggle-wrapper {
+  animation: efRise 0.45s ease-out calc(var(--trap-dur) + var(--gap-1) + var(--left-dur) + var(--gap-2) + 0.1s) forwards;
+}
+
+/* shared keyframes */
+@keyframes efRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: saturate(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: saturate(1);
+  }
+}
+
+/* Ethos avatars grid */
+.ef-ethos-avatars {
+  width: 100%;
+  max-width: 520px;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ethos-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0b0b0b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+  isolation: isolate;
+}
+
+.ethos-card img {
+  width: 100%;
+  height: 100%;
+
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.95);
+}
+
+/* subtle colored ring per tier */
+.ethos-card.high {
+  box-shadow: inset 0 0 0 2px rgba(0, 217, 126, 0.35);
+}
+.ethos-card.mid {
+  box-shadow: inset 0 0 0 2px rgba(253, 185, 81, 0.35);
+}
+.ethos-card.low {
+  box-shadow: inset 0 0 0 2px rgba(255, 82, 82, 0.35);
+}
+
+/* score chip overlay */
+.ethos-card figcaption {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ethos-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.ethos-card.high .ethos-chip {
+  box-shadow: inset 0 0 0 1px rgba(0, 217, 126, 0.7);
+  color: #00d97e;
+}
+.ethos-card.mid .ethos-chip {
+  box-shadow: inset 0 0 0 1px rgba(253, 185, 81, 0.85);
+  color: var(--accent-orange);
+}
+.ethos-card.low .ethos-chip {
+  box-shadow: inset 0 0 0 1px rgba(255, 82, 82, 0.85);
+  color: #ff6b6b;
+}
+
+.ethos-name {
+  color: #9aa3ad;
+  font-size: 12px;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* ----- LEFT stagger (fires inside your sequence-v2 timing) ----- */
+[data-step='experimental-features'] .feature-screen.sequence-v2.ready[data-screen='1'] .ef-ethos-avatars .ethos-card {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: efRise var(--left-dur) cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation-delay: calc(var(--trap-dur) + var(--gap-1));
+}
+
+/* cascade delay per card */
+[data-step='experimental-features']
+  .feature-screen.sequence-v2.ready[data-screen='1']
+  .ef-ethos-avatars
+  .ethos-card:nth-child(1) {
+  animation-delay: calc(var(--trap-dur) + var(--gap-1) + 0s);
+}
+[data-step='experimental-features']
+  .feature-screen.sequence-v2.ready[data-screen='1']
+  .ef-ethos-avatars
+  .ethos-card:nth-child(2) {
+  animation-delay: calc(var(--trap-dur) + var(--gap-1) + 0.08s);
+}
+[data-step='experimental-features']
+  .feature-screen.sequence-v2.ready[data-screen='1']
+  .ef-ethos-avatars
+  .ethos-card:nth-child(3) {
+  animation-delay: calc(var(--trap-dur) + var(--gap-1) + 0.16s);
+}
+
+/* fallback avatar when image can't load */
+.ethos-fallback {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
+  background: #222;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 18px;
+  border-radius: 14px;
+}
+.ethos-fallback::before {
+  content: attr(data-fallback);
+}
+
+/* Force equal-height ethos cards */
+.feature-screen[data-screen='1'] .ef-ethos-avatars {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 14px;
+  height: 100%;
+  width: 100%;
+  max-width: 480px;
+  min-height: 0;
+}
+
+/* Card container ensures uniform clip box */
+.feature-screen[data-screen='1'] .ethos-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #0b0b0b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: stretch; /* ensures the img fills vertically */
+}
+
+/* Equalized images: center, crop, fill entire card */
+.feature-screen[data-screen='1'] .ethos-card img {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  background: #111; /* fallback for transparent PNGs */
+}
+
+/* If any image has transparent margins, pad with black */
+.feature-screen[data-screen='1'] .ethos-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: -1;
+}
+
+/* On narrow screens, stack normally with equal aspect ratio */
+@media (max-width: 960px) {
+  .feature-screen[data-screen='1'] .ef-ethos-avatars {
+    grid-template-rows: none;
+  }
+  .feature-screen[data-screen='1'] .ethos-card {
+    aspect-ratio: 16 / 9;
+  }
+}
+/* Scale up the middle (neutral) ethos image slightly to match visual weight */
+.feature-screen[data-screen='1'] .ethos-card.mid img {
+  transform-origin: center;
+}
+
+/* ----- PumpFun: visual style (matches screenshot) ----- */
+.ef-pumpfun {
+  width: 100%;
+  max-width: 520px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(22, 25, 36, 1) 0%, rgba(10, 13, 20, 1) 100%);
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.ef-pf-header {
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(38, 58, 88, 0.35), rgba(18, 26, 42, 0.35));
+}
+.ef-pf-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: #76a7ff;
+  letter-spacing: 0.02em;
+}
+.ef-pf-sub {
+  font-size: 12px;
+  color: #9aa3ad;
+  margin-top: 2px;
+}
+
+.ef-warning {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px 14px 42px; /* room for icon */
+  margin: 12px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* red circular icon on the left */
+.ef-warning::before {
+  content: '!';
+  position: absolute;
+  inset: auto auto auto 16px;
+  top: 14px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 14px;
+  color: #ff6b6b;
+  background: rgba(255, 82, 82, 0.14);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+}
+
+.ef-w-title {
+  font-size: 14px;
+  font-weight: 900;
+  color: #ff6b6b;
+  margin-bottom: 4px;
+}
+.ef-w-desc {
+  font-size: 12px;
+  color: #9aa3ad;
+}
+
+/* ----- Sequence-v2 timings already defined above; add PumpFun left stagger ----- */
+[data-step='experimental-features'] .feature-screen.sequence-v2.ready[data-screen='3'] .ef-pumpfun {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: efRise var(--left-dur) cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--trap-dur) + var(--gap-1)) forwards;
+}
+
+/* cascade each warning row after the card appears */
+[data-step='experimental-features'] .feature-screen.sequence-v2.ready[data-screen='3'] .ef-warning {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: efRise 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+[data-step='experimental-features'] .feature-screen.sequence-v2.ready[data-screen='3'] .ef-warning:nth-of-type(1) {
+  animation-delay: calc(var(--trap-dur) + var(--gap-1) + 0.1s);
+}
+
+[data-step='experimental-features'] .feature-screen.sequence-v2.ready[data-screen='3'] .ef-warning:nth-of-type(2) {
+  animation-delay: calc(var(--trap-dur) + var(--gap-1) + 0.22s);
+}
+
+[data-step='experimental-features'] .feature-screen.sequence-v2.ready[data-screen='3'] .ef-warning:nth-of-type(3) {
+  animation-delay: calc(var(--trap-dur) + var(--gap-1) + 0.34s);
+}
