@@ -480,3 +480,8 @@
     visibility: visible !important;
   }
 }
+
+#watchlist .panel-left {
+  pointer-events: none;
+  user-select: none;
+}

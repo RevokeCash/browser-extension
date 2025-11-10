@@ -358,23 +358,16 @@ const stepInits = {
         siteName.textContent = 'Uniswap';
         amtSend.textContent = '-1.5';
         tokSend.textContent = 'ETH';
-        amtRecv.textContent = '+3,847';
-        tokRecv.textContent = 'USDC';
+        amtRecv.textContent = '+1.5';
+        tokRecv.textContent = 'ETH';
         el.fee.textContent = '~$8.42';
       } else if (i === 1) {
-        siteName.textContent = 'Aave';
-        amtSend.textContent = '-1.5';
-        tokSend.textContent = 'ETH';
-        amtRecv.textContent = '+3,846';
-        tokRecv.textContent = 'USDC';
-        el.fee.textContent = '~$8.10';
-      } else {
         siteName.textContent = 'Unknown Site';
         labelSecond.textContent = 'You send';
         amtSend.textContent = '-2.8';
         tokSend.textContent = 'WETH';
         amtRecv.textContent = '-8,450';
-        tokRecv.textContent = 'MOG';
+        tokRecv.textContent = 'LINK';
 
         amtRecv.classList.remove('in');
         amtRecv.classList.add('out');
@@ -388,6 +381,13 @@ const stepInits = {
         confirmBtn.textContent = 'PROCEED ANYWAY';
 
         el.fee.textContent = '~$9.10';
+      } else {
+        siteName.textContent = 'Aave';
+        amtSend.textContent = '-3,846';
+        tokSend.textContent = 'AUSDC';
+        amtRecv.textContent = '+3,846';
+        tokRecv.textContent = 'AUSDC';
+        el.fee.textContent = '~$8.10';
       }
 
       animatePreview();
@@ -434,6 +434,7 @@ const stepInits = {
     step.classList.remove('ready'); // reset if revisiting
     step.getBoundingClientRect();
     requestAnimationFrame(() => step.classList.add('ready'));
+    await bindFeatureToggle(step, FEATURE_KEYS.ADDRESS_GUARD);
 
     const rowsPoison = Array.from(step.querySelectorAll('.tx-item[data-poison="true"]'));
     const allCharDiffs = Array.from(step.querySelectorAll('.tx-hash .char-diff'));
@@ -487,10 +488,37 @@ const stepInits = {
     requestAnimationFrame(() => scope.classList.add('show'));
     await bindFeatureToggle(scope, FEATURE_KEYS.GOOGLE_AD_WARN);
 
-    // Delegated animationstart listener
+    // detect toggle state
+    const toggleBtn = scope.querySelector('[data-ob-toggle="feature_google_ad_warn_enabled"]');
+
+    function applyAdVisibility() {
+      const enabled = toggleBtn.classList.contains('on');
+      const ads = scope.querySelectorAll('.search-result.ad');
+
+      ads.forEach((ad) => {
+        if (enabled) {
+          ad.classList.add('malicious');
+          const label = ad.querySelector('.ad-label');
+          if (label) label.style.display = '';
+        } else {
+          ad.classList.remove('malicious');
+          const label = ad.querySelector('.ad-label');
+          if (label) label.style.display = 'none';
+        }
+      });
+    }
+
+    // apply initial state
+    applyAdVisibility();
+
+    // update whenever toggled
+    toggleBtn.addEventListener('click', () => {
+      setTimeout(applyAdVisibility, 50);
+    });
+
+    // animation trigger for "THE TRAP" and "YOUR PROTECTION"
     const onAnimStart = (e) => {
       if (!(e.target instanceof HTMLElement)) return;
-      // right #2 info-block is the protection card
       if (
         e.animationName === 'gaRise' &&
         e.target.matches('.panel-right .panel-right-content .info-block:nth-child(2)')
@@ -509,6 +537,8 @@ const stepInits = {
     if (!step) return;
 
     const amountEl = step.querySelector('#coverage-amount');
+    const subtitleEl = step.querySelector('#coverage-subtitle');
+
     let toggleBtn = step.querySelector('[data-ob-toggle="feature_coverage_enabled"]');
     const modal = document.getElementById('coverage-confirm');
     const btnCancel = step.querySelector('#cov-keep-enabled') || document.querySelector('#cov-keep-enabled');
@@ -517,27 +547,38 @@ const stepInits = {
 
     const parseDollar = (txt) => Number(String(txt || '').replace(/[^0-9]/g, '')) || 0;
 
-    function animateCoverageAmountDir(el, from, to, duration) {
+    function animateCoverageAmountDir(el, from, to, duration, nextPhase) {
       const start = performance.now();
       const increasing = to > from;
+
       function frame(now) {
         const p = Math.min((now - start) / duration, 1);
         const val = Math.floor(from + (to - from) * p);
         el.textContent = '$' + val.toLocaleString();
 
-        const t = increasing ? p : 1 - p;
-        const r = Math.round(255 * (1 - t));
-        const g = Math.round(82 + (255 - 82) * t);
-        const b = Math.round(82 + (136 - 82) * t);
-        el.style.color = `rgb(${r},${g},${b})`;
+        // color logic: grey when 0, green otherwise
+        if (val <= 0) {
+          el.style.color = '#9aa3ad';
+          if (subtitleEl) subtitleEl.textContent = 'NO COVERAGE';
+        } else {
+          el.style.color = '#00ff88';
+          if (subtitleEl) subtitleEl.textContent = 'MAX COVERAGE PER USER';
+        }
 
-        if (p < 1) requestAnimationFrame(frame);
-        else el.style.color = to <= 0 ? '#ff5252' : '#00ff88';
+        if (p < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          el.textContent = '$' + to.toLocaleString();
+          el.style.color = to <= 0 ? '#9aa3ad' : '#00ff88';
+          if (subtitleEl) subtitleEl.textContent = to <= 0 ? 'NO COVERAGE' : 'MAX COVERAGE PER USER';
+          if (typeof nextPhase === 'function') nextPhase();
+        }
       }
       requestAnimationFrame(frame);
     }
+
     amountEl.textContent = '$0';
-    amountEl.style.color = '#ff5252';
+    amountEl.style.color = 'grey';
 
     const riskBlock = step.querySelector('.panel-right .panel-right-content .info-block:nth-child(2)');
     const toMs = (v) => (/\bms\b/i.test(v) ? parseFloat(v) : parseFloat(v || '0') * 1000);
@@ -545,13 +586,23 @@ const stepInits = {
       const enabled = toggleBtn.classList.contains('on');
       const cs = riskBlock ? getComputedStyle(riskBlock) : null;
       const delay = cs ? toMs((cs.animationDelay || '0s').split(',')[0]) : 0;
+
       setTimeout(
         () => {
-          if (enabled) animateCoverageAmountDir(amountEl, 0, 30000, 1800);
+          if (enabled) {
+            // animate 30k → 0 → 30k
+            animateCoverageAmountDir(amountEl, 30000, 0, 1600, () => {
+              setTimeout(() => animateCoverageAmountDir(amountEl, 0, 30000, 1000), 1000);
+            });
+          } else {
+            amountEl.textContent = '$0';
+            amountEl.style.color = '#9aa3ad';
+          }
         },
         Math.max(0, delay + 30),
       );
     };
+
     if (step.classList.contains('ready')) armStart();
     else {
       const mo = new MutationObserver(() => {
@@ -655,7 +706,7 @@ const stepInits = {
 
     await bindFeatureToggle(scope, FEATURE_KEYS.X_OP_DETECTOR);
     await bindFeatureToggle(scope, FEATURE_KEYS.ETHOS_SCORE);
-    await bindFeatureToggle(scope, FEATURE_KEYS.ADDRESS_GUARD);
+    // await bindFeatureToggle(scope, FEATURE_KEYS.ADDRESS_GUARD);
 
     const holdBtn = scope.querySelector('.ef-hold-btn');
     if (holdBtn) {

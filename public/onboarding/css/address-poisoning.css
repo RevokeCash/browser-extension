@@ -226,6 +226,9 @@
 [data-step='address-poisoning'].sequence-v2.ready .tx-item {
   animation: apRise 0.5s ease forwards;
 }
+[data-step='address-poisoning'].sequence-v2.ready .tx-item:nth-of-type(2) {
+  animation-delay: calc(var(--attack-dur) + var(--gap-1) + 0.16s + var(--row-stagger) * 1);
+}
 [data-step='address-poisoning'].sequence-v2.ready .tx-item:nth-of-type(3) {
   /* first tx after label */
   animation-delay: calc(var(--attack-dur) + var(--gap-1) + 0.16s);
@@ -275,4 +278,69 @@
     filter: none !important;
     visibility: visible !important;
   }
+}
+
+/* --- Right-side anchor for amount/badge --- */
+#address-poisoning-step .tx-item {
+  position: relative;
+  padding-right: 96px; /* room for amount/badge on the right */
+}
+
+/* Amount pinned to right */
+#address-poisoning-step .tx-item .tx-amount {
+  position: absolute !important;
+  right: 16px; /* set to 0 if no inner padding */
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: right !important;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+/* POISON badge pinned to the same place as the amount */
+#address-poisoning-step .tx-item .poison-badge {
+  position: absolute !important;
+  right: 16px; /* match the amount */
+  top: 50%;
+  transform: translateY(-50%) scale(0.96);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+
+  /* squared look */
+  padding: 4px 10px;
+  min-width: 64px;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 82, 82, 0.35);
+  background: rgba(255, 82, 82, 0.1);
+  color: #ff8a8a;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  transition:
+    opacity 0.18s ease 0.06s,
+    transform 0.18s ease 0.06s;
+}
+
+/* IMPORTANT: don't let earlier rules cancel the centering transform */
+[data-step='address-poisoning'] .poison-badge.show {
+  opacity: 1 !important;
+  transform: translateY(-50%) scale(1) !important;
+}
+
+/* Also reveal when the step enters phase-3 */
+[data-step='address-poisoning'].phase-3 .tx-item[data-poison='true'] .poison-badge {
+  opacity: 1 !important;
+  transform: translateY(-50%) scale(1) !important;
+}
+
+/* Hide the amount’s paint (keep its width) when the badge shows */
+[data-step='address-poisoning'].phase-3 .tx-item[data-poison='true'] .poison-amount,
+#address-poisoning-step .tx-item[data-poison='true'] .poison-badge.show ~ .poison-amount {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(2px);
 }
