@@ -105,7 +105,7 @@ body {
   border: 1px solid var(--border-secondary);
   border-radius: var(--border-radius);
   overflow: hidden;
-  height: 720px;
+  height: min(680px, calc(100vh - 80px)); /* slightly smaller default, fits within viewport incl. body padding */
   display: flex;
   flex-direction: column;
 }
@@ -209,6 +209,54 @@ body {
 
 #simulator .toggle-wrapper {
   opacity: 1;
+}
+
+/* Simulator-specific layout tweaks */
+#simulator .panel-right {
+  padding: 24px; /* add breathing room around content */
+  padding-bottom: 88px; /* leave space for toggle without excessive bar height */
+}
+
+#simulator .toggle-wrapper {
+  left: 24px; /* slightly narrower than default */
+  right: 24px;
+  padding: 10px 16px; /* reduce vertical padding around the toggle */
+}
+
+/* Address Poisoning: match toggle sizing and add panel padding */
+[data-step='address-poisoning'] .panel-right {
+  padding: 24px;
+  padding-bottom: 88px;
+}
+
+[data-step='address-poisoning'] .toggle-wrapper {
+  left: 24px;
+  right: 24px;
+  padding: 10px 16px;
+}
+
+/* Google Ads: match toggle sizing and add panel padding */
+[data-step='google-ads'] .panel-right {
+  padding: 24px;
+  padding-bottom: 88px;
+}
+
+[data-step='google-ads'] .toggle-wrapper {
+  left: 24px;
+  right: 24px;
+  padding: 10px 16px;
+}
+
+/* Coverage: match toggle sizing and add panel padding */
+[data-step='coverage'] .panel-right {
+  padding: 24px;
+  padding-bottom: 88px;
+}
+
+[data-step='coverage'] .toggle-wrapper {
+  left: 24px;
+  right: 24px;
+  padding: 10px 16px;
 }
 
 /* Transaction animation delays - appear after THE ATTACK */
@@ -660,11 +708,6 @@ body {
   border-top: 1px solid rgba(255, 255, 255, 0.08); /* adjust for your theme */
 }
 
-/* if the whole card is still short on some screens, bump its min-height */
-[data-step='address-poisoning'] .onboarding-card {
-  min-height: 700px; /* tune to match landing step height */
-}
-
 @keyframes apPulse {
   0% {
     background: rgba(241, 75, 75, 0.1);
@@ -867,4 +910,38 @@ body {
   .toggle .toggle-knob {
     transition: none !important;
   }
+}
+
+/* Final normalize: ensure Coverage toggle matches others exactly */
+[data-step='coverage'] .toggle-wrapper {
+  padding: 10px 16px; /* compact height like other steps */
+  left: 24px;
+  right: 24px;
+  border-top: none; /* remove extra divider that made it look taller */
+}
+
+/* Coverage: remove extra bottom spacing under Permit Signature Attacks block */
+[data-step='coverage'] .panel-left {
+  padding-bottom: 0;
+}
+[data-step='coverage'] .coverage-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Coverage: support subtext under the Enable toggle */
+[data-step='coverage'] .toggle-wrapper {
+  flex-direction: column; /* stack label/toggle row over subtext */
+  align-items: stretch;
+  gap: 6px;
+}
+[data-step='coverage'] .toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+[data-step='coverage'] .toggle-subtext {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
 }

@@ -71,21 +71,20 @@
           <div class="coverage-amount-section">
             <div class="attack-indicator" id="attack-indicator">UNDER ATTACK</div>
             <div class="coverage-amount" id="coverage-amount">$30,000</div>
-            <div class="coverage-subtitle" id="coverage-subtitle">MAX COVERAGE PER INCIDENT</div>
+            <div class="coverage-subtitle" id="coverage-subtitle">MAX COVERAGE PER USER</div>
           </div>
 
           <div class="info-block">
             <div class="info-label danger">THE RISK</div>
             <div class="info-title">Even with security tools, sophisticated attacks can slip through.</div>
-            <div class="info-text">New exploits emerge daily. Zero-days exist. No security is perfect.</div>
+            <div class="info-text">Security isn't perfect. Exploits emerge daily.</div>
           </div>
 
           <div class="info-block">
             <div class="info-label safe">YOUR SAFETY NET</div>
             <div class="info-title">If we fail to catch it, we'll make it right.</div>
             <div class="info-text">
-              File a claim. We will hand review each claim. Up to $30,000 reimbursement per wallet drain. 0.8% per
-              transaction fee when coverage is turned on.
+              File a claim. We will hand review each claim. Up to $30,000 reimbursement per user per calendar year.
               <button
                 onclick="showPayoutsModal()"
                 style="
@@ -107,11 +106,14 @@
         </div>
 
         <div class="toggle-wrapper">
-          <span class="toggle-label">Enable Coverage</span>
-          <button class="toggle on" data-ob-toggle="feature_coverage_enabled">
-            <div class="toggle-knob"></div>
-          </button>
+          <div class="toggle-row">
+            <span class="toggle-label">Enable Coverage</span>
+            <button class="toggle on" data-ob-toggle="feature_coverage_enabled">
+              <div class="toggle-knob"></div>
+            </button>
+          </div>
         </div>
+        <div class="toggle-subtext">0.8% per transaction fee when coverage is turned on.</div>
       </div>
     </div>
 
