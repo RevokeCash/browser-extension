@@ -146,7 +146,7 @@
   animation:
     delayedCircleAppear 0.8s ease forwards,
     pulseCircle 2s ease-in-out infinite;
-  animation-delay: 0s, 0.8s;
+  animation-delay: 0.7s, 1.4s;
 }
 
 /* POISON badge visibility + row pulse */
@@ -343,4 +343,32 @@
   visibility: hidden;
   opacity: 0;
   transform: translateY(2px);
+}
+
+/* --- Guard OFF state (address-poisoning only) ---
+   When the user disables the guard on this page, we neutralize
+   animations, highlights and POISON badges so rows look normal. */
+[data-step='address-poisoning'].ap-disabled .tx-item {
+  opacity: 1 !important;
+  animation: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+[data-step='address-poisoning'].ap-disabled .tx-item.poison {
+  /* reset visual red styling when disabled */
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+[data-step='address-poisoning'].ap-disabled .tx-hash .char-diff {
+  color: inherit !important;
+  background: transparent !important;
+}
+[data-step='address-poisoning'].ap-disabled .tx-hash .char-diff::after {
+  opacity: 0 !important;
+  animation: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+[data-step='address-poisoning'].ap-disabled .poison-badge {
+  display: none !important;
 }

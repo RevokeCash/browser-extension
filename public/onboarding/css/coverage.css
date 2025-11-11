@@ -107,7 +107,7 @@
   font-size: 12px;
   font-weight: 700;
   margin-bottom: 4px;
-  color: #ff5252;
+  color: var(--accent-red);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -257,7 +257,7 @@
 
 [data-step='coverage'] .coverage-title {
   font-weight: 700;
-  color: #fff;
+  color: var(--accent-red);
 }
 
 [data-step='coverage'] .coverage-desc {
@@ -281,7 +281,7 @@
   border-radius: 999px;
   color: #0b3;
   background: rgba(0, 255, 136, 0.12);
-  border: 1px solid rgba(0, 255, 136, 0.35);
+  border: none;
 }
 
 /* Nice little emphasis on the $ amount */
@@ -334,7 +334,7 @@
 }
 
 [data-step='coverage'] .coverage-title {
-  color: #fff;
+  color: var(--accent-red);
   font-weight: 700;
 }
 
@@ -357,9 +357,19 @@
   letter-spacing: 0.06em;
   color: #0b3;
   background: rgba(0, 255, 136, 0.12);
-  border: 1px solid rgba(0, 255, 136, 0.35);
+  border: none;
   border-radius: 999px;
   padding: 2px 8px;
+  /* Override default placement: stick to top-right corner of card */
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  transform: none;
+  /* Ensure top-right placement if this later block wins */
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  transform: none;
 }
 
 [data-step='coverage'] #coverage-amount {
@@ -433,6 +443,32 @@
 [data-step='coverage'].sequence-v2.ready .panel-right .panel-right-content .info-block:nth-child(3) {
   animation: covRise var(--protect-dur) ease-out
     calc(var(--risk-dur) + var(--gap-1) + var(--row-stagger) * 2 + var(--item-dur) + var(--gap-2)) forwards;
+}
+
+/* --- Override auto sequencing for new JS-orchestrated flow --- */
+[data-step='coverage'].sequence-v2.ready .panel-right .panel-right-content .info-block:nth-child(2),
+[data-step='coverage'].sequence-v2.ready .panel-right .panel-right-content .info-block:nth-child(3),
+[data-step='coverage'].sequence-v2.ready #coverage-item-1,
+[data-step='coverage'].sequence-v2.ready #coverage-item-2,
+[data-step='coverage'].sequence-v2.ready #coverage-item-3 {
+  animation: none !important;
+}
+/* Keep these hidden by default; JS reveals them in phases to avoid flash */
+[data-step='coverage'].sequence-v2.ready .panel-right .panel-right-content .info-block,
+[data-step='coverage'].sequence-v2.ready .panel-left .section-label,
+[data-step='coverage'].sequence-v2.ready .coverage-item,
+[data-step='coverage'].sequence-v2.ready .coverage-badge {
+  opacity: 0;
+  transform: translateY(8px);
+  visibility: hidden;
+}
+
+/* When JS adds .show to badges, reveal without vertical centering transform */
+[data-step='coverage'] .coverage-badge.show,
+[data-step='coverage'].sequence-v2.ready .coverage-badge.show {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
 }
 
 /* Keyframes */
@@ -741,8 +777,8 @@
 
 /* tweet card look */
 .tweet-card {
-  background: #0e0f10;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0e0e0e;
+  border: 1px solid #2a2a2a;
   border-radius: 14px;
   padding: 14px 16px;
   display: flex;
@@ -759,6 +795,12 @@
   height: 40px;
   border-radius: 50%;
   flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.02em;
+  user-select: none;
 }
 .tweet-name {
   font-weight: 700;
@@ -767,7 +809,7 @@
 }
 .tweet-handle {
   font-size: 13px;
-  color: #9ad2ff;
+  color: #9ca3af;
   text-decoration: none;
 }
 .tweet-body {
@@ -793,4 +835,12 @@
 }
 .tweet-ft .btn-pill:hover {
   background: #33ffa1;
+}
+
+/* Link in tweet footer */
+.tweet-link {
+  color: #9ad2ff;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 13px;
 }

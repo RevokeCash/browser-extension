@@ -54,18 +54,26 @@
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Sponsored ad (normal) — dim and subtle border */
+/* Sponsored ad (normal) — with visible light border, no dim yet */
 [data-step='google-ads'] .search-result.ad {
-  border-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: #0f1011;
+  position: relative;
+  overflow: hidden; /* keep overlay within rounded corners */
 }
 
-/* Sponsored + malicious ad — red warning border & glow */
-[data-step='google-ads'] .search-result.ad.malicious {
-  border-color: rgba(255, 80, 80, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Disabled state: render ads exactly like organic results */
+[data-step='google-ads'] .search-result.ad.as-organic {
+  background: #111315;
+  border: 0;
+  filter: none;
+}
 
-  box-shadow: 0 0 8px rgba(255, 80, 80, 0.25);
-  background: rgba(255, 50, 50, 0.06);
+/* Sponsored + malicious ad — same base look (no red) */
+[data-step='google-ads'] .search-result.ad.malicious {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: #0f1011;
+  box-shadow: none;
 }
 
 /* Ad label */
@@ -79,6 +87,8 @@
   padding: 1px 6px;
   border-radius: 999px;
   margin-bottom: 6px;
+  position: relative;
+  z-index: 2; /* ensure it sits above the dim overlay */
 }
 
 /* Text colors */
@@ -208,11 +218,20 @@
     background-color 300ms ease;
 }
 
-/* 2) When phase 3 starts, flip them to red */
-[data-step='google-ads'].phase-3 .search-result.ad.malicious {
-  border-color: rgba(255, 80, 80, 0.65);
-  box-shadow: 0 0 8px rgba(255, 80, 80, 0.25);
-  background: rgba(255, 50, 50, 0.06);
+/* 2) When phase 3 starts, reveal labels and DIM ads using an overlay (no red) */
+[data-step='google-ads'].phase-3 .search-result.ad:not(.as-organic)::before,
+[data-step='google-ads'].phase-3 .search-result.ad.malicious:not(.as-organic)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45); /* dim through opacity without fading the AD pill/border */
+  z-index: 1;
+  pointer-events: none;
+}
+[data-step='google-ads'].phase-3 .search-result.ad:not(.as-organic),
+[data-step='google-ads'].phase-3 .search-result.ad.malicious:not(.as-organic) {
+  border-color: rgba(255, 255, 255, 0.6); /* clearer light border like the screenshot */
+  background: #0f1011;
 }
 
 /* --- UNIFY INITIAL AD LOOK + SUPPRESS EARLY BADGE --- */
@@ -237,9 +256,9 @@
   transition-delay: 0s;
 }
 
-/* b) only malicious ads flip red in phase-3 */
+/* b) keep malicious ads dimmed (no red) in phase-3 */
 [data-step='google-ads'].phase-3 .search-result.ad.malicious {
-  border-color: rgba(255, 80, 80, 0.65);
-  box-shadow: 0 0 8px rgba(255, 80, 80, 0.25);
-  background: rgba(255, 50, 50, 0.06);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: none;
+  background: #0f1011;
 }

@@ -330,6 +330,10 @@ const stepInits = {
       const siteName = el.site;
 
       const flowItems = Array.from(scope.querySelectorAll('.sim-flow-item'));
+      // Row containers for first and second transaction rows
+      const rowFirst = flowItems[0];
+      const rowSecond = flowItems[1];
+      const feeRow = scope.querySelector('#sim-network-fee');
       const labelSend = flowItems[0].querySelector('.sim-flow-label');
       const labelSecond = flowItems[1].querySelector('.sim-flow-label');
       const amtSend = el.sendAmt;
@@ -338,8 +342,11 @@ const stepInits = {
       const tokRecv = el.recvTok;
 
       previewCard.classList.remove('critical');
-      el.critical.style.display = 'none';
       el.critical.classList.remove('show');
+      // Ensure both rows are visible by default (used for slides 0 and 2)
+      if (rowFirst) rowFirst.style.display = '';
+      if (rowSecond) rowSecond.style.display = '';
+      if (feeRow) feeRow.style.display = '';
       labelSend.textContent = 'You send';
       labelSecond.textContent = 'You receive';
       amtSend.classList.remove('in');
@@ -364,6 +371,10 @@ const stepInits = {
       } else if (i === 1) {
         siteName.textContent = 'Unknown Site';
         labelSecond.textContent = 'You send';
+        // Hide the first row (WETH) on the second slide
+        if (rowFirst) rowFirst.style.display = 'none';
+        // Hide network fee on the second slide only
+        if (feeRow) feeRow.style.display = 'none';
         amtSend.textContent = '-2.8';
         tokSend.textContent = 'WETH';
         amtRecv.textContent = '-8,450';
@@ -374,19 +385,19 @@ const stepInits = {
         tokRecv.classList.add('fake');
 
         previewCard.classList.add('critical');
-        // el.critical.style.display = '';
+        // Show the critical risk banner on the second slide
         requestAnimationFrame(() => el.critical.classList.add('show'));
 
         confirmBtn.classList.add('danger');
-        confirmBtn.textContent = 'PROCEED ANYWAY';
+        confirmBtn.textContent = 'PROCEED';
 
         el.fee.textContent = '~$9.10';
       } else {
         siteName.textContent = 'Aave';
         amtSend.textContent = '-3,846';
-        tokSend.textContent = 'AUSDC';
+        tokSend.textContent = 'USDC';
         amtRecv.textContent = '+3,846';
-        tokRecv.textContent = 'AUSDC';
+        tokRecv.textContent = 'aUSDC';
         el.fee.textContent = '~$8.10';
       }
 
@@ -436,49 +447,111 @@ const stepInits = {
     requestAnimationFrame(() => step.classList.add('ready'));
     await bindFeatureToggle(step, FEATURE_KEYS.ADDRESS_GUARD);
 
+    const toggleBtn = step.querySelector('[data-ob-toggle="feature_address_guard_enabled"]');
+    const rowsAll = Array.from(step.querySelectorAll('.tx-item'));
     const rowsPoison = Array.from(step.querySelectorAll('.tx-item[data-poison="true"]'));
     const allCharDiffs = Array.from(step.querySelectorAll('.tx-hash .char-diff'));
 
-    const cs = getComputedStyle(step);
-    const toMs = (v) => (/\bms\b/i.test(v) ? parseFloat(v) : parseFloat(v || '0') * 1000);
+    // Capture original label state to restore when guard is OFF
+    const originalLabelState = new Map();
+    rowsAll.forEach((row) => {
+      const label = row.querySelector('.tx-label');
+      if (!label) return;
+      originalLabelState.set(label, {
+        text: label.textContent,
+        classes: Array.from(label.classList),
+      });
+    });
 
-    const attackDur = toMs(cs.getPropertyValue('--attack-dur')); // 0.85s
-    const gap1 = toMs(cs.getPropertyValue('--gap-1')); // 0.25s
-    const leftDur = toMs(cs.getPropertyValue('--left-dur')); // 0.6s
-    const rowStagger = toMs(cs.getPropertyValue('--row-stagger')); // 0.1s
-    const gap2 = toMs(cs.getPropertyValue('--gap-2')); // 0.4s
+    let t2, t3;
+    const clearTimers = () => {
+      if (t2) clearTimeout(t2);
+      if (t3) clearTimeout(t3);
+      t2 = t3 = undefined;
+    };
 
-    const firstRowLead = 160;
-
-    const phase2At = attackDur + gap1 + leftDur + firstRowLead + rowStagger * 5;
-
-    const phase3At = attackDur + gap1 + leftDur + rowStagger * 5 + gap2;
-
-    setTimeout(
-      () => {
-        step.classList.add('phase-2');
-        rowsPoison.forEach((row) => {
-          row.classList.add('poison');
-          const label = row.querySelector('.tx-label');
-          if (label) {
-            label.classList.remove('received', 'you-send');
-            label.classList.add('scammer');
-            label.textContent = 'SCAMMER';
-          }
+    const restoreOriginalLabels = () => {
+      rowsAll.forEach((row) => row.classList.remove('poison'));
+      step.classList.remove('phase-2', 'phase-3');
+      step.querySelectorAll('.poison-badge').forEach((b) => b.classList.remove('show'));
+      allCharDiffs.forEach((el) => el.classList.remove('show-circle'));
+      originalLabelState.forEach((state, label) => {
+        label.className = 'tx-label';
+        state.classes.forEach((c) => {
+          if (c !== 'tx-label') label.classList.add(c);
         });
-      },
-      Math.max(0, phase2At + 30),
-    );
+        label.textContent = state.text;
+      });
+    };
 
-    // ----- Phase 3: show circles and reveal the POISON pills
-    setTimeout(
-      () => {
-        step.classList.add('phase-3');
-        allCharDiffs.forEach((el) => el.classList.add('show-circle'));
-        step.querySelectorAll('.poison-badge').forEach((b) => b.classList.add('show'));
-      },
-      Math.max(0, phase3At + 30),
-    );
+    const armPhases = () => {
+      const cs = getComputedStyle(step);
+      const toMs = (v) => (/\bms\b/i.test(v) ? parseFloat(v) : parseFloat(v || '0') * 1000);
+
+      const attackDur = toMs(cs.getPropertyValue('--attack-dur')); // 0.85s
+      const gap1 = toMs(cs.getPropertyValue('--gap-1')); // 0.25s
+      const leftDur = toMs(cs.getPropertyValue('--left-dur')); // 0.6s
+      const rowStagger = toMs(cs.getPropertyValue('--row-stagger')); // 0.1s
+      const gap2 = toMs(cs.getPropertyValue('--gap-2')); // 0.4s
+      const firstRowLead = 160;
+
+      const phase2At = attackDur + gap1 + leftDur + firstRowLead + rowStagger * 5;
+      const phase3At = attackDur + gap1 + leftDur + rowStagger * 5 + gap2;
+
+      clearTimers();
+      t2 = setTimeout(
+        () => {
+          step.classList.add('phase-2');
+          rowsPoison.forEach((row) => {
+            row.classList.add('poison');
+            const label = row.querySelector('.tx-label');
+            if (label) {
+              label.classList.remove('received', 'you-send');
+              label.classList.add('scammer');
+              label.textContent = 'SCAMMER';
+            }
+          });
+        },
+        Math.max(0, phase2At + 30),
+      );
+
+      t3 = setTimeout(
+        () => {
+          step.classList.add('phase-3');
+          allCharDiffs.forEach((el) => el.classList.add('show-circle'));
+          step.querySelectorAll('.poison-badge').forEach((b) => b.classList.add('show'));
+        },
+        Math.max(0, phase3At + 30),
+      );
+    };
+
+    const applyDisabledState = () => {
+      clearTimers();
+      restoreOriginalLabels();
+      step.classList.add('ap-disabled');
+    };
+
+    const applyEnabledState = () => {
+      clearTimers();
+      step.classList.remove('ap-disabled');
+      restoreOriginalLabels();
+      // restart the left/right "ready" animations cleanly
+      step.classList.remove('ready');
+      step.getBoundingClientRect();
+      requestAnimationFrame(() => step.classList.add('ready'));
+      armPhases();
+    };
+
+    const applyByToggle = () => {
+      const enabled = toggleBtn?.classList.contains('on');
+      if (enabled) applyEnabledState();
+      else applyDisabledState();
+    };
+
+    // Initial application
+    applyByToggle();
+    // React to user toggling
+    toggleBtn?.addEventListener('click', () => setTimeout(applyByToggle, 50));
   },
 
   'google-ads': async () => {
@@ -497,11 +570,13 @@ const stepInits = {
 
       ads.forEach((ad) => {
         if (enabled) {
+          ad.classList.remove('as-organic');
           ad.classList.add('malicious');
           const label = ad.querySelector('.ad-label');
           if (label) label.style.display = '';
         } else {
           ad.classList.remove('malicious');
+          ad.classList.add('as-organic'); // make it look exactly like organic result
           const label = ad.querySelector('.ad-label');
           if (label) label.style.display = 'none';
         }
@@ -536,6 +611,31 @@ const stepInits = {
     const step = root.querySelector('[data-step="coverage"]');
     if (!step) return;
 
+    // Ensure tweet avatars show the first letter of the name
+    try {
+      const tweetCards = Array.from(step.querySelectorAll('#cov-tweet-feed .tweet-card'));
+      const palette = ['#60a5fa', '#f59e0b', '#34d399', '#f472b6', '#a78bfa', '#f87171', '#22d3ee'];
+      tweetCards.forEach((card) => {
+        const nameEl = card.querySelector('.tweet-name');
+        const headerEl = card.querySelector('.tweet-hd');
+        if (!nameEl || !headerEl) return;
+        const name = (nameEl.textContent || '').trim();
+        const initial = (name[0] || '?').toUpperCase();
+        let avatar = card.querySelector('.tweet-avatar');
+        if (!avatar) {
+          avatar = document.createElement('div');
+          avatar.className = 'tweet-avatar';
+          headerEl.prepend(avatar);
+        }
+        avatar.textContent = initial;
+        // deterministic color choice
+        const idx = ((name.charCodeAt(0) || 0) + name.length) % palette.length;
+        const base = palette[idx];
+        avatar.style.background = `radial-gradient(120% 120% at 30% 30%, ${base} 0%, #1f2937 100%)`;
+        avatar.style.color = '#ffffff';
+      });
+    } catch (_) {}
+
     const amountEl = step.querySelector('#coverage-amount');
     const subtitleEl = step.querySelector('#coverage-subtitle');
 
@@ -547,7 +647,7 @@ const stepInits = {
 
     const parseDollar = (txt) => Number(String(txt || '').replace(/[^0-9]/g, '')) || 0;
 
-    function animateCoverageAmountDir(el, from, to, duration, nextPhase) {
+    function animateCoverageAmountDir(el, from, to, duration, nextPhase, opts) {
       const start = performance.now();
       const increasing = to > from;
 
@@ -556,59 +656,170 @@ const stepInits = {
         const val = Math.floor(from + (to - from) * p);
         el.textContent = '$' + val.toLocaleString();
 
-        // color logic: grey when 0, green otherwise
-        if (val <= 0) {
-          el.style.color = '#9aa3ad';
-          if (subtitleEl) subtitleEl.textContent = 'NO COVERAGE';
-        } else {
+        // subtitle override during animation
+        if (opts?.subtitleDuring && subtitleEl) {
+          subtitleEl.textContent = opts.subtitleDuring;
+          if (opts?.subtitleColor) subtitleEl.style.color = opts.subtitleColor;
+        }
+
+        // color logic
+        if (opts?.colorMode === 'drainRed') {
+          el.style.color = '#ff5252';
+        } else if (opts?.colorMode === 'refillGreen') {
           el.style.color = '#00ff88';
-          if (subtitleEl) subtitleEl.textContent = 'MAX COVERAGE PER USER';
+        } else {
+          // default legacy behavior
+          if (val <= 0) {
+            el.style.color = '#9aa3ad';
+            if (subtitleEl) subtitleEl.textContent = 'NO COVERAGE';
+          } else {
+            el.style.color = '#00ff88';
+            if (subtitleEl) subtitleEl.textContent = 'MAX COVERAGE PER USER';
+          }
         }
 
         if (p < 1) {
           requestAnimationFrame(frame);
         } else {
           el.textContent = '$' + to.toLocaleString();
-          el.style.color = to <= 0 ? '#9aa3ad' : '#00ff88';
-          if (subtitleEl) subtitleEl.textContent = to <= 0 ? 'NO COVERAGE' : 'MAX COVERAGE PER USER';
+          if (opts?.colorMode === 'drainRed') {
+            el.style.color = '#ff5252';
+          } else if (opts?.colorMode === 'refillGreen') {
+            el.style.color = '#00ff88';
+          } else {
+            el.style.color = to <= 0 ? '#9aa3ad' : '#00ff88';
+          }
+          if (subtitleEl) {
+            if (opts?.setFinalSubtitle) {
+              subtitleEl.textContent = opts.setFinalSubtitle;
+              if (opts?.setFinalSubtitleColor) subtitleEl.style.color = opts.setFinalSubtitleColor;
+            } else {
+              subtitleEl.textContent = to <= 0 ? 'NO COVERAGE' : 'MAX COVERAGE PER USER';
+              subtitleEl.style.color = '#cfd3d7';
+            }
+          }
           if (typeof nextPhase === 'function') nextPhase();
         }
       }
       requestAnimationFrame(frame);
     }
 
-    amountEl.textContent = '$0';
-    amountEl.style.color = 'grey';
-
+    // --- New staged intro sequence (4 phases) ---
     const riskBlock = step.querySelector('.panel-right .panel-right-content .info-block:nth-child(2)');
-    const toMs = (v) => (/\bms\b/i.test(v) ? parseFloat(v) : parseFloat(v || '0') * 1000);
-    const armStart = () => {
-      const enabled = toggleBtn.classList.contains('on');
-      const cs = riskBlock ? getComputedStyle(riskBlock) : null;
-      const delay = cs ? toMs((cs.animationDelay || '0s').split(',')[0]) : 0;
+    const safetyBlock = step.querySelector('.panel-right .panel-right-content .info-block:nth-child(3)');
+    const leftItems = Array.from(step.querySelectorAll('.panel-left .coverage-item'));
+    const leftLabel = step.querySelector('.panel-left .section-label');
+    const toggleWrap = step.querySelector('.toggle-wrapper');
+    const toggleSub = step.querySelector('.toggle-subtext');
+    const badges = Array.from(step.querySelectorAll('.panel-left .coverage-badge'));
 
-      setTimeout(
-        () => {
-          if (enabled) {
-            // animate 30k → 0 → 30k
-            animateCoverageAmountDir(amountEl, 30000, 0, 1600, () => {
-              setTimeout(() => animateCoverageAmountDir(amountEl, 0, 30000, 1000), 1000);
-            });
-          } else {
-            amountEl.textContent = '$0';
-            amountEl.style.color = '#9aa3ad';
-          }
-        },
-        Math.max(0, delay + 30),
-      );
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const showWithTransition = (el, dur = 600) => {
+      if (!el) return Promise.resolve();
+      el.style.transition = `opacity ${dur}ms ease, transform ${dur}ms ease`;
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+      el.style.visibility = 'visible';
+      return sleep(dur);
+    };
+    const hideInstant = (el) => {
+      if (!el) return;
+      el.style.transition = 'none';
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(8px)';
+      el.style.visibility = 'hidden';
+    };
+    const setCoveredBadgesVisible = (visible) => {
+      badges.forEach((b) => {
+        if (visible) {
+          b.classList.add('show');
+          b.style.opacity = '1';
+          b.style.transform = 'none';
+          b.style.visibility = 'visible';
+        } else {
+          b.classList.remove('show');
+          b.style.opacity = '0';
+          b.style.transform = 'translateY(8px)';
+          b.style.visibility = 'hidden';
+        }
+      });
+    };
+    const animateAmountP = (from, to, dur, opts) =>
+      new Promise((resolve) => animateCoverageAmountDir(amountEl, from, to, dur, resolve, opts));
+
+    // Set initial visual state for sequence: only $30,000 visible
+    const primeInitial = () => {
+      amountEl.textContent = '$30,000';
+      amountEl.style.color = '#00ff88';
+      if (subtitleEl) subtitleEl.textContent = 'MAX COVERAGE PER USER';
+
+      // Do not hide the toggle row or fee text; keep them visible at all times
+      [riskBlock, safetyBlock, leftLabel, ...leftItems, ...badges].forEach(hideInstant);
     };
 
-    if (step.classList.contains('ready')) armStart();
-    else {
+    async function runSequence() {
+      const GAP = 800; // ms between phases
+      const APPEAR_DUR = 600; // ms for fade/slide in
+      const DRAIN_DUR = 1600; // keep existing drain duration
+      const REFILL_DUR = 1000;
+
+      // 1) Only $30,000 on screen
+      primeInitial();
+      // give the overall step a moment to settle, then pause
+      await sleep(GAP);
+
+      // 2) Show "THE RISK" + left panel (all three at once)
+      await Promise.all([
+        showWithTransition(riskBlock, APPEAR_DUR),
+        showWithTransition(leftLabel, APPEAR_DUR),
+        ...leftItems.map((it) => showWithTransition(it, APPEAR_DUR)),
+      ]);
+      await sleep(GAP);
+
+      // 3) Coverage drains to $0
+      await animateAmountP(30000, 0, DRAIN_DUR, {
+        colorMode: 'drainRed',
+        subtitleDuring: 'YOUR WALLET BALANCE',
+        subtitleColor: '#ff5252',
+        setFinalSubtitle: 'YOUR WALLET BALANCE',
+        setFinalSubtitleColor: '#ff5252',
+      });
+      await sleep(GAP);
+
+      // 4) Show "YOUR SAFETY NET" and refill to $30,000
+      const refillP = animateAmountP(0, 30000, REFILL_DUR, {
+        colorMode: 'refillGreen',
+        subtitleDuring: 'YOUR WALLET BALANCE',
+        subtitleColor: '#ff5252',
+        setFinalSubtitle: 'MAX COVERAGE PER USER',
+        setFinalSubtitleColor: '#cfd3d7',
+      }); // start refill
+      const safetyRevealP = showWithTransition(safetyBlock, APPEAR_DUR); // kick off reveal immediately
+      // Reveal COVERED badges only if coverage is toggled ON
+      if (toggleBtn?.classList.contains('on')) {
+        badges.forEach((b) => {
+          b.style.transition = 'opacity 300ms ease, transform 300ms ease';
+          b.style.opacity = '1';
+          b.style.transform = 'none';
+          b.style.visibility = 'visible';
+          b.classList.add('show');
+        });
+      } else {
+        setCoveredBadgesVisible(false);
+      }
+      await Promise.all([refillP, safetyRevealP]); // ensure both finish before moving on
+
+      // toggle row and fee text remain visible the whole time (no staged reveal)
+    }
+
+    // Kickoff sequence once the step is "ready"
+    if (step.classList.contains('ready')) {
+      runSequence();
+    } else {
       const mo = new MutationObserver(() => {
         if (step.classList.contains('ready')) {
           mo.disconnect();
-          armStart();
+          runSequence();
         }
       });
       mo.observe(step, { attributes: true, attributeFilter: ['class'] });
@@ -639,6 +850,7 @@ const stepInits = {
         const current = parseDollar(amountEl.textContent);
         animateCoverageAmountDir(amountEl, current, 30000, 700);
         toggleBtn.classList.add('on');
+        setCoveredBadgesVisible(true);
         await storage.set({ [FEATURE_KEYS.COVERAGE]: true });
       }
     });
@@ -650,6 +862,7 @@ const stepInits = {
       const current = parseDollar(amountEl.textContent);
       animateCoverageAmountDir(amountEl, current, 0, 600);
       toggleBtn.classList.remove('on');
+      setCoveredBadgesVisible(false);
       await storage.set({ [FEATURE_KEYS.COVERAGE]: false });
       closeModal();
     });
