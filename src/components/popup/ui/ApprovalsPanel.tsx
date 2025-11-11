@@ -147,30 +147,42 @@ export default function ApprovalsPanel() {
   const [manageOpen, setManageOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [approvalsState, setApprovalsState] = useState<Approval[]>([]);
+  const [lastUpdatedTs, setLastUpdatedTs] = useState<number | null>(null);
 
   const activeWallet = wallets?.[activeIndex];
 
-  // Load approvals for the first enabled wallet when the tab is open
-  useEffect(() => {
-    const loadApprovals = async () => {
-      const enabledWallets = (wallets || []).filter((w) => w.enabled);
-      const wallet = enabledWallets[activeIndex] || enabledWallets[0];
-      if (!wallet) {
-        setApprovalsState([]);
-        return;
-      }
+  // Helper: render "Updated Xm ago"
+  function minutesAgoText(ts: number | null): string {
+    if (!ts) return '';
+    const diffMs = Date.now() - ts;
+    const minutes = Math.max(0, Math.floor(diffMs / (60 * 1000)));
+    if (minutes < 1) return 'Updated just now';
+    return `Updated ${minutes}m ago`;
+  }
 
-      try {
-        setLoading(true);
-        const chainId = 1; // default to Ethereum mainnet for now
+  // Load approvals (optionally bypass cache)
+  async function loadApprovals(forceRefresh = false) {
+    const enabledWallets = (wallets || []).filter((w) => w.enabled);
+    const wallet = enabledWallets[activeIndex] || enabledWallets[0];
+    if (!wallet) {
+      setApprovalsState([]);
+      setLastUpdatedTs(null);
+      return;
+    }
 
-        // 1-hour cache in cookies per address+chain
-        const cacheKey = `approvals:${chainId}:${wallet.address.toLowerCase()}`;
-        const TTL_SECONDS = 60 * 60;
+    try {
+      setLoading(true);
+      const chainId = 1; // default to Ethereum mainnet for now
 
+      // 1-hour cache in cookies per address+chain
+      const cacheKey = `approvals:${chainId}:${wallet.address.toLowerCase()}`;
+      const TTL_SECONDS = 60 * 60;
+
+      const now = Date.now();
+
+      if (!forceRefresh) {
         // Try cache first
         const cached = getJsonCookie<{ data: Approval[]; ts: number }>(cacheKey);
-        const now = Date.now();
         if (
           cached &&
           typeof cached.ts === 'number' &&
@@ -178,26 +190,31 @@ export default function ApprovalsPanel() {
           Array.isArray(cached.data)
         ) {
           setApprovalsState(cached.data);
-          setLoading(false);
+          setLastUpdatedTs(cached.ts);
           return;
         }
-
-        // Fetch fresh if no valid cache
-        const allowances = await fetchAllowances(wallet.address as Address, chainId);
-        const mappedApprovals = mapAllowancesToUIFormat(allowances);
-        setApprovalsState(mappedApprovals);
-
-        // Save to cookie cache (1 hour)
-        setJsonCookie(cacheKey, { data: mappedApprovals, ts: now }, TTL_SECONDS);
-      } catch (error) {
-        console.error('Failed to load approvals:', error);
-        setApprovalsState([]);
-      } finally {
-        setLoading(false);
       }
-    };
 
-    loadApprovals();
+      // Fetch fresh if no valid cache or forced refresh
+      const allowances = await fetchAllowances(wallet.address as Address, chainId);
+      const mappedApprovals = mapAllowancesToUIFormat(allowances);
+      setApprovalsState(mappedApprovals);
+
+      // Save to cookie cache (1 hour)
+      const ts = Date.now();
+      setJsonCookie(cacheKey, { data: mappedApprovals, ts }, TTL_SECONDS);
+      setLastUpdatedTs(ts);
+    } catch (error) {
+      console.error('Failed to load approvals:', error);
+      setApprovalsState([]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Load approvals for the first enabled wallet when the tab is open
+  useEffect(() => {
+    loadApprovals(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex, JSON.stringify(wallets)]);
 
@@ -234,11 +251,49 @@ export default function ApprovalsPanel() {
               </div>
             </div>
             <div className="text-[12px] text-neutral-400">
-              {loading ? 'Loading…' : `${approvalsState.length} open approvals`}
+              {loading ? (
+                'Loading…'
+              ) : (
+                <>
+                  {approvalsState.length} open approvals
+                  {lastUpdatedTs ? (
+                    <span className="ml-2 text-neutral-500">| {minutesAgoText(lastUpdatedTs)}</span>
+                  ) : null}
+                </>
+              )}
             </div>
 
             <div className="mt-3 flex items-center justify-between">
-              <WalletPill label={activeWallet?.label ?? ''} onPrev={onPrev} onNext={onNext} />
+              <div className="flex items-center gap-2">
+                <WalletPill label={activeWallet?.label ?? ''} onPrev={onPrev} onNext={onNext} />
+                {/* Refresh and Last Updated */}
+                <button
+                  type="button"
+                  aria-label="Refresh approvals"
+                  onClick={() => loadApprovals(true)}
+                  disabled={loading}
+                  className="ml-2 h-7 w-7 rounded-[10px] border border-[#1E1E1E] bg-[#0E0E0E] grid place-items-center hover:bg-[#141414] disabled:opacity-60"
+                  title="Refresh approvals"
+                >
+                  {loading ? (
+                    <svg viewBox="0 0 24 24" width="16" height="16" className="animate-spin text-neutral-300">
+                      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" fill="none" opacity="0.25" />
+                      <path d="M21 12a9 9 0 0 1-9 9" stroke="currentColor" strokeWidth="2" fill="none" />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" width="16" height="16" className="text-neutral-300">
+                      <path
+                        d="M21 12a9 9 0 1 1-3.16-6.84M21 4v6h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
               <div className="text-[12px] text-neutral-400">
                 Wallet {activeIndex + 1} of {wallets.length}
               </div>

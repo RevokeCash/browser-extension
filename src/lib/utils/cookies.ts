@@ -42,12 +42,8 @@ export function deleteCookie(name: string) {
 }
 
 export function getJsonCookie<T>(name: string): T | undefined {
-  const raw = getCookie(name);
-  if (!raw) return undefined;
-  try {
-    return JSON.parse(raw) as T;
-  } catch {
-    // Try localStorage fallback
+  // Helper to read from localStorage mirror
+  const readFromLocalStorage = (): T | undefined => {
     try {
       const ls = localStorage.getItem(`${STORAGE_PREFIX}${name}`);
       if (!ls) return undefined;
@@ -55,6 +51,17 @@ export function getJsonCookie<T>(name: string): T | undefined {
     } catch {
       return undefined;
     }
+  };
+
+  const raw = getCookie(name);
+  // If cookie is missing (common on extension pages), fall back to localStorage
+  if (!raw) return readFromLocalStorage();
+
+  try {
+    return JSON.parse(raw) as T;
+  } catch {
+    // If cookie exists but is truncated/invalid JSON, fall back to the mirror
+    return readFromLocalStorage();
   }
 }
 
