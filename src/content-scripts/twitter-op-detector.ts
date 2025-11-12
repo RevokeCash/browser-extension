@@ -224,19 +224,22 @@ function init() {
   // Check if we're on Twitter/X
   if (!/(twitter\.com|x\.com)/.test(location.hostname)) return;
 
-  // Check if we're on a tweet detail page
-  if (!/\/status\/\d+/.test(location.pathname)) {
-    log('Not on a tweet detail page');
-    return;
-  }
-
   log('Content script active on', location.href);
 
   ensureStyles();
-  processUserElements();
+  // Process immediately only if we're already on a tweet detail page;
+  // otherwise wait for SPA navigation.
+  if (/\/status\/\d+/.test(location.pathname)) {
+    processUserElements();
+  } else {
+    log('Waiting for tweet detail page...');
+  }
 
   // Watch for dynamically loaded content (e.g., loading more comments)
   const observer = new MutationObserver((mutations) => {
+    // Only react to DOM changes while on a tweet detail page
+    if (!/\/status\/\d+/.test(location.pathname)) return;
+
     let shouldRescan = false;
 
     for (const mutation of mutations) {
