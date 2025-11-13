@@ -270,6 +270,21 @@ function colorForScore(score: number): { ring: string; pillBg: string; pillFg: s
   return { ring: '#dc2626', pillBg: '#dc2626', pillFg: '#ffffff' };
 }
 
+function lightenHexColor(hex: string, amount: number): string {
+  // amount in range [0,1] — 0.15 => 15% lighter
+  const m = hex.trim().toLowerCase();
+  const clean = m.startsWith('#') ? m.slice(1) : m;
+  if (clean.length !== 6) return hex;
+  const r = parseInt(clean.slice(0, 2), 16);
+  const g = parseInt(clean.slice(2, 4), 16);
+  const b = parseInt(clean.slice(4, 6), 16);
+  const lerp = (v: number) => Math.min(255, Math.max(0, Math.round(v + (255 - v) * amount)));
+  const rr = lerp(r).toString(16).padStart(2, '0');
+  const gg = lerp(g).toString(16).padStart(2, '0');
+  const bb = lerp(b).toString(16).padStart(2, '0');
+  return `#${rr}${gg}${bb}`;
+}
+
 function isValidHandle(candidate: string): boolean {
   return /^@[A-Za-z0-9_]{1,15}$/.test(candidate) || /^[A-Za-z0-9_]{1,15}$/.test(candidate);
 }
@@ -415,6 +430,8 @@ function ensureRing(container: HTMLElement, score: number, handle: string): void
   pill.href = `https://app.ethos.network/profile/x/${handle}`;
   pill.target = '_blank';
   pill.rel = 'noopener noreferrer';
+  pill.title = 'View profile on Ethos';
+  pill.setAttribute('aria-label', 'View profile on Ethos');
   pill.style.position = 'absolute';
   pill.style.left = '50%';
   pill.style.transform = 'translateX(-50%)';
@@ -429,6 +446,22 @@ function ensureRing(container: HTMLElement, score: number, handle: string): void
   pill.style.alignItems = 'center';
   pill.style.textDecoration = 'none';
   pill.style.cursor = 'pointer';
+
+  // Hover/focus affordance to signal clickability
+  const hoverBg = lightenHexColor(pillBg, 0.14);
+  const onHover = () => {
+    pill.style.background = hoverBg;
+    pill.style.boxShadow = '0 6px 18px rgba(0,0,0,0.25)';
+    pill.style.textDecoration = 'none';
+  };
+  const onUnhover = () => {
+    pill.style.background = pillBg;
+    pill.style.boxShadow = 'none';
+  };
+  pill.addEventListener('mouseenter', onHover);
+  pill.addEventListener('mouseleave', onUnhover);
+  pill.addEventListener('focus', onHover);
+  pill.addEventListener('blur', onUnhover);
 
   // For large profile avatars: bigger pill, overlapping the bottom
   if (isLargeProfileAvatar) {
