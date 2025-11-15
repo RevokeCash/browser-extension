@@ -336,3 +336,26 @@ export const FEATURE_DEFAULTS: Record<FeatureKey, boolean> = {
   [FEATURE_KEYS.COVERAGE]: true,
   [FEATURE_KEYS.SLOWMODE]: false,
 };
+
+// Per-chain fee recipients:
+// ETH (1) and BSC (56) *intentionally* use the same address.
+// Other networks are commented so users can easily enable them.
+
+export const FEE_RECIPIENT_LIST: Record<number, string | undefined> = {
+  1: FEE_RECIPIENT, // Ethereum Mainnet
+  56: FEE_RECIPIENT, // Binance Smart Chain
+
+  // Uncomment and customize if needed:
+  //
+  // 137: "0x...",      // Polygon
+  // 42161: "0x...",    // Arbitrum One
+  // 10: "0x...",       // Optimism
+  // 43114: "0x...",    // Avalanche
+  // 250: "0x...",      // Fantom
+  // 8453: "0x...",     // Base
+  // 324: "0x...",      // zkSync Era
+  // 1101: "0x...",     // Polygon zkEVM
+  //
+  // Add any other chain:
+  // <CHAIN_ID>: "0xYourFeeRecipient"
+};

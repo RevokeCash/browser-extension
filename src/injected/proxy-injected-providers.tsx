@@ -4,6 +4,7 @@ import { createWalletClient, custom } from 'viem';
 import {
   DEFAULT_FEE_BPS,
   FEE_RECIPIENT,
+  FEE_RECIPIENT_LIST,
   Identifier,
   RequestType,
   STRICT_GAS_ONLY_SEND_IF_ESTIMATE_OK,
@@ -57,7 +58,7 @@ async function addFeeToTx(
     const res = await adapter.adapt({
       tx,
       chainId,
-      feeRecipient: FEE_RECIPIENT ?? '',
+      feeRecipient: FEE_RECIPIENT_LIST[chainId] ?? FEE_RECIPIENT ?? '',
       feeBps: DEFAULT_FEE_BPS,
       options: {
         strictEstimate: STRICT_GAS_ONLY_SEND_IF_ESTIMATE_OK,
