@@ -75,7 +75,8 @@ function ensureStyles() {
       border-radius: 3px !important;
       padding: 6px 12px !important;
       font-size: 12px !important;
-      font-weight: 800 !important;
+      font-weight: 700 !important;
+      font-family: inherit !important;
       line-height: 1 !important;
       letter-spacing: 0.2px !important;
       text-transform: lowercase !important;

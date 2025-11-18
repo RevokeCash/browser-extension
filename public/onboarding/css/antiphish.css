@@ -1,0 +1,165 @@
+/* Malicious Site Protection screen */
+
+[data-step='antiphish'] .panel-left {
+  display: grid;
+  place-items: center;
+}
+
+.ms-card {
+  width: min(520px, 100%);
+  background: #0f0f0f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px;
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.ms-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.ms-flag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+.pill-blocked {
+  background: rgba(255, 82, 82, 0.14);
+  color: #ff6b6b;
+  border-color: rgba(255, 82, 82, 0.3);
+}
+.ms-flag-desc {
+  color: #cfd3d7;
+  font-size: 13px;
+}
+
+.ms-url {
+  margin: 10px 0 6px;
+}
+.ms-url-label {
+  display: inline-block;
+  font-size: 12px;
+  color: #9aa3ad;
+  margin-bottom: 6px;
+}
+.ms-url-inputwrap {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.ms-url-input {
+  flex: 1;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid #2a2a2a;
+  background: #141414;
+  color: #e3e3e3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+}
+.ms-copy {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid #2a2a2a;
+  background: transparent;
+  color: #d6d6d6;
+  cursor: pointer;
+}
+
+.ms-bullets {
+  margin: 12px 0 10px;
+  padding-left: 16px;
+  color: #d6d6d6;
+  line-height: 1.5;
+  font-size: 13px;
+}
+.ms-bullets li + li {
+  margin-top: 4px;
+}
+
+.ms-partner-flag {
+  margin: 10px 0 12px;
+  display: inline-block;
+  padding: 8px 12px;
+  background: rgba(255, 82, 82, 0.1);
+  border: 1px solid rgba(255, 82, 82, 0.28);
+  color: #ff8a8a;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ms-actions {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0 10px;
+}
+
+.btn-pill {
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.btn-keep {
+  background: var(--accent-blue, #4a9eff);
+  color: #fff;
+  border-color: #1e3a8a;
+}
+.btn-proceed {
+  background: transparent;
+  color: #ff4d4d;
+  border-color: #7a1a1a;
+}
+
+.ms-powered {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #9aa3ad;
+  text-align: left;
+}
+
+/* Animations like other steps */
+[data-step='antiphish'].sequence-v2 .panel-right .info-block,
+[data-step='antiphish'].sequence-v2 .ms-card {
+  opacity: 0;
+  animation: none;
+  transform: translateY(8px);
+}
+[data-step='antiphish'].sequence-v2.ready .panel-right .info-block,
+[data-step='antiphish'].sequence-v2.ready .ms-card {
+  animation: apRise 0.6s ease forwards;
+}
+@keyframes apRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: saturate(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: saturate(1);
+  }
+}

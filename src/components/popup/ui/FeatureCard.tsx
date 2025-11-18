@@ -16,6 +16,15 @@ export type Row = {
 
 const rows: Row[] = [
   {
+    id: 'ANTIPHISH',
+    title: 'Phishing Protection',
+    desc: 'Blocks malicious websites',
+    infoText:
+      'When enabled, known phishing and malicious sites are blocked before they load. You can still bypass temporarily or allow a domain for 24 hours if you are sure it is safe.',
+    storageKey: FEATURE_KEYS.ANTIPHISH,
+    defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.ANTIPHISH],
+  },
+  {
     id: 'ADDRESS_GUARD',
     title: 'Address Poisoning Detection',
     desc: 'Flags suspicious addresses on explorers',
@@ -76,8 +85,9 @@ export default function FeatureCard({ onFeeDetails }: { onFeeDetails?: () => voi
 
         <AdWarningsExpandable darkMode={darkMode} />
 
-        <FeatureRowItem key="ADDRESS_GUARD" row={rows[0]} darkMode={darkMode} isLast={false} />
-        <FeatureRowItem key="COVERAGE" row={rows[3]} darkMode={darkMode} isLast={true} />
+        <FeatureRowItem key="ANTIPHISH" row={rows[0]} darkMode={darkMode} isLast={false} />
+        <FeatureRowItem key="ADDRESS_GUARD" row={rows[1]} darkMode={darkMode} isLast={false} />
+        <FeatureRowItem key="COVERAGE" row={rows[4]} darkMode={darkMode} isLast={true} />
       </div>
 
       <div className="px-3 pb-2 pt-6">
@@ -85,11 +95,11 @@ export default function FeatureCard({ onFeeDetails }: { onFeeDetails?: () => voi
       </div>
 
       <div>
-        <FeatureRowItem key="X_OP_DETECTOR" row={rows[1]} darkMode={darkMode} isLast={false} />
+        <FeatureRowItem key="X_OP_DETECTOR" row={rows[2]} darkMode={darkMode} isLast={false} />
 
-        <FeatureRowItem key="ETHOS_SCORE" row={rows[2]} darkMode={darkMode} isLast={false} />
+        <FeatureRowItem key="ETHOS_SCORE" row={rows[3]} darkMode={darkMode} isLast={false} />
 
-        <FeatureRowItem key="SLOWMODE" row={rows[4]} darkMode={darkMode} isLast={true} />
+        <FeatureRowItem key="SLOWMODE" row={rows[5]} darkMode={darkMode} isLast={true} />
       </div>
     </div>
   );

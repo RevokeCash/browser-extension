@@ -6,6 +6,7 @@ const STEP_ORDER = [
   'simulator',
   'address-poisoning',
   'google-ads',
+  'antiphish',
   'coverage',
   'experimental-features',
   'summary',
@@ -165,6 +166,25 @@ window.onScreenChange = (id) => {
     step.getBoundingClientRect();
     requestAnimationFrame(() => step.classList.add('ready'));
   }
+  if (id === 'antiphish') {
+    const step = document.querySelector('[data-step="antiphish"]');
+    if (!step) return;
+    step.classList.add('sequence-v2');
+    step.classList.remove('ready');
+    step.getBoundingClientRect();
+    requestAnimationFrame(() => step.classList.add('ready'));
+    // Ensure default ON the first time (seed storage if undefined)
+    try {
+      storage.get([FEATURE_KEYS.ANTIPHISH]).then((res) => {
+        if (typeof res[FEATURE_KEYS.ANTIPHISH] === 'undefined') {
+          storage.set({ [FEATURE_KEYS.ANTIPHISH]: true }).then(() => {
+            const btn = step.querySelector('[data-ob-toggle="feature_antiphish_enabled"]');
+            if (btn) btn.classList.add('on');
+          });
+        }
+      });
+    } catch (_) {}
+  }
   if (id === 'google-ads') {
     const step = document.querySelector('[data-step="google-ads"]');
     if (!step) return;
@@ -183,6 +203,28 @@ window.onScreenChange = (id) => {
     step.getBoundingClientRect();
     requestAnimationFrame(() => step.classList.add('ready'));
   }
+  if (id === 'summary') {
+    // Reflect final settings
+    const map = {
+      'simulator-status': FEATURE_KEYS?.SIMULATOR,
+      'ads-status': FEATURE_KEYS?.GOOGLE_AD_WARN,
+      'antiphish-status': FEATURE_KEYS?.ANTIPHISH,
+      'address-status': FEATURE_KEYS?.ADDRESS_GUARD,
+      'coverage-status': FEATURE_KEYS?.COVERAGE,
+    };
+    const keys = Object.values(map).filter(Boolean);
+    storage.get(keys).then((res) => {
+      const setStatus = (elId, key) => {
+        const el = document.getElementById(elId);
+        if (!el) return;
+        const enabled = !!res[key];
+        el.classList.toggle('status-on', enabled);
+        el.classList.toggle('status-off', !enabled);
+        el.innerHTML = '<span class="status-dot"></span>' + (enabled ? 'ON' : 'OFF');
+      };
+      Object.entries(map).forEach(([id, key]) => setStatus(id, key));
+    });
+  }
 };
 
 window.addEventListener('hashchange', () => loadStep(currentStep()));
@@ -198,11 +240,13 @@ const FEATURE_KEYS = {
   DEXSCREENER_AD_WARN: 'feature_dexscreener_ad_warn_enabled',
   X_OP_DETECTOR: 'feature_x_op_detector_enabled',
   ETHOS_SCORE: 'feature_ethos_score_enabled',
+  SLOWMODE: 'feature_slowmode_enabled',
   ADDRESS_GUARD: 'feature_address_guard_enabled',
   COVERAGE: 'feature_coverage_enabled',
+  ANTIPHISH: 'feature_antiphish_enabled',
 };
 
-async function bindFeatureToggle(scope, key) {
+async function bindFeatureToggle(scope, key, defaultOn = true) {
   if (!scope) return;
   const btn = scope.querySelector(`[data-ob-toggle="${key}"]`);
   if (!btn) return;
@@ -211,8 +255,8 @@ async function bindFeatureToggle(scope, key) {
   let enabled = data[key];
 
   if (typeof enabled === 'undefined') {
-    enabled = true; // default ON
-    await storage.set({ [key]: true }); // persist it
+    enabled = !!defaultOn;
+    await storage.set({ [key]: enabled }); // persist it
   }
 
   btn.classList.toggle('on', enabled);
@@ -564,6 +608,17 @@ const stepInits = {
     // detect toggle state
     const toggleBtn = scope.querySelector('[data-ob-toggle="feature_google_ad_warn_enabled"]');
 
+    // Keep all ad warning feature flags in sync with this single toggle
+    async function syncAllAdsFlagsFromToggle() {
+      const enabled = toggleBtn.classList.contains('on');
+      await storage.set({
+        [FEATURE_KEYS.GOOGLE_AD_WARN]: enabled,
+        [FEATURE_KEYS.COINGECKO_AD_WARN]: enabled,
+        [FEATURE_KEYS.DEXTOOLS_AD_WARN]: enabled,
+        [FEATURE_KEYS.DEXSCREENER_AD_WARN]: enabled,
+      });
+    }
+
     function applyAdVisibility() {
       const enabled = toggleBtn.classList.contains('on');
       const ads = scope.querySelectorAll('.search-result.ad');
@@ -585,10 +640,16 @@ const stepInits = {
 
     // apply initial state
     applyAdVisibility();
+    // and mirror to all ad platforms on first load
+    await syncAllAdsFlagsFromToggle();
 
     // update whenever toggled
     toggleBtn.addEventListener('click', () => {
-      setTimeout(applyAdVisibility, 50);
+      // allow bindFeatureToggle to flip classes, then sync UI + storage
+      setTimeout(() => {
+        applyAdVisibility();
+        syncAllAdsFlagsFromToggle();
+      }, 50);
     });
 
     // animation trigger for "THE TRAP" and "YOUR PROTECTION"
@@ -603,6 +664,23 @@ const stepInits = {
       }
     };
     scope.addEventListener('animationstart', onAnimStart, true);
+  },
+
+  antiphish: async () => {
+    const scope = root.querySelector('[data-step="antiphish"]');
+    if (!scope) return;
+    requestAnimationFrame(() => scope.classList.add('show'));
+    await bindFeatureToggle(scope, FEATURE_KEYS.ANTIPHISH);
+    // Force default ON for this feature during onboarding
+    try {
+      const btn = scope.querySelector('[data-ob-toggle="feature_antiphish_enabled"]');
+      const data = await storage.get([FEATURE_KEYS.ANTIPHISH]);
+      const enabled = data[FEATURE_KEYS.ANTIPHISH];
+      if (enabled !== true) {
+        btn?.classList.add('on');
+        await storage.set({ [FEATURE_KEYS.ANTIPHISH]: true });
+      }
+    } catch (_) {}
   },
 
   coverage: async () => {
@@ -920,6 +998,8 @@ const stepInits = {
     await bindFeatureToggle(scope, FEATURE_KEYS.X_OP_DETECTOR);
     await bindFeatureToggle(scope, FEATURE_KEYS.ETHOS_SCORE);
     // await bindFeatureToggle(scope, FEATURE_KEYS.ADDRESS_GUARD);
+    // Slow Mode (Hold to Confirm) — default OFF
+    await bindFeatureToggle(scope, FEATURE_KEYS.SLOWMODE, false);
 
     const holdBtn = scope.querySelector('.ef-hold-btn');
     if (holdBtn) {

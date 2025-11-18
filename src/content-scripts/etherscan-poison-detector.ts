@@ -60,6 +60,7 @@ const __VARIANTS: Array<Omit<__FeeAddrStyle, 'h'>> = [
 
 const __LOW_AMOUNT_THRESHOLD = 1;
 let __addrTokenStats: Record<string, Record<string, { lowCount: number; total: number }>> = Object.create(null);
+let __rev_infoShownThisSession = false;
 
 function resetAddressTracking(newKey?: string) {
   try {
@@ -130,7 +131,9 @@ function arePoisonPair(a: string, b: string): boolean {
   if (la === lb) return false;
   const shareFirst4 = la.slice(2, 6) === lb.slice(2, 6);
   const shareLast4 = la.slice(-4) === lb.slice(-4);
-  if (!shareFirst4 || !shareLast4) return false;
+  const shareFirst3 = la.slice(2, 5) === lb.slice(2, 5);
+  const shareLast3 = la.slice(-3) === lb.slice(-3);
+  if (!((shareFirst4 && shareLast4) || (shareFirst3 && shareLast3))) return false;
   return hammingDistance(la, lb) >= 1;
 }
 
@@ -186,6 +189,211 @@ function ensureStyleTag() {
     }
   `;
   document.documentElement.appendChild(style);
+}
+
+function ensureInfoStyleTag() {
+  if (document.getElementById('rev-addr-info-style')) return;
+  const style = document.createElement('style');
+  style.id = 'rev-addr-info-style';
+  style.textContent = `
+    .rev-addr-info-popup {
+      position: fixed;
+      z-index: 2147483647;
+      right: 16px;
+      bottom: 16px;
+      max-width: 360px;
+      background: #fff;
+      color: #111;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.06);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      overflow: hidden;
+    }
+    .rev-addr-info-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: #f6f7f9;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .rev-addr-info-body {
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .rev-addr-info-body ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+    .rev-addr-info-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .rev-addr-info-brand img {
+      height: 16px;
+      width: auto;
+      display: block;
+    }
+    .rev-addr-info-body code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      padding: 2px 4px;
+      background: rgba(0,0,0,0.06);
+      border-radius: 4px;
+    }
+    .rev-addr-examples {
+      margin-top: 10px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      padding-top: 10px;
+    }
+    .rev-addr-example-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .rev-addr-example-label {
+      flex: 0 0 84px;
+      color: #555;
+    }
+    .rev-addr-example-value {
+      flex: 1 1 auto;
+      word-break: break-all;
+    }
+    .rev-addr-info-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 10px 12px 12px;
+    }
+    .rev-addr-info-btn {
+      appearance: none;
+      border: 0;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      background: #111;
+      color: #fff;
+    }
+    .rev-addr-info-btn:hover { opacity: 0.92; }
+    /* Hide inline tooltip badge inside the popup examples */
+    .rev-addr-info-popup .rev-addr-flagged-inline::after { content: none; }
+    @media (prefers-color-scheme: dark) {
+      .rev-addr-info-popup { background: #1c1f24; color: #e8eaed; box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06); }
+      .rev-addr-info-header { background: #2a2f36; border-bottom-color: rgba(255,255,255,0.08); }
+      .rev-addr-info-btn { background: #e8eaed; color: #111; }
+      .rev-addr-info-body code { background: rgba(255,255,255,0.08); }
+      .rev-addr-examples { border-top-color: rgba(255,255,255,0.08); }
+    }
+  `;
+  document.documentElement.appendChild(style);
+}
+
+function makeColorVarsFromHue(h: number, s: number, l: number, aBg: number, aSh: number, aHv: number): string {
+  const badge = `hsl(${h}, ${s}%, ${l}%)`;
+  const bg = `hsla(${h}, ${s}%, ${l}%, ${aBg})`;
+  const shadow = `hsla(${h}, ${s}%, ${l}%, ${aSh})`;
+  const hoverBg = `hsla(${h}, ${s}%, ${l}%, ${aHv})`;
+  return `--rev-badge-bg:${badge};--rev-bg-color:${bg};--rev-shadow-color:${shadow};--rev-bg-hover:${hoverBg};`;
+}
+
+function buildExampleAddresses(baseLower?: string | null): { base: string; similar: string } {
+  let base = baseLower || '0x0123456789abcdef0123456789abcdef01234567';
+  if (!/^0x[a-f0-9]{40}$/.test(base)) {
+    base = '0x0123456789abcdef0123456789abcdef01234567';
+  }
+  const core = base.slice(2);
+  const first3 = core.slice(0, 3);
+  const last3 = core.slice(-3);
+  const middle = core.slice(3, -3).split('');
+  if (middle.length > 0) {
+    const idx = Math.floor(middle.length / 2);
+    const ch = middle[idx];
+    middle[idx] = ch === 'a' ? 'b' : 'a';
+  }
+  const similar = '0x' + first3 + middle.join('') + last3;
+  return { base, similar };
+}
+
+function showAddressColorInfoPopup() {
+  try {
+    if (document.getElementById('rev-addr-info-popup')) return;
+    ensureInfoStyleTag();
+    const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    let brandSrc = '';
+    try {
+      brandSrc = chrome.runtime.getURL(dark ? 'images/revoke-wordmark-white.svg' : 'images/revoke-wordmark-black.svg');
+    } catch {}
+    const pageAddr = getPrimaryAddressLower();
+    const examples = buildExampleAddresses(pageAddr);
+    const style1 = makeColorVarsFromHue(28, 90, 55, 0.1, 0.35, 0.18);
+    const wrap = document.createElement('div');
+    wrap.id = 'rev-addr-info-popup';
+    wrap.className = 'rev-addr-info-popup';
+    wrap.innerHTML = `
+      <div class="rev-addr-info-header">
+        <span class="rev-addr-info-brand">
+          ${brandSrc ? `<img src="${brandSrc}" alt="Revoke" />` : ''}
+          Address poisoning highlights
+        </span>
+        <button class="rev-addr-info-btn" data-action="dismiss" aria-label="Dismiss">Got it</button>
+      </div>
+      <div class="rev-addr-info-body">
+        We flag addresses that closely resemble the page address to help catch address poisoning.
+        <ul>
+          <li>Each highlighted address is assigned a unique color to tell them apart.</li>
+          <li>Color is for differentiation only — it is not a risk/severity indicator.</li>
+          <li>Hover a highlight to see the "Potential Address poisoning" badge.</li>
+        </ul>
+        <div class="rev-addr-examples">
+          <div class="rev-addr-example-row">
+            <div class="rev-addr-example-label">Your address</div>
+            <div class="rev-addr-example-value"><code>${examples.base}</code></div>
+          </div>
+          <div class="rev-addr-example-row">
+            <div class="rev-addr-example-label">Similar</div>
+            <div class="rev-addr-example-value"><span class="rev-addr-flagged-inline" style="${style1}">${examples.similar}</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="rev-addr-info-actions">
+        <button class="rev-addr-info-btn" data-action="dismiss">Don't show again</button>
+      </div>
+    `;
+    wrap.addEventListener('click', (e) => {
+      const t = e.target as HTMLElement | null;
+      if (!t) return;
+      if (t.getAttribute('data-action') === 'dismiss') {
+        try {
+          chrome.storage.local.set({ rev_etherscan_poison_info_seen: true });
+        } catch {}
+        __rev_infoShownThisSession = true;
+        wrap.remove();
+      }
+    });
+    document.documentElement.appendChild(wrap);
+  } catch {}
+}
+
+function maybeShowAddressColorInfoOnce() {
+  if (__rev_infoShownThisSession) return;
+  try {
+    const hasHighlights = !!document.querySelector('[data-rev-addr-poison="true"], .rev-addr-flagged-inline');
+    if (!hasHighlights) return;
+    chrome.storage.local.get(['rev_etherscan_poison_info_seen'], (res) => {
+      const seen = !!res?.rev_etherscan_poison_info_seen;
+      if (seen) {
+        __rev_infoShownThisSession = true;
+        return;
+      }
+      showAddressColorInfoPopup();
+    });
+  } catch {}
 }
 
 function scanAddressPoisoning(root: ParentNode = document.body) {
@@ -315,8 +523,10 @@ function scanAddressPoisoning(root: ParentNode = document.body) {
     const groups: Record<string, string[]> = Object.create(null);
     for (const addr of uniqueAddresses) {
       if (!addr.startsWith('0x') || addr.length !== 42) continue;
-      const key = addr.slice(2, 6) + '_' + addr.slice(-4);
-      (groups[key] = groups[key] || []).push(addr);
+      const key4 = addr.slice(2, 6) + '_' + addr.slice(-4);
+      (groups[key4] = groups[key4] || []).push(addr);
+      const key3 = addr.slice(2, 5) + '_' + addr.slice(-3);
+      (groups[key3] = groups[key3] || []).push(addr);
     }
     const toFlag = new Set<string>();
     for (const key in groups) {
@@ -467,6 +677,10 @@ function scanAddressPoisoning(root: ParentNode = document.body) {
       applyColorToElement(target, occ.text);
       __flaggedElements.add(target);
     }
+    // If we highlighted anything, consider showing the one-time info popup
+    try {
+      if (toFlag.size > 0) maybeShowAddressColorInfoOnce();
+    } catch {}
   } catch {}
 }
 

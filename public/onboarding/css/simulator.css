@@ -190,6 +190,31 @@
   line-height: 1.3;
 }
 
+/* Make the Critical Risk banner more compact on smaller/13" screens */
+@media (max-width: 1280px), (max-height: 820px) {
+  .sim-critical-warning {
+    padding: 8px 10px;
+    margin: 12px 0 8px 0;
+  }
+  .sim-critical-header {
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .sim-critical-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+  }
+  .sim-critical-title {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  .sim-critical-desc {
+    font-size: 11px;
+    line-height: 1.25;
+  }
+}
+
 .sim-btn {
   flex: 1;
   padding: 14px;

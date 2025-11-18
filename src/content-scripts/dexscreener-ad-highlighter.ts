@@ -50,8 +50,14 @@ function ensureStyles() {
     }
     .rev-dexscreener-revoke-badge {
       position: absolute !important;
-      bottom: 12px !important;
-      right: 12px !important;
+      /* Force bottom-right placement regardless of container styles */
+      inset: auto !important;
+      top: auto !important;
+      left: auto !important;
+      bottom: 0px !important;
+      right: 0px !important;
+      transform: none !important;
+      align-self: auto !important;
       background: #fdb952 !important;
       color: #ffffff !important;
       border: none !important;
@@ -120,7 +126,7 @@ function highlightBannerAds() {
         const classes = parentElement.className;
         if (classes && (classes.includes('custom-8atqhb') || classes.includes('custom-79elbk'))) {
           parentElement.classList.add(AD_CONTAINER_CLASS);
-          addRevokeBadge(parentElement);
+          // Do not add revoke badge for the long homepage banner ad to avoid overlap
           break;
         }
         parentElement = parentElement.parentElement;

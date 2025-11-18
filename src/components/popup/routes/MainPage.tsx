@@ -41,15 +41,29 @@ const MainPage = () => {
     // e.g., navigate('/claim/start') or open ClaimFormModal
   };
 
+  const openWhatsNew = () => {
+    try {
+      const url = chrome.runtime.getURL('onboarding/index.html');
+      chrome.tabs?.create({ url, active: true });
+      // Close the popup after opening the onboarding tab
+      window.close();
+    } catch (_) {
+      // ignore
+    }
+  };
+
   return (
     <div className="flex flex-col h-full min-h-0 bg-[#0B0B0B] text-[#EDEDED]">
       <TopBar />
-      <UpdateBanner versionId={`v${pkg.version}`} maxAgeDays={30} />
+      <UpdateBanner versionId={`v${pkg.version}`} maxAgeDays={30} onOpenWhatsNew={openWhatsNew} />
 
       <Tabs active={activeTab} onChange={setActiveTab} />
 
       <div className="px-3">
-        <DomainBar />
+        <DomainBar
+          showWarningOnlyWhenMalicious={activeTab === 'features' || activeTab === 'approvals'}
+          onlyShowWhenMalicious={activeTab === 'features' || activeTab === 'approvals'}
+        />
       </div>
 
       <div

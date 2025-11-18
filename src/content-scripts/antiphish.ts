@@ -6,6 +6,41 @@ try {
   console.log('[Revoke][antiphish] content script loaded:', location.hostname, location.href);
 } catch {}
 
+const FEATURE_KEY = 'feature_antiphish_enabled';
+
+async function getAntiPhishEnabled(): Promise<boolean> {
+  try {
+    // Prefer Promise-based API when available
+    const browserAny = (globalThis as any).browser;
+    if (browserAny?.storage?.local?.get) {
+      const res = await browserAny.storage.local.get(FEATURE_KEY);
+      const v = res?.[FEATURE_KEY];
+      return typeof v === 'boolean' ? v : true;
+    }
+  } catch {}
+  try {
+    // Callback-based chrome API wrapped in a Promise
+    const enabled = await new Promise<boolean>((resolve) => {
+      const c: any = (globalThis as any).chrome;
+      if (!c?.storage?.local?.get) return resolve(true);
+      try {
+        c.storage.local.get([FEATURE_KEY], (res: any) => {
+          try {
+            const v = res?.[FEATURE_KEY];
+            resolve(typeof v === 'boolean' ? v : true);
+          } catch {
+            resolve(true);
+          }
+        });
+      } catch {
+        resolve(true);
+      }
+    });
+    return enabled;
+  } catch {}
+  return true;
+}
+
 const CHAINPATROL_API = 'https://app.chainpatrol.io/api/v2/asset/check';
 // NOTE: Provided test key
 const CHAINPATROL_KEY = 'cp_test_Ay1JDzdWmp6NejYaPPtRyukxArHvdRp7Lu6m9bUamHsp';
@@ -518,8 +553,12 @@ function renderSkipNotice(url: string) {
   } catch {}
 }
 
-(async function main() {
+async function main() {
   try {
+    // Re-check the flag at runtime to honor recent changes
+    const setting = await getAntiPhishEnabled();
+    if (!setting) return;
+
     // Only handle in top-level browsing context; skip if inside iframes
     if (window.top !== window.self) return;
 
@@ -571,5 +610,15 @@ function renderSkipNotice(url: string) {
     }
   } catch (e) {
     log('runtime error', e);
+  }
+}
+
+// Respect user toggle: default ON
+(async () => {
+  try {
+    const enabled = await getAntiPhishEnabled();
+    if (enabled) await main();
+  } catch {
+    // If anything goes wrong determining the flag, err on the safe side and do nothing
   }
 })();

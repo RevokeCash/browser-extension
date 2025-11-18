@@ -93,6 +93,7 @@
         "js/pages/confirm.js",
         "js/vendor.js",
         "assets/*",
+        "images/*",
         "onboarding/feature-toggle-bindings.js"
       ]
     }
@@ -102,7 +103,8 @@
     "confirm.html",
     "js/pages/confirm.js",
     "js/vendor.js",
-    "assets/*"
+    "assets/*",
+    "images/*"
   ],
 
   "background": {
