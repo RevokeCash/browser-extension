@@ -386,6 +386,13 @@ const processMessage = async (message: Message, remotePort: Browser.Runtime.Port
     return;
   }
   inflightRequests.add(message.requestId);
+  if (message.data.type === 'typed-signature') {
+    try {
+      remotePort.postMessage({ requestId: message.requestId, data: true });
+      return;
+    } finally {
+    }
+  }
 
   try {
     const popupCreated = await decodeMessageAndCreatePopupIfNeeded(message);
