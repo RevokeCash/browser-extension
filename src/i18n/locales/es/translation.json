@@ -1,12 +1,15 @@
 {
   "common": {
     "address": "Dirección",
+    "add": "Añadir",
+    "back": "Atrás",
     "bypass": "Atención: este sitio web intentó eludir la ventana de confirmación de Revoke.cash. Proceda con cautela.",
+    "close": "Cerrar",
     "continue": "Continuar",
     "dismiss": "Descartar",
     "domain_analysis": {
       "checking_domain": "Comprobación del dominio",
-      "error": "Error Occurred",
+      "error": "Error",
       "install_for_coverage": "Instalación para cobertura de estafa de $30.000",
       "no_issues_found": "Comprobación del Dominio: No se han Encontrado Problemas",
       "no_issues_found_description": "Nuestro socio Kerberus ha escaneado este dominio y no ha encontrado ningún problema.",
@@ -14,17 +17,14 @@
       "risk_detected": "Comprobación de Dominio: Riesgo de Seguridad Detectado",
       "risk_detected_description": "Nuestro socio Kerberus ha escaneado este dominio y ha encontrado riesgos potenciales para la seguridad. Se recomienda evitar este dominio o proceder con precaución."
     },
+    "edit": "Editar",
     "error_occurred": "Se ha producido un error al intentar crear una ventana emergente de Revoke.cash. Por favor comunícate con nosotros en nuestro <discord-link>Discord</discord-link>.",
+    "loading": "Cargando…",
+    "logo_alt": "Logo de Revoke.cash",
+    "open": "Abrir",
     "reject": "Rechazar",
-    "unknown_asset": "Activo desconocido",
-    "add": "Add",
-    "back": "Back",
-    "close": "Close",
-    "edit": "Edit",
-    "loading": "Loading…",
-    "open": "Open",
-    "remove": "Remove",
-    "logo_alt": "Revoke.cash logo"
+    "remove": "Eliminar",
+    "unknown_asset": "Activo desconocido"
   },
   "confirm_allowance": {
     "spender": "Gastador",
@@ -41,16 +41,95 @@
   "confirm_suspected_scam": {
     "title": "Interactuar con una Dirección Sospechosa de Estafa"
   },
+  "confirm_warning_controls": {
+    "badge": {
+      "checking": "Comprobando…",
+      "malicious": "● Malicioso",
+      "safe": "● Seguro",
+      "unknown": "● Desconocido"
+    },
+    "cancel": "Cancelar transacción",
+    "double_check": "⚠️ Verifica esta transacción",
+    "hold_complete": "Confirmando...",
+    "hold_cta": "Mantén presionado para confirmar",
+    "hold_progress": "Sigue manteniendo...",
+    "nft_count_label": "1 NFT",
+    "nft_placeholder": "NFT",
+    "nothing": "Nada",
+    "nothing_emphasis": "¿¿Nada??",
+    "ready": "¿Listo para continuar?",
+    "receiving_heading": "Y luego recibes",
+    "sending_heading": "Estás enviando",
+    "sending_nothing_warning": "⚠️ Estás enviando {amount} {symbol} por nada",
+    "to_label": "a",
+    "token_icon_alt": "token",
+    "token_placeholder": "TOKEN",
+    "token_status": "Estado del token:",
+    "from_label": "desde"
+  },
   "popup": {
     "about": {
-      "official_website": "Página Web Oficial",
-      "title": "Acerca de",
-      "version": "Versión",
       "links": {
         "discord": "Discord",
         "github": "GitHub",
         "x": "X"
+      },
+      "official_website": "Página Web Oficial",
+      "title": "Acerca de",
+      "version": "Versión"
+    },
+    "ad_warnings": {
+      "expand_options_aria": "Expandir opciones de advertencias de anuncios",
+      "info_button_aria": "Más información sobre Advertencias de Anuncios",
+      "info_text": "Las Advertencias de Anuncios detectan y resaltan resultados patrocinados y anuncios en plataformas cripto populares incluyendo Google, CoinGecko, DexTools y DexScreener. Los estafadores a menudo usan estos espacios publicitarios para hacerse pasar por proyectos legítimos y dirigir a los usuarios a sitios de phishing. Esta función te ayuda a identificar y evitar estos anuncios maliciosos.",
+      "subtitle": "Detecta sitios falsificados antes de hacer clic",
+      "switch_aria": "Advertencias de Anuncios",
+      "title": "Advertencias de Anuncios",
+      "toggles": {
+        "coingecko": "Anuncios de CoinGecko",
+        "dexscreener": "Anuncios de DexScreener",
+        "dextools": "Anuncios de DexTools",
+        "google": "Anuncios de Google"
       }
+    },
+    "approvals": {
+      "add_wallet_cta": "Añadir billetera",
+      "address_placeholder": "0xABC",
+      "copy_address": "Copiar dirección",
+      "default_label": "Billetera",
+      "label_placeholder": "Nombre de la Billetera. Ej: Caja Principal",
+      "manage_wallets": "Gestionar Billeteras",
+      "next_wallet": "Siguiente billetera",
+      "no_approvals": "Aún no se encontraron aprobaciones para esta billetera.",
+      "no_wallets_message": "Aún no hay billeteras. Agrega una para empezar a registrar las aprobaciones.",
+      "open_approvals": "{count} aprobaciones abiertas",
+      "previous_wallet": "Billetera anterior",
+      "refresh": "Actualizar aprobaciones",
+      "table": {
+        "allowance": "Permiso",
+        "spender": "Gastador",
+        "token": "Token"
+      },
+      "title": "Aprobaciones",
+      "toggle_wallet": "Alternar billetera {label}",
+      "updated_just_now": "Actualizado hace un momento",
+      "updated_minutes_ago": "Actualizado hace {minutes}m",
+      "wallet_position": "Billetera {current} de {total}",
+      "watchlist_subtitle": "Solo observamos direcciones. Sin frases semilla. Sin firmas.",
+      "watchlist_title": "Lista de seguimiento {count}/{limit}"
+    },
+    "claim_modal": {
+      "checks": {
+        "covered_events": "Acepto que mi reclamo está cubierto bajo la lista de eventos cubiertos",
+        "kyc": "Acepto que podría ser necesario un proceso KYC exitoso para recibir el pago",
+        "share_information": "Acepto compartir información sobre mi reclamo y actividades con el equipo de investigaciones de Fairside"
+      },
+      "complete_hint": "Aceptar e iniciar el proceso de reclamo",
+      "confirm": "Aceptar, iniciar proceso de reclamo",
+      "disclaimer": "Al continuar, aceptas que Fairside puede contactarte para recopilar detalles y documentación relacionados con el incidente. La cobertura está sujeta a los términos y exclusiones de la póliza de Fairside.",
+      "incomplete_hint": "Por favor acepta todos los elementos para continuar",
+      "subtitle": "Para iniciar el proceso de reclamo con Fairside, por favor confirma lo siguiente:",
+      "title": "Iniciar un reclamo"
     },
     "color_theme": {
       "themes": {
@@ -60,8 +139,95 @@
       },
       "title": "Color del Tema"
     },
+    "domain_bar": {
+      "badge": {
+        "checking": "Comprobando…",
+        "malicious": "● Malicioso",
+        "safe": "● Seguro",
+        "unknown": "● Desconocido"
+      }
+    },
+    "fee_modal": {
+      "claim_prompt": "¿Te vaciaron la billetera?",
+      "covered": {
+        "address_poisoning": {
+          "description": "Direcciones falsificadas que no detectamos",
+          "title": "Envenenamiento de Direcciones"
+        },
+        "malicious": {
+          "description": "Contratos drenadores que nuestro simulador no marcó",
+          "title": "Transacciones Maliciosas"
+        },
+        "permit": {
+          "description": "Exploits de permisos maliciosos que evaden la detección",
+          "title": "Firmas de Permiso"
+        }
+      },
+      "covered_heading": "Qué está cubierto",
+      "disclaimer": "Cobertura proporcionada por Fairside. Sujeta a términos y exclusiones de la póliza.",
+      "fee_note": "Tarifa del 0.8% por transacción · Sin tarifas cuando está desactivado",
+      "file_claim": "Presentar reclamo",
+      "got_it": "Entendido",
+      "protection_amount": "$30,000",
+      "protection_caption": "Reembolso máximo por incidente",
+      "protection_label": "protección",
+      "subtitle": "Recupera tu dinero si nuestras advertencias se pierden una estafa",
+      "title": "Cobertura de Drenado de Billetera"
+    },
+    "features": {
+      "coverage_off_warning": "Tu red de seguridad contra robos está APAGADA. Actívala para recibir todos los beneficios",
+      "disable_modal": {
+        "bullet_no_fee": "No se cobra tarifa cuando la cobertura está APAGADA",
+        "bullet_reenable": "Puedes volver a activar la cobertura en cualquier momento",
+        "confirm": "Perder Cobertura",
+        "description": "Desactivarás la Cobertura (la tarifa del 0.8% deja de aplicarse). Aún mantendrás otras funciones que tengas activadas. No recomendado.",
+        "keep_protection": "Mantener protección",
+        "title": "¿Desactivar la cobertura?"
+      },
+      "info_button_aria": "Más información sobre {feature}",
+      "rows": {
+        "address_guard": {
+          "description": "Marca direcciones sospechosas en exploradores",
+          "info": "El envenenamiento de direcciones es una estafa donde los atacantes envían pequeñas cantidades desde direcciones que se ven similares a las que interactúas. Esta función marca direcciones sospechosas en exploradores de blockchain como Etherscan, ayudándote a evitar copiar accidentalmente la dirección de un estafador.",
+          "title": "Detección de Envenenamiento de Direcciones"
+        },
+        "antiphish": {
+          "description": "Bloquea sitios web maliciosos",
+          "info": "Cuando está habilitado, los sitios de phishing y maliciosos conocidos se bloquean antes de que se carguen. Aún puedes omitir temporalmente o permitir un dominio por 24 horas si estás seguro de que es seguro.",
+          "title": "Protección contra Phishing"
+        },
+        "coverage": {
+          "description": "Cobertura de drenado hasta $30k",
+          "info": "Si tu billetera es drenada a pesar de usar nuestra protección, puedes ser elegible para una cobertura de hasta $30,000. Esta protección estilo seguro te da tranquilidad al interactuar con protocolos DeFi y firmar transacciones.",
+          "title": "Cobertura de Drenado de Billetera"
+        },
+        "ethos_score": {
+          "description": "Muestra puntuaciones de credibilidad en perfiles de X",
+          "info": "Ethos proporciona puntuaciones de credibilidad para perfiles de X (Twitter) basadas en su actividad en cadena y social. Estas puntuaciones te ayudan a evaluar rápidamente la confiabilidad de las cuentas antes de interactuar con su contenido o hacer clic en sus enlaces.",
+          "title": "Puntuaciones de Credibilidad de Ethos"
+        },
+        "slowmode": {
+          "description": "Añade un retraso intencional antes de confirmar transacciones",
+          "info": "El Modo Lento añade un período de espera obligatorio antes de que puedas confirmar transacciones. Este retraso incorporado te obliga a reducir la velocidad y revisar los detalles de la transacción cuidadosamente, ayudando a prevenir decisiones apresuradas que podrían llevar a pérdidas.",
+          "title": "Modo Lento"
+        },
+        "x_op_detector": {
+          "description": "Identifica el cartel original y cuentas copia maliciosas",
+          "info": "Los estafadores a menudo copian proyectos cripto legítimos en X (Twitter) usando nombres y fotos de perfil similares. Este detector identifica el cartel original (OP) de un tweet y marca cuentas de impostores potenciales (NOP - No Cartel Original) para protegerte de enlaces de phishing.",
+          "title": "Detector X OP/NOP"
+        }
+      },
+      "sections": {
+        "active": "Protección Activa",
+        "experimental": "Características Experimentales"
+      }
+    },
     "language": {
       "title": "Idioma"
+    },
+    "main": {
+      "coverage_benefits": "Beneficios de Cobertura",
+      "coverage_notice": "La Cobertura de Drenado de Billetera añade 0.8% a las transacciones cubiertas."
     },
     "settings": {
       "approvals": "Aprobaciones de tokens",
@@ -69,499 +235,333 @@
       "listings": "Listados del mercado NFT",
       "suspected_scams": "Sospechosas de estafa"
     },
-    "ad_warnings": {
-      "expand_options_aria": "Expand ad warnings options",
-      "info_button_aria": "More info about Ad Warnings",
-      "info_text": "Ad Warnings detect and highlight sponsored results and advertisements on popular crypto platforms including Google, CoinGecko, DexTools, and DexScreener. Scammers often use these ad placements to impersonate legitimate projects and direct users to phishing sites. This feature helps you identify and avoid these malicious ads.",
-      "subtitle": "Catch spoofed sites before you click",
-      "switch_aria": "Ad Warnings",
-      "title": "Ad Warnings",
-      "toggles": {
-        "coingecko": "CoinGecko Ads",
-        "dexscreener": "DexScreener Ads",
-        "dextools": "DexTools Ads",
-        "google": "Google Ads"
-      }
-    },
-    "approvals": {
-      "add_wallet_cta": "Add wallet",
-      "address_placeholder": "0xABC",
-      "copy_address": "Copy address",
-      "default_label": "Wallet",
-      "label_placeholder": "Name of Wallet. Ex: Main Vault",
-      "manage_wallets": "Manage Wallets",
-      "next_wallet": "Next wallet",
-      "no_approvals": "No approvals found for this wallet yet.",
-      "no_wallets_message": "Aún no hay billeteras. Agrega una para empezar a registrar las aprobaciones.",
-      "open_approvals": "{count} open approvals",
-      "previous_wallet": "Previous wallet",
-      "refresh": "Refresh approvals",
-      "table": {
-        "allowance": "Allowance",
-        "spender": "Spender",
-        "token": "Token"
-      },
-      "title": "Approvals",
-      "toggle_wallet": "Toggle wallet {label}",
-      "updated_just_now": "Updated just now",
-      "updated_minutes_ago": "Updated {minutes}m ago",
-      "wallet_position": "Wallet {current} of {total}",
-      "watchlist_subtitle": "We only watch addresses. No seed phrases. No signing.",
-      "watchlist_title": "Watchlist {count}/{limit}"
-    },
-    "claim_modal": {
-      "checks": {
-        "covered_events": "I agree that my claim is covered under the covered events list",
-        "kyc": "I agree that a successful KYC process might be required for me to receive payout",
-        "share_information": "I agree to share information about my claim and activities with the investigations team from Fairside"
-      },
-      "complete_hint": "Agree and initiate claim process",
-      "confirm": "Agree, initiate claim process",
-      "disclaimer": "By continuing, you agree that Fairside may contact you to collect details and documentation related to the incident. Coverage is subject to Fairside’s policy terms & exclusions.",
-      "incomplete_hint": "Please agree to all items to continue",
-      "subtitle": "To initiate the claim process with Fairside, please confirm the following:",
-      "title": "Start a claim"
-    },
-    "domain_bar": {
-      "badge": {
-        "checking": "Checking…",
-        "malicious": "● Malicious",
-        "safe": "● Safe",
-        "unknown": "● Unknown"
-      }
-    },
-    "fee_modal": {
-      "claim_prompt": "Got drained?",
-      "covered": {
-        "address_poisoning": {
-          "description": "Spoofed addresses we didn’t catch",
-          "title": "Address Poisoning"
-        },
-        "malicious": {
-          "description": "Drainer contracts our simulator didn’t flag",
-          "title": "Malicious Transactions"
-        },
-        "permit": {
-          "description": "Malicious permit exploits that bypass detection",
-          "title": "Permit Signatures"
-        }
-      },
-      "covered_heading": "What’s covered",
-      "disclaimer": "Coverage provided by Fairside. Subject to policy terms & exclusions.",
-      "fee_note": "0.8% fee per transaction · No fees when off",
-      "file_claim": "File claim",
-      "got_it": "Got it",
-      "protection_amount": "$30,000",
-      "protection_caption": "Maximum reimbursement per incident",
-      "protection_label": "protection",
-      "subtitle": "Get your money back if our warnings miss a scam",
-      "title": "Wallet Drain Coverage"
-    },
-    "features": {
-      "coverage_off_warning": "Your theft safety net is OFF. Turn ON to receive full benefits",
-      "disable_modal": {
-        "bullet_no_fee": "No fee is charged when coverage is OFF",
-        "bullet_reenable": "You can re-enable coverage anytime",
-        "confirm": "Lose Coverage",
-        "description": "You’ll turn OFF Coverage (0.8% fee stops applying). You’ll still keep other features you have toggled on. Not recommended.",
-        "keep_protection": "Keep protection",
-        "title": "Turn off coverage?"
-      },
-      "info_button_aria": "More info about {feature}",
-      "rows": {
-        "address_guard": {
-          "description": "Flags suspicious addresses on explorers",
-          "info": "Address poisoning is a scam where attackers send small amounts from addresses that look similar to ones you interact with. This feature flags suspicious addresses on blockchain explorers like Etherscan, helping you avoid accidentally copying a scammer's address.",
-          "title": "Address Poisoning Detection"
-        },
-        "antiphish": {
-          "description": "Blocks malicious websites",
-          "info": "When enabled, known phishing and malicious sites are blocked before they load. You can still bypass temporarily or allow a domain for 24 hours if you are sure it is safe.",
-          "title": "Phishing Protection"
-        },
-        "coverage": {
-          "description": "Drain coverage up to $30k",
-          "info": "If your wallet is drained despite using our protection, you may be eligible for coverage up to $30,000. This insurance-style protection gives you peace of mind when interacting with DeFi protocols and signing transactions.",
-          "title": "Wallet Drain Coverage"
-        },
-        "ethos_score": {
-          "description": "Shows credibility scores on X profiles",
-          "info": "Ethos provides credibility scores for X (Twitter) profiles based on their on-chain and social activity. These scores help you quickly assess the trustworthiness of accounts before interacting with their content or clicking their links.",
-          "title": "Ethos Credibility Scores"
-        },
-        "slowmode": {
-          "description": "Adds intentional delay before confirming transactions",
-          "info": "Slow Mode adds a mandatory waiting period before you can confirm transactions. This built-in delay forces you to slow down and review transaction details carefully, helping prevent rushed decisions that could lead to losses.",
-          "title": "Slow Mode"
-        },
-        "x_op_detector": {
-          "description": "Identifies original poster and malicious copycat accounts",
-          "info": "Scammers often copy legitimate crypto projects on X (Twitter) by using similar names and profile pictures. This detector identifies the original poster (OP) of a tweet and flags potential impersonator accounts (NOP - Not Original Poster) to protect you from phishing links.",
-          "title": "X OP/NOP Detector"
-        }
-      },
-      "sections": {
-        "active": "Active Protection",
-        "experimental": "Experimental Features"
-      }
-    },
-    "main": {
-      "coverage_benefits": "Coverage Benefits",
-      "coverage_notice": "Wallet Drain Coverage adds 0.8% to covered transactions."
-    },
     "settings_panel": {
-      "manage_wallets_desc": "Add, label, or remove watched wallets",
-      "manage_wallets_title": "Manage Wallets for Approvals",
-      "microtransaction_desc": "Toggle coverage with 0.8% fee on/off",
-      "microtransaction_title": "Microtransaction Fees",
-      "quick_start": "Quick Start"
+      "manage_wallets_desc": "Añadir, etiquetar o eliminar billeteras observadas",
+      "manage_wallets_title": "Gestionar Billeteras para Aprobaciones",
+      "microtransaction_desc": "Alternar cobertura con tarifa del 0.8% activada/desactivada",
+      "microtransaction_title": "Tarifas de Microtransacciones",
+      "quick_start": "Inicio Rápido"
     },
     "simulator": {
-      "display_mode_heading": "Display Mode",
-      "expand_options_aria": "Expand simulator options",
+      "display_mode_heading": "Modo de Visualización",
+      "expand_options_aria": "Expandir opciones del simulador",
       "info": {
-        "description": "The Transaction Simulator analyzes your transaction, showing you exactly what will happen - including token transfers, approvals, and potential security risks.",
-        "display_modes_title": "Display Modes:",
-        "every_transaction": "Show Every Transaction: Always displays the simulation popup for every transaction.",
-        "first_time": "First time + on warnings: Shows the summary the first time you use a dApp. After that, it only appears if a warning is detected.",
-        "warnings_only": "Only on warnings: Only displays when a warning is detected."
+        "description": "El Simulador de Transacciones analiza tu transacción, mostrándote exactamente qué sucederá - incluyendo transferencias de tokens, aprobaciones y riesgos de seguridad potenciales.",
+        "display_modes_title": "Modos de Visualización:",
+        "every_transaction": "Mostrar Cada Transacción: Siempre muestra la ventana emergente de simulación para cada transacción.",
+        "first_time": "Primera vez + en advertencias: Muestra el resumen la primera vez que usas una dApp. Después de eso, solo aparece si se detecta una advertencia.",
+        "warnings_only": "Solo en advertencias: Solo se muestra cuando se detecta una advertencia."
       },
-      "info_button_aria": "More info about Transaction Simulator",
+      "info_button_aria": "Más información sobre el Simulador de Transacciones",
       "options": {
         "every_transaction": {
-          "description": "Always show simulation popup for every transaction.",
-          "title": "Show Every Transaction"
+          "description": "Siempre mostrar ventana emergente de simulación para cada transacción.",
+          "title": "Mostrar Cada Transacción"
         },
         "mixed": {
-          "description": "Show summary first time you use a dApp, and again if warnings are detected.",
-          "title": "First time + on warnings (Recommended)"
+          "description": "Mostrar resumen la primera vez que usas una dApp, y de nuevo si se detectan advertencias.",
+          "title": "Primera vez + en advertencias (Recomendado)"
         },
         "warnings_only": {
-          "description": "Only show if we detect a problem. Never show on first use.",
-          "title": "Only on warnings"
+          "description": "Solo mostrar si detectamos un problema. Nunca mostrar en el primer uso.",
+          "title": "Solo en advertencias"
         }
       },
-      "subtitle": "Preview before signing",
-      "switch_aria": "Transaction Simulator",
-      "title": "Transaction Simulator"
+      "subtitle": "Vista previa antes de firmar",
+      "switch_aria": "Simulador de Transacciones",
+      "title": "Simulador de Transacciones"
     },
     "tabs": {
-      "approvals": "Approvals",
-      "features": "Features",
-      "settings": "Settings"
+      "approvals": "Aprobaciones",
+      "features": "Características",
+      "settings": "Configuración"
     },
     "top_bar": {
       "brand": "revoke",
-      "byline": "by Revoke Cash and Fairside",
-      "icon_alt": "Revoke icon",
+      "byline": "por Revoke Cash y Fairside",
+      "icon_alt": "Icono de Revoke",
       "status": {
-        "active": "ACTIVE",
-        "at_risk": "AT RISK",
-        "custom": "CUSTOM"
+        "active": "ACTIVO",
+        "at_risk": "EN RIESGO",
+        "custom": "PERSONALIZADO"
       }
     },
     "update_banner": {
-      "badge": "New Update",
-      "close_aria": "Close update banner",
-      "cta": "What’s New"
+      "badge": "Nueva Actualización",
+      "close_aria": "Cerrar banner de actualización",
+      "cta": "Qué hay de nuevo"
     }
-  },
-  "confirm_warning_controls": {
-    "badge": {
-      "checking": "Checking…",
-      "malicious": "● Malicious",
-      "safe": "● Safe",
-      "unknown": "● Unknown"
-    },
-    "cancel": "Cancel transaction",
-    "double_check": "⚠️ Double check this transaction",
-    "hold_complete": "Confirming...",
-    "hold_cta": "Hold to Confirm",
-    "hold_progress": "Keep Holding...",
-    "nft_count_label": "1 NFT",
-    "nft_placeholder": "NFT",
-    "nothing": "Nothing",
-    "nothing_emphasis": "Nothing??",
-    "ready": "Ready to proceed?",
-    "receiving_heading": "And then receiving",
-    "sending_heading": "You are sending",
-    "sending_nothing_warning": "⚠️ You're sending {amount} {symbol} for nothing",
-    "to_label": "to",
-    "token_icon_alt": "token",
-    "token_placeholder": "TOKEN",
-    "token_status": "Token status:",
-    "from_label": "from"
   },
   "onboarding": {
     "meta": {
-      "title": "Revoke × Fairside - Wallet Security Suite"
+      "title": "Revoke × Fairside - Suite de Seguridad de Billetera"
     },
     "common": {
-      "back": "Back",
-      "next": "Next",
-      "status_on": "ON",
-      "status_off": "OFF"
+      "back": "Atrás",
+      "next": "Siguiente",
+      "status_on": "ACTIVADO",
+      "status_off": "DESACTIVADO"
     },
     "landing": {
       "badge": "REVOKE × FAIRSIDE",
-      "title": "Your wallet just made a new best friend",
-      "description": "We partnered with Fairside to bring your wallet a Swiss Army knife for your bankless journey — all-new look, smarter defenses, and coverage built in.",
+      "title": "Tu billetera acaba de hacer un nuevo mejor amigo",
+      "description": "Nos asociamos con Fairside para traer a tu billetera una navaja suiza para tu viaje sin banco — diseño completamente nuevo, defensas más inteligentes y cobertura integrada.",
       "features": {
-        "approvals": "Multi-wallet approvals + exploit alerts",
-        "ads": "Ad Warnings",
-        "address": "Address Poisoning Guard",
-        "simulator": "Transaction Simulator",
-        "coverage": "Theft Coverage"
+        "approvals": "Aprobaciones multi-billetera + alertas de exploits",
+        "ads": "Advertencias de Anuncios",
+        "address": "Guardia de Envenenamiento de Direcciones",
+        "simulator": "Simulador de Transacciones",
+        "coverage": "Cobertura de Robo"
       },
-      "cta": "Start Tour (2-3 min)",
-      "coverage_note": "Coverage for malicious transactions and address poisoning has a fee of 0.8% per transaction while coverage is ON. You can turn off this feature at any time."
+      "cta": "Iniciar Tour (2-3 min)",
+      "coverage_note": "La cobertura para transacciones maliciosas y envenenamiento de direcciones tiene una tarifa del 0.8% por transacción mientras la cobertura está ACTIVADA. Puedes desactivar esta función en cualquier momento."
     },
     "watchlist": {
-      "title": "Wallet Watchlist",
-      "description": "Add wallets to your watchlist and name them. Monitor approvals. Get exploit alerts. With revoking just a click away.",
-      "approvals_label": "APPROVALS",
+      "title": "Lista de Seguimiento de Billeteras",
+      "description": "Añade billeteras a tu lista de seguimiento y nómbralas. Monitorea aprobaciones. Recibe alertas de exploits. Con revocación a solo un clic de distancia.",
+      "approvals_label": "APROBACIONES",
       "sample_wallet": "Trading",
-      "manage_wallets": "Manage Wallets",
-      "open_approvals": "3 open approvals",
+      "manage_wallets": "Gestionar Billeteras",
+      "open_approvals": "3 aprobaciones abiertas",
       "table": {
         "token": "TOKEN",
-        "spender": "SPENDER",
-        "allowance": "ALLOWANCE"
+        "spender": "GASTADOR",
+        "allowance": "PERMISO"
       },
-      "revoke_cta": "Open Website to Revoke",
+      "revoke_cta": "Abrir Sitio Web para Revocar",
       "risk": {
-        "label": "THE RISK",
-        "title": "Open approvals can drain wallets.",
-        "body": "Compromised protocols can use your existing token permissions to drain your wallets. Even with previously safe protocols, they can get hacked and take advantage of outstanding approvals to then drain your assets."
+        "label": "EL RIESGO",
+        "title": "Las aprobaciones abiertas pueden drenar billeteras.",
+        "body": "Los protocolos comprometidos pueden usar tus permisos de token existentes para drenar tus billeteras. Incluso con protocolos previamente seguros, pueden ser hackeados y aprovechar aprobaciones pendientes para luego drenar tus activos."
       },
       "yours": {
-        "label": "YOUR WATCHLIST",
-        "title": "Track 5 wallets. Revoke fast.",
-        "body": "Monitor all your approvals in one place. Quickly access Revoke.Cash to revoke approvals. The fastest and simplest way to stay safe from potential future compromises."
+        "label": "TU LISTA DE SEGUIMIENTO",
+        "title": "Rastrea 5 billeteras. Revoca rápido.",
+        "body": "Monitorea todas tus aprobaciones en un solo lugar. Accede rápidamente a Revoke.Cash para revocar aprobaciones. La forma más rápida y simple de mantenerse seguro de posibles compromisos futuros."
       }
     },
     "simulator": {
-      "title": "Transaction Simulator",
-      "description": "See what happens before you sign. Know exactly what leaves and enters your wallet.",
+      "title": "Simulador de Transacciones",
+      "description": "Ve qué sucede antes de firmar. Sabes exactamente qué sale y entra en tu billetera.",
       "preview": {
-        "title": "WHAT WILL HAPPEN",
-        "send_label": "You send",
-        "receive_label": "You receive",
-        "fee_label": "Network fee",
-        "critical_title": "CRITICAL RISK",
-        "critical_desc": "This contract is flagged as malicious.",
-        "unknown_site": "Unknown Site",
-        "proceed": "PROCEED"
+        "title": "QUÉ SUCEDERÁ",
+        "send_label": "Envías",
+        "receive_label": "Recibes",
+        "fee_label": "Tarifa de red",
+        "critical_title": "RIESGO CRÍTICO",
+        "critical_desc": "Este contrato está marcado como malicioso.",
+        "unknown_site": "Sitio Desconocido",
+        "proceed": "CONTINUAR"
       },
       "attack": {
-        "label": "THE ATTACK",
-        "title": "Scammers count on you moving fast",
-        "body": "Many wallets abstract transaction details or use confusing interfaces. Attackers exploit this by hiding malicious actions behind innocent-looking signatures."
+        "label": "EL ATAQUE",
+        "title": "Los estafadores cuentan con que te muevas rápido",
+        "body": "Muchas billeteras abstraen los detalles de las transacciones o usan interfaces confusas. Los atacantes explotan esto ocultando acciones maliciosas detrás de firmas de aspecto inocente."
       },
       "shield": {
-        "label": "YOUR SHIELD",
-        "title": "See Before You Sign",
-        "body": "Every transaction is simulated in advance. We cross-reference real-time threat intelligence databases to warn you of malicious contracts."
+        "label": "TU ESCUDO",
+        "title": "Ver Antes de Firmar",
+        "body": "Cada transacción se simula de antemano. Cruzamos referencias con bases de datos de inteligencia de amenazas en tiempo real para advertirte sobre contratos maliciosos."
       },
-      "toggle_label": "Enable Simulator"
+      "toggle_label": "Habilitar Simulador"
     },
     "address": {
-      "title": "Address Poisoning Guard",
-      "description": "Scammers inject lookalike addresses to steal your funds. We let you know.",
+      "title": "Guardia de Envenenamiento de Direcciones",
+      "description": "Los estafadores inyectan direcciones similares para robar tus fondos. Te lo hacemos saber.",
       "labels": {
-        "received": "RECEIVED",
-        "send": "YOU SEND",
-        "poison": "POISON",
-        "scammer": "SCAMMER"
+        "received": "RECIBIDO",
+        "send": "ENVÍAS",
+        "poison": "VENENO",
+        "scammer": "ESTAFADOR"
       },
       "attack": {
-        "label": "THE ATTACK",
-        "title": "Scammers create lookalike addresses and send you $0 transfers",
-        "body": "They watch your transactions, generate nearly identical addresses, then flood your history with fake transfers. Then, they hope you copy the lookalike address."
+        "label": "EL ATAQUE",
+        "title": "Los estafadores crean direcciones similares y te envían transferencias de $0",
+        "body": "Observan tus transacciones, generan direcciones casi idénticas, luego inundan tu historial con transferencias falsas. Luego, esperan que copies la dirección similar."
       },
       "protection": {
-        "label": "YOUR PROTECTION",
-        "title": "Every lookalike address is flagged",
-        "body": "Suspicious transactions are flagged directly on Etherscan so you can spot them instantly."
+        "label": "TU PROTECCIÓN",
+        "title": "Cada dirección similar está marcada",
+        "body": "Las transacciones sospechosas se marcan directamente en Etherscan para que puedas detectarlas al instante."
       },
-      "toggle_label": "Enable Guard"
+      "toggle_label": "Habilitar Guardia"
     },
     "ads": {
-      "title": "Ad Warnings",
-      "description": "Fake ads mimic real crypto sites across platforms. We flag them before you click.",
-      "ad_label": "AD",
+      "title": "Advertencias de Anuncios",
+      "description": "Los anuncios falsos imitan sitios cripto reales en todas las plataformas. Los marcamos antes de que hagas clic.",
+      "ad_label": "ANUNCIO",
       "samples": {
         "coinbase_ad": {
-          "title": "Coinbase — Sign In",
+          "title": "Coinbase — Iniciar Sesión",
           "domain": "coinbase-auth.com",
-          "description": "Fast access to your account. Verify to continue. Hardware wallet support."
+          "description": "Acceso rápido a tu cuenta. Verifica para continuar. Soporte de billetera de hardware."
         },
         "uniswap_ad": {
-          "title": "Uniswap — Claim Bonus",
+          "title": "Uniswap — Reclamar Bono",
           "domain": "uniswap-claim-bonus.com",
-          "description": "Limited-time reward. Connect wallet to verify eligibility."
+          "description": "Recompensa por tiempo limitado. Conecta billetera para verificar elegibilidad."
         },
         "organic": {
-          "title": "Coinbase: Buy & Sell Crypto",
+          "title": "Coinbase: Comprar y Vender Cripto",
           "domain": "coinbase.com",
-          "description": "The easiest place to buy and sell cryptocurrency. Start with as little as $10."
+          "description": "El lugar más fácil para comprar y vender criptomonedas. Comienza con tan solo $10."
         }
       },
       "attack": {
-        "label": "THE TRAP",
-        "title": "Fake ads mimic real crypto sites.",
-        "body": "Scammers buy sponsored placements on Google, CoinGecko, DEXTools and more. One click lands you on a fake site designed to steal credentials or trick you into signing away your assets."
+        "label": "LA TRAMPA",
+        "title": "Los anuncios falsos imitan sitios cripto reales.",
+        "body": "Los estafadores compran espacios patrocinados en Google, CoinGecko, DEXTools y más. Un clic te lleva a un sitio falso diseñado para robar credenciales o engañarte para que firmes y entregues tus activos."
       },
       "protection": {
-        "label": "YOUR PROTECTION",
-        "title": "All sponsored results are labeled and dimmed.",
-        "body": "We flag paid placements across platforms so you can't mistake an ad for a real result. Legitimate, organic links stay bright."
+        "label": "TU PROTECCIÓN",
+        "title": "Todos los resultados patrocinados están etiquetados y atenuados.",
+        "body": "Marcamos espacios pagados en todas las plataformas para que no confundas un anuncio con un resultado real. Los enlaces legítimos y orgánicos permanecen brillantes."
       },
-      "toggle_label": "Enable Guard"
+      "toggle_label": "Habilitar Guardia"
     },
     "antiphish": {
-      "title": "Malicious Site Protection",
-      "description": "If you land on a flagged website, we show a full‑page warning so you can get back to safety — or proceed if you’re sure.",
+      "title": "Protección contra Sitios Maliciosos",
+      "description": "Si aterrizas en un sitio web marcado, mostramos una advertencia de página completa para que puedas volver a la seguridad — o continuar si estás seguro.",
       "card": {
-        "title": "This website might be harmful",
-        "blocked": "BLOCKED",
-        "blocked_desc": "Attackers may trick you into doing something dangerous.",
+        "title": "Este sitio web podría ser dañino",
+        "blocked": "BLOQUEADO",
+        "blocked_desc": "Los atacantes pueden engañarte para que hagas algo peligroso.",
         "url_label": "URL:",
-        "copy_aria": "Copy URL",
+        "copy_aria": "Copiar URL",
         "bullets": [
-          "Secret Recovery Phrase or password theft",
-          "Malicious transactions resulting in stolen assets",
-          "Listed on partner blocklists"
+          "Robo de Frase de Recuperación Secreta o contraseña",
+          "Transacciones maliciosas que resultan en activos robados",
+          "Listado en listas de bloqueo de socios"
         ],
-        "partner_flag": "Flagged as malicious by security partners",
-        "back": "Back to safety",
-        "proceed": "Proceed anyway",
-        "powered": "Powered by Revoke and Fairside"
+        "partner_flag": "Marcado como malicioso por socios de seguridad",
+        "back": "Volver a la seguridad",
+        "proceed": "Continuar de todos modos",
+        "powered": "Desarrollado por Revoke y Fairside"
       },
       "attack": {
-        "label": "THE TRAP",
-        "title": "Lookalike and phishing sites steal secrets or trigger malicious signatures.",
-        "body": "Typosquatting, sponsored results, and hacked redirects land you on fake pages that ask for your seed phrase or trick you into signing."
+        "label": "LA TRAMPA",
+        "title": "Los sitios similares y de phishing roban secretos o activan firmas maliciosas.",
+        "body": "El typosquatting, los resultados patrocinados y las redirecciones hackeadas te llevan a páginas falsas que piden tu frase semilla o te engañan para que firmes."
       },
       "protection": {
-        "label": "YOUR PROTECTION",
-        "title": "Full‑page warnings on risky sites",
-        "body": "We block known phishing, malware, and scam sites so you don't proceed by mistake. You're always in control — bypass if you're sure."
+        "label": "TU PROTECCIÓN",
+        "title": "Advertencias de página completa en sitios riesgosos",
+        "body": "Bloqueamos sitios de phishing, malware y estafa conocidos para que no procedas por error. Siempre tienes el control — omite si estás seguro."
       },
-      "toggle_label": "Enable malicious site blocking"
+      "toggle_label": "Habilitar bloqueo de sitios maliciosos"
     },
     "coverage": {
-      "title": "Wallet Drain Coverage",
-      "description": "Get your money back if our warnings miss these scams",
-      "section_label": "WHAT YOU'RE COVERED FOR",
+      "title": "Cobertura de Drenado de Billetera",
+      "description": "Recupera tu dinero si nuestras advertencias se pierden estas estafas",
+      "section_label": "POR QUÉ ESTÁS CUBIERTO",
       "items": {
         "contracts": {
-          "title": "MALICIOUS CONTRACT CALLS",
-          "description": "Drainer contracts that steal your assets",
-          "example": "Malicious Contract Call"
+          "title": "LLAMADAS DE CONTRATOS MALICIOSOS",
+          "description": "Contratos drenadores que roban tus activos",
+          "example": "Llamada de Contrato Malicioso"
         },
         "address": {
-          "title": "ADDRESS POISONING",
-          "description": "Scammers flood your history with lookalikes",
+          "title": "ENVENENAMIENTO DE DIRECCIONES",
+          "description": "Los estafadores inundan tu historial con similares",
           "real_label": "REAL",
-          "fake_label": "FAKE"
+          "fake_label": "FALSO"
         },
         "permit": {
-          "title": "PERMIT SIGNATURE ATTACKS",
-          "description": "One signature gives unlimited spending power",
-          "detail_title": "Unlimited Spending Approval",
-          "detail_desc": "Full wallet access granted"
+          "title": "ATAQUES DE FIRMA DE PERMISO",
+          "description": "Una firma otorga poder de gasto ilimitado",
+          "detail_title": "Aprobación de Gasto Ilimitado",
+          "detail_desc": "Acceso completo a la billetera otorgado"
         }
       },
-      "badge": "COVERED",
-      "status_under_attack": "UNDER ATTACK",
-      "subtitle": "MAX COVERAGE PER USER",
-      "subtitle_off": "NO COVERAGE",
-      "wallet_balance": "YOUR WALLET BALANCE",
+      "badge": "CUBIERTO",
+      "status_under_attack": "BAJO ATAQUE",
+      "subtitle": "COBERTURA MÁXIMA POR USUARIO",
+      "subtitle_off": "SIN COBERTURA",
+      "wallet_balance": "SALDO DE TU BILLETERA",
       "risk": {
-        "label": "THE RISK",
-        "title": "Even with security tools, sophisticated attacks can slip through.",
-        "body": "Security isn't perfect. Exploits emerge daily."
+        "label": "EL RIESGO",
+        "title": "Incluso con herramientas de seguridad, los ataques sofisticados pueden colarse.",
+        "body": "La seguridad no es perfecta. Los exploits surgen diariamente."
       },
       "protection": {
-        "label": "YOUR SAFETY NET",
-        "title": "If we fail to catch it, we'll make it right.",
-        "body": "File a claim. We will hand review each claim. Up to $30,000 reimbursement per user per calendar year."
+        "label": "TU RED DE SEGURIDAD",
+        "title": "Si fallamos en detectarlo, lo arreglaremos.",
+        "body": "Presenta un reclamo. Revisaremos cada reclamo manualmente. Hasta $30,000 de reembolso por usuario por año calendario."
       },
-      "toggle_label": "Enable Coverage",
-      "toggle_subtext": "0.8% per transaction fee when coverage is turned on.",
+      "toggle_label": "Habilitar Cobertura",
+      "toggle_subtext": "Tarifa del 0.8% por transacción cuando la cobertura está activada.",
       "modal": {
-        "close_aria": "Close",
-        "title": "Are you sure you want to disable coverage?",
-        "description": "If you make a simple mistake, or are tricked, there's no bailout. The following losses would have been covered, reimbursed events:",
-        "keep_on": "Keep Coverage On",
-        "disable_anyway": "Disable Anyway"
+        "close_aria": "Cerrar",
+        "title": "¿Estás seguro de que quieres desactivar la cobertura?",
+        "description": "Si cometes un simple error, o te engañan, no hay rescate. Las siguientes pérdidas habrían estado cubiertas, eventos reembolsados:",
+        "keep_on": "Mantener Cobertura Activada",
+        "disable_anyway": "Desactivar de Todos Modos"
       }
     },
     "experimental": {
-      "title": "Experimental Features Lab",
+      "title": "Laboratorio de Características Experimentales",
       "badge": "BETA",
-      "description": "Community-driven features we’re testing to make your crypto life better and safer.",
+      "description": "Características impulsadas por la comunidad que estamos probando para hacer tu vida cripto mejor y más segura.",
       "tabs": {
-        "op": "OP Detection",
-        "ethos": "Ethos Score",
-        "hold": "Hold to Confirm"
+        "op": "Detección OP",
+        "ethos": "Puntuación Ethos",
+        "hold": "Mantener para Confirmar"
       },
       "common": {
-        "toggle_label": "Enable Guard"
+        "toggle_label": "Habilitar Guardia"
       },
       "op": {
         "attack": {
-          "label": "THE IMPERSONATION",
-          "title": "Scammers reply as fake OP accounts",
-          "body": "Imposters create lookalike accounts and flood popular threads with malicious links, exploiting trust in the original poster."
+          "label": "LA SUPLANTACIÓN",
+          "title": "Los estafadores responden como cuentas OP falsas",
+          "body": "Los impostores crean cuentas similares e inundan hilos populares con enlaces maliciosos, explotando la confianza en el cartel original."
         },
         "protection": {
-          "label": "YOUR PROTECTION",
-          "title": "Visual badges expose imposters",
-          "body": "Green “OP” badges mark the original poster. Red “NOT OP” badges reveal fakes, even with Unicode tricks."
+          "label": "TU PROTECCIÓN",
+          "title": "Las insignias visuales exponen a los impostores",
+          "body": "Las insignias verdes \"OP\" marcan al cartel original. Las insignias rojas \"NO OP\" revelan falsos, incluso con trucos Unicode."
         }
       },
       "ethos": {
         "attack": {
-          "label": "THE UNKNOWN",
-          "title": "Who can you trust on X?",
-          "body": "Without reputation context, it’s hard to know if an account is credible or a serial scammer."
+          "label": "LO DESCONOCIDO",
+          "title": "¿En quién puedes confiar en X?",
+          "body": "Sin contexto de reputación, es difícil saber si una cuenta es creíble o un estafador en serie."
         },
         "protection": {
-          "label": "YOUR PROTECTION",
-          "title": "On-chain reputation scores",
-          "body": "<strong>High (1500+):</strong> Verified, trusted<br /><strong>Medium (500–1499):</strong> Building reputation<br /><strong>Low (0–499):</strong> New or flagged"
+          "label": "TU PROTECCIÓN",
+          "title": "Puntuaciones de reputación en cadena",
+          "body": "<strong>Alta (1500+):</strong> Verificado, confiable<br /><strong>Media (500–1499):</strong> Construyendo reputación<br /><strong>Baja (0–499):</strong> Nueva o marcada"
         }
       },
       "hold": {
-        "app_name": "Unknown DeFi App",
-        "button": "Hold for 3 seconds to confirm",
-        "note": "⚠ First time connecting to this app. Verify the URL before proceeding.",
+        "app_name": "Aplicación DeFi Desconocida",
+        "button": "Mantén presionado durante 3 segundos para confirmar",
+        "note": "⚠ Primera vez conectándote a esta aplicación. Verifica la URL antes de continuar.",
         "attack": {
-          "label": "THE MISCLICK",
-          "title": "One wrong click drains your wallet",
-          "body": "Phishing sites trick you into quick approvals. By the time you realize, it’s too late."
+          "label": "EL CLIC EQUIVOCADO",
+          "title": "Un clic equivocado drena tu billetera",
+          "body": "Los sitios de phishing te engañan para aprobaciones rápidas. Para cuando te das cuenta, ya es demasiado tarde."
         },
         "protection": {
-          "label": "YOUR PROTECTION",
-          "title": "3-second hold requirement",
-          "body": "On first connection to unwhitelisted sites. Trusted platforms skip this entirely."
+          "label": "TU PROTECCIÓN",
+          "title": "Requisito de mantener 3 segundos",
+          "body": "En la primera conexión a sitios no incluidos en la lista blanca. Las plataformas de confianza omiten esto por completo."
         },
-        "connected": "✓ Connected Successfully"
+        "connected": "✓ Conectado Exitosamente"
       }
     },
     "summary": {
-      "title": "You're Protected",
+      "title": "Estás Protegido",
       "subtitle": "Todas las protecciones están activas. Puedes editar cualquier configuración en cualquier momento.",
       "settings": {
-        "simulator": "Transaction Simulator",
-        "ads": "Ad Warnings",
-        "antiphish": "Malicious Site Protection",
-        "address": "Address Guard",
-        "coverage": "Coverage"
+        "simulator": "Simulador de Transacciones",
+        "ads": "Advertencias de Anuncios",
+        "antiphish": "Protección contra Sitios Maliciosos",
+        "address": "Guardia de Direcciones",
+        "coverage": "Cobertura"
       },
-      "open_extension": "Open Extension →"
+      "open_extension": "Abrir Extensión →"
     }
   }
 }

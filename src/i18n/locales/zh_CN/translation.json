@@ -1,12 +1,15 @@
 {
   "common": {
     "address": "地址",
+    "add": "添加",
+    "back": "返回",
     "bypass": "注意：该网站试图绕过 Revoke.cash 确认窗口。请谨慎操作。",
+    "close": "关闭",
     "continue": "继续",
     "dismiss": "取消",
     "domain_analysis": {
       "checking_domain": "正在检查域名",
-      "error": "Error Occurred",
+      "error": "发生错误",
       "install_for_coverage": "安装获取 3 万美元诈骗保险",
       "no_issues_found": "域名检查：未发现问题",
       "no_issues_found_description": "我们的合作伙伴 Kerberus 已扫描该域名，未发现任何问题。",
@@ -14,17 +17,14 @@
       "risk_detected": "域名检查：检测到安全风险",
       "risk_detected_description": "我们的合作伙伴 Kerberus 已扫描此域名，发现存在潜在安全风险。建议避开此域名或谨慎操作。"
     },
+    "edit": "编辑",
     "error_occurred": "如果你在尝试创建 Revoke.cash 弹出窗口时出错。请在 <discord-link>Discord</discord-link> 中联系我们。",
+    "loading": "加载中…",
+    "logo_alt": "Revoke.cash 标志",
+    "open": "打开",
     "reject": "拒绝",
-    "unknown_asset": "未知资产",
-    "add": "Add",
-    "back": "Back",
-    "close": "Close",
-    "edit": "Edit",
-    "loading": "Loading…",
-    "open": "Open",
-    "remove": "Remove",
-    "logo_alt": "Revoke.cash logo"
+    "remove": "删除",
+    "unknown_asset": "未知资产"
   },
   "confirm_allowance": {
     "spender": "支出者",
@@ -41,16 +41,95 @@
   "confirm_suspected_scam": {
     "title": "与疑似诈骗地址互动"
   },
+  "confirm_warning_controls": {
+    "badge": {
+      "checking": "检查中…",
+      "malicious": "● 恶意",
+      "safe": "● 安全",
+      "unknown": "● 未知"
+    },
+    "cancel": "取消交易",
+    "double_check": "⚠️ 请仔细检查此交易",
+    "hold_complete": "确认中...",
+    "hold_cta": "长按确认",
+    "hold_progress": "继续长按...",
+    "nft_count_label": "1 NFT",
+    "nft_placeholder": "NFT",
+    "nothing": "无",
+    "nothing_emphasis": "无？？",
+    "ready": "准备继续？",
+    "receiving_heading": "然后接收",
+    "sending_heading": "您正在发送",
+    "sending_nothing_warning": "⚠️ 您正在发送 {amount} {symbol} 但一无所获",
+    "to_label": "到",
+    "token_icon_alt": "代币",
+    "token_placeholder": "代币",
+    "token_status": "代币状态：",
+    "from_label": "从"
+  },
   "popup": {
     "about": {
-      "official_website": "官方网站",
-      "title": "关于",
-      "version": "版本",
       "links": {
         "discord": "Discord",
         "github": "GitHub",
         "x": "X"
+      },
+      "official_website": "官方网站",
+      "title": "关于",
+      "version": "版本"
+    },
+    "ad_warnings": {
+      "expand_options_aria": "展开广告警告选项",
+      "info_button_aria": "关于广告警告的更多信息",
+      "info_text": "广告警告可检测并突出显示包括 Google、CoinGecko、DexTools 和 DexScreener 在内的热门加密平台上的赞助结果和广告。诈骗者经常使用这些广告位来冒充合法项目并将用户引导至钓鱼网站。此功能可帮助您识别并避免这些恶意广告。",
+      "subtitle": "在点击之前捕获伪造网站",
+      "switch_aria": "广告警告",
+      "title": "广告警告",
+      "toggles": {
+        "coingecko": "CoinGecko 广告",
+        "dexscreener": "DexScreener 广告",
+        "dextools": "DexTools 广告",
+        "google": "Google 广告"
       }
+    },
+    "approvals": {
+      "add_wallet_cta": "添加钱包",
+      "address_placeholder": "0xABC",
+      "copy_address": "复制地址",
+      "default_label": "钱包",
+      "label_placeholder": "钱包名称。例如：主金库",
+      "manage_wallets": "管理钱包",
+      "next_wallet": "下一个钱包",
+      "no_approvals": "此钱包尚未找到授权。",
+      "no_wallets_message": "还没有钱包。添加钱包以开始跟踪授权。",
+      "open_approvals": "{count} 个开放授权",
+      "previous_wallet": "上一个钱包",
+      "refresh": "刷新授权",
+      "table": {
+        "allowance": "授权额度",
+        "spender": "支出者",
+        "token": "代币"
+      },
+      "title": "授权",
+      "toggle_wallet": "切换钱包 {label}",
+      "updated_just_now": "刚刚更新",
+      "updated_minutes_ago": "{minutes} 分钟前更新",
+      "wallet_position": "钱包 {current}/{total}",
+      "watchlist_subtitle": "我们只监控地址。不需要助记词。不需要签名。",
+      "watchlist_title": "监控列表 {count}/{limit}"
+    },
+    "claim_modal": {
+      "checks": {
+        "covered_events": "我同意我的索赔在承保事件列表中",
+        "kyc": "我同意可能需要成功的 KYC 流程才能收到付款",
+        "share_information": "我同意与 Fairside 的调查团队分享有关我的索赔和活动的信息"
+      },
+      "complete_hint": "同意并启动索赔流程",
+      "confirm": "同意，启动索赔流程",
+      "disclaimer": "继续即表示您同意 Fairside 可能会联系您以收集与事件相关的详细信息和文档。承保范围受 Fairside 的政策条款和除外责任约束。",
+      "incomplete_hint": "请同意所有项目以继续",
+      "subtitle": "要启动与 Fairside 的索赔流程，请确认以下内容：",
+      "title": "开始索赔"
     },
     "color_theme": {
       "themes": {
@@ -60,8 +139,95 @@
       },
       "title": "颜色主题"
     },
+    "domain_bar": {
+      "badge": {
+        "checking": "检查中…",
+        "malicious": "● 恶意",
+        "safe": "● 安全",
+        "unknown": "● 未知"
+      }
+    },
+    "fee_modal": {
+      "claim_prompt": "钱包被清空？",
+      "covered": {
+        "address_poisoning": {
+          "description": "我们未捕获的伪造地址",
+          "title": "地址投毒"
+        },
+        "malicious": {
+          "description": "我们的模拟器未标记的抽空合约",
+          "title": "恶意交易"
+        },
+        "permit": {
+          "description": "绕过检测的恶意许可利用",
+          "title": "许可签名"
+        }
+      },
+      "covered_heading": "承保范围",
+      "disclaimer": "由 Fairside 提供的承保。受政策条款和除外责任约束。",
+      "fee_note": "每笔交易 0.8% 费用 · 关闭时无费用",
+      "file_claim": "提交索赔",
+      "got_it": "知道了",
+      "protection_amount": "$30,000",
+      "protection_caption": "每次事件最高赔偿",
+      "protection_label": "保护",
+      "subtitle": "如果我们的警告错过了诈骗，您可以拿回您的钱",
+      "title": "钱包清空保险"
+    },
+    "features": {
+      "coverage_off_warning": "您的防盗安全网已关闭。打开以享受全部权益",
+      "disable_modal": {
+        "bullet_no_fee": "保险关闭时不收取费用",
+        "bullet_reenable": "您可以随时重新启用保险",
+        "confirm": "失去保险",
+        "description": "您将关闭保险（0.8% 费用停止适用）。您仍将保留已打开的其他功能。不推荐。",
+        "keep_protection": "保持保护",
+        "title": "关闭保险？"
+      },
+      "info_button_aria": "关于 {feature} 的更多信息",
+      "rows": {
+        "address_guard": {
+          "description": "在浏览器上标记可疑地址",
+          "info": "地址投毒是一种诈骗，攻击者从与您交互的地址相似的地址发送少量资金。此功能在像 Etherscan 这样的区块链浏览器上标记可疑地址，帮助您避免意外复制诈骗者的地址。",
+          "title": "地址投毒检测"
+        },
+        "antiphish": {
+          "description": "阻止恶意网站",
+          "info": "启用后，已知的钓鱼和恶意网站在加载前会被阻止。如果您确定某个域名是安全的，您仍然可以临时绕过或允许该域名 24 小时。",
+          "title": "钓鱼保护"
+        },
+        "coverage": {
+          "description": "清空保险最高 $30k",
+          "info": "尽管使用了我们的保护，如果您的钱包被清空，您可能有资格获得最高 $30,000 的保险。这种保险式保护让您在与 DeFi 协议交互和签署交易时安心。",
+          "title": "钱包清空保险"
+        },
+        "ethos_score": {
+          "description": "在 X 个人资料上显示可信度分数",
+          "info": "Ethos 根据链上和社交活动为 X（Twitter）个人资料提供可信度分数。这些分数可帮助您在与其内容交互或点击其链接之前快速评估账户的可信度。",
+          "title": "Ethos 可信度分数"
+        },
+        "slowmode": {
+          "description": "在确认交易前添加有意延迟",
+          "info": "慢速模式在您可以确认交易之前添加强制等待期。这种内置延迟迫使您放慢速度并仔细审查交易详情，有助于防止可能导致损失的仓促决定。",
+          "title": "慢速模式"
+        },
+        "x_op_detector": {
+          "description": "识别原始发帖者和恶意模仿账户",
+          "info": "诈骗者经常通过在 X（Twitter）上使用相似的名称和头像来复制合法的加密项目。此检测器识别推文的原始发帖者（OP）并标记潜在的冒名账户（NOP - 非原始发帖者）以保护您免受钓鱼链接的侵害。",
+          "title": "X OP/NOP 检测器"
+        }
+      },
+      "sections": {
+        "active": "主动保护",
+        "experimental": "实验性功能"
+      }
+    },
     "language": {
       "title": "语言"
+    },
+    "main": {
+      "coverage_benefits": "保险权益",
+      "coverage_notice": "钱包清空保险为承保交易增加 0.8%。"
     },
     "settings": {
       "approvals": "代币授权",
@@ -69,499 +235,329 @@
       "listings": "NFT 市场清单",
       "suspected_scams": "疑似诈骗"
     },
-    "ad_warnings": {
-      "expand_options_aria": "Expand ad warnings options",
-      "info_button_aria": "More info about Ad Warnings",
-      "info_text": "Ad Warnings detect and highlight sponsored results and advertisements on popular crypto platforms including Google, CoinGecko, DexTools, and DexScreener. Scammers often use these ad placements to impersonate legitimate projects and direct users to phishing sites. This feature helps you identify and avoid these malicious ads.",
-      "subtitle": "Catch spoofed sites before you click",
-      "switch_aria": "Ad Warnings",
-      "title": "Ad Warnings",
-      "toggles": {
-        "coingecko": "CoinGecko Ads",
-        "dexscreener": "DexScreener Ads",
-        "dextools": "DexTools Ads",
-        "google": "Google Ads"
-      }
-    },
-    "approvals": {
-      "add_wallet_cta": "Add wallet",
-      "address_placeholder": "0xABC",
-      "copy_address": "Copy address",
-      "default_label": "Wallet",
-      "label_placeholder": "Name of Wallet. Ex: Main Vault",
-      "manage_wallets": "Manage Wallets",
-      "next_wallet": "Next wallet",
-      "no_approvals": "No approvals found for this wallet yet.",
-      "no_wallets_message": "No wallets yet. Add a wallet to start tracking approvals.",
-      "open_approvals": "{count} open approvals",
-      "previous_wallet": "Previous wallet",
-      "refresh": "Refresh approvals",
-      "table": {
-        "allowance": "Allowance",
-        "spender": "Spender",
-        "token": "Token"
-      },
-      "title": "Approvals",
-      "toggle_wallet": "Toggle wallet {label}",
-      "updated_just_now": "Updated just now",
-      "updated_minutes_ago": "Updated {minutes}m ago",
-      "wallet_position": "Wallet {current} of {total}",
-      "watchlist_subtitle": "We only watch addresses. No seed phrases. No signing.",
-      "watchlist_title": "Watchlist {count}/{limit}"
-    },
-    "claim_modal": {
-      "checks": {
-        "covered_events": "I agree that my claim is covered under the covered events list",
-        "kyc": "I agree that a successful KYC process might be required for me to receive payout",
-        "share_information": "I agree to share information about my claim and activities with the investigations team from Fairside"
-      },
-      "complete_hint": "Agree and initiate claim process",
-      "confirm": "Agree, initiate claim process",
-      "disclaimer": "By continuing, you agree that Fairside may contact you to collect details and documentation related to the incident. Coverage is subject to Fairside’s policy terms & exclusions.",
-      "incomplete_hint": "Please agree to all items to continue",
-      "subtitle": "To initiate the claim process with Fairside, please confirm the following:",
-      "title": "Start a claim"
-    },
-    "domain_bar": {
-      "badge": {
-        "checking": "Checking…",
-        "malicious": "● Malicious",
-        "safe": "● Safe",
-        "unknown": "● Unknown"
-      }
-    },
-    "fee_modal": {
-      "claim_prompt": "Got drained?",
-      "covered": {
-        "address_poisoning": {
-          "description": "Spoofed addresses we didn’t catch",
-          "title": "Address Poisoning"
-        },
-        "malicious": {
-          "description": "Drainer contracts our simulator didn’t flag",
-          "title": "Malicious Transactions"
-        },
-        "permit": {
-          "description": "Malicious permit exploits that bypass detection",
-          "title": "Permit Signatures"
-        }
-      },
-      "covered_heading": "What’s covered",
-      "disclaimer": "Coverage provided by Fairside. Subject to policy terms & exclusions.",
-      "fee_note": "0.8% fee per transaction · No fees when off",
-      "file_claim": "File claim",
-      "got_it": "Got it",
-      "protection_amount": "$30,000",
-      "protection_caption": "Maximum reimbursement per incident",
-      "protection_label": "protection",
-      "subtitle": "Get your money back if our warnings miss a scam",
-      "title": "Wallet Drain Coverage"
-    },
-    "features": {
-      "coverage_off_warning": "Your theft safety net is OFF. Turn ON to receive full benefits",
-      "disable_modal": {
-        "bullet_no_fee": "No fee is charged when coverage is OFF",
-        "bullet_reenable": "You can re-enable coverage anytime",
-        "confirm": "Lose Coverage",
-        "description": "You’ll turn OFF Coverage (0.8% fee stops applying). You’ll still keep other features you have toggled on. Not recommended.",
-        "keep_protection": "Keep protection",
-        "title": "Turn off coverage?"
-      },
-      "info_button_aria": "More info about {feature}",
-      "rows": {
-        "address_guard": {
-          "description": "Flags suspicious addresses on explorers",
-          "info": "Address poisoning is a scam where attackers send small amounts from addresses that look similar to ones you interact with. This feature flags suspicious addresses on blockchain explorers like Etherscan, helping you avoid accidentally copying a scammer's address.",
-          "title": "Address Poisoning Detection"
-        },
-        "antiphish": {
-          "description": "Blocks malicious websites",
-          "info": "When enabled, known phishing and malicious sites are blocked before they load. You can still bypass temporarily or allow a domain for 24 hours if you are sure it is safe.",
-          "title": "Phishing Protection"
-        },
-        "coverage": {
-          "description": "Drain coverage up to $30k",
-          "info": "If your wallet is drained despite using our protection, you may be eligible for coverage up to $30,000. This insurance-style protection gives you peace of mind when interacting with DeFi protocols and signing transactions.",
-          "title": "Wallet Drain Coverage"
-        },
-        "ethos_score": {
-          "description": "Shows credibility scores on X profiles",
-          "info": "Ethos provides credibility scores for X (Twitter) profiles based on their on-chain and social activity. These scores help you quickly assess the trustworthiness of accounts before interacting with their content or clicking their links.",
-          "title": "Ethos Credibility Scores"
-        },
-        "slowmode": {
-          "description": "Adds intentional delay before confirming transactions",
-          "info": "Slow Mode adds a mandatory waiting period before you can confirm transactions. This built-in delay forces you to slow down and review transaction details carefully, helping prevent rushed decisions that could lead to losses.",
-          "title": "Slow Mode"
-        },
-        "x_op_detector": {
-          "description": "Identifies original poster and malicious copycat accounts",
-          "info": "Scammers often copy legitimate crypto projects on X (Twitter) by using similar names and profile pictures. This detector identifies the original poster (OP) of a tweet and flags potential impersonator accounts (NOP - Not Original Poster) to protect you from phishing links.",
-          "title": "X OP/NOP Detector"
-        }
-      },
-      "sections": {
-        "active": "Active Protection",
-        "experimental": "Experimental Features"
-      }
-    },
-    "main": {
-      "coverage_benefits": "Coverage Benefits",
-      "coverage_notice": "Wallet Drain Coverage adds 0.8% to covered transactions."
-    },
     "settings_panel": {
-      "manage_wallets_desc": "Add, label, or remove watched wallets",
-      "manage_wallets_title": "Manage Wallets for Approvals",
-      "microtransaction_desc": "Toggle coverage with 0.8% fee on/off",
-      "microtransaction_title": "Microtransaction Fees",
-      "quick_start": "Quick Start"
+      "manage_wallets_desc": "添加、标记或删除监控的钱包",
+      "manage_wallets_title": "管理授权钱包",
+      "microtransaction_desc": "切换 0.8% 费用的保险开/关",
+      "microtransaction_title": "微交易费用",
+      "quick_start": "快速开始"
     },
     "simulator": {
-      "display_mode_heading": "Display Mode",
-      "expand_options_aria": "Expand simulator options",
+      "display_mode_heading": "显示模式",
+      "expand_options_aria": "展开模拟器选项",
       "info": {
-        "description": "The Transaction Simulator analyzes your transaction, showing you exactly what will happen - including token transfers, approvals, and potential security risks.",
-        "display_modes_title": "Display Modes:",
-        "every_transaction": "Show Every Transaction: Always displays the simulation popup for every transaction.",
-        "first_time": "First time + on warnings: Shows the summary the first time you use a dApp. After that, it only appears if a warning is detected.",
-        "warnings_only": "Only on warnings: Only displays when a warning is detected."
+        "description": "交易模拟器分析您的交易，准确显示将发生的情况 - 包括代币转账、授权和潜在的安全风险。",
+        "display_modes_title": "显示模式：",
+        "every_transaction": "显示每笔交易：始终为每笔交易显示模拟弹出窗口。",
+        "first_time": "首次 + 警告时：首次使用 dApp 时显示摘要。之后，仅在检测到警告时出现。",
+        "warnings_only": "仅在警告时：仅在检测到警告时显示。"
       },
-      "info_button_aria": "More info about Transaction Simulator",
+      "info_button_aria": "关于交易模拟器的更多信息",
       "options": {
         "every_transaction": {
-          "description": "Always show simulation popup for every transaction.",
-          "title": "Show Every Transaction"
+          "description": "始终为每笔交易显示模拟弹出窗口。",
+          "title": "显示每笔交易"
         },
         "mixed": {
-          "description": "Show summary first time you use a dApp, and again if warnings are detected.",
-          "title": "First time + on warnings (Recommended)"
+          "description": "首次使用 dApp 时显示摘要，如果检测到警告则再次显示。",
+          "title": "首次 + 警告时（推荐）"
         },
         "warnings_only": {
-          "description": "Only show if we detect a problem. Never show on first use.",
-          "title": "Only on warnings"
+          "description": "仅在检测到问题时显示。首次使用时永不显示。",
+          "title": "仅在警告时"
         }
       },
-      "subtitle": "Preview before signing",
-      "switch_aria": "Transaction Simulator",
-      "title": "Transaction Simulator"
+      "subtitle": "签名前预览",
+      "switch_aria": "交易模拟器",
+      "title": "交易模拟器"
     },
     "tabs": {
-      "approvals": "Approvals",
-      "features": "Features",
-      "settings": "Settings"
+      "approvals": "授权",
+      "features": "功能",
+      "settings": "设置"
     },
     "top_bar": {
       "brand": "revoke",
-      "byline": "by Revoke Cash and Fairside",
-      "icon_alt": "Revoke icon",
+      "byline": "由 Revoke Cash 和 Fairside 提供",
+      "icon_alt": "Revoke 图标",
       "status": {
-        "active": "ACTIVE",
-        "at_risk": "AT RISK",
-        "custom": "CUSTOM"
+        "active": "活跃",
+        "at_risk": "有风险",
+        "custom": "自定义"
       }
     },
     "update_banner": {
-      "badge": "New Update",
-      "close_aria": "Close update banner",
-      "cta": "What’s New"
+      "badge": "新更新",
+      "close_aria": "关闭更新横幅",
+      "cta": "新功能"
     }
-  },
-  "confirm_warning_controls": {
-    "badge": {
-      "checking": "Checking…",
-      "malicious": "● Malicious",
-      "safe": "● Safe",
-      "unknown": "● Unknown"
-    },
-    "cancel": "Cancel transaction",
-    "double_check": "⚠️ Double check this transaction",
-    "hold_complete": "Confirming...",
-    "hold_cta": "Hold to Confirm",
-    "hold_progress": "Keep Holding...",
-    "nft_count_label": "1 NFT",
-    "nft_placeholder": "NFT",
-    "nothing": "Nothing",
-    "nothing_emphasis": "Nothing??",
-    "ready": "Ready to proceed?",
-    "receiving_heading": "And then receiving",
-    "sending_heading": "You are sending",
-    "sending_nothing_warning": "⚠️ You're sending {amount} {symbol} for nothing",
-    "to_label": "to",
-    "token_icon_alt": "token",
-    "token_placeholder": "TOKEN",
-    "token_status": "Token status:",
-    "from_label": "from"
   },
   "onboarding": {
     "meta": {
-      "title": "Revoke × Fairside - Wallet Security Suite"
+      "title": "Revoke × Fairside - 钱包安全套件"
     },
     "common": {
-      "back": "Back",
-      "next": "Next",
-      "status_on": "ON",
-      "status_off": "OFF"
+      "back": "返回",
+      "next": "下一步",
+      "status_on": "开启",
+      "status_off": "关闭"
     },
     "landing": {
       "badge": "REVOKE × FAIRSIDE",
-      "title": "Your wallet just made a new best friend",
-      "description": "We partnered with Fairside to bring your wallet a Swiss Army knife for your bankless journey — all-new look, smarter defenses, and coverage built in.",
+      "title": "您的钱包刚刚交到了新朋友",
+      "description": "我们与 Fairside 合作，为您的钱包带来无银行之旅的瑞士军刀 — 全新外观、更智能的防御和内置保险。",
       "features": {
-        "approvals": "Multi-wallet approvals + exploit alerts",
-        "ads": "Ad Warnings",
-        "address": "Address Poisoning Guard",
-        "simulator": "Transaction Simulator",
-        "coverage": "Theft Coverage"
+        "approvals": "多钱包授权 + 漏洞利用警报",
+        "ads": "广告警告",
+        "address": "地址投毒保护",
+        "simulator": "交易模拟器",
+        "coverage": "盗窃保险"
       },
-      "cta": "Start Tour (2-3 min)",
-      "coverage_note": "Coverage for malicious transactions and address poisoning has a fee of 0.8% per transaction while coverage is ON. You can turn off this feature at any time."
+      "cta": "开始游览（2-3 分钟）",
+      "coverage_note": "恶意交易和地址投毒的保险在保险开启时每笔交易收取 0.8% 的费用。您可以随时关闭此功能。"
     },
     "watchlist": {
-      "title": "Wallet Watchlist",
-      "description": "Add wallets to your watchlist and name them. Monitor approvals. Get exploit alerts. With revoking just a click away.",
-      "approvals_label": "APPROVALS",
-      "sample_wallet": "Trading",
-      "manage_wallets": "Manage Wallets",
-      "open_approvals": "3 open approvals",
+      "title": "钱包监控列表",
+      "description": "将钱包添加到您的监控列表并命名。监控授权。获取漏洞利用警报。撤销只需一键。",
+      "approvals_label": "授权",
+      "sample_wallet": "交易",
+      "manage_wallets": "管理钱包",
+      "open_approvals": "3 个开放授权",
       "table": {
-        "token": "TOKEN",
-        "spender": "SPENDER",
-        "allowance": "ALLOWANCE"
+        "token": "代币",
+        "spender": "支出者",
+        "allowance": "授权额度"
       },
-      "revoke_cta": "Open Website to Revoke",
+      "revoke_cta": "打开网站撤销",
       "risk": {
-        "label": "THE RISK",
-        "title": "Open approvals can drain wallets.",
-        "body": "Compromised protocols can use your existing token permissions to drain your wallets. Even with previously safe protocols, they can get hacked and take advantage of outstanding approvals to then drain your assets."
+        "label": "风险",
+        "title": "开放授权可能会清空钱包。",
+        "body": "被入侵的协议可以使用您现有的代币权限来清空您的钱包。即使是以前安全的协议，也可能被黑客攻击并利用未完成的授权来清空您的资产。"
       },
       "yours": {
-        "label": "YOUR WATCHLIST",
-        "title": "Track 5 wallets. Revoke fast.",
-        "body": "Monitor all your approvals in one place. Quickly access Revoke.Cash to revoke approvals. The fastest and simplest way to stay safe from potential future compromises."
+        "label": "您的监控列表",
+        "title": "跟踪 5 个钱包。快速撤销。",
+        "body": "在一个地方监控您的所有授权。快速访问 Revoke.Cash 以撤销授权。从潜在的未来泄露中保持安全的最快、最简单的方法。"
       }
     },
     "simulator": {
-      "title": "Transaction Simulator",
-      "description": "See what happens before you sign. Know exactly what leaves and enters your wallet.",
+      "title": "交易模拟器",
+      "description": "在签名前查看会发生什么。准确了解什么离开和进入您的钱包。",
       "preview": {
-        "title": "WHAT WILL HAPPEN",
-        "send_label": "You send",
-        "receive_label": "You receive",
-        "fee_label": "Network fee",
-        "critical_title": "CRITICAL RISK",
-        "critical_desc": "This contract is flagged as malicious.",
-        "unknown_site": "Unknown Site",
-        "proceed": "PROCEED"
+        "title": "将会发生什么",
+        "send_label": "您发送",
+        "receive_label": "您接收",
+        "fee_label": "网络费用",
+        "critical_title": "严重风险",
+        "critical_desc": "此合约被标记为恶意。",
+        "unknown_site": "未知网站",
+        "proceed": "继续"
       },
       "attack": {
-        "label": "THE ATTACK",
-        "title": "Scammers count on you moving fast",
-        "body": "Many wallets abstract transaction details or use confusing interfaces. Attackers exploit this by hiding malicious actions behind innocent-looking signatures."
+        "label": "攻击",
+        "title": "诈骗者指望您快速行动",
+        "body": "许多钱包会抽象化交易详情或使用令人困惑的界面。攻击者通过将恶意操作隐藏在看似无害的签名后面来利用这一点。"
       },
       "shield": {
-        "label": "YOUR SHIELD",
-        "title": "See Before You Sign",
-        "body": "Every transaction is simulated in advance. We cross-reference real-time threat intelligence databases to warn you of malicious contracts."
+        "label": "您的盾牌",
+        "title": "签名前查看",
+        "body": "每笔交易都会提前模拟。我们交叉引用实时威胁情报数据库，以警告您恶意合约。"
       },
-      "toggle_label": "Enable Simulator"
+      "toggle_label": "启用模拟器"
     },
     "address": {
-      "title": "Address Poisoning Guard",
-      "description": "Scammers inject lookalike addresses to steal your funds. We let you know.",
+      "title": "地址投毒保护",
+      "description": "诈骗者注入相似地址以窃取您的资金。我们会通知您。",
       "labels": {
-        "received": "RECEIVED",
-        "send": "YOU SEND",
-        "poison": "POISON",
-        "scammer": "SCAMMER"
+        "received": "已接收",
+        "send": "您发送",
+        "poison": "投毒",
+        "scammer": "诈骗者"
       },
       "attack": {
-        "label": "THE ATTACK",
-        "title": "Scammers create lookalike addresses and send you $0 transfers",
-        "body": "They watch your transactions, generate nearly identical addresses, then flood your history with fake transfers. Then, they hope you copy the lookalike address."
+        "label": "攻击",
+        "title": "诈骗者创建相似地址并向您发送 $0 转账",
+        "body": "他们观察您的交易，生成几乎相同的地址，然后用虚假转账淹没您的历史记录。然后，他们希望您复制相似地址。"
       },
       "protection": {
-        "label": "YOUR PROTECTION",
-        "title": "Every lookalike address is flagged",
-        "body": "Suspicious transactions are flagged directly on Etherscan so you can spot them instantly."
+        "label": "您的保护",
+        "title": "每个相似地址都被标记",
+        "body": "可疑交易直接在 Etherscan 上标记，以便您可以立即发现它们。"
       },
-      "toggle_label": "Enable Guard"
+      "toggle_label": "启用保护"
     },
     "ads": {
-      "title": "Ad Warnings",
-      "description": "Fake ads mimic real crypto sites across platforms. We flag them before you click.",
-      "ad_label": "AD",
+      "title": "广告警告",
+      "description": "虚假广告在平台上模仿真实的加密网站。我们在您点击之前标记它们。",
+      "ad_label": "广告",
       "samples": {
         "coinbase_ad": {
-          "title": "Coinbase — Sign In",
+          "title": "Coinbase — 登录",
           "domain": "coinbase-auth.com",
-          "description": "Fast access to your account. Verify to continue. Hardware wallet support."
+          "description": "快速访问您的账户。验证以继续。硬件钱包支持。"
         },
         "uniswap_ad": {
-          "title": "Uniswap — Claim Bonus",
+          "title": "Uniswap — 领取奖金",
           "domain": "uniswap-claim-bonus.com",
-          "description": "Limited-time reward. Connect wallet to verify eligibility."
+          "description": "限时奖励。连接钱包以验证资格。"
         },
         "organic": {
-          "title": "Coinbase: Buy & Sell Crypto",
+          "title": "Coinbase：买卖加密货币",
           "domain": "coinbase.com",
-          "description": "The easiest place to buy and sell cryptocurrency. Start with as little as $10."
+          "description": "买卖加密货币最简单的地方。只需 $10 即可开始。"
         }
       },
       "attack": {
-        "label": "THE TRAP",
-        "title": "Fake ads mimic real crypto sites.",
-        "body": "Scammers buy sponsored placements on Google, CoinGecko, DEXTools and more. One click lands you on a fake site designed to steal credentials or trick you into signing away your assets."
+        "label": "陷阱",
+        "title": "虚假广告模仿真实的加密网站。",
+        "body": "诈骗者在 Google、CoinGecko、DEXTools 等平台上购买赞助位置。一次点击就会将您带到旨在窃取凭据或诱骗您签署并放弃资产的虚假网站。"
       },
       "protection": {
-        "label": "YOUR PROTECTION",
-        "title": "All sponsored results are labeled and dimmed.",
-        "body": "We flag paid placements across platforms so you can't mistake an ad for a real result. Legitimate, organic links stay bright."
+        "label": "您的保护",
+        "title": "所有赞助结果都标记并变暗。",
+        "body": "我们在所有平台上标记付费位置，这样您就不会将广告误认为是真实结果。合法的有机链接保持明亮。"
       },
-      "toggle_label": "Enable Guard"
+      "toggle_label": "启用保护"
     },
     "antiphish": {
-      "title": "Malicious Site Protection",
-      "description": "If you land on a flagged website, we show a full‑page warning so you can get back to safety — or proceed if you’re sure.",
+      "title": "恶意网站保护",
+      "description": "如果您访问被标记的网站，我们会显示全页警告，以便您可以返回安全状态 — 或者如果您确定，可以继续。",
       "card": {
-        "title": "This website might be harmful",
-        "blocked": "BLOCKED",
-        "blocked_desc": "Attackers may trick you into doing something dangerous.",
-        "url_label": "URL:",
-        "copy_aria": "Copy URL",
-        "bullets": [
-          "Secret Recovery Phrase or password theft",
-          "Malicious transactions resulting in stolen assets",
-          "Listed on partner blocklists"
-        ],
-        "partner_flag": "Flagged as malicious by security partners",
-        "back": "Back to safety",
-        "proceed": "Proceed anyway",
-        "powered": "Powered by Revoke and Fairside"
+        "title": "此网站可能有害",
+        "blocked": "已阻止",
+        "blocked_desc": "攻击者可能会诱骗您做一些危险的事情。",
+        "url_label": "URL：",
+        "copy_aria": "复制 URL",
+        "bullets": ["秘密恢复短语或密码盗窃", "导致资产被盗的恶意交易", "在合作伙伴阻止列表中列出"],
+        "partner_flag": "被安全合作伙伴标记为恶意",
+        "back": "返回安全状态",
+        "proceed": "仍然继续",
+        "powered": "由 Revoke 和 Fairside 提供支持"
       },
       "attack": {
-        "label": "THE TRAP",
-        "title": "Lookalike and phishing sites steal secrets or trigger malicious signatures.",
-        "body": "Typosquatting, sponsored results, and hacked redirects land you on fake pages that ask for your seed phrase or trick you into signing."
+        "label": "陷阱",
+        "title": "相似和钓鱼网站窃取秘密或触发恶意签名。",
+        "body": "域名抢注、赞助结果和被黑客攻击的重定向会将您带到要求您的助记词或诱骗您签名的虚假页面。"
       },
       "protection": {
-        "label": "YOUR PROTECTION",
-        "title": "Full‑page warnings on risky sites",
-        "body": "We block known phishing, malware, and scam sites so you don't proceed by mistake. You're always in control — bypass if you're sure."
+        "label": "您的保护",
+        "title": "风险网站上的全页警告",
+        "body": "我们阻止已知的钓鱼、恶意软件和诈骗网站，这样您就不会误操作。您始终可以控制 — 如果确定，可以绕过。"
       },
-      "toggle_label": "Enable malicious site blocking"
+      "toggle_label": "启用恶意网站阻止"
     },
     "coverage": {
-      "title": "Wallet Drain Coverage",
-      "description": "Get your money back if our warnings miss these scams",
-      "section_label": "WHAT YOU'RE COVERED FOR",
+      "title": "钱包清空保险",
+      "description": "如果我们的警告错过了这些诈骗，您可以拿回您的钱",
+      "section_label": "承保范围",
       "items": {
         "contracts": {
-          "title": "MALICIOUS CONTRACT CALLS",
-          "description": "Drainer contracts that steal your assets",
-          "example": "Malicious Contract Call"
+          "title": "恶意合约调用",
+          "description": "窃取您资产的抽空合约",
+          "example": "恶意合约调用"
         },
         "address": {
-          "title": "ADDRESS POISONING",
-          "description": "Scammers flood your history with lookalikes",
-          "real_label": "REAL",
-          "fake_label": "FAKE"
+          "title": "地址投毒",
+          "description": "诈骗者用相似地址淹没您的历史记录",
+          "real_label": "真实",
+          "fake_label": "虚假"
         },
         "permit": {
-          "title": "PERMIT SIGNATURE ATTACKS",
-          "description": "One signature gives unlimited spending power",
-          "detail_title": "Unlimited Spending Approval",
-          "detail_desc": "Full wallet access granted"
+          "title": "许可签名攻击",
+          "description": "一个签名提供无限支出能力",
+          "detail_title": "无限支出授权",
+          "detail_desc": "已授予完整钱包访问权限"
         }
       },
-      "badge": "COVERED",
-      "status_under_attack": "UNDER ATTACK",
-      "subtitle": "MAX COVERAGE PER USER",
-      "subtitle_off": "NO COVERAGE",
-      "wallet_balance": "YOUR WALLET BALANCE",
+      "badge": "已承保",
+      "status_under_attack": "遭受攻击",
+      "subtitle": "每用户最高保险",
+      "subtitle_off": "无保险",
+      "wallet_balance": "您的钱包余额",
       "risk": {
-        "label": "THE RISK",
-        "title": "Even with security tools, sophisticated attacks can slip through.",
-        "body": "Security isn't perfect. Exploits emerge daily."
+        "label": "风险",
+        "title": "即使有安全工具，复杂的攻击也可能溜走。",
+        "body": "安全并不完美。漏洞利用每天都会出现。"
       },
       "protection": {
-        "label": "YOUR SAFETY NET",
-        "title": "If we fail to catch it, we'll make it right.",
-        "body": "File a claim. We will hand review each claim. Up to $30,000 reimbursement per user per calendar year."
+        "label": "您的安全网",
+        "title": "如果我们没有捕获它，我们会修复它。",
+        "body": "提交索赔。我们将手动审查每项索赔。每用户每个日历年最高 $30,000 赔偿。"
       },
-      "toggle_label": "Enable Coverage",
-      "toggle_subtext": "0.8% per transaction fee when coverage is turned on.",
+      "toggle_label": "启用保险",
+      "toggle_subtext": "保险开启时每笔交易 0.8% 费用。",
       "modal": {
-        "close_aria": "Close",
-        "title": "Are you sure you want to disable coverage?",
-        "description": "If you make a simple mistake, or are tricked, there's no bailout. The following losses would have been covered, reimbursed events:",
-        "keep_on": "Keep Coverage On",
-        "disable_anyway": "Disable Anyway"
+        "close_aria": "关闭",
+        "title": "您确定要禁用保险吗？",
+        "description": "如果您犯了简单的错误或被欺骗，没有救助。以下损失本应被承保，已赔偿的事件：",
+        "keep_on": "保持保险开启",
+        "disable_anyway": "仍然禁用"
       }
     },
     "experimental": {
-      "title": "Experimental Features Lab",
-      "badge": "BETA",
-      "description": "Community-driven features we’re testing to make your crypto life better and safer.",
+      "title": "实验性功能实验室",
+      "badge": "测试版",
+      "description": "我们正在测试的社区驱动功能，以使您的加密生活更好、更安全。",
       "tabs": {
-        "op": "OP Detection",
-        "ethos": "Ethos Score",
-        "hold": "Hold to Confirm"
+        "op": "OP 检测",
+        "ethos": "Ethos 分数",
+        "hold": "长按确认"
       },
       "common": {
-        "toggle_label": "Enable Guard"
+        "toggle_label": "启用保护"
       },
       "op": {
         "attack": {
-          "label": "THE IMPERSONATION",
-          "title": "Scammers reply as fake OP accounts",
-          "body": "Imposters create lookalike accounts and flood popular threads with malicious links, exploiting trust in the original poster."
+          "label": "冒充",
+          "title": "诈骗者以虚假 OP 账户回复",
+          "body": "冒名者创建相似账户并用恶意链接淹没热门话题，利用对原始发帖者的信任。"
         },
         "protection": {
-          "label": "YOUR PROTECTION",
-          "title": "Visual badges expose imposters",
-          "body": "Green “OP” badges mark the original poster. Red “NOT OP” badges reveal fakes, even with Unicode tricks."
+          "label": "您的保护",
+          "title": "视觉徽章揭露冒名者",
+          "body": "绿色「OP」徽章标记原始发帖者。红色「NOT OP」徽章揭露虚假，即使使用 Unicode 技巧。"
         }
       },
       "ethos": {
         "attack": {
-          "label": "THE UNKNOWN",
-          "title": "Who can you trust on X?",
-          "body": "Without reputation context, it’s hard to know if an account is credible or a serial scammer."
+          "label": "未知",
+          "title": "在 X 上您可以信任谁？",
+          "body": "没有声誉背景，很难知道账户是否可信或是连环诈骗者。"
         },
         "protection": {
-          "label": "YOUR PROTECTION",
-          "title": "On-chain reputation scores",
-          "body": "<strong>High (1500+):</strong> Verified, trusted<br /><strong>Medium (500–1499):</strong> Building reputation<br /><strong>Low (0–499):</strong> New or flagged"
+          "label": "您的保护",
+          "title": "链上声誉分数",
+          "body": "<strong>高（1500+）：</strong>已验证，值得信赖<br /><strong>中（500–1499）：</strong>建立声誉<br /><strong>低（0–499）：</strong>新账户或已标记"
         }
       },
       "hold": {
-        "app_name": "Unknown DeFi App",
-        "button": "Hold for 3 seconds to confirm",
-        "note": "⚠ First time connecting to this app. Verify the URL before proceeding.",
+        "app_name": "未知 DeFi 应用",
+        "button": "长按 3 秒确认",
+        "note": "⚠ 首次连接到此应用。在继续之前验证 URL。",
         "attack": {
-          "label": "THE MISCLICK",
-          "title": "One wrong click drains your wallet",
-          "body": "Phishing sites trick you into quick approvals. By the time you realize, it’s too late."
+          "label": "误点击",
+          "title": "一次错误的点击会清空您的钱包",
+          "body": "钓鱼网站诱骗您快速授权。当您意识到时，为时已晚。"
         },
         "protection": {
-          "label": "YOUR PROTECTION",
-          "title": "3-second hold requirement",
-          "body": "On first connection to unwhitelisted sites. Trusted platforms skip this entirely."
+          "label": "您的保护",
+          "title": "3 秒长按要求",
+          "body": "首次连接到未列入白名单的网站时。受信任的平台完全跳过此步骤。"
         },
-        "connected": "✓ Connected Successfully"
+        "connected": "✓ 成功连接"
       }
     },
     "summary": {
-      "title": "You're Protected",
-      "subtitle": "All protections are active. You can edit any setting anytime.",
+      "title": "您已受到保护",
+      "subtitle": "所有保护都已激活。您可以随时编辑任何设置。",
       "settings": {
-        "simulator": "Transaction Simulator",
-        "ads": "Ad Warnings",
-        "antiphish": "Malicious Site Protection",
-        "address": "Address Guard",
-        "coverage": "Coverage"
+        "simulator": "交易模拟器",
+        "ads": "广告警告",
+        "antiphish": "恶意网站保护",
+        "address": "地址保护",
+        "coverage": "保险"
       },
-      "open_extension": "Open Extension →"
+      "open_extension": "打开扩展 →"
     }
   }
 }
