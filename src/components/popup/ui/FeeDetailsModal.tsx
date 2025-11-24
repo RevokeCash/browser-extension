@@ -85,7 +85,7 @@ export default function FeeDetailsModal({
             </div>
 
             <div className="mt-3 text-center text-[10px] text-neutral-500">
-              0.8% fee per transaction · No fees when off
+              <span className="font-bold">0.8% premium</span> per covered transaction · No fees when off
             </div>
           </div>
         </div>
