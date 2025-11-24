@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
+import { useTranslations } from '../../../i18n';
 
 const YELLOW = '#F6B74A';
 
@@ -9,17 +10,17 @@ type Props = {
   onConfirm: () => void;
 };
 
-const CHECKS = [
-  'I agree that my claim is covered under the covered events list',
-  'I agree to share information about my claim and activities with the investigations team from Fairside',
-  'I agree that a successful KYC process might be required for me to receive payout',
-];
-
 export default function ClaimConsentModal({ open, onClose, onConfirm }: Props) {
-  const [checked, setChecked] = useState<boolean[]>(() => CHECKS.map(() => false));
+  const t = useTranslations();
+  const checkKeys = [
+    'popup.claim_modal.checks.covered_events',
+    'popup.claim_modal.checks.share_information',
+    'popup.claim_modal.checks.kyc',
+  ] as const;
+  const [checked, setChecked] = useState<boolean[]>(() => checkKeys.map(() => false));
 
   useEffect(() => {
-    if (!open) setChecked(CHECKS.map(() => false));
+    if (!open) setChecked(checkKeys.map(() => false));
   }, [open]);
 
   const allChecked = checked.every(Boolean);
@@ -31,15 +32,15 @@ export default function ClaimConsentModal({ open, onClose, onConfirm }: Props) {
       <div className="w-[360px] max-w-full bg-[#0B0B0B] rounded-[16px] border border-[#222] overflow-hidden">
         {/* Header */}
         <div className="px-4 pt-4">
-          <div className="text-[19px] font-extrabold leading-tight text-neutral-100">Start a claim</div>
-          <div className="mt-[2px] text-[11px] leading-[1.2] text-neutral-400">
-            To initiate the claim process with Fairside, please confirm the following:
+          <div className="text-[19px] font-extrabold leading-tight text-neutral-100">
+            {t('popup.claim_modal.title')}
           </div>
+          <div className="mt-[2px] text-[11px] leading-[1.2] text-neutral-400">{t('popup.claim_modal.subtitle')}</div>
         </div>
 
         {/* Body */}
         <div className="px-4 mt-4 space-y-2">
-          {CHECKS.map((label, i) => (
+          {checkKeys.map((key, i) => (
             <label
               key={i}
               className="flex items-start gap-2 rounded-[12px] bg-[#101010] border border-[#1f1f1f] px-3 py-2 cursor-pointer"
@@ -50,14 +51,11 @@ export default function ClaimConsentModal({ open, onClose, onConfirm }: Props) {
                 onChange={() => toggle(i)}
                 className="mt-[2px] h-[14px] w-[14px] rounded-[3px] accent-[#22C55E] border border-[#333] bg-[#0f0f0f]"
               />
-              <span className="text-[12px] text-neutral-200 leading-snug">{label}</span>
+              <span className="text-[12px] text-neutral-200 leading-snug">{t(key)}</span>
             </label>
           ))}
 
-          <div className="text-[10px] text-neutral-500 pt-1">
-            By continuing, you agree that Fairside may contact you to collect details and documentation related to the
-            incident. Coverage is subject to Fairside’s policy terms &amp; exclusions.
-          </div>
+          <div className="text-[10px] text-neutral-500 pt-1">{t('popup.claim_modal.disclaimer')}</div>
         </div>
 
         {/* Footer actions */}
@@ -66,7 +64,7 @@ export default function ClaimConsentModal({ open, onClose, onConfirm }: Props) {
             onClick={onClose}
             className="h-9 flex-1 rounded-[12px] text-[13px] font-semibold text-neutral-200 border border-[#2a2a2a] bg-[#121212] hover:bg-[#151515] transition-colors"
           >
-            Back
+            {t('common.back')}
           </button>
           <button
             onClick={onConfirm}
@@ -74,9 +72,9 @@ export default function ClaimConsentModal({ open, onClose, onConfirm }: Props) {
             className="h-9 flex-1 rounded-[12px] text-[13px] font-semibold text-black disabled:opacity-50 hover:opacity-95 active:opacity-90 transition-opacity"
             style={{ backgroundColor: YELLOW }}
             aria-disabled={!allChecked}
-            title={!allChecked ? 'Please agree to all items to continue' : 'Agree and initiate claim process'}
+            title={!allChecked ? t('popup.claim_modal.incomplete_hint') : t('popup.claim_modal.complete_hint')}
           >
-            Agree, initiate claim process
+            {t('popup.claim_modal.confirm')}
           </button>
         </div>
       </div>

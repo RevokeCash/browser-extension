@@ -3,10 +3,12 @@
   <div class="onboarding-card">
     <div class="card-header">
       <h1>
-        Experimental Features Lab
-        <span class="badge-beta">BETA</span>
+        <span data-i18n="onboarding.experimental.title">Experimental Features Lab</span>
+        <span class="badge-beta" data-i18n="onboarding.experimental.badge">BETA</span>
       </h1>
-      <p>Community-driven features we’re testing to make your crypto life better and safer.</p>
+      <p data-i18n="onboarding.experimental.description">
+        Community-driven features we’re testing to make your crypto life better and safer.
+      </p>
     </div>
 
     <div class="progress-container">
@@ -16,9 +18,33 @@
 
     <!-- Tabs -->
     <div class="tab-nav ef-tabs" role="tablist" aria-label="Experimental features">
-      <button class="screen-btn ef-tab active" role="tab" aria-selected="true" data-index="0">OP Detection</button>
-      <button class="screen-btn ef-tab" role="tab" aria-selected="false" data-index="1">Ethos Score</button>
-      <button class="screen-btn ef-tab" role="tab" aria-selected="false" data-index="2">Hold to Confirm</button>
+      <button
+        class="screen-btn ef-tab active"
+        role="tab"
+        aria-selected="true"
+        data-index="0"
+        data-i18n="onboarding.experimental.tabs.op"
+      >
+        OP Detection
+      </button>
+      <button
+        class="screen-btn ef-tab"
+        role="tab"
+        aria-selected="false"
+        data-index="1"
+        data-i18n="onboarding.experimental.tabs.ethos"
+      >
+        Ethos Score
+      </button>
+      <button
+        class="screen-btn ef-tab"
+        role="tab"
+        aria-selected="false"
+        data-index="2"
+        data-i18n="onboarding.experimental.tabs.hold"
+      >
+        Hold to Confirm
+      </button>
       <!-- <button class="screen-btn ef-tab" role="tab" aria-selected="false" data-index="3">PumpFun Guard</button> -->
     </div>
 
@@ -64,24 +90,30 @@
         <div class="panel-right">
           <div class="panel-right-content">
             <div class="info-block">
-              <div class="info-label danger">THE IMPERSONATION</div>
-              <div class="info-title">Scammers reply as fake OP accounts</div>
-              <div class="info-desc">
+              <div class="info-label danger" data-i18n="onboarding.experimental.op.attack.label">THE IMPERSONATION</div>
+              <div class="info-title" data-i18n="onboarding.experimental.op.attack.title">
+                Scammers reply as fake OP accounts
+              </div>
+              <div class="info-desc" data-i18n="onboarding.experimental.op.attack.body">
                 Imposters create lookalike accounts and flood popular threads with malicious links, exploiting trust in
                 the original poster.
               </div>
             </div>
 
             <div class="info-block">
-              <div class="info-label success">YOUR PROTECTION</div>
-              <div class="info-title">Visual badges expose imposters</div>
-              <div class="info-desc">
+              <div class="info-label success" data-i18n="onboarding.experimental.op.protection.label">
+                YOUR PROTECTION
+              </div>
+              <div class="info-title" data-i18n="onboarding.experimental.op.protection.title">
+                Visual badges expose imposters
+              </div>
+              <div class="info-desc" data-i18n="onboarding.experimental.op.protection.body">
                 Green “OP” badges mark the original poster. Red “NOT OP” badges reveal fakes, even with Unicode tricks.
               </div>
             </div>
 
             <div class="toggle-wrapper">
-              <span class="toggle-label">Enable Guard</span>
+              <span class="toggle-label" data-i18n="onboarding.experimental.common.toggle_label">Enable Guard</span>
               <button class="toggle" data-ob-toggle="feature_x_op_detector_enabled">
                 <div class="toggle-knob"></div>
               </button>
@@ -113,24 +145,30 @@
         <div class="panel-right">
           <div class="panel-right-content">
             <div class="info-block">
-              <div class="info-label danger">THE UNKNOWN</div>
-              <div class="info-title">Who can you trust on X?</div>
-              <div class="info-desc">
+              <div class="info-label danger" data-i18n="onboarding.experimental.ethos.attack.label">THE UNKNOWN</div>
+              <div class="info-title" data-i18n="onboarding.experimental.ethos.attack.title">
+                Who can you trust on X?
+              </div>
+              <div class="info-desc" data-i18n="onboarding.experimental.ethos.attack.body">
                 Without reputation context, it’s hard to know if an account is credible or a serial scammer.
               </div>
             </div>
 
             <div class="info-block">
-              <div class="info-label success">YOUR PROTECTION</div>
-              <div class="info-title">On-chain reputation scores</div>
-              <div class="info-desc">
+              <div class="info-label success" data-i18n="onboarding.experimental.ethos.protection.label">
+                YOUR PROTECTION
+              </div>
+              <div class="info-title" data-i18n="onboarding.experimental.ethos.protection.title">
+                On-chain reputation scores
+              </div>
+              <div class="info-desc" data-i18n="onboarding.experimental.ethos.protection.body">
                 <strong>High (1500+):</strong> Verified, trusted<br />
                 <strong>Medium (500–1499):</strong> Building reputation<br />
                 <strong>Low (0–499):</strong> New or flagged
               </div>
             </div>
             <div class="toggle-wrapper">
-              <span class="toggle-label">Enable Guard</span>
+              <span class="toggle-label" data-i18n="onboarding.experimental.common.toggle_label">Enable Guard</span>
               <button class="toggle" data-ob-toggle="feature_ethos_score_enabled">
                 <div class="toggle-knob"></div>
               </button>
@@ -145,15 +183,19 @@
           <div class="ef-hold">
             <div class="ef-app-card">
               <div class="ef-app-icon">🦄</div>
-              <div class="ef-app-name">Unknown DeFi App</div>
+              <div class="ef-app-name" data-i18n="onboarding.experimental.hold.app_name">Unknown DeFi App</div>
               <div class="ef-app-url">defi-app.xyz</div>
 
               <button class="ef-hold-btn" data-hold="3">
-                <span class="ef-hold-text">Hold for 3 seconds to confirm</span>
+                <span class="ef-hold-text" data-i18n="onboarding.experimental.hold.button"
+                  >Hold for 3 seconds to confirm</span
+                >
                 <div class="ef-hold-progress"></div>
               </button>
 
-              <div class="ef-note">⚠ First time connecting to this app. Verify the URL before proceeding.</div>
+              <div class="ef-note" data-i18n="onboarding.experimental.hold.note">
+                ⚠ First time connecting to this app. Verify the URL before proceeding.
+              </div>
             </div>
           </div>
         </div>
@@ -161,23 +203,29 @@
         <div class="panel-right">
           <div class="panel-right-content">
             <div class="info-block">
-              <div class="info-label danger">THE MISCLICK</div>
-              <div class="info-title">One wrong click drains your wallet</div>
-              <div class="info-desc">
+              <div class="info-label danger" data-i18n="onboarding.experimental.hold.attack.label">THE MISCLICK</div>
+              <div class="info-title" data-i18n="onboarding.experimental.hold.attack.title">
+                One wrong click drains your wallet
+              </div>
+              <div class="info-desc" data-i18n="onboarding.experimental.hold.attack.body">
                 Phishing sites trick you into quick approvals. By the time you realize, it’s too late.
               </div>
             </div>
 
             <div class="info-block">
-              <div class="info-label success">YOUR PROTECTION</div>
-              <div class="info-title">3-second hold requirement</div>
-              <div class="info-desc">
+              <div class="info-label success" data-i18n="onboarding.experimental.hold.protection.label">
+                YOUR PROTECTION
+              </div>
+              <div class="info-title" data-i18n="onboarding.experimental.hold.protection.title">
+                3-second hold requirement
+              </div>
+              <div class="info-desc" data-i18n="onboarding.experimental.hold.protection.body">
                 On first connection to unwhitelisted sites. Trusted platforms skip this entirely.
               </div>
             </div>
 
             <div class="toggle-wrapper">
-              <span class="toggle-label">Enable Guard</span>
+              <span class="toggle-label" data-i18n="onboarding.experimental.common.toggle_label">Enable Guard</span>
               <button class="toggle" data-ob-toggle="feature_slowmode_enabled">
                 <div class="toggle-knob"></div>
               </button>
@@ -239,9 +287,9 @@
     </div>
 
     <div class="card-footer">
-      <button class="btn btn-ghost" data-ob-action="back">Back</button>
+      <button class="btn btn-ghost" data-ob-action="back" data-i18n="onboarding.common.back">Back</button>
       <div class="footer-group">
-        <button class="btn btn-primary" data-ob-action="next">Next</button>
+        <button class="btn btn-primary" data-ob-action="next" data-i18n="onboarding.common.next">Next</button>
       </div>
     </div>
   </div>

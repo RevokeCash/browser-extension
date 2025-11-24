@@ -1,8 +1,10 @@
 <section class="step sequence-v2" data-step="simulator" id="simulator">
   <div class="onboarding-card">
     <div class="card-header">
-      <h1>Transaction Simulator</h1>
-      <p>See what happens before you sign. Know exactly what leaves and enters your wallet.</p>
+      <h1 data-i18n="onboarding.simulator.title">Transaction Simulator</h1>
+      <p data-i18n="onboarding.simulator.description">
+        See what happens before you sign. Know exactly what leaves and enters your wallet.
+      </p>
     </div>
 
     <div class="progress-container">
@@ -21,10 +23,10 @@
 
           <div class="sim-phone-body">
             <div class="sim-preview" id="sim-preview">
-              <div class="sim-preview-title">WHAT WILL HAPPEN</div>
+              <div class="sim-preview-title" data-i18n="onboarding.simulator.preview.title">WHAT WILL HAPPEN</div>
 
               <div class="sim-flow-item">
-                <span class="sim-flow-label">You send</span>
+                <span class="sim-flow-label" data-i18n="onboarding.simulator.preview.send_label">You send</span>
                 <div class="sim-flow-value">
                   <span class="sim-amount out" id="sim-send-amount">-1.5</span>
                   <span class="sim-token" id="sim-send-token">ETH</span>
@@ -32,7 +34,7 @@
               </div>
 
               <div class="sim-flow-item">
-                <span class="sim-flow-label">You receive</span>
+                <span class="sim-flow-label" data-i18n="onboarding.simulator.preview.receive_label">You receive</span>
                 <div class="sim-flow-value">
                   <span class="sim-amount in" id="sim-recv-amount">-1.5</span>
                   <span class="sim-token" id="sim-recv-token">ETH</span>
@@ -40,7 +42,7 @@
               </div>
 
               <div class="sim-flow-item" id="sim-network-fee">
-                <span class="sim-flow-label">Network fee</span>
+                <span class="sim-flow-label" data-i18n="onboarding.simulator.preview.fee_label">Network fee</span>
                 <div class="sim-flow-value">
                   <span class="sim-flow-label" id="sim-fee">~$8.42</span>
                 </div>
@@ -50,15 +52,19 @@
               <div class="sim-critical-warning" id="sim-critical-warning">
                 <div class="sim-critical-header">
                   <div class="sim-critical-icon">!</div>
-                  <div class="sim-critical-title">CRITICAL RISK</div>
+                  <div class="sim-critical-title" data-i18n="onboarding.simulator.preview.critical_title">
+                    CRITICAL RISK
+                  </div>
                 </div>
-                <div class="sim-critical-desc">This contract is flagged as malicious.</div>
+                <div class="sim-critical-desc" data-i18n="onboarding.simulator.preview.critical_desc">
+                  This contract is flagged as malicious.
+                </div>
               </div>
             </div>
 
             <div class="sim-actions">
-              <button class="sim-btn reject" id="sim-reject-btn">REJECT</button>
-              <button class="sim-btn confirm" id="sim-confirm-btn">CONFIRM</button>
+              <button class="sim-btn reject" id="sim-reject-btn" data-i18n="common.reject">REJECT</button>
+              <button class="sim-btn confirm" id="sim-confirm-btn" data-i18n="common.continue">CONFIRM</button>
             </div>
           </div>
         </div>
@@ -74,17 +80,19 @@
       <div class="panel-right">
         <div class="panel-right-content">
           <div class="info-block">
-            <div class="info-label danger">THE ATTACK</div>
-            <div class="info-title">Scammers count on you moving fast</div>
-            <div class="info-text">
+            <div class="info-label danger" data-i18n="onboarding.simulator.attack.label">THE ATTACK</div>
+            <div class="info-title" data-i18n="onboarding.simulator.attack.title">
+              Scammers count on you moving fast
+            </div>
+            <div class="info-text" data-i18n="onboarding.simulator.attack.body">
               Many wallets abstract transaction details or use confusing interfaces. Attackers exploit this by hiding
               malicious actions behind innocent-looking signatures.
             </div>
           </div>
           <div class="info-block">
-            <div class="info-label safe">YOUR SHIELD</div>
-            <div class="info-title">See Before You Sign</div>
-            <div class="info-text">
+            <div class="info-label safe" data-i18n="onboarding.simulator.shield.label">YOUR SHIELD</div>
+            <div class="info-title" data-i18n="onboarding.simulator.shield.title">See Before You Sign</div>
+            <div class="info-text" data-i18n="onboarding.simulator.shield.body">
               Every transaction is simulated in advance. We cross-reference real-time threat intelligence databases to
               warn you of malicious contracts..
             </div>
@@ -92,7 +100,7 @@
         </div>
 
         <div class="toggle-wrapper">
-          <span class="toggle-label">Enable Simulator</span>
+          <span class="toggle-label" data-i18n="onboarding.simulator.toggle_label">Enable Simulator</span>
           <button class="toggle on" data-ob-toggle="feature_simulator_enabled">
             <div class="toggle-knob"></div>
           </button>
@@ -101,10 +109,10 @@
     </div>
 
     <div class="card-footer">
-      <button class="btn btn-ghost" data-ob-action="back">Back</button>
+      <button class="btn btn-ghost" data-ob-action="back" data-i18n="onboarding.common.back">Back</button>
       <div class="footer-group">
         <!-- <button class="btn btn-ghost" data-ob-action="skip">Skip</button> -->
-        <button class="btn btn-primary" data-ob-action="next">Next</button>
+        <button class="btn btn-primary" data-ob-action="next" data-i18n="onboarding.common.next">Next</button>
       </div>
     </div>
   </div>

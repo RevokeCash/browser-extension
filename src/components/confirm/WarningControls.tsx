@@ -6,6 +6,7 @@ import Title from '../common/Title';
 import { useAssetCheck } from '../../lib/chainpatrol/useAssetCheck';
 import { CHAINPATROL_API_KEY } from '../../lib/constants';
 import { toCaip2 } from '../../lib/chainpatrol/chainpatrol';
+import { useTranslations } from '../../i18n';
 
 interface Props {
   requestId: Hash;
@@ -26,6 +27,7 @@ function readQuery() {
 }
 
 const WarningControls = ({ bypassed, requestId, slowMode = false }: Props) => {
+  const t = useTranslations();
   const { warningData, tenderlySummary } = React.useMemo(readQuery, []);
   const [hasConfirmed, setHasConfirmed] = useState(false);
 
@@ -120,11 +122,11 @@ const WarningControls = ({ bypassed, requestId, slowMode = false }: Props) => {
   return (
     <div className="flex w-full h-16 divide-x divide-neutral-800 mt-3 shrink-0 bg-neutral-950">
       {bypassed ? (
-        <WarningControlsButton onClick={dismiss}>Dismiss</WarningControlsButton>
+        <WarningControlsButton onClick={dismiss}>{t('common.dismiss')}</WarningControlsButton>
       ) : (
         <>
-          <WarningControlsButton onClick={reject}>Reject</WarningControlsButton>
-          <WarningControlsButton onClick={confirm}>Continue</WarningControlsButton>
+          <WarningControlsButton onClick={reject}>{t('common.reject')}</WarningControlsButton>
+          <WarningControlsButton onClick={confirm}>{t('common.continue')}</WarningControlsButton>
         </>
       )}
     </div>
@@ -240,12 +242,13 @@ const shortAddr = (addr?: string) => {
 };
 
 function TokenIcon({ url, size = 20 }: { url?: string; size?: number }) {
+  const t = useTranslations();
   const [err, setErr] = useState(false);
   if (!url || err) return <span style={{ width: size, height: size }} className="rounded-full bg-neutral-700" />;
   return (
     <img
       src={url}
-      alt="token"
+      alt={t('confirm.warning_controls.token_icon_alt')}
       width={size}
       height={size}
       className="inline-block rounded-full"
@@ -263,6 +266,7 @@ interface SlowModeFlowProps {
 }
 
 const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
+  const t = useTranslations();
   const [step, setStep] = useState(0);
   const [isHolding, setIsHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
@@ -308,18 +312,28 @@ const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
   const showMaliciousWarning = isBlocked(assetCheck.status);
 
   const CPBadge: React.FC<{ status?: string; reason?: string }> = ({ status, reason }) => {
+    const badgeText =
+      status === 'LOADING'
+        ? t('confirm.warning_controls.badge.checking')
+        : status === 'BLOCKED'
+          ? t('confirm.warning_controls.badge.malicious')
+          : status === 'ALLOWED' || status === 'SAFE'
+            ? t('confirm.warning_controls.badge.safe')
+            : t('confirm.warning_controls.badge.unknown');
+
     const base = 'text-[10px] px-2 py-[2px] rounded-full border';
     if (status === 'LOADING')
-      return <span className={`${base} border-neutral-700 bg-[#1A1A1A] text-neutral-300`}>Checking…</span>;
+      return <span className={`${base} border-neutral-700 bg-[#1A1A1A] text-neutral-300`}>{badgeText}</span>;
     if (status === 'BLOCKED')
       return (
         <span className={`${base} border-rose-800/40 bg-[#2F0F0F] text-[#F87171]`}>
-          ● Malicious{reason ? ` (${reason})` : ''}
+          {badgeText}
+          {reason ? ` (${reason})` : ''}
         </span>
       );
     if (status === 'ALLOWED' || status === 'SAFE')
-      return <span className={`${base} border-emerald-800/40 bg-[#0F2F22] text-[#6EE7B7]`}>● Safe</span>;
-    return <span className={`${base} border-neutral-700 bg-[#1A1A1A] text-neutral-300`}>● Unknown</span>;
+      return <span className={`${base} border-emerald-800/40 bg-[#0F2F22] text-[#6EE7B7]`}>{badgeText}</span>;
+    return <span className={`${base} border-neutral-700 bg-[#1A1A1A] text-neutral-300`}>{badgeText}</span>;
   };
 
   const HOLD_DELAY = 1750; // 1.5 seconds
@@ -400,7 +414,9 @@ const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
             {step >= 0 && (
               <div className={`transition-all duration-700 ease-in-out ${step === 0 ? 'slowmode-slide-in' : ''}`}>
                 <div className="bg-neutral-800/50 rounded-xl p-4 border border-neutral-700/50">
-                  <div className="text-neutral-400 text-xs uppercase tracking-wider mb-3">You are sending</div>
+                  <div className="text-neutral-400 text-xs uppercase tracking-wider mb-3">
+                    {t('confirm.warning_controls.sending_heading')}
+                  </div>
                   {!sendingNothing ? (
                     <>
                       <div className="flex items-center gap-3 mb-3">
@@ -410,13 +426,13 @@ const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
                       </div>
                       {recipient && (
                         <div className="flex items-center gap-2 text-xs">
-                          <span className="text-neutral-500">to</span>
+                          <span className="text-neutral-500">{t('confirm.warning_controls.to_label')}</span>
                           <span className="text-neutral-300 font-mono">{shortAddr(recipient)}</span>
                         </div>
                       )}
                     </>
                   ) : (
-                    <div className="text-3xl font-bold text-neutral-500">Nothing</div>
+                    <div className="text-3xl font-bold text-neutral-500">{t('confirm.warning_controls.nothing')}</div>
                   )}
                 </div>
               </div>
@@ -430,12 +446,19 @@ const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
                     receivingNothing ? 'bg-red-500/10 border-red-500/30' : 'bg-neutral-800/50 border-neutral-700/50'
                   }`}
                 >
-                  <div className="text-neutral-400 text-xs uppercase tracking-wider mb-3">And then receiving</div>
+                  <div className="text-neutral-400 text-xs uppercase tracking-wider mb-3">
+                    {t('confirm.warning_controls.receiving_heading')}
+                  </div>
                   {receivingNothing ? (
                     <div className="space-y-2">
-                      <div className="text-4xl font-bold text-red-500">Nothing??</div>
+                      <div className="text-4xl font-bold text-red-500">
+                        {t('confirm.warning_controls.nothing_emphasis')}
+                      </div>
                       <div className="text-red-400/90 text-xs font-medium">
-                        ⚠️ You're sending {nativeSendPretty} {chain.symbol} for nothing
+                        {t('confirm.warning_controls.sending_nothing_warning', {
+                          amount: nativeSendPretty,
+                          symbol: chain.symbol,
+                        })}
                       </div>
                     </div>
                   ) : erc20Receive ? (
@@ -451,11 +474,13 @@ const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
                             return compact(amt);
                           })()}
                         </div>
-                        <div className="text-xl text-neutral-300">{erc20Receive.token_info?.symbol || 'TOKEN'}</div>
+                        <div className="text-xl text-neutral-300">
+                          {erc20Receive.token_info?.symbol || t('confirm.warning_controls.token_placeholder')}
+                        </div>
                       </div>
                       {receiveFrom && (
                         <div className="flex items-center gap-2 text-xs">
-                          <span className="text-neutral-500">from</span>
+                          <span className="text-neutral-500">{t('confirm.warning_controls.from_label')}</span>
                           <span className="text-emerald-400/70 font-mono">{shortAddr(receiveFrom)}</span>
                         </div>
                       )}
@@ -463,12 +488,16 @@ const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
                   ) : nftReceive ? (
                     <>
                       <div className="flex items-center gap-3 mb-3">
-                        <div className="text-3xl font-bold text-emerald-400">1 NFT</div>
-                        <div className="text-lg text-neutral-300">{nftReceive.token_info?.symbol || 'NFT'}</div>
+                        <div className="text-3xl font-bold text-emerald-400">
+                          {t('confirm.warning_controls.nft_count_label')}
+                        </div>
+                        <div className="text-lg text-neutral-300">
+                          {nftReceive.token_info?.symbol || t('confirm.warning_controls.nft_placeholder')}
+                        </div>
                       </div>
                       {receiveFrom && (
                         <div className="flex items-center gap-2 text-xs">
-                          <span className="text-neutral-500">from</span>
+                          <span className="text-neutral-500">{t('confirm.warning_controls.from_label')}</span>
                           <span className="text-emerald-400/70 font-mono">{shortAddr(receiveFrom)}</span>
                         </div>
                       )}
@@ -483,7 +512,7 @@ const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
               <div className="transition-all duration-700 ease-in-out">
                 <div className="mt-3 pt-3 border-t border-neutral-800">
                   <div className="flex items-center gap-2 text-xs text-neutral-300">
-                    <span>Token status:</span>
+                    <span>{t('confirm.warning_controls.token_status')}</span>
                     <a
                       href={getExplorerUrl(chainId, assetContract)}
                       target="_blank"
@@ -503,9 +532,11 @@ const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
             {step >= 2 && (
               <div className="space-y-4 pt-2 slowmode-slide-in">
                 <div className="text-center space-y-2">
-                  <div className="text-lg font-medium text-white transition-all duration-300">Ready to proceed?</div>
+                  <div className="text-lg font-medium text-white transition-all duration-300">
+                    {t('confirm.warning_controls.ready')}
+                  </div>
                   {!isHolding && receivingNothing && !sendingNothing && (
-                    <div className="text-red-400 text-sm font-medium">⚠️ Double check this transaction</div>
+                    <div className="text-red-400 text-sm font-medium">{t('confirm.warning_controls.double_check')}</div>
                   )}
                 </div>
 
@@ -545,10 +576,10 @@ const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
                     {/* Button text with better contrast */}
                     <span className="relative z-10 drop-shadow-lg font-semibold">
                       {holdProgress === 0
-                        ? 'Hold to Confirm'
+                        ? t('confirm.warning_controls.hold_cta')
                         : holdProgress >= 100
-                          ? 'Confirming...'
-                          : 'Keep Holding...'}
+                          ? t('confirm.warning_controls.hold_complete')
+                          : t('confirm.warning_controls.hold_progress')}
                     </span>
                   </button>
                 </div>
@@ -558,7 +589,7 @@ const SlowModeFlow = ({ data, onConfirm, onReject }: SlowModeFlowProps) => {
                   onClick={onReject}
                   className="w-full h-12 rounded-xl bg-neutral-800 hover:bg-neutral-700 transition-colors text-neutral-300 hover:text-white text-sm"
                 >
-                  Cancel transaction
+                  {t('confirm.warning_controls.cancel')}
                 </button>
               </div>
             )}

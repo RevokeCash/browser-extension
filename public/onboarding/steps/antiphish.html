@@ -3,8 +3,8 @@
 <section class="step sequence-v2" data-step="antiphish" id="antiphish-step">
   <div class="onboarding-card">
     <div class="card-header">
-      <h1>Malicious Site Protection</h1>
-      <p>
+      <h1 data-i18n="onboarding.antiphish.title">Malicious Site Protection</h1>
+      <p data-i18n="onboarding.antiphish.description">
         If you land on a flagged website, we show a full‑page warning so you can get back to safety — or proceed if
         you’re sure.
       </p>
@@ -18,34 +18,48 @@
       <!-- LEFT: Warning mock -->
       <div class="panel-left">
         <div class="ms-card">
-          <div class="ms-title">This website might be harmful</div>
+          <div class="ms-title" data-i18n="onboarding.antiphish.card.title">This website might be harmful</div>
           <div class="ms-flag">
-            <span class="pill pill-blocked">BLOCKED</span>
-            <span class="ms-flag-desc">Attackers may trick you into doing something dangerous.</span>
+            <span class="pill pill-blocked" data-i18n="onboarding.antiphish.card.blocked">BLOCKED</span>
+            <span class="ms-flag-desc" data-i18n="onboarding.antiphish.card.blocked_desc">
+              Attackers may trick you into doing something dangerous.
+            </span>
           </div>
 
           <div class="ms-url">
-            <label class="ms-url-label" for="ms-url-input">URL:</label>
+            <label class="ms-url-label" for="ms-url-input" data-i18n="onboarding.antiphish.card.url_label">URL:</label>
             <div class="ms-url-inputwrap">
               <input id="ms-url-input" class="ms-url-input" value="https://suiglobal.io/" readonly />
-              <button class="ms-copy" aria-label="Copy URL">⧉</button>
+              <button
+                class="ms-copy"
+                aria-label="Copy URL"
+                data-i18n-attrs="aria-label:onboarding.antiphish.card.copy_aria"
+              >
+                ⧉
+              </button>
             </div>
           </div>
 
           <ul class="ms-bullets">
-            <li>Secret Recovery Phrase or password theft</li>
-            <li>Malicious transactions resulting in stolen assets</li>
-            <li>Listed on partner blocklists</li>
+            <li data-i18n="onboarding.antiphish.card.bullets.0">Secret Recovery Phrase or password theft</li>
+            <li data-i18n="onboarding.antiphish.card.bullets.1">Malicious transactions resulting in stolen assets</li>
+            <li data-i18n="onboarding.antiphish.card.bullets.2">Listed on partner blocklists</li>
           </ul>
 
-          <div class="ms-partner-flag">Flagged as malicious by security partners</div>
-
-          <div class="ms-actions">
-            <button class="btn-pill btn-keep" type="button">Back to safety</button>
-            <button class="btn-pill btn-proceed" type="button">Proceed anyway</button>
+          <div class="ms-partner-flag" data-i18n="onboarding.antiphish.card.partner_flag">
+            Flagged as malicious by security partners
           </div>
 
-          <div class="ms-powered">Powered by Revoke and Fairside</div>
+          <div class="ms-actions">
+            <button class="btn-pill btn-keep" type="button" data-i18n="onboarding.antiphish.card.back">
+              Back to safety
+            </button>
+            <button class="btn-pill btn-proceed" type="button" data-i18n="onboarding.antiphish.card.proceed">
+              Proceed anyway
+            </button>
+          </div>
+
+          <div class="ms-powered" data-i18n="onboarding.antiphish.card.powered">Powered by Revoke and Fairside</div>
         </div>
       </div>
 
@@ -53,18 +67,22 @@
       <div class="panel-right">
         <div class="panel-right-content">
           <div class="info-block">
-            <div class="info-label danger">THE TRAP</div>
-            <div class="info-title">Lookalike and phishing sites steal secrets or trigger malicious signatures.</div>
-            <div class="info-desc">
+            <div class="info-label danger" data-i18n="onboarding.antiphish.attack.label">THE TRAP</div>
+            <div class="info-title" data-i18n="onboarding.antiphish.attack.title">
+              Lookalike and phishing sites steal secrets or trigger malicious signatures.
+            </div>
+            <div class="info-desc" data-i18n="onboarding.antiphish.attack.body">
               Typosquatting, sponsored results, and hacked redirects land you on fake pages that ask for your seed
               phrase or trick you into signing.
             </div>
           </div>
 
           <div class="info-block">
-            <div class="info-label success">YOUR PROTECTION</div>
-            <div class="info-title">Full‑page warnings on risky sites</div>
-            <div class="info-desc">
+            <div class="info-label success" data-i18n="onboarding.antiphish.protection.label">YOUR PROTECTION</div>
+            <div class="info-title" data-i18n="onboarding.antiphish.protection.title">
+              Full‑page warnings on risky sites
+            </div>
+            <div class="info-desc" data-i18n="onboarding.antiphish.protection.body">
               We block known phishing, malware, and scam sites so you don't proceed by mistake. You're always in control
               — bypass if you're sure.
             </div>
@@ -72,7 +90,9 @@
         </div>
 
         <div class="toggle-wrapper">
-          <span class="toggle-label">Enable malicious site blocking</span>
+          <span class="toggle-label" data-i18n="onboarding.antiphish.toggle_label">
+            Enable malicious site blocking
+          </span>
           <button class="toggle on" data-ob-toggle="feature_antiphish_enabled">
             <div class="toggle-knob"></div>
           </button>
@@ -81,9 +101,9 @@
     </div>
 
     <div class="card-footer">
-      <button class="btn btn-ghost" data-ob-action="back">Back</button>
+      <button class="btn btn-ghost" data-ob-action="back" data-i18n="onboarding.common.back">Back</button>
       <div class="footer-group">
-        <button class="btn btn-primary" data-ob-action="next">Next</button>
+        <button class="btn btn-primary" data-ob-action="next" data-i18n="onboarding.common.next">Next</button>
       </div>
     </div>
   </div>

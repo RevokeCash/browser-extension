@@ -22,13 +22,13 @@ const AboutPage = () => {
         {t('popup.about.official_website')}
       </ExternalLink>
       <ExternalLink size="large" colorChangeOnHover href={Urls.GITHUB}>
-        GitHub
+        {t('popup.about.links.github')}
       </ExternalLink>
       <ExternalLink size="large" colorChangeOnHover href={Urls.X}>
-        X
+        {t('popup.about.links.x')}
       </ExternalLink>
       <ExternalLink size="large" colorChangeOnHover href={Urls.DISCORD}>
-        Discord
+        {t('popup.about.links.discord')}
       </ExternalLink>
     </SettingsPage>
   );

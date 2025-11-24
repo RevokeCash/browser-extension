@@ -17,6 +17,7 @@ import SimulationCard from '../components/confirm/tenderly/SimulationCard'; // <
 import { WarningType, FEATURE_KEYS } from '../lib/constants';
 import { decodeWarningData } from '../lib/utils/decode';
 import '../styles.css';
+import { IntlProvider } from '../i18n';
 
 const Confirm = () => {
   const params = new URLSearchParams(window.location.search);
@@ -79,6 +80,8 @@ const Confirm = () => {
 
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Confirm />
+    <IntlProvider>
+      <Confirm />
+    </IntlProvider>
   </React.StrictMode>,
 );

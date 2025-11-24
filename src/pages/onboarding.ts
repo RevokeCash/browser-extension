@@ -1,4 +1,127 @@
+// @ts-nocheck
+import en from '../i18n/locales/en/translation.json';
+import es from '../i18n/locales/es/translation.json';
+import ja from '../i18n/locales/ja/translation.json';
+import ru from '../i18n/locales/ru/translation.json';
+import zh from '../i18n/locales/zh_CN/translation.json';
+
+declare const chrome: typeof globalThis.chrome;
+declare const browser: typeof globalThis.browser;
+
+type Messages = typeof en;
+const messagesMap = { en, es, ja, ru, zh } as const;
+type Locale = keyof typeof messagesMap;
+const locales: Locale[] = ['en', 'es', 'ja', 'ru', 'zh'];
+const STORAGE_LOCALE_KEY = 'settings:locale';
+
+let currentLocale: Locale = 'en';
+let currentMessages: Messages = en;
+
 const root = document.getElementById('ob-root');
+if (!root) {
+  throw new Error('Onboarding root element not found');
+}
+
+const messagesReady = resolveAndApplyLocale();
+
+async function resolveAndApplyLocale() {
+  const locale = await detectLocale();
+  currentLocale = locale;
+  currentMessages = messagesMap[locale] ?? en;
+  document.documentElement?.setAttribute('lang', locale);
+  document.title = t('onboarding.meta.title', undefined, document.title);
+  translateDom(document);
+}
+
+async function detectLocale(): Promise<Locale> {
+  try {
+    const stored = await getStoredLocale();
+    if (stored && isLocale(stored)) {
+      return stored;
+    }
+  } catch {
+    /* ignore */
+  }
+
+  const browserLocale = chrome?.i18n?.getUILanguage
+    ? chrome.i18n.getUILanguage().split('-')[0]
+    : navigator.language?.split('-')[0];
+  if (isLocale(browserLocale)) {
+    return browserLocale;
+  }
+  return 'en';
+}
+
+async function getStoredLocale(): Promise<string | undefined> {
+  const storageArea = chrome?.storage?.sync ?? browser?.storage?.sync;
+  if (!storageArea) return undefined;
+
+  const area: any = storageArea;
+  if (area.get.length <= 1) {
+    // Promise-based (Firefox)
+    try {
+      const result = await area.get(STORAGE_LOCALE_KEY);
+      return result?.[STORAGE_LOCALE_KEY];
+    } catch {
+      return undefined;
+    }
+  }
+
+  return new Promise((resolve) => {
+    area.get([STORAGE_LOCALE_KEY], (result: Record<string, string>) => {
+      if (chrome.runtime?.lastError) {
+        resolve(undefined);
+        return;
+      }
+      resolve(result?.[STORAGE_LOCALE_KEY]);
+    });
+  });
+}
+
+const isLocale = (value: unknown): value is Locale => typeof value === 'string' && locales.includes(value as Locale);
+
+const getNestedValue = (obj: Record<string, any>, key: string): any =>
+  key.split('.').reduce((acc, part) => (acc && typeof acc === 'object' ? acc[part] : undefined), obj);
+
+function formatValue(template: string, vars?: Record<string, string | number>) {
+  if (!vars) return template;
+  return template.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, token) =>
+    Object.prototype.hasOwnProperty.call(vars, token) ? String(vars[token]) : '',
+  );
+}
+
+function t(key: string, vars?: Record<string, string | number>, fallback?: string) {
+  const raw = getNestedValue(currentMessages as Record<string, any>, key);
+  if (typeof raw === 'string') {
+    return formatValue(raw, vars);
+  }
+  if (fallback) return fallback;
+  return key;
+}
+
+function translateDom(scope: ParentNode | Document) {
+  scope.querySelectorAll<HTMLElement>('[data-i18n]').forEach((el) => {
+    const key = el.getAttribute('data-i18n');
+    if (!key) return;
+    el.textContent = t(key);
+  });
+
+  scope.querySelectorAll<HTMLElement>('[data-i18n-html]').forEach((el) => {
+    const key = el.getAttribute('data-i18n-html');
+    if (!key) return;
+    el.innerHTML = t(key);
+  });
+
+  scope.querySelectorAll<HTMLElement>('[data-i18n-attrs]').forEach((el) => {
+    const attrMap = el.getAttribute('data-i18n-attrs');
+    if (!attrMap) return;
+    attrMap.split(';').forEach((pair) => {
+      const [attr, key] = pair.split(':').map((s) => s.trim());
+      if (!attr || !key) return;
+      el.setAttribute(attr, t(key));
+    });
+  });
+}
 
 const STEP_ORDER = [
   'landing',
@@ -11,7 +134,7 @@ const STEP_ORDER = [
   'experimental-features',
   'summary',
 ];
-const storage = chrome?.storage?.local ?? browser.storage.local;
+const storage = chrome?.storage?.local ?? browser?.storage?.local;
 const KEYS = { hasOnboarded: 'ob_hasOnboarded', dismissed: 'ob_dismissed' };
 
 function stepUrl(step) {
@@ -24,9 +147,11 @@ function currentStep() {
 }
 
 async function loadStep(step) {
+  await messagesReady;
   const res = await fetch(stepUrl(step));
   const html = await res.text();
   root.innerHTML = html;
+  translateDom(root);
 
   hydrateLegacyButtons();
   updateProgress(step);
@@ -220,7 +345,8 @@ window.onScreenChange = (id) => {
         const enabled = !!res[key];
         el.classList.toggle('status-on', enabled);
         el.classList.toggle('status-off', !enabled);
-        el.innerHTML = '<span class="status-dot"></span>' + (enabled ? 'ON' : 'OFF');
+        const statusKey = enabled ? 'onboarding.common.status_on' : 'onboarding.common.status_off';
+        el.innerHTML = `<span class="status-dot"></span>${t(statusKey)}`;
       };
       Object.entries(map).forEach(([id, key]) => setStatus(id, key));
     });
@@ -391,8 +517,8 @@ const stepInits = {
       if (rowFirst) rowFirst.style.display = '';
       if (rowSecond) rowSecond.style.display = '';
       if (feeRow) feeRow.style.display = '';
-      labelSend.textContent = 'You send';
-      labelSecond.textContent = 'You receive';
+      labelSend.textContent = t('onboarding.simulator.preview.send_label');
+      labelSecond.textContent = t('onboarding.simulator.preview.receive_label');
       amtSend.classList.remove('in');
       amtSend.classList.add('out');
       amtRecv.classList.remove('out');
@@ -403,7 +529,7 @@ const stepInits = {
       siteName.textContent = 'Uniswap';
       const confirmBtn = scope.querySelector('#sim-confirm-btn');
       confirmBtn.classList.remove('danger');
-      confirmBtn.textContent = 'CONFIRM';
+      confirmBtn.textContent = t('common.continue');
 
       if (i === 0) {
         siteName.textContent = 'Uniswap';
@@ -413,8 +539,8 @@ const stepInits = {
         tokRecv.textContent = 'ETH';
         el.fee.textContent = '~$8.42';
       } else if (i === 1) {
-        siteName.textContent = 'Unknown Site';
-        labelSecond.textContent = 'You send';
+        siteName.textContent = t('onboarding.simulator.preview.unknown_site', undefined, 'Unknown Site');
+        labelSecond.textContent = t('onboarding.simulator.preview.send_label');
         // Hide the first row (WETH) on the second slide
         if (rowFirst) rowFirst.style.display = 'none';
         // Hide network fee on the second slide only
@@ -433,7 +559,7 @@ const stepInits = {
         requestAnimationFrame(() => el.critical.classList.add('show'));
 
         confirmBtn.classList.add('danger');
-        confirmBtn.textContent = 'PROCEED';
+        confirmBtn.textContent = t('onboarding.simulator.preview.proceed');
 
         el.fee.textContent = '~$9.10';
       } else {
@@ -552,7 +678,7 @@ const stepInits = {
             if (label) {
               label.classList.remove('received', 'you-send');
               label.classList.add('scammer');
-              label.textContent = 'SCAMMER';
+              label.textContent = t('onboarding.address.labels.scammer');
             }
           });
         },
@@ -716,6 +842,9 @@ const stepInits = {
 
     const amountEl = step.querySelector('#coverage-amount');
     const subtitleEl = step.querySelector('#coverage-subtitle');
+    const coverageSubtitleOn = t('onboarding.coverage.subtitle');
+    const coverageSubtitleOff = t('onboarding.coverage.subtitle_off');
+    const walletBalanceText = t('onboarding.coverage.wallet_balance');
 
     let toggleBtn = step.querySelector('[data-ob-toggle="feature_coverage_enabled"]');
     const modal = document.getElementById('coverage-confirm');
@@ -749,10 +878,10 @@ const stepInits = {
           // default legacy behavior
           if (val <= 0) {
             el.style.color = '#9aa3ad';
-            if (subtitleEl) subtitleEl.textContent = 'NO COVERAGE';
+            if (subtitleEl) subtitleEl.textContent = coverageSubtitleOff;
           } else {
             el.style.color = '#00ff88';
-            if (subtitleEl) subtitleEl.textContent = 'MAX COVERAGE PER USER';
+            if (subtitleEl) subtitleEl.textContent = coverageSubtitleOn;
           }
         }
 
@@ -772,7 +901,7 @@ const stepInits = {
               subtitleEl.textContent = opts.setFinalSubtitle;
               if (opts?.setFinalSubtitleColor) subtitleEl.style.color = opts.setFinalSubtitleColor;
             } else {
-              subtitleEl.textContent = to <= 0 ? 'NO COVERAGE' : 'MAX COVERAGE PER USER';
+              subtitleEl.textContent = to <= 0 ? coverageSubtitleOff : coverageSubtitleOn;
               subtitleEl.style.color = '#cfd3d7';
             }
           }
@@ -829,7 +958,7 @@ const stepInits = {
     const primeInitial = () => {
       amountEl.textContent = '$30,000';
       amountEl.style.color = '#00ff88';
-      if (subtitleEl) subtitleEl.textContent = 'MAX COVERAGE PER USER';
+      if (subtitleEl) subtitleEl.textContent = coverageSubtitleOn;
 
       // Do not hide the toggle row or fee text; keep them visible at all times
       [riskBlock, safetyBlock, leftLabel, ...leftItems, ...badges].forEach(hideInstant);
@@ -857,9 +986,9 @@ const stepInits = {
       // 3) Coverage drains to $0
       await animateAmountP(30000, 0, DRAIN_DUR, {
         colorMode: 'drainRed',
-        subtitleDuring: 'YOUR WALLET BALANCE',
+        subtitleDuring: walletBalanceText,
         subtitleColor: '#ff5252',
-        setFinalSubtitle: 'YOUR WALLET BALANCE',
+        setFinalSubtitle: walletBalanceText,
         setFinalSubtitleColor: '#ff5252',
       });
       await sleep(GAP);
@@ -867,9 +996,9 @@ const stepInits = {
       // 4) Show "YOUR SAFETY NET" and refill to $30,000
       const refillP = animateAmountP(0, 30000, REFILL_DUR, {
         colorMode: 'refillGreen',
-        subtitleDuring: 'YOUR WALLET BALANCE',
+        subtitleDuring: walletBalanceText,
         subtitleColor: '#ff5252',
-        setFinalSubtitle: 'MAX COVERAGE PER USER',
+        setFinalSubtitle: coverageSubtitleOn,
         setFinalSubtitleColor: '#cfd3d7',
       }); // start refill
       const safetyRevealP = showWithTransition(safetyBlock, APPEAR_DUR); // kick off reveal immediately
@@ -1026,7 +1155,7 @@ const stepInits = {
           if (!holding) return;
           holdBtn.classList.remove('holding');
           holdBtn.classList.add('confirmed');
-          label.textContent = '✓ Connected Successfully';
+          label.textContent = t('onboarding.experimental.hold.connected');
           progress.style.width = '100%';
           setTimeout(reset, 1200);
         }, seconds * 1000);

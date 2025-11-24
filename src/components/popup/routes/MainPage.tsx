@@ -9,6 +9,7 @@ import FeeDetailsModal from '../ui/FeeDetailsModal';
 import ApprovalsPanel from '../ui/ApprovalsPanel';
 import pkg from '../../../../package.json';
 import ClaimConsentModal from '../ui/ClaimConsentModal';
+import { useTranslations } from '../../../i18n';
 import Footer from '../ui/Footer';
 
 declare global {
@@ -21,6 +22,7 @@ declare global {
 const FOOTER_SPACE_PX = 76;
 
 const MainPage = () => {
+  const t = useTranslations();
   const [activeTab, setActiveTab] = useState<'features' | 'approvals' | 'settings'>('approvals');
   const [feeOpen, setFeeOpen] = useState(false);
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Urls } from '../../../lib/constants';
+import { useTranslations } from '../../../i18n';
 
 export default function Footer({
   activeTab,
@@ -8,6 +9,8 @@ export default function Footer({
   activeTab: 'features' | 'approvals' | 'settings';
   onCoverageClick?: () => void;
 }) {
+  const t = useTranslations();
+
   const openReportBug = () => {
     const url = `https://forms.gle/tdjLjtdPdKVR37p38`;
     try {
@@ -24,12 +27,12 @@ export default function Footer({
         <div className="min-w-0 w-[60%]">
           {activeTab === 'features' ? (
             <>
-              Wallet coverage provides multiple benefits.{` `}
+              {t('popup.main.coverage_notice')}{' '}
               <button
                 onClick={onCoverageClick}
                 className="underline text-neutral-300 hover:text-neutral-100 transition-colors"
               >
-                Benefits
+                {t('popup.main.coverage_benefits')}
               </button>
             </>
           ) : (

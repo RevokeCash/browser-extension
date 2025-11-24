@@ -1,6 +1,7 @@
 import React from 'react';
 import { getChainLogo, getChainName } from '../../lib/chains/chains';
 import Logo from '../common/Logo';
+import { useTranslations } from '../../i18n';
 
 interface Props {
   size: 'small' | 'large';
@@ -8,12 +9,13 @@ interface Props {
 }
 
 const Header = ({ size, chainId }: Props) => {
+  const t = useTranslations();
   const chainName = chainId !== undefined ? getChainName(chainId) : undefined;
   const chainLogo = chainId !== undefined ? getChainLogo(chainId) : undefined;
 
   return (
     <div className={'flex items-center justify-between w-full h-16 py-3 px-4'}>
-      <img className="h-5" src="/images/revoke-wordmark-orange.svg" alt="Revoke.cash logo" />
+      <img className="h-5" src="/images/revoke-wordmark-orange.svg" alt={t('common.logo_alt')} />
       {/* TODO: Add connected address to UI */}
       {chainName ? (
         <div className="flex items-center gap-1">

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { MemoryRouter, Route } from 'react-router-dom';
 import SlideRoutes from 'react-slide-routes';
 import Page from '../components/Page';
+import { IntlProvider } from '../i18n';
 import AboutPage from '../components/popup/routes/AboutPage';
 import ColorThemeSelectPage from '../components/popup/routes/ColorThemeSelectPage';
 import LanguageSelectPage from '../components/popup/routes/LanguageSelectPage';
@@ -58,6 +59,8 @@ const Popup = () => {
 
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Popup />
+    <IntlProvider>
+      <Popup />
+    </IntlProvider>
   </React.StrictMode>,
 );

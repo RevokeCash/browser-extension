@@ -1,8 +1,8 @@
 <section class="step sequence-v2" data-step="watchlist" id="watchlist">
   <div class="onboarding-card">
     <div class="card-header">
-      <h1>Wallet Watchlist</h1>
-      <p>
+      <h1 data-i18n="onboarding.watchlist.title">Wallet Watchlist</h1>
+      <p data-i18n="onboarding.watchlist.description">
         Add wallets to your watchlist and name them. Monitor approvals. Get exploit alerts. With revoking just a click
         away.
       </p>
@@ -16,33 +16,33 @@
       <!-- LEFT PANEL -->
       <div class="panel-left">
         <div class="watchlist-header-row">
-          <div class="approvals-block">APPROVALS</div>
+          <div class="approvals-block" data-i18n="onboarding.watchlist.approvals_label">APPROVALS</div>
         </div>
 
         <div class="wallet-nav">
-          <div class="wallet-arrow">◄</div>
+          <div class="wallet-arrow" aria-hidden="true">◄</div>
           <div class="wallet-selector-dropdown">
-            <span class="wallet-name-dropdown">Trading</span>
+            <span class="wallet-name-dropdown" data-i18n="onboarding.watchlist.sample_wallet">Trading</span>
             <span class="dropdown-chevron">›</span>
           </div>
-          <div class="wallet-arrow">►</div>
+          <div class="wallet-arrow" aria-hidden="true">►</div>
           <span class="wallet-nav-divider">·</span>
-          <button class="manage-wallets-block">Manage Wallets</button>
+          <button class="manage-wallets-block" data-i18n="onboarding.watchlist.manage_wallets">Manage Wallets</button>
         </div>
 
         <div class="wallet-card">
           <div class="wallet-title-row">
-            <span class="wallet-title-name">Trading</span>
+            <span class="wallet-title-name" data-i18n="onboarding.watchlist.sample_wallet">Trading</span>
             <span class="wallet-title-divider">|</span>
             <span class="wallet-title-address">0x68b3...2d8f</span>
           </div>
-          <div class="wallet-approval-count">3 open approvals</div>
+          <div class="wallet-approval-count" data-i18n="onboarding.watchlist.open_approvals">3 open approvals</div>
 
           <div class="approval-table">
             <div class="approval-headers">
-              <div>TOKEN</div>
-              <div>SPENDER</div>
-              <div style="text-align: right">ALLOWANCE</div>
+              <div data-i18n="onboarding.watchlist.table.token">TOKEN</div>
+              <div data-i18n="onboarding.watchlist.table.spender">SPENDER</div>
+              <div style="text-align: right" data-i18n="onboarding.watchlist.table.allowance">ALLOWANCE</div>
             </div>
             <div class="approval-row">
               <div class="approval-token">USDC</div>
@@ -62,7 +62,7 @@
           </div>
 
           <button class="revoke-button">
-            <span>Open Website to Revoke</span>
+            <span data-i18n="onboarding.watchlist.revoke_cta">Open Website to Revoke</span>
             <span>→</span>
           </button>
         </div>
@@ -71,9 +71,9 @@
       <!-- RIGHT PANEL -->
       <div class="panel-right">
         <div class="info-block">
-          <div class="info-label danger">THE RISK</div>
-          <div class="info-title">Open approvals can drain wallets.</div>
-          <div class="info-text">
+          <div class="info-label danger" data-i18n="onboarding.watchlist.risk.label">THE RISK</div>
+          <div class="info-title" data-i18n="onboarding.watchlist.risk.title">Open approvals can drain wallets.</div>
+          <div class="info-text" data-i18n="onboarding.watchlist.risk.body">
             Compromised protocols can use your existing token permissions to drain your wallets. Even with previously
             safe protocols, they can get hacked and take advatange of outstanding approvals to then drain your assets.
           </div>
@@ -81,9 +81,9 @@
 
         <!-- Your Watchlist -->
         <div class="info-block reveal" id="wl-your-block">
-          <div class="info-label safe">YOUR WATCHLIST</div>
-          <div class="info-title">Track 5 wallets. Revoke fast.</div>
-          <div class="info-text">
+          <div class="info-label safe" data-i18n="onboarding.watchlist.yours.label">YOUR WATCHLIST</div>
+          <div class="info-title" data-i18n="onboarding.watchlist.yours.title">Track 5 wallets. Revoke fast.</div>
+          <div class="info-text" data-i18n="onboarding.watchlist.yours.body">
             Monitor all your approvals in one place. Quickly access Revoke.Cash to revoke approvals. The fastest and
             simplest way to stay safe from potential future compromises.
           </div>
@@ -105,9 +105,9 @@
     </div>
 
     <div class="card-footer">
-      <button class="btn btn-ghost" data-ob-action="back">Back</button>
+      <button class="btn btn-ghost" data-ob-action="back" data-i18n="onboarding.common.back">Back</button>
       <div class="footer-group">
-        <button class="btn btn-primary" data-ob-action="next">Next</button>
+        <button class="btn btn-primary" data-ob-action="next" data-i18n="onboarding.common.next">Next</button>
       </div>
     </div>
   </div>

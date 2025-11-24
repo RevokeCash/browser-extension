@@ -58,6 +58,7 @@ export const IntlProvider = ({ children }: Props) => {
   return (
     <BaseIntlProvider
       locale={locale ?? defaultLocale}
+      // @ts-expect-error: locale file types are broader than AbstractIntlMessages, but compatible at runtime
       messages={messages}
       defaultTranslationValues={defaultTranslationValues}
     >
