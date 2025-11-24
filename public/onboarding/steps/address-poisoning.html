@@ -3,8 +3,10 @@
 <section class="step" data-step="address-poisoning" id="address-poisoning-step">
   <div class="onboarding-card">
     <div class="card-header">
-      <h1>Address Poisoning Guard</h1>
-      <p>Scammers inject lookalike addresses to steal your funds. We let you know.</p>
+      <h1 data-i18n="onboarding.address.title">Address Poisoning Guard</h1>
+      <p data-i18n="onboarding.address.description">
+        Scammers inject lookalike addresses to steal your funds. We let you know.
+      </p>
     </div>
 
     <div class="progress-container">
@@ -18,40 +20,40 @@
         </div>
 
         <div class="tx-item" data-poison="true">
-          <span class="tx-label received">RECEIVED</span>
+          <span class="tx-label received" data-i18n="onboarding.address.labels.received">RECEIVED</span>
           <span class="tx-hash">0x9c5b...3a<span class="char-diff">e</span></span>
-          <span class="poison-badge">POISON</span>
+          <span class="poison-badge" data-i18n="onboarding.address.labels.poison">POISON</span>
           <span class="tx-amount poison-amount">0 ETH</span>
         </div>
 
         <div class="tx-item">
-          <span class="tx-label received">RECEIVED</span>
+          <span class="tx-label received" data-i18n="onboarding.address.labels.received">RECEIVED</span>
           <span class="tx-hash">0x9c5b...3a<span class="char-diff">f</span></span>
           <span class="tx-amount">0.8 ETH</span>
         </div>
 
         <div class="tx-item" data-poison="true">
-          <span class="tx-label received">RECEIVED</span>
+          <span class="tx-label received" data-i18n="onboarding.address.labels.received">RECEIVED</span>
           <span class="tx-hash">0x8b3a...1d<span class="char-diff">3</span></span>
-          <span class="poison-badge">POISON</span>
+          <span class="poison-badge" data-i18n="onboarding.address.labels.poison">POISON</span>
           <span class="tx-amount poison-amount">150 USDC*</span>
         </div>
 
         <div class="tx-item">
-          <span class="tx-label you-send">YOU SEND</span>
+          <span class="tx-label you-send" data-i18n="onboarding.address.labels.send">YOU SEND</span>
           <span class="tx-hash">0x8b3a...1d<span class="char-diff">2</span></span>
           <span class="tx-amount">150 USDC</span>
         </div>
 
         <div class="tx-item" data-poison="true">
-          <span class="tx-label received">RECEIVED</span>
+          <span class="tx-label received" data-i18n="onboarding.address.labels.received">RECEIVED</span>
           <span class="tx-hash">0x7<span class="char-diff">6</span>...9c4e</span>
-          <span class="poison-badge">POISON</span>
+          <span class="poison-badge" data-i18n="onboarding.address.labels.poison">POISON</span>
           <span class="tx-amount poison-amount">0 ETH</span>
         </div>
 
         <div class="tx-item">
-          <span class="tx-label you-send">YOU SEND</span>
+          <span class="tx-label you-send" data-i18n="onboarding.address.labels.send">YOU SEND</span>
           <span class="tx-hash">0x7<span class="char-diff">2</span>...9c4e</span>
           <span class="tx-amount">2.5 ETH</span>
         </div>
@@ -60,25 +62,29 @@
       <div class="panel-right">
         <div class="panel-right-content">
           <div class="info-block">
-            <div class="info-label danger">THE ATTACK</div>
-            <div class="info-title">Scammers create lookalike addresses and send you $0 transfers</div>
-            <div class="info-text">
+            <div class="info-label danger" data-i18n="onboarding.address.attack.label">THE ATTACK</div>
+            <div class="info-title" data-i18n="onboarding.address.attack.title">
+              Scammers create lookalike addresses and send you $0 transfers
+            </div>
+            <div class="info-text" data-i18n="onboarding.address.attack.body">
               They watch your transactions, generate nearly identical addresses, then flood your history with fake
               transfers. Then, they hope you copy the lookalike address.
             </div>
           </div>
 
           <div class="info-block">
-            <div class="info-label safe">YOUR PROTECTION</div>
-            <div class="info-title">Every lookalike address is flagged</div>
-            <div class="info-text">
+            <div class="info-label safe" data-i18n="onboarding.address.protection.label">YOUR PROTECTION</div>
+            <div class="info-title" data-i18n="onboarding.address.protection.title">
+              Every lookalike address is flagged
+            </div>
+            <div class="info-text" data-i18n="onboarding.address.protection.body">
               Suspicious transactions are flagged directly on Etherscan so you can spot them instantly.
             </div>
           </div>
         </div>
 
         <div class="toggle-wrapper">
-          <span class="toggle-label">Enable Guard</span>
+          <span class="toggle-label" data-i18n="onboarding.address.toggle_label">Enable Guard</span>
           <button class="toggle on" data-ob-toggle="feature_address_guard_enabled">
             <div class="toggle-knob"></div>
           </button>
@@ -87,10 +93,10 @@
     </div>
 
     <div class="card-footer">
-      <button class="btn btn-ghost" data-ob-action="back">Back</button>
+      <button class="btn btn-ghost" data-ob-action="back" data-i18n="onboarding.common.back">Back</button>
       <div class="footer-group">
         <!-- <button class="btn btn-ghost" data-ob-action="skip">Skip</button> -->
-        <button class="btn btn-primary" data-ob-action="next">Next</button>
+        <button class="btn btn-primary" data-ob-action="next" data-i18n="onboarding.common.next">Next</button>
       </div>
     </div>
   </div>

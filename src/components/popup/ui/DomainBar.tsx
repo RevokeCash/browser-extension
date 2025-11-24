@@ -3,6 +3,7 @@ import React from 'react';
 import type { ChainPatrolStatus } from '../../../lib/chainpatrol/chainpatrol';
 import { checkUrlFull } from '../../../lib/chainpatrol/chainpatrol';
 import { CHAINPATROL_API_KEY } from '../../../lib/constants';
+import { useTranslations } from '../../../i18n';
 
 type DomainBarProps = {
   // When true, only show the badge if the url is malicious (BLOCKED).
@@ -16,6 +17,7 @@ export default function DomainBar({
   showWarningOnlyWhenMalicious = false,
   onlyShowWhenMalicious = false,
 }: DomainBarProps) {
+  const t = useTranslations();
   const [domain, setDomain] = React.useState<string | null>(null);
   const [status, setStatus] = React.useState<ChainPatrolStatus | 'LOADING'>('LOADING');
 
@@ -131,7 +133,13 @@ export default function DomainBar({
         ? 'bg-[#1A1A1A] text-neutral-300'
         : 'bg-[#0F2F22] text-[#6EE7B7]';
 
-  const badgeText = isLoading ? 'Checking…' : isUnknown ? '● Unknown' : isBlocked ? '● Malicious' : '● Safe';
+  const badgeText = isLoading
+    ? t('popup.domain_bar.badge.checking')
+    : isUnknown
+      ? t('popup.domain_bar.badge.unknown')
+      : isBlocked
+        ? t('popup.domain_bar.badge.malicious')
+        : t('popup.domain_bar.badge.safe');
 
   return (
     <div className="mt-3">

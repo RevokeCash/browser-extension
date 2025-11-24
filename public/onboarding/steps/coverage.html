@@ -3,8 +3,8 @@
 <section class="step" data-step="coverage">
   <div class="onboarding-card">
     <div class="card-header">
-      <h1>Wallet Drain Coverage</h1>
-      <p>Get your money back if our warnings miss these scams</p>
+      <h1 data-i18n="onboarding.coverage.title">Wallet Drain Coverage</h1>
+      <p data-i18n="onboarding.coverage.description">Get your money back if our warnings miss these scams</p>
     </div>
 
     <div class="progress-container">
@@ -13,77 +13,103 @@
 
     <div class="card-content">
       <div class="panel-left">
-        <div class="section-label">WHAT YOU'RE COVERED FOR</div>
+        <div class="section-label" data-i18n="onboarding.coverage.section_label">WHAT YOU'RE COVERED FOR</div>
 
         <div class="coverage-item" id="coverage-item-1">
           <div class="coverage-number">1</div>
           <div class="coverage-text">
-            <div class="coverage-title">MALICIOUS CONTRACT CALLS</div>
-            <div class="coverage-desc">Drainer contracts that steal your assets</div>
+            <div class="coverage-title" data-i18n="onboarding.coverage.items.contracts.title">
+              MALICIOUS CONTRACT CALLS
+            </div>
+            <div class="coverage-desc" data-i18n="onboarding.coverage.items.contracts.description">
+              Drainer contracts that steal your assets
+            </div>
             <div class="coverage-example">
-              <span class="example-label">Malicious Contract Call</span>
+              <span class="example-label" data-i18n="onboarding.coverage.items.contracts.example">
+                Malicious Contract Call
+              </span>
               <span class="contract-address">0x3f8a...92d1</span>
             </div>
           </div>
-          <div class="coverage-badge">COVERED</div>
+          <div class="coverage-badge" data-i18n="onboarding.coverage.badge">COVERED</div>
         </div>
 
         <div class="coverage-item" id="coverage-item-2">
           <div class="coverage-number">2</div>
           <div class="coverage-text">
-            <div class="coverage-title">ADDRESS POISONING</div>
-            <div class="coverage-desc">Scammers flood your history with lookalikes</div>
+            <div class="coverage-title" data-i18n="onboarding.coverage.items.address.title">ADDRESS POISONING</div>
+            <div class="coverage-desc" data-i18n="onboarding.coverage.items.address.description">
+              Scammers flood your history with lookalikes
+            </div>
             <div class="coverage-example">
               <div class="address-comparison">
-                <span class="real-label">REAL</span>
+                <span class="real-label" data-i18n="onboarding.coverage.items.address.real_label">REAL</span>
                 <span class="real-address">0x9c5b...3a4<span style="color: #00ff88">f</span></span>
               </div>
               <div class="address-comparison">
-                <span class="fake-label">FAKE</span>
+                <span class="fake-label" data-i18n="onboarding.coverage.items.address.fake_label">FAKE</span>
                 <span class="fake-address">0x9c5b...3a4<span style="color: #ff5252">e</span></span>
               </div>
             </div>
           </div>
-          <div class="coverage-badge">COVERED</div>
+          <div class="coverage-badge" data-i18n="onboarding.coverage.badge">COVERED</div>
         </div>
 
         <div class="coverage-item" id="coverage-item-3">
           <div class="coverage-number">3</div>
           <div class="coverage-text">
-            <div class="coverage-title">PERMIT SIGNATURE ATTACKS</div>
-            <div class="coverage-desc">One signature gives unlimited spending power</div>
+            <div class="coverage-title" data-i18n="onboarding.coverage.items.permit.title">
+              PERMIT SIGNATURE ATTACKS
+            </div>
+            <div class="coverage-desc" data-i18n="onboarding.coverage.items.permit.description">
+              One signature gives unlimited spending power
+            </div>
             <div class="coverage-example">
               <div class="permit-warning">
                 <span class="infinity-icon">∞</span>
                 <div>
-                  <div class="permit-title">Unlimited Spending Approval</div>
-                  <div class="permit-desc">Full wallet access granted</div>
+                  <div class="permit-title" data-i18n="onboarding.coverage.items.permit.detail_title">
+                    Unlimited Spending Approval
+                  </div>
+                  <div class="permit-desc" data-i18n="onboarding.coverage.items.permit.detail_desc">
+                    Full wallet access granted
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="coverage-badge">COVERED</div>
+          <div class="coverage-badge" data-i18n="onboarding.coverage.badge">COVERED</div>
         </div>
       </div>
 
       <div class="panel-right">
         <div class="panel-right-content">
           <div class="coverage-amount-section">
-            <div class="attack-indicator" id="attack-indicator">UNDER ATTACK</div>
+            <div class="attack-indicator" id="attack-indicator" data-i18n="onboarding.coverage.status_under_attack">
+              UNDER ATTACK
+            </div>
             <div class="coverage-amount" id="coverage-amount">$30,000</div>
-            <div class="coverage-subtitle" id="coverage-subtitle">MAX COVERAGE PER USER</div>
+            <div class="coverage-subtitle" id="coverage-subtitle" data-i18n="onboarding.coverage.subtitle">
+              MAX COVERAGE PER USER
+            </div>
           </div>
 
           <div class="info-block">
-            <div class="info-label danger">THE RISK</div>
-            <div class="info-title">Even with security tools, sophisticated attacks can slip through.</div>
-            <div class="info-text">Security isn't perfect. Exploits emerge daily.</div>
+            <div class="info-label danger" data-i18n="onboarding.coverage.risk.label">THE RISK</div>
+            <div class="info-title" data-i18n="onboarding.coverage.risk.title">
+              Even with security tools, sophisticated attacks can slip through.
+            </div>
+            <div class="info-text" data-i18n="onboarding.coverage.risk.body">
+              Security isn't perfect. Exploits emerge daily.
+            </div>
           </div>
 
           <div class="info-block">
-            <div class="info-label safe">YOUR SAFETY NET</div>
-            <div class="info-title">If we fail to catch it, we'll make it right.</div>
-            <div class="info-text">
+            <div class="info-label safe" data-i18n="onboarding.coverage.protection.label">YOUR SAFETY NET</div>
+            <div class="info-title" data-i18n="onboarding.coverage.protection.title">
+              If we fail to catch it, we'll make it right.
+            </div>
+            <div class="info-text" data-i18n="onboarding.coverage.protection.body">
               File a claim. We will hand review each claim. Up to $30,000 reimbursement per user per calendar year.
             </div>
           </div>
@@ -91,31 +117,42 @@
 
         <div class="toggle-wrapper">
           <div class="toggle-row">
-            <span class="toggle-label">Enable Coverage</span>
+            <span class="toggle-label" data-i18n="onboarding.coverage.toggle_label">Enable Coverage</span>
             <button class="toggle on" data-ob-toggle="feature_coverage_enabled">
               <div class="toggle-knob"></div>
             </button>
           </div>
         </div>
-        <div class="toggle-subtext">0.8% per transaction fee when coverage is turned on.</div>
+        <div class="toggle-subtext" data-i18n="onboarding.coverage.toggle_subtext">
+          0.8% per transaction fee when coverage is turned on.
+        </div>
       </div>
     </div>
 
     <div class="card-footer">
-      <button class="btn btn-ghost" data-ob-action="back">Back</button>
+      <button class="btn btn-ghost" data-ob-action="back" data-i18n="onboarding.common.back">Back</button>
       <div class="footer-group">
         <!-- <button class="btn btn-ghost" data-ob-action="skip">Skip</button> -->
-        <button class="btn btn-primary" data-ob-action="next">Next</button>
+        <button class="btn btn-primary" data-ob-action="next" data-i18n="onboarding.common.next">Next</button>
       </div>
     </div>
   </div>
   <!-- Disable Coverage Confirm Modal -->
   <div class="coverage-confirm-overlay" id="coverage-confirm" aria-hidden="true">
     <div class="coverage-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="cov-confirm-title">
-      <button class="cov-close" type="button" aria-label="Close">&times;</button>
+      <button
+        class="cov-close"
+        type="button"
+        aria-label="Close"
+        data-i18n-attrs="aria-label:onboarding.coverage.modal.close_aria"
+      >
+        &times;
+      </button>
 
-      <h2 id="cov-confirm-title">Are you sure you want to disable coverage?</h2>
-      <p class="cov-sub">
+      <h2 id="cov-confirm-title" data-i18n="onboarding.coverage.modal.title">
+        Are you sure you want to disable coverage?
+      </h2>
+      <p class="cov-sub" data-i18n="onboarding.coverage.modal.description">
         If you make a simple mistake, or are tricked, there's no bailout. The following losses would have been covered,
         reimbursed events:
       </p>
@@ -423,8 +460,12 @@
       </div>
 
       <div class="cov-actions">
-        <button class="btn btn-primary" id="cov-keep-enabled">Keep Coverage On</button>
-        <button class="btn btn-ghost" id="cov-disable-confirm">Disable Anyway</button>
+        <button class="btn btn-primary" id="cov-keep-enabled" data-i18n="onboarding.coverage.modal.keep_on">
+          Keep Coverage On
+        </button>
+        <button class="btn btn-ghost" id="cov-disable-confirm" data-i18n="onboarding.coverage.modal.disable_anyway">
+          Disable Anyway
+        </button>
       </div>
     </div>
   </div>

@@ -16,7 +16,15 @@
     },
     "error_occurred": "Произошла ошибка при попытке создать всплывающее окно Revoke.cash. Пожалуйста, расскажите об этом в нашем <discord-link>Discord</discord-link>.",
     "reject": "Отклонить",
-    "unknown_asset": "Неизвестный актив"
+    "unknown_asset": "Неизвестный актив",
+    "add": "Add",
+    "back": "Back",
+    "close": "Close",
+    "edit": "Edit",
+    "loading": "Loading…",
+    "open": "Open",
+    "remove": "Remove",
+    "logo_alt": "Revoke.cash logo"
   },
   "confirm_allowance": {
     "spender": "Spender",
@@ -37,7 +45,12 @@
     "about": {
       "official_website": "Официальный сайт",
       "title": "О нас",
-      "version": "Версия"
+      "version": "Версия",
+      "links": {
+        "discord": "Discord",
+        "github": "GitHub",
+        "x": "X"
+      }
     },
     "color_theme": {
       "themes": {
@@ -55,6 +68,500 @@
       "hash_signatures": "Хеш-подписи",
       "listings": "Списки торговых площадок NFT",
       "suspected_scams": "Предполагаемое мошенничество"
+    },
+    "ad_warnings": {
+      "expand_options_aria": "Expand ad warnings options",
+      "info_button_aria": "More info about Ad Warnings",
+      "info_text": "Ad Warnings detect and highlight sponsored results and advertisements on popular crypto platforms including Google, CoinGecko, DexTools, and DexScreener. Scammers often use these ad placements to impersonate legitimate projects and direct users to phishing sites. This feature helps you identify and avoid these malicious ads.",
+      "subtitle": "Catch spoofed sites before you click",
+      "switch_aria": "Ad Warnings",
+      "title": "Ad Warnings",
+      "toggles": {
+        "coingecko": "CoinGecko Ads",
+        "dexscreener": "DexScreener Ads",
+        "dextools": "DexTools Ads",
+        "google": "Google Ads"
+      }
+    },
+    "approvals": {
+      "add_wallet_cta": "Add wallet",
+      "address_placeholder": "0xABC",
+      "copy_address": "Copy address",
+      "default_label": "Wallet",
+      "label_placeholder": "Name of Wallet. Ex: Main Vault",
+      "manage_wallets": "Manage Wallets",
+      "next_wallet": "Next wallet",
+      "no_approvals": "No approvals found for this wallet yet.",
+      "no_wallets_message": "No wallets yet. Add a wallet to start tracking approvals.",
+      "open_approvals": "{count} open approvals",
+      "previous_wallet": "Previous wallet",
+      "refresh": "Refresh approvals",
+      "table": {
+        "allowance": "Allowance",
+        "spender": "Spender",
+        "token": "Token"
+      },
+      "title": "Approvals",
+      "toggle_wallet": "Toggle wallet {label}",
+      "updated_just_now": "Updated just now",
+      "updated_minutes_ago": "Updated {minutes}m ago",
+      "wallet_position": "Wallet {current} of {total}",
+      "watchlist_subtitle": "We only watch addresses. No seed phrases. No signing.",
+      "watchlist_title": "Watchlist {count}/{limit}"
+    },
+    "claim_modal": {
+      "checks": {
+        "covered_events": "I agree that my claim is covered under the covered events list",
+        "kyc": "I agree that a successful KYC process might be required for me to receive payout",
+        "share_information": "I agree to share information about my claim and activities with the investigations team from Fairside"
+      },
+      "complete_hint": "Agree and initiate claim process",
+      "confirm": "Agree, initiate claim process",
+      "disclaimer": "By continuing, you agree that Fairside may contact you to collect details and documentation related to the incident. Coverage is subject to Fairside’s policy terms & exclusions.",
+      "incomplete_hint": "Please agree to all items to continue",
+      "subtitle": "To initiate the claim process with Fairside, please confirm the following:",
+      "title": "Start a claim"
+    },
+    "domain_bar": {
+      "badge": {
+        "checking": "Checking…",
+        "malicious": "● Malicious",
+        "safe": "● Safe",
+        "unknown": "● Unknown"
+      }
+    },
+    "fee_modal": {
+      "claim_prompt": "Got drained?",
+      "covered": {
+        "address_poisoning": {
+          "description": "Spoofed addresses we didn’t catch",
+          "title": "Address Poisoning"
+        },
+        "malicious": {
+          "description": "Drainer contracts our simulator didn’t flag",
+          "title": "Malicious Transactions"
+        },
+        "permit": {
+          "description": "Malicious permit exploits that bypass detection",
+          "title": "Permit Signatures"
+        }
+      },
+      "covered_heading": "What’s covered",
+      "disclaimer": "Coverage provided by Fairside. Subject to policy terms & exclusions.",
+      "fee_note": "0.8% fee per transaction · No fees when off",
+      "file_claim": "File claim",
+      "got_it": "Got it",
+      "protection_amount": "$30,000",
+      "protection_caption": "Maximum reimbursement per incident",
+      "protection_label": "protection",
+      "subtitle": "Get your money back if our warnings miss a scam",
+      "title": "Wallet Drain Coverage"
+    },
+    "features": {
+      "coverage_off_warning": "Your theft safety net is OFF. Turn ON to receive full benefits",
+      "disable_modal": {
+        "bullet_no_fee": "No fee is charged when coverage is OFF",
+        "bullet_reenable": "You can re-enable coverage anytime",
+        "confirm": "Lose Coverage",
+        "description": "You’ll turn OFF Coverage (0.8% fee stops applying). You’ll still keep other features you have toggled on. Not recommended.",
+        "keep_protection": "Keep protection",
+        "title": "Turn off coverage?"
+      },
+      "info_button_aria": "More info about {feature}",
+      "rows": {
+        "address_guard": {
+          "description": "Flags suspicious addresses on explorers",
+          "info": "Address poisoning is a scam where attackers send small amounts from addresses that look similar to ones you interact with. This feature flags suspicious addresses on blockchain explorers like Etherscan, helping you avoid accidentally copying a scammer's address.",
+          "title": "Address Poisoning Detection"
+        },
+        "antiphish": {
+          "description": "Blocks malicious websites",
+          "info": "When enabled, known phishing and malicious sites are blocked before they load. You can still bypass temporarily or allow a domain for 24 hours if you are sure it is safe.",
+          "title": "Phishing Protection"
+        },
+        "coverage": {
+          "description": "Drain coverage up to $30k",
+          "info": "If your wallet is drained despite using our protection, you may be eligible for coverage up to $30,000. This insurance-style protection gives you peace of mind when interacting with DeFi protocols and signing transactions.",
+          "title": "Wallet Drain Coverage"
+        },
+        "ethos_score": {
+          "description": "Shows credibility scores on X profiles",
+          "info": "Ethos provides credibility scores for X (Twitter) profiles based on their on-chain and social activity. These scores help you quickly assess the trustworthiness of accounts before interacting with their content or clicking their links.",
+          "title": "Ethos Credibility Scores"
+        },
+        "slowmode": {
+          "description": "Adds intentional delay before confirming transactions",
+          "info": "Slow Mode adds a mandatory waiting period before you can confirm transactions. This built-in delay forces you to slow down and review transaction details carefully, helping prevent rushed decisions that could lead to losses.",
+          "title": "Slow Mode"
+        },
+        "x_op_detector": {
+          "description": "Identifies original poster and malicious copycat accounts",
+          "info": "Scammers often copy legitimate crypto projects on X (Twitter) by using similar names and profile pictures. This detector identifies the original poster (OP) of a tweet and flags potential impersonator accounts (NOP - Not Original Poster) to protect you from phishing links.",
+          "title": "X OP/NOP Detector"
+        }
+      },
+      "sections": {
+        "active": "Active Protection",
+        "experimental": "Experimental Features"
+      }
+    },
+    "main": {
+      "coverage_benefits": "Coverage Benefits",
+      "coverage_notice": "Wallet Drain Coverage adds 0.8% to covered transactions."
+    },
+    "settings_panel": {
+      "manage_wallets_desc": "Add, label, or remove watched wallets",
+      "manage_wallets_title": "Manage Wallets for Approvals",
+      "microtransaction_desc": "Toggle coverage with 0.8% fee on/off",
+      "microtransaction_title": "Microtransaction Fees",
+      "quick_start": "Quick Start"
+    },
+    "simulator": {
+      "display_mode_heading": "Display Mode",
+      "expand_options_aria": "Expand simulator options",
+      "info": {
+        "description": "The Transaction Simulator analyzes your transaction, showing you exactly what will happen - including token transfers, approvals, and potential security risks.",
+        "display_modes_title": "Display Modes:",
+        "every_transaction": "Show Every Transaction: Always displays the simulation popup for every transaction.",
+        "first_time": "First time + on warnings: Shows the summary the first time you use a dApp. After that, it only appears if a warning is detected.",
+        "warnings_only": "Only on warnings: Only displays when a warning is detected."
+      },
+      "info_button_aria": "More info about Transaction Simulator",
+      "options": {
+        "every_transaction": {
+          "description": "Always show simulation popup for every transaction.",
+          "title": "Show Every Transaction"
+        },
+        "mixed": {
+          "description": "Show summary first time you use a dApp, and again if warnings are detected.",
+          "title": "First time + on warnings (Recommended)"
+        },
+        "warnings_only": {
+          "description": "Only show if we detect a problem. Never show on first use.",
+          "title": "Only on warnings"
+        }
+      },
+      "subtitle": "Preview before signing",
+      "switch_aria": "Transaction Simulator",
+      "title": "Transaction Simulator"
+    },
+    "tabs": {
+      "approvals": "Approvals",
+      "features": "Features",
+      "settings": "Settings"
+    },
+    "top_bar": {
+      "brand": "revoke",
+      "byline": "by Revoke Cash and Fairside",
+      "icon_alt": "Revoke icon",
+      "status": {
+        "active": "ACTIVE",
+        "at_risk": "AT RISK",
+        "custom": "CUSTOM"
+      }
+    },
+    "update_banner": {
+      "badge": "New Update",
+      "close_aria": "Close update banner",
+      "cta": "What’s New"
+    }
+  },
+  "confirm_warning_controls": {
+    "badge": {
+      "checking": "Checking…",
+      "malicious": "● Malicious",
+      "safe": "● Safe",
+      "unknown": "● Unknown"
+    },
+    "cancel": "Cancel transaction",
+    "double_check": "⚠️ Double check this transaction",
+    "hold_complete": "Confirming...",
+    "hold_cta": "Hold to Confirm",
+    "hold_progress": "Keep Holding...",
+    "nft_count_label": "1 NFT",
+    "nft_placeholder": "NFT",
+    "nothing": "Nothing",
+    "nothing_emphasis": "Nothing??",
+    "ready": "Ready to proceed?",
+    "receiving_heading": "And then receiving",
+    "sending_heading": "You are sending",
+    "sending_nothing_warning": "⚠️ You're sending {amount} {symbol} for nothing",
+    "to_label": "to",
+    "token_icon_alt": "token",
+    "token_placeholder": "TOKEN",
+    "token_status": "Token status:",
+    "from_label": "from"
+  },
+  "onboarding": {
+    "meta": {
+      "title": "Revoke × Fairside - Wallet Security Suite"
+    },
+    "common": {
+      "back": "Back",
+      "next": "Next",
+      "status_on": "ON",
+      "status_off": "OFF"
+    },
+    "landing": {
+      "badge": "REVOKE × FAIRSIDE",
+      "title": "Your wallet just made a new best friend",
+      "description": "We partnered with Fairside to bring your wallet a Swiss Army knife for your bankless journey — all-new look, smarter defenses, and coverage built in.",
+      "features": {
+        "approvals": "Multi-wallet approvals + exploit alerts",
+        "ads": "Ad Warnings",
+        "address": "Address Poisoning Guard",
+        "simulator": "Transaction Simulator",
+        "coverage": "Theft Coverage"
+      },
+      "cta": "Start Tour (2-3 min)",
+      "coverage_note": "Coverage for malicious transactions and address poisoning has a fee of 0.8% per transaction while coverage is ON. You can turn off this feature at any time."
+    },
+    "watchlist": {
+      "title": "Wallet Watchlist",
+      "description": "Add wallets to your watchlist and name them. Monitor approvals. Get exploit alerts. With revoking just a click away.",
+      "approvals_label": "APPROVALS",
+      "sample_wallet": "Trading",
+      "manage_wallets": "Manage Wallets",
+      "open_approvals": "3 open approvals",
+      "table": {
+        "token": "TOKEN",
+        "spender": "SPENDER",
+        "allowance": "ALLOWANCE"
+      },
+      "revoke_cta": "Open Website to Revoke",
+      "risk": {
+        "label": "THE RISK",
+        "title": "Open approvals can drain wallets.",
+        "body": "Compromised protocols can use your existing token permissions to drain your wallets. Even with previously safe protocols, they can get hacked and take advantage of outstanding approvals to then drain your assets."
+      },
+      "yours": {
+        "label": "YOUR WATCHLIST",
+        "title": "Track 5 wallets. Revoke fast.",
+        "body": "Monitor all your approvals in one place. Quickly access Revoke.Cash to revoke approvals. The fastest and simplest way to stay safe from potential future compromises."
+      }
+    },
+    "simulator": {
+      "title": "Transaction Simulator",
+      "description": "See what happens before you sign. Know exactly what leaves and enters your wallet.",
+      "preview": {
+        "title": "WHAT WILL HAPPEN",
+        "send_label": "You send",
+        "receive_label": "You receive",
+        "fee_label": "Network fee",
+        "critical_title": "CRITICAL RISK",
+        "critical_desc": "This contract is flagged as malicious.",
+        "unknown_site": "Unknown Site",
+        "proceed": "PROCEED"
+      },
+      "attack": {
+        "label": "THE ATTACK",
+        "title": "Scammers count on you moving fast",
+        "body": "Many wallets abstract transaction details or use confusing interfaces. Attackers exploit this by hiding malicious actions behind innocent-looking signatures."
+      },
+      "shield": {
+        "label": "YOUR SHIELD",
+        "title": "See Before You Sign",
+        "body": "Every transaction is simulated in advance. We cross-reference real-time threat intelligence databases to warn you of malicious contracts."
+      },
+      "toggle_label": "Enable Simulator"
+    },
+    "address": {
+      "title": "Address Poisoning Guard",
+      "description": "Scammers inject lookalike addresses to steal your funds. We let you know.",
+      "labels": {
+        "received": "RECEIVED",
+        "send": "YOU SEND",
+        "poison": "POISON",
+        "scammer": "SCAMMER"
+      },
+      "attack": {
+        "label": "THE ATTACK",
+        "title": "Scammers create lookalike addresses and send you $0 transfers",
+        "body": "They watch your transactions, generate nearly identical addresses, then flood your history with fake transfers. Then, they hope you copy the lookalike address."
+      },
+      "protection": {
+        "label": "YOUR PROTECTION",
+        "title": "Every lookalike address is flagged",
+        "body": "Suspicious transactions are flagged directly on Etherscan so you can spot them instantly."
+      },
+      "toggle_label": "Enable Guard"
+    },
+    "ads": {
+      "title": "Ad Warnings",
+      "description": "Fake ads mimic real crypto sites across platforms. We flag them before you click.",
+      "ad_label": "AD",
+      "samples": {
+        "coinbase_ad": {
+          "title": "Coinbase — Sign In",
+          "domain": "coinbase-auth.com",
+          "description": "Fast access to your account. Verify to continue. Hardware wallet support."
+        },
+        "uniswap_ad": {
+          "title": "Uniswap — Claim Bonus",
+          "domain": "uniswap-claim-bonus.com",
+          "description": "Limited-time reward. Connect wallet to verify eligibility."
+        },
+        "organic": {
+          "title": "Coinbase: Buy & Sell Crypto",
+          "domain": "coinbase.com",
+          "description": "The easiest place to buy and sell cryptocurrency. Start with as little as $10."
+        }
+      },
+      "attack": {
+        "label": "THE TRAP",
+        "title": "Fake ads mimic real crypto sites.",
+        "body": "Scammers buy sponsored placements on Google, CoinGecko, DEXTools and more. One click lands you on a fake site designed to steal credentials or trick you into signing away your assets."
+      },
+      "protection": {
+        "label": "YOUR PROTECTION",
+        "title": "All sponsored results are labeled and dimmed.",
+        "body": "We flag paid placements across platforms so you can't mistake an ad for a real result. Legitimate, organic links stay bright."
+      },
+      "toggle_label": "Enable Guard"
+    },
+    "antiphish": {
+      "title": "Malicious Site Protection",
+      "description": "If you land on a flagged website, we show a full‑page warning so you can get back to safety — or proceed if you’re sure.",
+      "card": {
+        "title": "This website might be harmful",
+        "blocked": "BLOCKED",
+        "blocked_desc": "Attackers may trick you into doing something dangerous.",
+        "url_label": "URL:",
+        "copy_aria": "Copy URL",
+        "bullets": [
+          "Secret Recovery Phrase or password theft",
+          "Malicious transactions resulting in stolen assets",
+          "Listed on partner blocklists"
+        ],
+        "partner_flag": "Flagged as malicious by security partners",
+        "back": "Back to safety",
+        "proceed": "Proceed anyway",
+        "powered": "Powered by Revoke and Fairside"
+      },
+      "attack": {
+        "label": "THE TRAP",
+        "title": "Lookalike and phishing sites steal secrets or trigger malicious signatures.",
+        "body": "Typosquatting, sponsored results, and hacked redirects land you on fake pages that ask for your seed phrase or trick you into signing."
+      },
+      "protection": {
+        "label": "YOUR PROTECTION",
+        "title": "Full‑page warnings on risky sites",
+        "body": "We block known phishing, malware, and scam sites so you don't proceed by mistake. You're always in control — bypass if you're sure."
+      },
+      "toggle_label": "Enable malicious site blocking"
+    },
+    "coverage": {
+      "title": "Wallet Drain Coverage",
+      "description": "Get your money back if our warnings miss these scams",
+      "section_label": "WHAT YOU'RE COVERED FOR",
+      "items": {
+        "contracts": {
+          "title": "MALICIOUS CONTRACT CALLS",
+          "description": "Drainer contracts that steal your assets",
+          "example": "Malicious Contract Call"
+        },
+        "address": {
+          "title": "ADDRESS POISONING",
+          "description": "Scammers flood your history with lookalikes",
+          "real_label": "REAL",
+          "fake_label": "FAKE"
+        },
+        "permit": {
+          "title": "PERMIT SIGNATURE ATTACKS",
+          "description": "One signature gives unlimited spending power",
+          "detail_title": "Unlimited Spending Approval",
+          "detail_desc": "Full wallet access granted"
+        }
+      },
+      "badge": "COVERED",
+      "status_under_attack": "UNDER ATTACK",
+      "subtitle": "MAX COVERAGE PER USER",
+      "subtitle_off": "NO COVERAGE",
+      "wallet_balance": "YOUR WALLET BALANCE",
+      "risk": {
+        "label": "THE RISK",
+        "title": "Even with security tools, sophisticated attacks can slip through.",
+        "body": "Security isn't perfect. Exploits emerge daily."
+      },
+      "protection": {
+        "label": "YOUR SAFETY NET",
+        "title": "If we fail to catch it, we'll make it right.",
+        "body": "File a claim. We will hand review each claim. Up to $30,000 reimbursement per user per calendar year."
+      },
+      "toggle_label": "Enable Coverage",
+      "toggle_subtext": "0.8% per transaction fee when coverage is turned on.",
+      "modal": {
+        "close_aria": "Close",
+        "title": "Are you sure you want to disable coverage?",
+        "description": "If you make a simple mistake, or are tricked, there's no bailout. The following losses would have been covered, reimbursed events:",
+        "keep_on": "Keep Coverage On",
+        "disable_anyway": "Disable Anyway"
+      }
+    },
+    "experimental": {
+      "title": "Experimental Features Lab",
+      "badge": "BETA",
+      "description": "Community-driven features we’re testing to make your crypto life better and safer.",
+      "tabs": {
+        "op": "OP Detection",
+        "ethos": "Ethos Score",
+        "hold": "Hold to Confirm"
+      },
+      "common": {
+        "toggle_label": "Enable Guard"
+      },
+      "op": {
+        "attack": {
+          "label": "THE IMPERSONATION",
+          "title": "Scammers reply as fake OP accounts",
+          "body": "Imposters create lookalike accounts and flood popular threads with malicious links, exploiting trust in the original poster."
+        },
+        "protection": {
+          "label": "YOUR PROTECTION",
+          "title": "Visual badges expose imposters",
+          "body": "Green “OP” badges mark the original poster. Red “NOT OP” badges reveal fakes, even with Unicode tricks."
+        }
+      },
+      "ethos": {
+        "attack": {
+          "label": "THE UNKNOWN",
+          "title": "Who can you trust on X?",
+          "body": "Without reputation context, it’s hard to know if an account is credible or a serial scammer."
+        },
+        "protection": {
+          "label": "YOUR PROTECTION",
+          "title": "On-chain reputation scores",
+          "body": "<strong>High (1500+):</strong> Verified, trusted<br /><strong>Medium (500–1499):</strong> Building reputation<br /><strong>Low (0–499):</strong> New or flagged"
+        }
+      },
+      "hold": {
+        "app_name": "Unknown DeFi App",
+        "button": "Hold for 3 seconds to confirm",
+        "note": "⚠ First time connecting to this app. Verify the URL before proceeding.",
+        "attack": {
+          "label": "THE MISCLICK",
+          "title": "One wrong click drains your wallet",
+          "body": "Phishing sites trick you into quick approvals. By the time you realize, it’s too late."
+        },
+        "protection": {
+          "label": "YOUR PROTECTION",
+          "title": "3-second hold requirement",
+          "body": "On first connection to unwhitelisted sites. Trusted platforms skip this entirely."
+        },
+        "connected": "✓ Connected Successfully"
+      }
+    },
+    "summary": {
+      "title": "You're Protected",
+      "subtitle": "All protections are active. You can edit any setting anytime.",
+      "settings": {
+        "simulator": "Transaction Simulator",
+        "ads": "Ad Warnings",
+        "antiphish": "Malicious Site Protection",
+        "address": "Address Guard",
+        "coverage": "Coverage"
+      },
+      "open_extension": "Open Extension →"
     }
   }
 }

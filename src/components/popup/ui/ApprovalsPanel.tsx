@@ -5,6 +5,7 @@ import useBrowserStorage from '../../../hooks/useBrowserStorage';
 import { fetchAllowances, mapAllowancesToUIFormat } from '../../../lib/utils/events-fetcher';
 import { getJsonCookie, setJsonCookie } from '../../../lib/utils/cookies';
 import type { Address } from 'viem';
+import { useTranslations } from '../../../i18n';
 
 declare global {
   interface Window {
@@ -34,11 +35,23 @@ function truncateMiddle(address: string, head = 5, tail = 5) {
   return `${address.slice(0, head)}…${address.slice(-tail)}`;
 }
 
-function WalletPill({ label, onPrev, onNext }: { label: string; onPrev: () => void; onNext: () => void }) {
+function WalletPill({
+  label,
+  onPrev,
+  onNext,
+  prevLabel,
+  nextLabel,
+}: {
+  label: string;
+  onPrev: () => void;
+  onNext: () => void;
+  prevLabel: string;
+  nextLabel: string;
+}) {
   return (
     <div className="flex items-center gap-2">
       <button
-        aria-label="Previous wallet"
+        aria-label={prevLabel}
         className="h-7 w-7 rounded-[10px] border border-[#1E1E1E] bg-[#0E0E0E] grid place-items-center"
         onClick={onPrev}
       >
@@ -48,7 +61,7 @@ function WalletPill({ label, onPrev, onNext }: { label: string; onPrev: () => vo
         {label}
       </div>
       <button
-        aria-label="Next wallet"
+        aria-label={nextLabel}
         className="h-7 w-7 rounded-[10px] border border-[#1E1E1E] bg-[#0E0E0E] grid place-items-center"
         onClick={onNext}
       >
@@ -60,7 +73,17 @@ function WalletPill({ label, onPrev, onNext }: { label: string; onPrev: () => vo
 
 const STORAGE_KEY = 'approvals.watchlist';
 
-function CopyButton({ value, size = 14, className }: { value: string; size?: number; className?: string }) {
+function CopyButton({
+  value,
+  size = 14,
+  className,
+  ariaLabel,
+}: {
+  value: string;
+  size?: number;
+  className?: string;
+  ariaLabel: string;
+}) {
   const [copied, setCopied] = useState(false);
 
   async function copyToClipboard(text: string) {
@@ -87,7 +110,7 @@ function CopyButton({ value, size = 14, className }: { value: string; size?: num
   return (
     <button
       type="button"
-      aria-label="Copy address"
+      aria-label={ariaLabel}
       onClick={() => copyToClipboard(value)}
       className={`shrink-0 inline-flex items-center justify-center rounded-md hover:bg-[#141414] border border-transparent hover:border-[#2A2A2A] transition-colors ${
         className || ''
@@ -142,6 +165,7 @@ const getConnectedWalletAddress = async (): Promise<string | null> => {
 };
 
 export default function ApprovalsPanel() {
+  const t = useTranslations();
   const [wallets, setWallets] = useBrowserStorage<Wallet[]>('local', STORAGE_KEY, []);
   const [activeIndex, setActiveIndex] = useState(0);
   const [manageOpen, setManageOpen] = useState(false);
@@ -152,13 +176,13 @@ export default function ApprovalsPanel() {
   const activeWallet = wallets?.[activeIndex];
 
   // Helper: render "Updated Xm ago"
-  function minutesAgoText(ts: number | null): string {
+  const minutesAgoText = (ts: number | null): string => {
     if (!ts) return '';
     const diffMs = Date.now() - ts;
     const minutes = Math.max(0, Math.floor(diffMs / (60 * 1000)));
-    if (minutes < 1) return 'Updated just now';
-    return `Updated ${minutes}m ago`;
-  }
+    if (minutes < 1) return t('popup.approvals.updated_just_now');
+    return t('popup.approvals.updated_minutes_ago', { minutes });
+  };
 
   // Load approvals (optionally bypass cache)
   async function loadApprovals(forceRefresh = false) {
@@ -230,12 +254,14 @@ export default function ApprovalsPanel() {
   return (
     <div className="mt-3 rounded-[12px] border border-[#1E1E1E] bg-[#0E0E0E] overflow-hidden">
       <div className="flex items-center justify-between px-3 pt-3 pb-2">
-        <div className="text-[12px] font-semibold tracking-wide uppercase text-neutral-400">Approvals</div>
+        <div className="text-[12px] font-semibold tracking-wide uppercase text-neutral-400">
+          {t('popup.approvals.title')}
+        </div>
         <button
           onClick={() => setManageOpen(true)}
           className="h-8 px-3 rounded-[10px] text-[12px] font-semibold border border-[#1E1E1E] bg-[#0B0B0B]"
         >
-          Manage Wallets
+          {t('popup.approvals.manage_wallets')}
         </button>
       </div>
 
@@ -247,15 +273,19 @@ export default function ApprovalsPanel() {
               <span className="text-neutral-400">|</span>
               <div className="flex items-center gap-1 min-w-0">
                 <span className="text-neutral-400 truncate">{truncateMiddle(activeWallet?.address || '')}</span>
-                <CopyButton value={activeWallet?.address || ''} size={12} />
+                <CopyButton
+                  value={activeWallet?.address || ''}
+                  size={12}
+                  ariaLabel={t('popup.approvals.copy_address')}
+                />
               </div>
             </div>
             <div className="text-[12px] text-neutral-400">
               {loading ? (
-                'Loading…'
+                t('common.loading')
               ) : (
                 <>
-                  {approvalsState.length} open approvals
+                  {t('popup.approvals.open_approvals', { count: approvalsState.length })}
                   {lastUpdatedTs ? (
                     <span className="ml-2 text-neutral-500">| {minutesAgoText(lastUpdatedTs)}</span>
                   ) : null}
@@ -265,15 +295,21 @@ export default function ApprovalsPanel() {
 
             <div className="mt-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <WalletPill label={activeWallet?.label ?? ''} onPrev={onPrev} onNext={onNext} />
+                <WalletPill
+                  label={activeWallet?.label ?? ''}
+                  onPrev={onPrev}
+                  onNext={onNext}
+                  prevLabel={t('popup.approvals.previous_wallet')}
+                  nextLabel={t('popup.approvals.next_wallet')}
+                />
                 {/* Refresh and Last Updated */}
                 <button
                   type="button"
-                  aria-label="Refresh approvals"
+                  aria-label={t('popup.approvals.refresh')}
                   onClick={() => loadApprovals(true)}
                   disabled={loading}
                   className="ml-2 h-7 w-7 rounded-[10px] border border-[#1E1E1E] bg-[#0E0E0E] grid place-items-center hover:bg-[#141414] disabled:opacity-60"
-                  title="Refresh approvals"
+                  title={t('popup.approvals.refresh')}
                 >
                   {loading ? (
                     <svg viewBox="0 0 24 24" width="16" height="16" className="animate-spin text-neutral-300">
@@ -295,19 +331,19 @@ export default function ApprovalsPanel() {
                 </button>
               </div>
               <div className="text-[12px] text-neutral-400">
-                Wallet {activeIndex + 1} of {wallets.length}
+                {t('popup.approvals.wallet_position', { current: activeIndex + 1, total: wallets.length })}
               </div>
             </div>
 
             <div className="mt-3 rounded-[12px] border border-[#1E1E1E] overflow-hidden">
               <div className="grid grid-cols-[1fr,1fr,1fr] px-3 py-2 text-[11px] uppercase text-neutral-400">
-                <div>Token</div>
-                <div>Spender</div>
-                <div className="text-right">Allowance</div>
+                <div>{t('popup.approvals.table.token')}</div>
+                <div>{t('popup.approvals.table.spender')}</div>
+                <div className="text-right">{t('popup.approvals.table.allowance')}</div>
               </div>
               <div className="h-[1px] bg-[#1A1A1A]" />
               {approvalsState.length === 0 ? (
-                <div className="px-3 py-6 text-[13px] text-neutral-400">No approvals found for this wallet yet.</div>
+                <div className="px-3 py-6 text-[13px] text-neutral-400">{t('popup.approvals.no_approvals')}</div>
               ) : (
                 <div className="max-h-[360px] overflow-auto">
                   <ul>
@@ -317,7 +353,7 @@ export default function ApprovalsPanel() {
                         <div className="min-w-0">
                           <div className="flex items-center gap-1 min-w-0">
                             <span className="truncate">{a.spender}</span>
-                            <CopyButton value={a.spender} />
+                            <CopyButton value={a.spender} ariaLabel={t('popup.approvals.copy_address')} />
                           </div>
                           <div className="text-[12px] text-neutral-400 -mt-0.5">{a.spenderLabel}</div>
                         </div>
@@ -331,13 +367,13 @@ export default function ApprovalsPanel() {
           </>
         ) : (
           <div className="p-3 rounded-[10px] border border-[#1E1E1E] bg-[#0B0B0B] text-[13px] text-neutral-300">
-            No wallets yet. Add a wallet to start tracking approvals.
+            {t('popup.approvals.no_wallets_message')}
             <div className="mt-2">
               <button
                 onClick={() => setManageOpen(true)}
                 className="h-8 px-3 rounded-[10px] text-[12px] font-semibold border border-[#1E1E1E] bg-[#111111]"
               >
-                Add wallet
+                {t('popup.approvals.add_wallet_cta')}
               </button>
             </div>
           </div>
@@ -350,6 +386,7 @@ export default function ApprovalsPanel() {
         onClose={() => setManageOpen(false)}
         wallets={wallets || []}
         onChangeWallets={setWallets}
+        translate={t}
       />
     </div>
   );
@@ -360,11 +397,13 @@ function WalletsModal({
   onClose,
   wallets,
   onChangeWallets,
+  translate,
 }: {
   open: boolean;
   onClose: () => void;
   wallets: Wallet[];
   onChangeWallets: (ws: Wallet[]) => void;
+  translate: ReturnType<typeof useTranslations>;
 }) {
   const [label, setLabel] = useState('');
   const [address, setAddress] = useState('');
@@ -373,7 +412,10 @@ function WalletsModal({
     const addr = address.trim();
     if (!addr) return;
     const id = Math.random().toString(36).slice(2);
-    onChangeWallets([...(wallets || []), { id, label: label || 'Wallet', address: addr, enabled: true }]);
+    onChangeWallets([
+      ...(wallets || []),
+      { id, label: label || translate('popup.approvals.default_label'), address: addr, enabled: true },
+    ]);
     setLabel('');
     setAddress('');
   }
@@ -389,8 +431,10 @@ function WalletsModal({
   return (
     <Modal open={open} onClose={onClose}>
       <div className="px-3 pt-3 pb-2">
-        <div className="text-[18px] font-bold leading-tight">Watchlist {wallets.length}/5</div>
-        <div className="text-[12px] text-neutral-400 mt-1">We only watch addresses. No seed phrases. No signing.</div>
+        <div className="text-[18px] font-bold leading-tight">
+          {translate('popup.approvals.watchlist_title', { count: wallets.length, limit: 5 })}
+        </div>
+        <div className="text-[12px] text-neutral-400 mt-1">{translate('popup.approvals.watchlist_subtitle')}</div>
       </div>
 
       <div className="px-3 pb-3">
@@ -407,18 +451,19 @@ function WalletsModal({
                     onClick={() => toggleWallet(w.id)}
                     className={`h-7 w-12 rounded-full ${w.enabled ? 'bg-[#F6B74A]' : 'bg-[#3F3F46]'} relative`}
                     aria-pressed={w.enabled}
+                    aria-label={translate('popup.approvals.toggle_wallet', { label: w.label })}
                   >
                     <span
                       className="absolute top-[3px] left-[3px] h-[18px] w-[18px] rounded-full transition-transform shadow bg-white"
                       style={{ transform: w.enabled ? 'translateX(20px)' : 'translateX(0px)' }}
                     />
                   </button>
-                  <GhostButton disabled>Edit</GhostButton>
+                  <GhostButton disabled>{translate('common.edit')}</GhostButton>
                   <button
                     onClick={() => removeWallet(w.id)}
                     className="h-8 px-3 rounded-[10px] text-[12px] font-semibold border border-[#3B0B0B] text-red-300 bg-[#170909]"
                   >
-                    Remove
+                    {translate('common.remove')}
                   </button>
                 </div>
               </div>
@@ -427,18 +472,18 @@ function WalletsModal({
         </ul>
 
         <div className="mt-4 border border-[#2A2A2A] rounded-[12px] p-3 bg-[#0E0E0E]">
-          <div className="text-[14px] font-semibold">Add wallet</div>
+          <div className="text-[14px] font-semibold">{translate('popup.approvals.add_wallet_cta')}</div>
           <div className="mt-2 grid gap-2">
             <input
               value={label}
               onChange={(e) => setLabel(e.target.value)}
-              placeholder="Name of Wallet. Ex: Main Vault"
+              placeholder={translate('popup.approvals.label_placeholder')}
               className="h-9 rounded-[10px] bg-[#090909] border border-[#2A2A2A] px-3 text-[13px] outline-none"
             />
             <input
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="0xABC"
+              placeholder={translate('popup.approvals.address_placeholder')}
               className="h-9 rounded-[10px] bg-[#090909] border border-[#2A2A2A] px-3 text-[13px] outline-none"
             />
             <div className="flex justify-end mt-1">
@@ -446,7 +491,7 @@ function WalletsModal({
                 onClick={addWallet}
                 className="h-8 px-3 rounded-[10px] text-[12px] font-semibold border border-[#1E1E1E] bg-[#0B0B0B]"
               >
-                Add
+                {translate('common.add')}
               </button>
             </div>
           </div>
@@ -457,7 +502,7 @@ function WalletsModal({
             onClick={onClose}
             className="h-9 px-4 rounded-[10px] text-[13px] font-semibold border border-[#1E1E1E] bg-[#0B0B0B]"
           >
-            Close
+            {translate('common.close')}
           </button>
         </div>
       </div>

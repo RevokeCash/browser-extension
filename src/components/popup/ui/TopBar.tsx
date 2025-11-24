@@ -1,6 +1,7 @@
 import React from 'react';
 import useBrowserStorage from '../../../hooks/useBrowserStorage';
 import { FEATURE_KEYS, FEATURE_DEFAULTS } from '../../../lib/constants';
+import { useTranslations } from '../../../i18n';
 
 const ICON_SRC = '/images/icon.png';
 
@@ -25,6 +26,7 @@ function StatusPill({ label, color, bg }: { label: string; color: string; bg: st
 }
 
 export default function TopBar() {
+  const t = useTranslations();
   // read the 4 flags
   const [sim] = useBrowserStorage<boolean>('local', FEATURE_KEYS.SIMULATOR, FEATURE_DEFAULTS[FEATURE_KEYS.SIMULATOR]);
   const [ads] = useBrowserStorage<boolean>(
@@ -42,7 +44,7 @@ export default function TopBar() {
   // while loading, keep layout identical with a subtle placeholder
   const loading = [sim, ads, addr, cov].some((v) => v === undefined);
 
-  let label = 'ACTIVE';
+  let label = t('popup.top_bar.status.active');
   let color = GREEN;
   let bg = GREEN_BG;
 
@@ -51,11 +53,11 @@ export default function TopBar() {
     const coverageOff = cov === false;
 
     if (coverageOff) {
-      label = 'AT RISK';
+      label = t('popup.top_bar.status.at_risk');
       color = RED;
       bg = RED_BG;
     } else if (!allOn) {
-      label = 'CUSTOM';
+      label = t('popup.top_bar.status.custom');
       color = YELLOW;
       bg = YELLOW_BG;
     }
@@ -72,7 +74,7 @@ export default function TopBar() {
             >
               <img
                 src={ICON_SRC}
-                alt="Revoke icon"
+                alt={t('popup.top_bar.icon_alt')}
                 className="h-7 w-7"
                 onError={(e) => {
                   (e.currentTarget as any).outerHTML =
@@ -82,8 +84,8 @@ export default function TopBar() {
             </div>
 
             <div className="flex flex-col leading-tight">
-              <span className="text-[13px] font-semibold">revoke</span>
-              <span className="text-[10px] text-neutral-400">by Revoke Cash and Fairside</span>
+              <span className="text-[13px] font-semibold">{t('popup.top_bar.brand')}</span>
+              <span className="text-[10px] text-neutral-400">{t('popup.top_bar.byline')}</span>
             </div>
           </div>
 

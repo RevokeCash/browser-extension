@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslations } from '../../../i18n';
 
 const YELLOW = '#F6B74A';
 const STORAGE_KEY = 'updateBanner.dismissedMap';
@@ -31,6 +32,7 @@ type Props = {
 
 export default function UpdateBanner({ versionId, maxAgeDays, onOpenWhatsNew, className }: Props) {
   const [visible, setVisible] = useState(false);
+  const t = useTranslations();
 
   const isDismissed = useMemo(() => {
     const map = readDismissedMap();
@@ -60,7 +62,9 @@ export default function UpdateBanner({ versionId, maxAgeDays, onOpenWhatsNew, cl
         {/* Alert Badge */}
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-[#F6B74A] animate-pulse" />
-          <span className="text-[11px] font-semibold text-[#F6B74A] uppercase tracking-wider">New Update</span>
+          <span className="text-[11px] font-semibold text-[#F6B74A] uppercase tracking-wider">
+            {t('popup.update_banner.badge')}
+          </span>
         </div>
 
         {/* Action Button */}
@@ -69,7 +73,7 @@ export default function UpdateBanner({ versionId, maxAgeDays, onOpenWhatsNew, cl
           className="text-[11px] font-semibold px-3 py-1.5 rounded-[8px] text-black hover:opacity-90 transition-opacity"
           style={{ backgroundColor: YELLOW }}
         >
-          What&apos;s New
+          {t('popup.update_banner.cta')}
         </button>
 
         <div className="flex-1" />
@@ -78,7 +82,7 @@ export default function UpdateBanner({ versionId, maxAgeDays, onOpenWhatsNew, cl
         <button
           onClick={close}
           className="text-neutral-400 hover:text-neutral-200 text-lg leading-none font-semibold flex items-center justify-center h-6 w-6 transition-colors"
-          aria-label="Close update banner"
+          aria-label={t('popup.update_banner.close_aria')}
         >
           ×
         </button>

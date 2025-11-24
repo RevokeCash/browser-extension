@@ -4,6 +4,7 @@ import useBrowserStorage from '../../../hooks/useBrowserStorage';
 import { Row } from './FeatureCard';
 import DisableCoverageModal from './DisableCoverageModal';
 import { logConfigChange } from '../../../logs/extensionLogs';
+import { useTranslations } from '../../../i18n';
 
 const YELLOW = '#F6B74A';
 const ZERO_ADDR = '0x0' as const;
@@ -19,6 +20,7 @@ async function getLastKnownUserAddress(): Promise<`0x${string}`> {
 }
 
 export default function FeatureRowItem({ row, darkMode, isLast }: { row: Row; darkMode: boolean; isLast: boolean }) {
+  const t = useTranslations();
   const [value, setValue] = useBrowserStorage<boolean>('local', row.storageKey, row.defaultValue);
   const [showDisable, setShowDisable] = React.useState(false);
   const [showInfo, setShowInfo] = React.useState(false);
@@ -27,7 +29,7 @@ export default function FeatureRowItem({ row, darkMode, isLast }: { row: Row; da
 
   const isCoverage = row.id === 'COVERAGE';
   const isOff = isCoverage && !value;
-  const desc = isCoverage && isOff ? 'Your theft safety net is OFF. Turn ON to receive full benefits' : row.desc;
+  const desc = isCoverage && isOff ? t('popup.features.coverage_off_warning') : row.desc;
 
   const logChange = React.useCallback(
     async (prevVal: boolean, nextVal: boolean) => {
@@ -89,7 +91,7 @@ export default function FeatureRowItem({ row, darkMode, isLast }: { row: Row; da
                 type="button"
                 onClick={() => setShowInfo(!showInfo)}
                 className="flex-shrink-0 text-neutral-400 hover:text-neutral-200 transition-colors"
-                aria-label={`More info about ${row.title}`}
+                aria-label={t('popup.features.info_button_aria', { feature: row.title })}
               >
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
@@ -147,7 +149,7 @@ export default function FeatureRowItem({ row, darkMode, isLast }: { row: Row; da
               <button
                 onClick={() => setShowInfo(false)}
                 className="text-neutral-400 hover:text-neutral-200 transition-colors"
-                aria-label="Close"
+                aria-label={t('common.close')}
               >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

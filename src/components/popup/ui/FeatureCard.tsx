@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useColorTheme } from '../../../hooks/useColorTheme';
 import { FEATURE_KEYS, FEATURE_DEFAULTS } from '../../../lib/constants';
 import FeatureRowItem from './FeatureRow';
 import AdWarningsExpandable from './AdWarningsExpandable';
 import SimulatorExpandable from './SimulatorExpandable';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslations } from '../../../i18n';
 
 export type Row = {
   id: keyof typeof FEATURE_KEYS;
@@ -14,58 +16,61 @@ export type Row = {
   defaultValue: boolean;
 };
 
-const rows: Row[] = [
+type RowDefinition = {
+  id: Row['id'];
+  titleKey: string;
+  descKey: string;
+  infoKey: string;
+  storageKey: string;
+  defaultValue: boolean;
+};
+
+const rowDefinitions: RowDefinition[] = [
   {
     id: 'ANTIPHISH',
-    title: 'Phishing Protection',
-    desc: 'Blocks malicious websites',
-    infoText:
-      'When enabled, known phishing and malicious sites are blocked before they load. You can still bypass temporarily or allow a domain for 24 hours if you are sure it is safe.',
+    titleKey: 'popup.features.rows.antiphish.title',
+    descKey: 'popup.features.rows.antiphish.description',
+    infoKey: 'popup.features.rows.antiphish.info',
     storageKey: FEATURE_KEYS.ANTIPHISH,
     defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.ANTIPHISH],
   },
   {
     id: 'ADDRESS_GUARD',
-    title: 'Address Poisoning Detection',
-    desc: 'Flags suspicious addresses on explorers',
-    infoText:
-      "Address poisoning is a scam where attackers send small amounts from addresses that look similar to ones you interact with. This feature flags suspicious addresses on blockchain explorers like Etherscan, helping you avoid accidentally copying a scammer's address.",
+    titleKey: 'popup.features.rows.address_guard.title',
+    descKey: 'popup.features.rows.address_guard.description',
+    infoKey: 'popup.features.rows.address_guard.info',
     storageKey: FEATURE_KEYS.ADDRESS_GUARD,
     defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.ADDRESS_GUARD],
   },
   {
     id: 'X_OP_DETECTOR',
-    title: 'X OP/NOP Detector',
-    desc: 'Identifies original poster and malicious copycat accounts',
-    infoText:
-      'Scammers often copy legitimate crypto projects on X (Twitter) by using similar names and profile pictures. This detector identifies the original poster (OP) of a tweet and flags potential impersonator accounts (NOP - Not Original Poster) to protect you from phishing links.',
+    titleKey: 'popup.features.rows.x_op_detector.title',
+    descKey: 'popup.features.rows.x_op_detector.description',
+    infoKey: 'popup.features.rows.x_op_detector.info',
     storageKey: FEATURE_KEYS.X_OP_DETECTOR,
     defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.X_OP_DETECTOR],
   },
   {
     id: 'ETHOS_SCORE',
-    title: 'Ethos Credibility Scores',
-    desc: 'Shows credibility scores on X profiles',
-    infoText:
-      'Ethos provides credibility scores for X (Twitter) profiles based on their on-chain and social activity. These scores help you quickly assess the trustworthiness of accounts before interacting with their content or clicking their links.',
+    titleKey: 'popup.features.rows.ethos_score.title',
+    descKey: 'popup.features.rows.ethos_score.description',
+    infoKey: 'popup.features.rows.ethos_score.info',
     storageKey: FEATURE_KEYS.ETHOS_SCORE,
     defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.ETHOS_SCORE],
   },
   {
     id: 'COVERAGE',
-    title: 'Wallet Drain Coverage',
-    desc: 'Drain coverage up to $30k',
-    infoText:
-      'If your wallet is drained despite using our protection, you may be eligible for coverage up to $30,000. This insurance-style protection gives you peace of mind when interacting with DeFi protocols and signing transactions.',
+    titleKey: 'popup.features.rows.coverage.title',
+    descKey: 'popup.features.rows.coverage.description',
+    infoKey: 'popup.features.rows.coverage.info',
     storageKey: FEATURE_KEYS.COVERAGE,
     defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.COVERAGE],
   },
   {
     id: 'SLOWMODE',
-    title: 'Slow Mode',
-    desc: 'Adds intentional delay before confirming transactions',
-    infoText:
-      'Slow Mode adds a mandatory waiting period before you can confirm transactions. This built-in delay forces you to slow down and review transaction details carefully, helping prevent rushed decisions that could lead to losses.',
+    titleKey: 'popup.features.rows.slowmode.title',
+    descKey: 'popup.features.rows.slowmode.description',
+    infoKey: 'popup.features.rows.slowmode.info',
     storageKey: FEATURE_KEYS.SLOWMODE,
     defaultValue: FEATURE_DEFAULTS[FEATURE_KEYS.SLOWMODE],
   },
@@ -73,11 +78,25 @@ const rows: Row[] = [
 
 export default function FeatureCard({ onFeeDetails }: { onFeeDetails?: () => void }) {
   const { darkMode } = useColorTheme();
+  const t = useTranslations();
+
+  const rows = useMemo<Row[]>(
+    () =>
+      rowDefinitions.map((row) => ({
+        ...row,
+        title: t(row.titleKey),
+        desc: t(row.descKey),
+        infoText: t(row.infoKey),
+      })),
+    [t],
+  );
 
   return (
     <div className="mt-3">
       <div className="px-3 pb-2">
-        <div className="text-[11px] font-semibold tracking-wide uppercase text-neutral-400">Active Protection</div>
+        <div className="text-[11px] font-semibold tracking-wide uppercase text-neutral-400">
+          {t('popup.features.sections.active')}
+        </div>
       </div>
 
       <div>
@@ -91,7 +110,9 @@ export default function FeatureCard({ onFeeDetails }: { onFeeDetails?: () => voi
       </div>
 
       <div className="px-3 pb-2 pt-6">
-        <div className="text-[11px] font-semibold tracking-wide uppercase text-neutral-400">Experimental Features</div>
+        <div className="text-[11px] font-semibold tracking-wide uppercase text-neutral-400">
+          {t('popup.features.sections.experimental')}
+        </div>
       </div>
 
       <div>
@@ -99,7 +120,17 @@ export default function FeatureCard({ onFeeDetails }: { onFeeDetails?: () => voi
 
         <FeatureRowItem key="ETHOS_SCORE" row={rows[3]} darkMode={darkMode} isLast={false} />
 
-        <FeatureRowItem key="SLOWMODE" row={rows[5]} darkMode={darkMode} isLast={true} />
+        <FeatureRowItem key="SLOWMODE" row={rows[5]} darkMode={darkMode} isLast={false} />
+      </div>
+
+      <div className="px-3 pb-2 pt-6">
+        <div className="text-[11px] font-semibold tracking-wide uppercase text-neutral-400">
+          {t('popup.tabs.settings')}
+        </div>
+      </div>
+
+      <div>
+        <LanguageSwitcher />
       </div>
     </div>
   );

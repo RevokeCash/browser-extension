@@ -9,6 +9,7 @@ import FeeDetailsModal from '../ui/FeeDetailsModal';
 import ApprovalsPanel from '../ui/ApprovalsPanel';
 import pkg from '../../../../package.json';
 import ClaimConsentModal from '../ui/ClaimConsentModal';
+import { useTranslations } from '../../../i18n';
 
 declare global {
   interface Window {
@@ -20,6 +21,7 @@ declare global {
 const FOOTER_SPACE_PX = 76;
 
 const MainPage = () => {
+  const t = useTranslations();
   const [activeTab, setActiveTab] = useState<'features' | 'approvals' | 'settings'>('approvals');
   const [feeOpen, setFeeOpen] = useState(false);
 
@@ -78,9 +80,9 @@ const MainPage = () => {
       {activeTab === 'features' && (
         <div className="fixed inset-x-0 bottom-0 z-20 px-3 pb-3 bg-[#0B0B0B]">
           <div className="rounded-[12px]  bg-[#0D0D0D] px-3 py-2 text-[12px] text-neutral-400">
-            Wallet Drain Coverage adds 0.8% to covered transactions.{` `}
+            {t('popup.main.coverage_notice')}{' '}
             <button onClick={openFee} className="underline text-neutral-300 hover:text-neutral-100 transition-colors">
-              Coverage Benefits
+              {t('popup.main.coverage_benefits')}
             </button>
           </div>
         </div>

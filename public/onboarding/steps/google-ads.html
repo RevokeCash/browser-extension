@@ -3,8 +3,10 @@
 <section class="step sequence-v2" data-step="google-ads" id="google-ads-step">
   <div class="onboarding-card">
     <div class="card-header">
-      <h1>Ad Warnings</h1>
-      <p>Fake ads mimic real crypto sites across platforms. We flag them before you click.</p>
+      <h1 data-i18n="onboarding.ads.title">Ad Warnings</h1>
+      <p data-i18n="onboarding.ads.description">
+        Fake ads mimic real crypto sites across platforms. We flag them before you click.
+      </p>
     </div>
 
     <div class="progress-container">
@@ -14,40 +16,50 @@
     <div class="card-content">
       <div class="panel-left">
         <div class="search-result ad malicious">
-          <div class="ad-label">AD</div>
-          <div class="search-title">Coinbase — Sign In</div>
-          <div class="search-domain">coinbase-auth.com</div>
-          <div class="search-desc">Fast access to your account. Verify to continue. Hardware wallet support.</div>
+          <div class="ad-label" data-i18n="onboarding.ads.ad_label">AD</div>
+          <div class="search-title" data-i18n="onboarding.ads.samples.coinbase_ad.title">Coinbase — Sign In</div>
+          <div class="search-domain" data-i18n="onboarding.ads.samples.coinbase_ad.domain">coinbase-auth.com</div>
+          <div class="search-desc" data-i18n="onboarding.ads.samples.coinbase_ad.description">
+            Fast access to your account. Verify to continue. Hardware wallet support.
+          </div>
         </div>
 
         <div class="search-result ad malicious">
-          <div class="ad-label">AD</div>
-          <div class="search-title">Uniswap — Claim Bonus</div>
-          <div class="search-domain">uniswap-claim-bonus.com</div>
-          <div class="search-desc">Limited-time reward. Connect wallet to verify eligibility.</div>
+          <div class="ad-label" data-i18n="onboarding.ads.ad_label">AD</div>
+          <div class="search-title" data-i18n="onboarding.ads.samples.uniswap_ad.title">Uniswap — Claim Bonus</div>
+          <div class="search-domain" data-i18n="onboarding.ads.samples.uniswap_ad.domain">uniswap-claim-bonus.com</div>
+          <div class="search-desc" data-i18n="onboarding.ads.samples.uniswap_ad.description">
+            Limited-time reward. Connect wallet to verify eligibility.
+          </div>
         </div>
 
         <div class="search-result">
-          <div class="search-title">Coinbase: Buy &amp; Sell Crypto</div>
-          <div class="search-domain">coinbase.com</div>
-          <div class="search-desc">The easiest place to buy and sell cryptocurrency. Start with as little as $10.</div>
+          <div class="search-title" data-i18n="onboarding.ads.samples.organic.title">
+            Coinbase: Buy &amp; Sell Crypto
+          </div>
+          <div class="search-domain" data-i18n="onboarding.ads.samples.organic.domain">coinbase.com</div>
+          <div class="search-desc" data-i18n="onboarding.ads.samples.organic.description">
+            The easiest place to buy and sell cryptocurrency. Start with as little as $10.
+          </div>
         </div>
       </div>
 
       <div class="panel-right">
         <div class="panel-right-content">
           <div class="info-block">
-            <div class="info-label danger">THE TRAP</div>
-            <div class="info-title">Fake ads mimic real crypto sites.</div>
-            <div class="info-text">
+            <div class="info-label danger" data-i18n="onboarding.ads.attack.label">THE TRAP</div>
+            <div class="info-title" data-i18n="onboarding.ads.attack.title">Fake ads mimic real crypto sites.</div>
+            <div class="info-text" data-i18n="onboarding.ads.attack.body">
               Scammers buy sponsored placements on Google, CoinGecko, DEXTools and more. One click lands you on a fake
               site designed to steal credentials or trick you into signing away your assets.
             </div>
           </div>
           <div class="info-block">
-            <div class="info-label safe">YOUR PROTECTION</div>
-            <div class="info-title">All sponsored results are labeled and dimmed.</div>
-            <div class="info-text">
+            <div class="info-label safe" data-i18n="onboarding.ads.protection.label">YOUR PROTECTION</div>
+            <div class="info-title" data-i18n="onboarding.ads.protection.title">
+              All sponsored results are labeled and dimmed.
+            </div>
+            <div class="info-text" data-i18n="onboarding.ads.protection.body">
               We flag paid placements across platforms so you can't mistake an ad for a real result. Legitimate, organic
               links stay bright.
             </div>
@@ -55,7 +67,7 @@
         </div>
 
         <div class="toggle-wrapper">
-          <span class="toggle-label">Enable Guard</span>
+          <span class="toggle-label" data-i18n="onboarding.ads.toggle_label">Enable Guard</span>
           <button class="toggle on" data-ob-toggle="feature_google_ad_warn_enabled">
             <div class="toggle-knob"></div>
           </button>
@@ -64,10 +76,10 @@
     </div>
 
     <div class="card-footer">
-      <button class="btn btn-ghost" data-ob-action="back">Back</button>
+      <button class="btn btn-ghost" data-ob-action="back" data-i18n="onboarding.common.back">Back</button>
       <div class="footer-group">
         <!-- <button class="btn btn-ghost" data-ob-action="skip">Skip</button> -->
-        <button class="btn btn-primary" data-ob-action="next">Next</button>
+        <button class="btn btn-primary" data-ob-action="next" data-i18n="onboarding.common.next">Next</button>
       </div>
     </div>
   </div>
