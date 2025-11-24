@@ -90,7 +90,7 @@ export default function FeeDetailsModal({
               ))}
             </div>
 
-            <div className="mt-3 text-center text-[10px] text-neutral-500">{t('popup.fee_modal.fee_note')}</div>
+            <div className="mt-3 text-center text-[10px] text-neutral-500">t('popup.fee_modal.fee_note')</div>
           </div>
         </div>
 
