@@ -395,25 +395,8 @@ async function bindFeatureToggle(scope, key, defaultOn = true) {
 }
 
 function ensureTwitterWidgets(cb) {
-  if (window.twttr && window.twttr.widgets?.load) {
-    cb?.();
-    return;
-  }
-  if (document.getElementById('twitter-wjs')) {
-    const t = setInterval(() => {
-      if (window.twttr && window.twttr.widgets?.load) {
-        clearInterval(t);
-        cb?.();
-      }
-    }, 50);
-    return;
-  }
-  const s = document.createElement('script');
-  s.id = 'twitter-wjs';
-  s.async = true;
-  s.src = 'https://platform.twitter.com/widgets.js';
-  s.onload = () => cb?.();
-  document.head.appendChild(s);
+  // No-op: remote scripts are not allowed in MV3; proceed without loading widgets
+  cb?.();
 }
 
 async function initStepWithToggle(step, key) {
