@@ -253,9 +253,9 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
     });
 
     ethereumProvider.isRevokeCash = true;
-    injectionCallbackStream.write({ success: true, hasKerberus: window.ethereum.isKerberus });
+    injectionCallbackStream.write({ success: true, hasPhantom: Boolean(window.phantom) });
   } catch (error) {
-    injectionCallbackStream.write({ success: false, hasKerberus: window.ethereum.isKerberus });
+    injectionCallbackStream.write({ success: false, hasPhantom: Boolean(window.phantom) });
   }
 };
 

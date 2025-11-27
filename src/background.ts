@@ -29,6 +29,7 @@ import { track } from './lib/utils/analytics';
 // after 5 minutes of inactivity (see Manifest v3 docs).
 const messagePorts: Record<string, Browser.Runtime.Port> = {};
 const approvedMessages: Array<Hash> = [];
+const seenMessages: Array<Hash> = [];
 
 const transactionDecoders = [
   new ApproveDecoder(),
@@ -139,6 +140,8 @@ const trackWarning = (warningData: WarningData) => {
 };
 
 const trackMessage = (message: Message) => {
+  if (seenMessages.includes(message.requestId)) return;
+  seenMessages.push(message.requestId);
   track('Message received', { message });
 };
 
