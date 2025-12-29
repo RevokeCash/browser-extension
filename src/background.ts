@@ -163,7 +163,7 @@ const calculatePopupHeight = (warningData: WarningData) => {
   const MARGIN_HEIGHT = 12;
 
   const HEADER_HEIGHT = 64;
-  const HOSTNAME_HEIGHT = 92; // Includes the Kerberus domain check
+  const HOSTNAME_HEIGHT = 28;
   const TITLE_HEIGHT = 44;
 
   const LINE_HEIGHT = 44;

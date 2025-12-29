@@ -1,14 +1,12 @@
 export const WHOIS_BASE_URL = 'https://whois.revoke.cash/generated';
 export const INFURA_API_KEY = process.env.INFURA_API_KEY!;
 export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY!;
-export const KERBERUS_API_KEY = process.env.KERBERUS_API_KEY!;
 
 export const Urls = {
   REVOKE_CASH: 'https://revoke.cash',
   DISCORD: 'https://discord.gg/revoke-cash',
   TWITTER: 'https://twitter.com/RevokeCash',
   GITHUB: 'https://github.com/RevokeCash/browser-extension',
-  KERBERUS: 'https://www.kerberus.com/extension/?ref=REVOKECASH',
 } as const;
 
 export const Identifier = {

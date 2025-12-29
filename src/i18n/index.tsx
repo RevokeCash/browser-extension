@@ -39,7 +39,6 @@ export const defaultTranslationValues: RichTranslationValues = {
       {children}
     </Href>
   ),
-  'kerberus-word': (children) => <span className="font-bold text-[#5470FF]">{children}</span>,
 };
 
 export const useLocale = () => {
