@@ -1,3 +1,5 @@
+⚠️ This is the legacy version of the Revoke.cash browser extension, which has been sunsetted. ⚠️
+
 # Revoke.cash Browser Extension
 
 In many cases, phishing websites try to make you sign a token allowance while they pretend to be an NFT mint or other legitimate use cases. When these phishing scams happen, it is recommended to use the Revoke.cash website to mitigate the damage, but it is even better to prevent the scam in the first place.
