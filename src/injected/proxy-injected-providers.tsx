@@ -15,11 +15,6 @@ const stream = new WindowPostMessageStream({
   target: Identifier.CONTENT_SCRIPT,
 });
 
-const injectionCallbackStream = new WindowPostMessageStream({
-  name: Identifier.INJECTION_INPAGE,
-  target: Identifier.INJECTION_CALLBACK,
-});
-
 let proxyInterval: NodeJS.Timer;
 
 const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
@@ -253,9 +248,8 @@ const proxyEthereumProvider = (ethereumProvider: any, name: string) => {
     });
 
     ethereumProvider.isRevokeCash = true;
-    injectionCallbackStream.write({ success: true, hasPhantom: Boolean(window.phantom) });
   } catch (error) {
-    injectionCallbackStream.write({ success: false, hasPhantom: Boolean(window.phantom) });
+    console.error('Error proxying Ethereum provider', error);
   }
 };
 

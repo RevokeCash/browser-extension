@@ -26,52 +26,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@amplitude/analytics-browser@npm:^1.2.3":
-  version: 1.2.3
-  resolution: "@amplitude/analytics-browser@npm:1.2.3"
-  dependencies:
-    "@amplitude/analytics-connector": "npm:^1.4.5"
-    "@amplitude/analytics-core": "npm:^0.8.1"
-    "@amplitude/analytics-types": "npm:^0.8.1"
-    "@amplitude/ua-parser-js": "npm:^0.7.31"
-    tslib: "npm:^2.3.1"
-  checksum: 10/832ff093a1ab92f0d31e79674132230637f569688bbebf3ff2687b09c21efc54508371417b876a9514da3a5b484cacfa943b5dbec548362bb795eac82125f4af
-  languageName: node
-  linkType: hard
-
-"@amplitude/analytics-connector@npm:^1.4.5":
-  version: 1.4.5
-  resolution: "@amplitude/analytics-connector@npm:1.4.5"
-  dependencies:
-    "@amplitude/ua-parser-js": "npm:0.7.31"
-  checksum: 10/34f1b4d681fdb6ca7d21ab4fa9cf4a436be6673eecf4cbd9b9fb9c2b72599ccba79bdb73fcdf5c4c7e2a13ddf2b3b77a82f06bcc1ef157c04b69cc25d6c5040f
-  languageName: node
-  linkType: hard
-
-"@amplitude/analytics-core@npm:^0.8.1":
-  version: 0.8.1
-  resolution: "@amplitude/analytics-core@npm:0.8.1"
-  dependencies:
-    "@amplitude/analytics-types": "npm:^0.8.1"
-    tslib: "npm:^2.3.1"
-  checksum: 10/d685dd1e4cf2d485aaa59fa9f0f6e341a8f863a53ad5726021919048a7c3419416ddb5ee426df4a28630e7607790b8520c4ccea80f5c445d338867820636559a
-  languageName: node
-  linkType: hard
-
-"@amplitude/analytics-types@npm:^0.8.1":
-  version: 0.8.1
-  resolution: "@amplitude/analytics-types@npm:0.8.1"
-  checksum: 10/150ac59043e5f9f7b9296de06dc58700f2129ad5e16752b890462cc1312234a6536da6766899183f09fc965c320dd3d0d41bd6a51ceb0ca133626f65398499ac
-  languageName: node
-  linkType: hard
-
-"@amplitude/ua-parser-js@npm:0.7.31, @amplitude/ua-parser-js@npm:^0.7.31":
-  version: 0.7.31
-  resolution: "@amplitude/ua-parser-js@npm:0.7.31"
-  checksum: 10/2bec7dd1470c469f905b94a33e07dbd47a1df7546493589cd48324cc343d04066f889ffbb887d5aeac84206b358529433f36741ef0489c3c80afd1ea0ba5d12d
-  languageName: node
-  linkType: hard
-
 "@babel/code-frame@npm:^7.0.0":
   version: 7.18.6
   resolution: "@babel/code-frame@npm:7.18.6"
@@ -8068,7 +8022,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "revoke-cash-browser-extension@workspace:."
   dependencies:
-    "@amplitude/analytics-browser": "npm:^1.2.3"
     "@heroicons/react": "npm:^2.1.3"
     "@localazy/cli": "npm:^1.7.10"
     "@metamask/post-message-stream": "npm:^8.1.0"
@@ -9093,13 +9046,6 @@ __metadata:
     typescript: "*"
     webpack: ^5.0.0
   checksum: 10/a85d43bb6f72858d613290ac02d1d24e81c38ba2dcb98b90465dc97eb6c2036bf9a389542c1a7865548643e7ed39f063fdff2dbb3e5aafbc511de6a3eb275adf
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.3.1":
-  version: 2.4.0
-  resolution: "tslib@npm:2.4.0"
-  checksum: 10/d8379e68b36caf082c1905ec25d17df8261e1d68ddc1abfd6c91158a064f6e4402039ae7c02cf4c81d12e3a2a2c7cd8ea2f57b233eb80136a2e3e7279daf2911
   languageName: node
   linkType: hard
 

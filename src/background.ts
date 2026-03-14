@@ -23,7 +23,6 @@ import { HashDecoder } from './lib/decoders/untyped-signature/HashDecoder';
 import { Message, MessageResponse, WarningData } from './lib/types';
 import { normaliseMessage } from './lib/utils/messages';
 import { getStorage } from './lib/utils/storage';
-import { track } from './lib/utils/analytics';
 
 // Note that these messages will be periodically cleared due to the background service shutting down
 // after 5 minutes of inactivity (see Manifest v3 docs).
@@ -67,8 +66,6 @@ Browser.runtime.onConnect.addListener(setupRemoteConnection);
 Browser.runtime.onMessage.addListener((response: MessageResponse) => {
   const responsePort = messagePorts[response.requestId];
 
-  track('Responded to request', { requestId: response.requestId, response: response.data });
-
   if (response.data) {
     approvedMessages.push(response.requestId);
   }
@@ -101,8 +98,6 @@ const processMessage = async (message: Message, remotePort: Browser.Runtime.Port
 const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<boolean> => {
   if (approvedMessages.includes(message.requestId)) return false;
 
-  trackMessage(message);
-
   const warningData = messageDecoder.decode(message);
   if (!warningData) return false;
 
@@ -117,32 +112,8 @@ const decodeMessageAndCreatePopupIfNeeded = async (message: Message): Promise<bo
   if (isAddressAllowListed) return false;
 
   createWarningPopup(warningData);
-  trackWarning(warningData);
 
   return true;
-};
-
-const trackWarning = (warningData: WarningData) => {
-  if (warningData.type === WarningType.ALLOWANCE) {
-    const { requestId, chainId, hostname, bypassed, spender } = warningData;
-    const allowance = { spender };
-    track('Allowance requested', { requestId, chainId, hostname, bypassed, allowance });
-  } else if (warningData.type === WarningType.LISTING) {
-    const { requestId, chainId, hostname, bypassed, platform } = warningData;
-    track('NFT listing requested', { requestId, chainId, hostname, bypassed, platform });
-  } else if (warningData.type === WarningType.SUSPECTED_SCAM) {
-    const { requestId, chainId, hostname, bypassed, address } = warningData;
-    track('Suspected scam detected', { requestId, chainId, hostname, bypassed, address });
-  } else if (warningData.type === WarningType.HASH) {
-    const { requestId, hostname, bypassed } = warningData;
-    track('Hash signature requested', { requestId, hostname, bypassed });
-  }
-};
-
-const trackMessage = (message: Message) => {
-  if (seenMessages.includes(message.requestId)) return;
-  seenMessages.push(message.requestId);
-  track('Message received', { message });
 };
 
 const calculatePopupPositions = (window: Browser.Windows.Window, warningData: WarningData) => {
