@@ -9,15 +9,20 @@ import en from './locales/en/translation.json';
 import es from './locales/es/translation.json';
 import ja from './locales/ja/translation.json';
 import ru from './locales/ru/translation.json';
-import zh from './locales/zh_CN/translation.json';
+import zh_CN from './locales/zh_CN/translation.json';
+import zh_TW from './locales/zh_TW/translation.json';
 
-export const locales = ['en', 'es', 'ja', 'ru', 'zh'] as const;
+export const locales = ['en', 'es', 'ja', 'ru', 'zh_CN', 'zh_TW'] as const;
 export type Locale = (typeof locales)[number];
-export const isLocale = (locale: string): locale is Locale => locales.includes(locale as Locale);
+
+export const isLocale = (locale: string): locale is Locale =>
+  locales.includes(locale as Locale) ||
+  (locale.startsWith('zh-') && (locales.includes('zh_CN' as Locale) || locales.includes('zh_TW' as Locale)));
 
 export const localeOptions: Array<Option<Locale>> = [
   { value: 'en', label: 'English' },
-  { value: 'zh', label: '中文' },
+  { value: 'zh_CN', label: '简体中文' },
+  { value: 'zh_TW', label: '正體中文' },
   { value: 'ru', label: 'Русский' },
   { value: 'ja', label: '日本語' },
   { value: 'es', label: 'Español' },
@@ -26,10 +31,18 @@ export const localeOptions: Array<Option<Locale>> = [
 export const getLocaleOption = (locale?: Locale) =>
   localeOptions.find((option) => option.value === locale) ?? localeOptions[0];
 
-const [browserConfigLocale] = Browser.i18n.getUILanguage().split('-');
-const defaultLocale = isLocale(browserConfigLocale) ? browserConfigLocale : 'en';
+const getDefaultLocale = (): Locale => {
+  const browserLocale = Browser.i18n.getUILanguage();
+  if (browserLocale.startsWith('zh-')) {
+    // For Chinese, we need to differentiate between Simplified and Traditional
+    return browserLocale.toLowerCase().includes('tw') || browserLocale.toLowerCase().includes('hk') ? 'zh_TW' : 'zh_CN';
+  }
+  return isLocale(browserLocale) ? (browserLocale as Locale) : 'en';
+};
 
-const messagesMap = { en, es, ja, ru, zh } as const;
+const defaultLocale = getDefaultLocale();
+
+const messagesMap = { en, es, ja, ru, zh_CN, zh_TW } as const;
 
 export const defaultTranslationValues: RichTranslationValues = {
   i: (children) => <span className="italic">{children}</span>,

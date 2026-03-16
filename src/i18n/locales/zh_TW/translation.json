@@ -1,0 +1,50 @@
+{
+  "common": {
+    "address": "地址",
+    "bypass": "注意：網站試圖繞過 Revoke.cash 確認視窗，謹慎行事。",
+    "continue": "繼續",
+    "dismiss": "取消",
+    "error_occurred": "嘗試建立 Revoke.cash 彈出視窗時發生錯誤。請在我們的 <discord-link>Discord</discord-link> 中聯絡我們。",
+    "reject": "拒絕",
+    "unknown_asset": "未知資產"
+  },
+  "confirm_allowance": {
+    "spender": "支出者",
+    "title": "授予代幣授權"
+  },
+  "confirm_hash": {
+    "explanation": "這可用於列出待售 NFT 或授權資產轉移。請確保您信任該網站。",
+    "hash": "雜湊",
+    "title": "簽署雜湊簽名"
+  },
+  "confirm_listing": {
+    "title": "簽署 NFT 市場列表"
+  },
+  "confirm_suspected_scam": {
+    "title": "與可疑的詐騙地址互動"
+  },
+  "popup": {
+    "about": {
+      "official_website": "官方網站",
+      "title": "關於",
+      "version": "版本"
+    },
+    "color_theme": {
+      "themes": {
+        "dark": "深色",
+        "light": "淺色",
+        "system": "系統"
+      },
+      "title": "主題顏色"
+    },
+    "language": {
+      "title": "語言"
+    },
+    "settings": {
+      "approvals": "代幣授權",
+      "hash_signatures": "雜湊簽名",
+      "listings": "NFT 市場列表",
+      "suspected_scams": "涉嫌詐騙"
+    }
+  }
+}
